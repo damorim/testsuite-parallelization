@@ -7,10 +7,11 @@ from shutil import rmtree
 from sys import argv
 
 def result_label(atype):
-    label = 'F'
-    if (atype.find('failure') == None) and (atype.find('error') == None):
-        label = 'P'
-    return label
+    if not (atype.find('skipped') == None):
+        return 'S'
+    elif (atype.find('failure') == None) and (atype.find('error') == None):
+        return 'P'
+    return 'F'
 
 def report_from(path_dir):
     xmlFiles = []
@@ -24,7 +25,7 @@ if __name__ == "__main__":
     test_path = os.path.abspath(argv[2])
     logfile = open(argv[3])
     output_log = argv[4]
-    output_log = os.path.join(os.path.abspath(os.curdir), output_log + "-check_failures.txt")
+    output_log = os.path.join(os.path.abspath(os.curdir), output_log + "-mvnlog.txt")
     output_log = open(output_log, "w")
 
     reports_dir = os.path.join(test_path, "target", "surefire-reports")
@@ -49,10 +50,17 @@ if __name__ == "__main__":
 
     output_log.close()
 
+    # output failed tests and frequency
     total = len(output)
     fails = 0
-    for k,v in output.items():
-        if 'F' in v:
+    skipped = 0
+    for t,r in output.items():
+        if 'S' in r:
+            skipped += 1
+        elif 'F' in r:
             fails += 1
-            print k, v
-    print "[Statistics] Failed in parallel: {0}, Failed individually: {1}".format(total, fails)
+            print t, r
+
+    # Sanity check: because we only executed failed tests, it doesn't make sense to have skipped tests
+    assert skipped == 0, "Should not have skipped tests here"
+    print "[Statistics] Failed Tests (parallel execution): {0}, Passed (individually): {1}".format(total, (total-fails))

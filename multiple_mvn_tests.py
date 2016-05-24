@@ -12,10 +12,11 @@ def reports_from(path_dir):
     return xmlFiles
 
 def result_label(atype):
-    label = 'F'
-    if (atype.find('failure') == None) and (atype.find('error') == None):
-        label = 'P'
-    return label
+    if not (atype.find('skipped') == None):
+        return 'S'
+    elif (atype.find('failure') == None) and (atype.find('error') == None):
+        return 'P'
+    return 'F'
 
 if __name__ == "__main__":
     freq = int(argv[1])
@@ -23,7 +24,7 @@ if __name__ == "__main__":
     log_mvn = argv[3]
     results = {}
 
-    log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-multiple-mvn-tests.txt")
+    log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-mvnlog.txt")
     log_mvn = open(log_mvn, "w")
 
     test_path = os.path.abspath(test_path)
@@ -49,9 +50,12 @@ if __name__ == "__main__":
     # output failed tests and frequency
     total = len(results)
     fails = 0
+    skipped = 0
     for t,r in results.items():
-        if 'F' in r:
+        if 'S' in r:
+            skipped += 1
+        elif 'F' in r:
             fails += 1
             print t, r
 
-    print "[Statistics] All tests: {0}, Failed (any): {1}".format(total, fails)
+    print "[Statistics] All: {0}, Skipped: {1}, Runs: {2}, Failed (any): {3}, ".format(total, skipped, (total-skipped), fails)
