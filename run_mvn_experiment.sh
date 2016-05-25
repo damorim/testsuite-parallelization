@@ -2,7 +2,7 @@
 BASE_DIR="`pwd`"
 SAMPLES_HOME="$BASE_DIR/samples"
 PARALLEL_SETTINGS_HOME="$BASE_DIR/parallel-settings"
-RERUNS=40
+RERUNS=50
 
 function compile_only {
     local subject_path=$1
