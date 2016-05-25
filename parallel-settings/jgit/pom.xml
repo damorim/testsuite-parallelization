@@ -159,7 +159,7 @@
           <parallel>methods</parallel>
           <threadCount>5</threadCount>
           <perCoreThreadCount>true</perCoreThreadCount>
-          <forkCount>1C</forkCount>
+          <forkCount>3C</forkCount>
           <reuseFork>true</reuseFork>
           <!--/PARALLEL SETTINGS-->
 

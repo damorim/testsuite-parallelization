@@ -22,12 +22,14 @@ function download_git {
 
 # Ref: https://travis-ci.org/graphhopper/graphhopper/builds/131435929
 download_git "https://github.com/graphhopper/graphhopper.git" "graphhopper" "a5bfe93dc5d13bdd86c47f5b7fdacabf034a6cd3"
+# Ref: https://travis-ci.org/square/retrofit/builds/130745331
+download_git "https://github.com/square/retrofit.git" "retrofit" "28d350d99430c87b4ada7d1aa9e08c96884cb388"
 
+
+# Eclipse Foundation Subjects
+#
 # Ref: https://hudson.eclipse.org/jgit/job/jgit.gerrit/8369/
 download_git "https://git.eclipse.org/r/jgit/jgit.git" "jgit" "1f86350c5a97d8c6966fe1146d649eb5cbc60f53"
 
-# CI Info for the given revision: https://travis-ci.org/square/retrofit/builds/130745331
-download_git "https://github.com/square/retrofit.git" "retrofit" "28d350d99430c87b4ada7d1aa9e08c96884cb388"
-
-# # CI Info for the given revision: https://travis-ci.org/ReactiveX/RxJava/builds/130977151
-# download_git "https://github.com/ReactiveX/RxJava.git" "rxjava" "21d0f4698667ef934347058f3ba60baa8f5578dd"
+# Apache Foundation Subjects
+download_git "https://github.com/apache/camel.git" "camel" "8447297a23203be0a39dcb971ef2c3c0f0f7909f"
