@@ -5,18 +5,7 @@ import xml.etree.ElementTree
 from subprocess import call
 from sys import argv
 
-def reports_from(path_dir):
-    xmlFiles = []
-    for root, dir, files in os.walk(path_dir):
-        xmlFiles = [fi for fi in files if fi.startswith('TEST') and fi.endswith('.xml')]
-    return xmlFiles
-
-def result_label(atype):
-    if not (atype.find('skipped') == None):
-        return 'S'
-    elif (atype.find('failure') == None) and (atype.find('error') == None):
-        return 'P'
-    return 'F'
+from utils import *
 
 if __name__ == "__main__":
     freq = int(argv[1])
@@ -46,16 +35,5 @@ if __name__ == "__main__":
                     results[key] = [label]
 
     log_mvn.close()
-
-    # output failed tests and frequency
-    total = len(results)
-    fails = 0
-    skipped = 0
-    for t,r in results.items():
-        if 'S' in r:
-            skipped += 1
-        elif 'F' in r:
-            fails += 1
-            print t, r
-
-    print "[Statistics] All: {0}, Skipped: {1}, Runs: {2}, Failed (any): {3}, ".format(total, skipped, (total-skipped), fails)
+    statistics = compute_statistcs(results)
+    print "[Statistics] All: {total}, Skipped: {skips}, Runs: {runs}, Failed (any): {fails}, ".format(**statistics)

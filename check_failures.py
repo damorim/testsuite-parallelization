@@ -6,19 +6,7 @@ from subprocess import call
 from shutil import rmtree
 from sys import argv
 
-def result_label(atype):
-    if not (atype.find('skipped') == None):
-        return 'S'
-    elif (atype.find('failure') == None) and (atype.find('error') == None):
-        return 'P'
-    return 'F'
-
-def report_from(path_dir):
-    xmlFiles = []
-    for root, dir, files in os.walk(path_dir):
-        xmlFiles = [fi for fi in files if fi.startswith('TEST') and fi.endswith('.xml')]
-    assert len(xmlFiles) == 1
-    return xmlFiles[0]
+from utils import *
 
 if __name__ == "__main__":
     freq = int(argv[1])
@@ -39,28 +27,25 @@ if __name__ == "__main__":
             rmtree(reports_dir)
             for f in range(freq):
                 call(['mvn', '-Dtest=' + test_case, 'test'], stderr=output_log, stdout=output_log)
+
                 xmlFile = report_from(reports_dir)
                 xmlFileName = os.path.join(reports_dir, xmlFile)
                 e = xml.etree.ElementTree.parse(xmlFileName).getroot()
-                for atype in e.findall('testcase'):
-                    label = result_label(atype)
-                    key = atype.get('classname') + '#' + atype.get('name')
-                    assert key == test_case, "key: {0}, tc: {1}".format(key, test_case)
-                    output[key].append(label);
+
+                testcases = e.findall('testcase')
+                assert len(testcases) == 1, "Should have only 1 testcase since a test is executed individually"
+                atype = testcases[0]
+
+                label = result_label(atype)
+                key = atype.get('classname') + '#' + atype.get('name')
+                assert key == test_case, "key: {0}, tc: {1}".format(key, test_case)
+                output[key].append(label)
+
+                # Prune if this execution has failed
+                if label == 'F': break
 
     output_log.close()
-
-    # output failed tests and frequency
-    total = len(output)
-    fails = 0
-    skipped = 0
-    for t,r in output.items():
-        if 'S' in r:
-            skipped += 1
-        elif 'F' in r:
-            fails += 1
-            print t, r
-
-    # Sanity check: because we only executed failed tests, it doesn't make sense to have skipped tests
-    assert skipped == 0, "Should not have skipped tests here"
-    print "[Statistics] Failed Tests (parallel execution): {0}, Passed (individually): {1}".format(total, (total-fails))
+    statistics = compute_statistcs(output)
+    assert statistics['skips'] == 0, "Should not have skipped tests here"
+    print "[Statistics] Failed Tests (parallel execution): {total}, " \
+          "Passed (individually): {passes}".format(**statistics)
