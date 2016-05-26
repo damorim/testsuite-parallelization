@@ -25,7 +25,6 @@ download_git "https://github.com/graphhopper/graphhopper.git" "graphhopper" "a5b
 # Ref: https://travis-ci.org/square/retrofit/builds/130745331
 download_git "https://github.com/square/retrofit.git" "retrofit" "28d350d99430c87b4ada7d1aa9e08c96884cb388"
 
-
 # Eclipse Foundation Subjects
 #
 # Ref: https://hudson.eclipse.org/jgit/job/jgit.gerrit/8369/
