@@ -29,6 +29,7 @@ download_git "https://github.com/square/retrofit.git" "retrofit" "28d350d99430c8
 #
 # Ref: https://hudson.eclipse.org/jgit/job/jgit.gerrit/8369/
 download_git "https://git.eclipse.org/r/jgit/jgit.git" "jgit" "1f86350c5a97d8c6966fe1146d649eb5cbc60f53"
+download_git "https://github.com/eclipse/jetty.project.git" "jetty.project" "012a5864be5627bd321b1f6bb637640c219daa3b"
 
 # Apache Foundation Subjects
 download_git "https://github.com/apache/camel.git" "camel" "8447297a23203be0a39dcb971ef2c3c0f0f7909f"
