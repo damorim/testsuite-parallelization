@@ -22,8 +22,12 @@ function download_git {
 
 # Ref: https://travis-ci.org/graphhopper/graphhopper/builds/131435929
 download_git "https://github.com/graphhopper/graphhopper.git" "graphhopper" "a5bfe93dc5d13bdd86c47f5b7fdacabf034a6cd3"
+
+# Square Subjects
+#
 # Ref: https://travis-ci.org/square/retrofit/builds/130745331
 download_git "https://github.com/square/retrofit.git" "retrofit" "28d350d99430c87b4ada7d1aa9e08c96884cb388"
+download_git "https://github.com/square/okhttp.git" "okhttp" "63ae84d0e647e43d381406a847061d46dcc30448"
 
 # Eclipse Foundation Subjects
 #
