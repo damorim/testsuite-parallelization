@@ -1,13 +1,22 @@
 ## Getting Started
 
 1. Install the TestNG Custom Runner in you local Maven repository (.m2) with `mvn install`.
-2. Add the TestNG Custom Runner to your Maven Surefire settings:
+2. Declare a new dependency in your `pom.xml` file:
 ```{xml}
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${SUREFIRE.VERSION}</version>
-            <configuration>
+<dependency>
+    <groupId>br.ufpe.cin.jbc5</groupId>
+    <artifactId>testng-custom-runner</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+3. Add the TestNG Custom Runner to your Maven Surefire settings (`pom.xml`):
+```{xml}
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>${SUREFIRE.VERSION}</version>
+        <configuration>
             ...
             <properties>
               <property>
@@ -16,7 +25,7 @@
               </property>
             </properties>
             ...
-        </configuration>
-    </plugin>
+    </configuration>
+</plugin>
 ```
 3. Test your application with `mvn test`.
