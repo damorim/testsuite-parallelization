@@ -4,38 +4,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.testng.ITestContext;
+import org.testng.IExecutionListener;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 
-public class TestNGCustomRunner extends TestListenerAdapter {
+import br.ufpe.cin.jbc5.RunningInfo.Status;
 
-	enum Status {
-		TORUN, PASS, FAIL;
-	}
+/**
+ *
+ * @author Jeanderson Candido <http://jeandersonbc.github.io>
+ *
+ */
+public class TestNGCustomRunner extends TestListenerAdapter implements IExecutionListener {
 
-	private class Info {
-
-		long start;
-		long end;
-		Status result = Status.TORUN;
-
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append(start).append(", ");
-			sb.append(end).append(", ");
-			sb.append(result.name());
-			return sb.toString();
-		}
-	}
-
-	private Map<String, Info> allTests;
+	private Map<String, RunningInfo> allTests;
 
 	@Override
-	public void onStart(ITestContext testContext) {
+	public void onExecutionStart() {
 		this.allTests = new ConcurrentHashMap<>();
-		super.onStart(testContext);
 	}
 
 	@Override
@@ -43,7 +29,7 @@ public class TestNGCustomRunner extends TestListenerAdapter {
 		StringBuffer sb = new StringBuffer();
 		sb.append(tr.getTestClass().getName()).append(".").append(tr.getName());
 
-		Info i = new Info();
+		RunningInfo i = new RunningInfo();
 		i.start = tr.getStartMillis();
 		i.end = tr.getEndMillis();
 		i.result = Status.FAIL;
@@ -57,7 +43,7 @@ public class TestNGCustomRunner extends TestListenerAdapter {
 		StringBuffer sb = new StringBuffer();
 		sb.append(tr.getTestClass().getName()).append(".").append(tr.getName());
 
-		Info i = new Info();
+		RunningInfo i = new RunningInfo();
 		i.start = tr.getStartMillis();
 		i.end = tr.getEndMillis();
 		i.result = Status.PASS;
@@ -67,35 +53,34 @@ public class TestNGCustomRunner extends TestListenerAdapter {
 	}
 
 	@Override
-	public void onFinish(ITestContext testContext) {
-		System.out.println("===== Tests Summary =====");
-		for (Map.Entry<String, Info> entry : allTests.entrySet()) {
-			System.out.println(entry.getKey() + ":\t" + entry.getValue());
+	public void onExecutionFinish() {
+		System.out.println("Test, Start, Finished, Result");
+		for (Map.Entry<String, RunningInfo> entry : allTests.entrySet()) {
+			System.out.println(entry.getKey() + ", " + entry.getValue());
 		}
-		System.out.println("===== Dependencies =====");
-		for (Map.Entry<String, Info> entry : allTests.entrySet()) {
+		for (Map.Entry<String, RunningInfo> entry : allTests.entrySet()) {
 			checkDependencies(entry);
 		}
-		super.onFinish(testContext);
 	}
 
-	private void checkDependencies(Entry<String, Info> entry) {
+	private void checkDependencies(Entry<String, RunningInfo> entry) {
 		// If result is different from FAIL, this entry has no dependency
 		if (!entry.getValue().result.equals(Status.FAIL)) {
 			return;
 		}
-		for (Map.Entry<String, Info> other : allTests.entrySet()) {
+		for (Map.Entry<String, RunningInfo> other : allTests.entrySet()) {
 			if (!other.getKey().equals(entry.getKey())) {
-				Info entryInfo = entry.getValue();
-				Info otherInfo = other.getValue();
+				RunningInfo entryInfo = entry.getValue();
+				RunningInfo otherInfo = other.getValue();
 				if (hasOverlap(entryInfo, otherInfo)) {
 					System.out.println(entry.getKey() + " ==> " + other.getKey());
 				}
 			}
 		}
+
 	}
 
-	private boolean hasOverlap(Info entry, Info other) {
+	private boolean hasOverlap(RunningInfo entry, RunningInfo other) {
 		return !((other.end < entry.start) || (other.start > entry.end));
 	}
 
