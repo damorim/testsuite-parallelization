@@ -1,5 +1,12 @@
 package br.ufpe.cin.jbc5;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,9 +61,17 @@ public class TestNGCustomRunner extends TestListenerAdapter implements IExecutio
 
 	@Override
 	public void onExecutionFinish() {
-		System.out.println("Test, Start, Finished, Result");
+		List<String> reportLines = new ArrayList<>();
+		reportLines.add("Test, Start, Finished, Result");
 		for (Map.Entry<String, RunningInfo> entry : allTests.entrySet()) {
-			System.out.println(entry.getKey() + ", " + entry.getValue());
+			reportLines.add(entry.getKey() + ", " + entry.getValue());
+		}
+		Path file = Paths.get("timestamps.csv");
+		try {
+			Files.write(file, reportLines, Charset.forName("UTF-8"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		for (Map.Entry<String, RunningInfo> entry : allTests.entrySet()) {
 			checkDependencies(entry);
@@ -68,14 +83,22 @@ public class TestNGCustomRunner extends TestListenerAdapter implements IExecutio
 		if (!entry.getValue().result.equals(Status.FAIL)) {
 			return;
 		}
+		List<String> dependencies = new ArrayList<>();
 		for (Map.Entry<String, RunningInfo> other : allTests.entrySet()) {
 			if (!other.getKey().equals(entry.getKey())) {
 				RunningInfo entryInfo = entry.getValue();
 				RunningInfo otherInfo = other.getValue();
 				if (hasOverlap(entryInfo, otherInfo)) {
-					System.out.println(entry.getKey() + " ==> " + other.getKey());
+					dependencies.add(entry.getKey() + " ==> " + other.getKey());
 				}
 			}
+		}
+		Path file = Paths.get("dependencies.txt");
+		try {
+			Files.write(file, dependencies, Charset.forName("UTF-8"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
