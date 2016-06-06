@@ -1,5 +1,8 @@
 ## Getting Started
 
+### Important!
+The current implementation does not support multiple JVM forks.
+
 1. Install the TestNG Custom Runner in you local Maven repository (.m2) with `mvn install`.
 2. Declare a new dependency in your `pom.xml` file:
 ```{xml}
