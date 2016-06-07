@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpCookie;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -103,7 +102,7 @@ public class HttpClientTest extends AbstractHttpClientServerTest {
 		this.testdir = new TestingDir();
 	}
 
-	@Factory(dataProvider="parameters")
+	@Factory(dataProvider = "parameters")
 	public HttpClientTest(SslContextFactory sslContextFactory) {
 		super(sslContextFactory);
 	}
@@ -452,7 +451,7 @@ public class HttpClientTest extends AbstractHttpClientServerTest {
 		}
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void test_ExchangeIsComplete_OnlyWhenBothRequestAndResponseAreComplete() throws Exception {
 		start(new RespondThenConsumeHandler());
 
@@ -1076,22 +1075,22 @@ public class HttpClientTest extends AbstractHttpClientServerTest {
 		AssertJUnit.assertTrue(completeLatch.await(5, TimeUnit.SECONDS));
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testSmallContentDelimitedByEOFWithSlowRequestHTTP10() throws Exception {
 		testContentDelimitedByEOFWithSlowRequest(HttpVersion.HTTP_1_0, 1024);
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testBigContentDelimitedByEOFWithSlowRequestHTTP10() throws Exception {
 		testContentDelimitedByEOFWithSlowRequest(HttpVersion.HTTP_1_0, 128 * 1024);
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testSmallContentDelimitedByEOFWithSlowRequestHTTP11() throws Exception {
 		testContentDelimitedByEOFWithSlowRequest(HttpVersion.HTTP_1_1, 1024);
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testBigContentDelimitedByEOFWithSlowRequestHTTP11() throws Exception {
 		testContentDelimitedByEOFWithSlowRequest(HttpVersion.HTTP_1_1, 128 * 1024);
 	}

@@ -18,7 +18,6 @@
 
 package org.eclipse.jetty.client;
 
-import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -51,13 +50,13 @@ public class ExternalSiteTest {
 		client.stop();
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testExternalSite() throws Exception {
 		String host = "wikipedia.org";
 		int port = 80;
 
 		// Verify that we have connectivity
-		assumeCanConnectTo(host, port);
+		// assumeCanConnectTo(host, port);
 
 		final CountDownLatch latch1 = new CountDownLatch(1);
 		client.newRequest(host, port).send(new Response.CompleteListener() {
@@ -82,7 +81,7 @@ public class ExternalSiteTest {
 		AssertJUnit.assertTrue(latch2.await(10, TimeUnit.SECONDS));
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testExternalSSLSite() throws Exception {
 		client.stop();
 		client = new HttpClient(new SslContextFactory());
@@ -92,7 +91,7 @@ public class ExternalSiteTest {
 		int port = 443;
 
 		// Verify that we have connectivity
-		assumeCanConnectTo(host, port);
+		// assumeCanConnectTo(host, port);
 
 		final CountDownLatch latch = new CountDownLatch(1);
 		client.newRequest(host, port).scheme("https").path("/nvp").send(new Response.CompleteListener() {
@@ -105,13 +104,13 @@ public class ExternalSiteTest {
 		AssertJUnit.assertTrue(latch.await(5, TimeUnit.SECONDS));
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testExternalSiteWrongProtocol() throws Exception {
 		String host = "github.com";
 		int port = 22; // SSH port
 
 		// Verify that we have connectivity
-		assumeCanConnectTo(host, port);
+		// assumeCanConnectTo(host, port);
 
 		for (int i = 0; i < 2; ++i) {
 			final CountDownLatch latch = new CountDownLatch(3);
@@ -136,24 +135,24 @@ public class ExternalSiteTest {
 		}
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testExternalSiteRedirect() throws Exception {
 		String host = "twitter.com";
 		int port = 443;
 
 		// Verify that we have connectivity
-		assumeCanConnectTo(host, port);
+		// assumeCanConnectTo(host, port);
 
 		ContentResponse response = client.newRequest(host, port).scheme(HttpScheme.HTTPS.asString()).path("/twitter")
 				.send();
 		AssertJUnit.assertEquals(200, response.getStatus());
 	}
 
-	protected void assumeCanConnectTo(String host, int port) {
-		try {
-			new Socket(host, port).close();
-		} catch (Throwable x) {
-			// Assume.assumeNoException(x);
-		}
-	}
+	// protected void assumeCanConnectTo(String host, int port) {
+	// try {
+	// new Socket(host, port).close();
+	// } catch (Throwable x) {
+	// // Assume.assumeNoException(x);
+	// }
+	// }
 }

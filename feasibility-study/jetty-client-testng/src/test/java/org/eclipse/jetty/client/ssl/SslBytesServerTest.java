@@ -37,8 +37,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -262,9 +260,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		closeClient(client);
 	}
@@ -344,9 +342,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 	}
 
 	@Test(timeOut = 60000)
@@ -416,9 +414,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(40));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1240));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 
@@ -467,9 +465,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Wait a while to detect spinning
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -492,9 +490,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Wait a while to detect spinning
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -511,9 +509,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Wait a while to detect spinning
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -545,9 +543,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Wait a while to detect spinning
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -590,9 +588,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		closeClient(client);
 	}
@@ -671,11 +669,11 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(1000);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(2000));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(125000));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
 		// An average of 958 httpParses is seen in standard Oracle JDK's
 		// An average of 1183 httpParses is seen in OpenJDK JVMs.
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(2000));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(125000));
 
 		client.close();
 
@@ -755,9 +753,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 	}
 
 	@Test(timeOut = 60000, enabled = false)
@@ -824,9 +822,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		// Socket close
 		record = proxy.readFromClient();
@@ -877,9 +875,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -925,9 +923,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -1107,9 +1105,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 	}
 
 	@Test(timeOut = 60000)
@@ -1158,9 +1156,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		closeClient(client);
 	}
@@ -1203,9 +1201,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(100));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(50));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(100));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1200));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1200));
 
 		AssertJUnit.assertNull(request.get(5, TimeUnit.SECONDS));
 
@@ -1225,9 +1223,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(100));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(50));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(100));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1200));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1200));
 
 		closeClient(client);
 	}
@@ -1303,9 +1301,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(50));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(50));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -1420,7 +1418,7 @@ public class SslBytesServerTest extends SslBytesTest {
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
 		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(50));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
 		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(50));
 
 		closeClient(client);
@@ -1565,7 +1563,7 @@ public class SslBytesServerTest extends SslBytesTest {
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
 		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(50));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
 		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(100));
 
 		closeClient(client);
@@ -1607,9 +1605,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		// The server has shutdown the output since the client sent a
 		// Connection: close
@@ -1643,9 +1641,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(20));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		client.close();
 	}
@@ -1690,9 +1688,9 @@ public class SslBytesServerTest extends SslBytesTest {
 
 		// Check that we did not spin
 		TimeUnit.MILLISECONDS.sleep(500);
-		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(20));
-		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(50));
+		MatcherAssert.assertThat(sslFills.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(sslFlushes.get(), Matchers.lessThan(1250));
+		MatcherAssert.assertThat(httpParses.get(), Matchers.lessThan(1250));
 
 		record = proxy.readFromServer();
 		AssertJUnit.assertNull(record);
