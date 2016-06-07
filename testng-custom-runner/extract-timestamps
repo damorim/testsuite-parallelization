@@ -1,0 +1,15 @@
+#!/bin/bash
+
+TEST_PATH="$1"
+if [ -z "$TEST_PATH" ]; then
+	echo "Usage: ./extract-timestamps <path to tests>"
+	exit 1;
+fi
+
+BASEDIR="`pwd`"
+cd "$TEST_PATH"
+
+# The pattern "###" is a convenience to filter only the desired lines
+# It is defined as "prefixPattern" in TestNGCustomRunner.onExecutionFinish() 
+mvn test | grep "###" | sed "s/###//g" > "$BASEDIR/timestamps.csv"
+cd "$BASEDIR"
