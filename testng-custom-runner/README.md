@@ -1,8 +1,5 @@
 ## Getting Started
 
-### Important!
-The current implementation does not support multiple JVM forks.
-
 1. Install the TestNG Custom Runner in you local Maven repository (.m2) with `mvn install`.
 2. Declare a new dependency in your `pom.xml` file:
 ```{xml}
@@ -31,4 +28,7 @@ The current implementation does not support multiple JVM forks.
     </configuration>
 </plugin>
 ```
-3. Test your application with `mvn test`.
+3. Use the utility script `extract-timestamps` to run the tests from a given path.
+  It is going to create a file named`timestamps.csv` in your current directory.
+
+4. Use `timestamps.csv` to check dependencies with `Analyzer.main`
