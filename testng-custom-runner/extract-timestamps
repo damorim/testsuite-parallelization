@@ -9,10 +9,6 @@ fi
 BASEDIR="`pwd`"
 cd "$TEST_PATH"
 
-mvn test > "$BASEDIR/mvn-log.txt"
-
-# The pattern "###" is a convenience to filter only the desired lines
-# It is defined as "prefixPattern" in TestNGCustomRunner.onExecutionFinish() 
-cat "$BASEDIR/mvn-log.txt" | grep "###" | sed "s/###//g" > "$BASEDIR/timestamps.csv"
-
+mvn test &> "$BASEDIR/mvn-log.txt"
+cat "$BASEDIR/mvn-log.txt" | grep INFO: | sed "s/INFO: //g" > "$BASEDIR/timestamps.csv"
 cd "$BASEDIR"
