@@ -1,4 +1,4 @@
-package br.ufpe.cin.jbc5;
+package br.ufpe.cin.jbc5.dchecker.listeners;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -6,9 +6,10 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
 
-import br.ufpe.cin.jbc5.RunningInfo.Verdict;
+import br.ufpe.cin.jbc5.dchecker.listeners.RunningInfo.Verdict;
+
+import java.util.Scanner;
 
 /**
  *
@@ -39,7 +40,7 @@ public class Analyzer {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String name = "timestamps.csv";
+		String name = "../feasibility-study/timestamps.csv";
 		Scanner sc = new Scanner(new BufferedInputStream(new FileInputStream(name)));
 
 		// Parse and load all entries in memory

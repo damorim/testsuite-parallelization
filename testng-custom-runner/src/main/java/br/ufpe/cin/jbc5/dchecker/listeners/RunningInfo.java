@@ -1,4 +1,4 @@
-package br.ufpe.cin.jbc5;
+package br.ufpe.cin.jbc5.dchecker.listeners;
 
 /**
  * Information about a test execution.
