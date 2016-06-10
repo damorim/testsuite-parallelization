@@ -1,4 +1,4 @@
-package br.ufpe.cin.jbc5.dchecker.listeners;
+package br.ufpe.cin.dchecker;
 
 import java.rmi.dgc.VMID;
 import java.util.HashMap;
@@ -13,13 +13,13 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-import br.ufpe.cin.jbc5.dchecker.listeners.RunningInfo.Verdict;
+import br.ufpe.cin.dchecker.RunningInfo.Verdict;
 
 /**
  * An auxiliary listener for JUnit.<br>
  * Logs a given test name, when it started, when it finished, thread and and if
  * it has failed or passed.
- * 
+ *
  * @author Jeanderson Candido -
  *         <a href="http://jeandersonbc.github.io">http://jeandersonbc.github.io
  *         </a>

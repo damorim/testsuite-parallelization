@@ -1,4 +1,4 @@
-package br.ufpe.cin.jbc5.dchecker.listeners;
+package br.ufpe.cin.dchecker;
 
 /**
  * Information about a test execution.
@@ -43,11 +43,17 @@ class RunningInfo {
 	 */
 	Verdict result = Verdict.UNKNOWN;
 
+	/**
+	 * Host VM where this test was executed
+	 */
+	String host;
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(start).append(", ");
 		sb.append(end).append(", ");
+		sb.append(host).append(", ");
 		sb.append(result.name());
 		return sb.toString();
 	}
