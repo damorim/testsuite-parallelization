@@ -1,7 +1,1 @@
-*/target/*
-*.class
-*.jar
-*.classpath
-*.project
-*/.settings/*
-*/test-output/*
+reports/
