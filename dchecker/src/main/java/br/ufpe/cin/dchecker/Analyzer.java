@@ -73,6 +73,8 @@ public class Analyzer {
 				// Heuristic for test dependency: overlap on the same host VM
 				if (hasOverlap(entryInfo, otherInfo) && isSameHostVM(entryInfo, otherInfo)) {
 					System.out.println(entry.getKey() + " ==> " + other.getKey());
+					System.out.println(" 1) " + entryInfo.toString());
+					System.out.println(" 2) " + otherInfo.toString());
 					dependencyCounter++;
 				}
 			}
