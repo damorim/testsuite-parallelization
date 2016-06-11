@@ -37,26 +37,33 @@ public class Analyzer {
 
 		// Check dependencies
 		Map<String, Integer> vms = new HashMap<>();
+		int dependencyCounter = 0;
 		for (Entry<String, RunningInfo> entry : all.entrySet()) {
-			checkDependencies(entry, all);
-			vms.put(entry.getValue().host, !vms.containsKey(entry.getValue().host) ? 1 : vms.get(entry.getValue().host) + 1);
+			dependencyCounter += checkDependencies(entry, all);
+			vms.put(entry.getValue().host,
+					!vms.containsKey(entry.getValue().host) ? 1 : vms.get(entry.getValue().host) + 1);
 		}
 
-		System.out.println("-------- debug information --------");
-		int counter = 0;
+		System.out.println("-------- Debug information --------");
+		int vmCounter = 0;
 		int total = 0;
 		for (Entry<String, Integer> entry : vms.entrySet()) {
 			total += entry.getValue();
-			System.out.println(String.format(" %-2d) %s: %d tests", ++counter, entry.getKey(), entry.getValue()));
+			System.out.println(String.format(" %2d) %-47s %d tests", ++vmCounter, entry.getKey(), entry.getValue()));
 		}
-		System.out.println("VM Count: " + vms.size() + " Total Tests: " + total);
+		System.out.println("-------- Statistics --------");
+		System.out.println(String.format(" %12s: %d", "Total Tests", total));
+		System.out.println(String.format(" %12s: %d", "Dependencies", dependencyCounter));
+		System.out.println(String.format(" %12s: %d", "VM Counter", vms.size()));
 
 	}
 
-	public static void checkDependencies(Entry<String, RunningInfo> entry, Map<String, RunningInfo> allTests) {
+	public static int checkDependencies(Entry<String, RunningInfo> entry, Map<String, RunningInfo> allTests) {
+		int dependencyCounter = 0;
+
 		// If result is different from FAIL, this entry has no dependency
 		if (!entry.getValue().result.equals(Verdict.FAIL)) {
-			return;
+			return dependencyCounter;
 		}
 		for (Entry<String, RunningInfo> other : allTests.entrySet()) {
 			if (!other.getKey().equals(entry.getKey())) {
@@ -66,10 +73,11 @@ public class Analyzer {
 				// Heuristic for test dependency: overlap on the same host VM
 				if (hasOverlap(entryInfo, otherInfo) && isSameHostVM(entryInfo, otherInfo)) {
 					System.out.println(entry.getKey() + " ==> " + other.getKey());
+					dependencyCounter++;
 				}
 			}
 		}
-
+		return dependencyCounter;
 	}
 
 	private static boolean hasOverlap(RunningInfo entry, RunningInfo other) {
