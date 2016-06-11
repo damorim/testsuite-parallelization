@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
-import br.ufpe.cin.dchecker.RunningInfo;
 import br.ufpe.cin.dchecker.RunningInfo.Verdict;
 
 /**
@@ -37,9 +36,21 @@ public class Analyzer {
 		sc.close();
 
 		// Check dependencies
-		for (Map.Entry<String, RunningInfo> entry : all.entrySet()) {
+		Map<String, Integer> vms = new HashMap<>();
+		for (Entry<String, RunningInfo> entry : all.entrySet()) {
 			checkDependencies(entry, all);
+			vms.put(entry.getValue().host, !vms.containsKey(entry.getValue().host) ? 1 : vms.get(entry.getValue().host) + 1);
 		}
+
+		System.out.println("-------- debug information --------");
+		int counter = 0;
+		int total = 0;
+		for (Entry<String, Integer> entry : vms.entrySet()) {
+			total += entry.getValue();
+			System.out.println(String.format(" %-2d) %s: %d tests", ++counter, entry.getKey(), entry.getValue()));
+		}
+		System.out.println("VM Count: " + vms.size() + " Total Tests: " + total);
+
 	}
 
 	public static void checkDependencies(Entry<String, RunningInfo> entry, Map<String, RunningInfo> allTests) {
@@ -47,7 +58,7 @@ public class Analyzer {
 		if (!entry.getValue().result.equals(Verdict.FAIL)) {
 			return;
 		}
-		for (Map.Entry<String, RunningInfo> other : allTests.entrySet()) {
+		for (Entry<String, RunningInfo> other : allTests.entrySet()) {
 			if (!other.getKey().equals(entry.getKey())) {
 				RunningInfo entryInfo = entry.getValue();
 				RunningInfo otherInfo = other.getValue();
