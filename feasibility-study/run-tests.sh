@@ -1,5 +1,6 @@
 #!/bin/bash
 BASEDIR="`pwd`"
+ANALYZER_HOME="$BASEDIR/../dchecker/target"
 ANALYZER_JAR="dchecker-0.0.1-SNAPSHOT.jar"
 
 TEST_PATH="$1"
@@ -28,9 +29,9 @@ mvn test &> $MVNLOG_FILE
 create_timestamp_report $MVNLOG_FILE > $TIMESTAMP_FILE
 cd "$BASEDIR"
 
-if [ ! -f "$ANALYZER_JAR" ]; then
-    echo " > Error: Analyzer jar file \"$ANALYZER_JAR\" not found in the current directory"
+if [ ! -f "$ANALYZER_HOME/$ANALYZER_JAR" ]; then
+    echo " > Error: Analyzer jar file \"$ANALYZER_JAR\" not found in \"$ANALYZER_HOME\"."
     echo " > Aborted."
     exit 1;
 fi
-java -jar "$ANALYZER_JAR" "$TIMESTAMP_FILE" > "$DEPENDENCY_FILE"
+java -jar "$ANALYZER_HOME/$ANALYZER_JAR" "$TIMESTAMP_FILE" > "$DEPENDENCY_FILE"
