@@ -44,7 +44,7 @@ public class Analyzer {
 					!vms.containsKey(entry.getValue().host) ? 1 : vms.get(entry.getValue().host) + 1);
 		}
 
-		System.out.println("-------- Debug information --------");
+		System.out.println("-------- Running Information --------");
 		int vmCounter = 0;
 		int total = 0;
 		for (Entry<String, Integer> entry : vms.entrySet()) {
@@ -81,7 +81,7 @@ public class Analyzer {
 	}
 
 	private static boolean hasOverlap(RunningInfo entry, RunningInfo other) {
-		return !((other.end < entry.start) || (other.start > entry.end));
+		return (other.end >= entry.start) && (other.start <= entry.end);
 	}
 
 	private static boolean isSameHostVM(RunningInfo entry, RunningInfo other) {
