@@ -47,12 +47,17 @@ class RunningInfo {
 	 * Host VM where this test was executed
 	 */
 	String host;
+	/**
+	 * Thread where this test was executed
+	 */
+	String thread;
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(start).append(", ");
 		sb.append(end).append(", ");
+		sb.append(thread).append(", ");
 		sb.append(host).append(", ");
 		sb.append(result.name());
 		return sb.toString();

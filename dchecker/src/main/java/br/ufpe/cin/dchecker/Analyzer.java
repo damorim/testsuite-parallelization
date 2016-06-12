@@ -29,8 +29,9 @@ public class Analyzer {
 			RunningInfo info = new RunningInfo();
 			info.start = Long.parseLong(entryLineFields[1]);
 			info.end = Long.parseLong(entryLineFields[2]);
-			info.host = entryLineFields[3];
-			info.result = Verdict.valueOf(entryLineFields[4]);
+			info.thread = entryLineFields[3];
+			info.host = entryLineFields[4];
+			info.result = Verdict.valueOf(entryLineFields[5]);
 			all.put(key, info);
 		}
 		sc.close();

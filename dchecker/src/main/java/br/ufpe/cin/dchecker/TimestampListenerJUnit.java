@@ -29,6 +29,7 @@ public class TimestampListenerJUnit extends RunListener {
 
 	private Map<String, Long> started;
 	private Map<String, Long> finished;
+	private Map<String, String> thread;
 	private Set<String> ignored;
 	private String hostVm;
 
@@ -37,6 +38,7 @@ public class TimestampListenerJUnit extends RunListener {
 		started = new HashMap<>();
 		finished = new HashMap<>();
 		ignored = new HashSet<>();
+		thread = new HashMap<>();
 		hostVm = (new VMID()).toString();
 		super.testRunStarted(description);
 	}
@@ -44,6 +46,7 @@ public class TimestampListenerJUnit extends RunListener {
 	@Override
 	public void testStarted(Description description) throws Exception {
 		started.put(description.getDisplayName(), System.currentTimeMillis());
+		thread.put(description.getDisplayName(), Thread.currentThread().getName());
 		super.testStarted(description);
 	}
 
@@ -76,7 +79,7 @@ public class TimestampListenerJUnit extends RunListener {
 
 				sb.append(testName).append(",");
 				sb.append(started.get(testName)).append(",").append(finished.get(testName)).append(",");
-				sb.append(hostVm).append(",");
+				sb.append(thread.get(testName)).append(",").append(hostVm).append(",");
 				sb.append(failedTests.contains(testName) ? Verdict.FAIL : Verdict.PASS);
 
 				logger.info(sb.toString());
