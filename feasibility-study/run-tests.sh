@@ -11,7 +11,8 @@ if [ -z "$TEST_PATH" ]; then
 fi
 
 create_timestamp_report() {
-    cat "$1" | grep INFO: | sed "s/INFO: //g"
+    local preffix="INFO: \[DCHECKER\]"
+    cat "$1" | grep "$preffix" | sed "s/$preffix//g"
 }
 
 LOGPREFFIX="`date +"$NAME-%m%d%H%M%S"`"

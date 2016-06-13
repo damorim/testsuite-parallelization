@@ -75,7 +75,7 @@ public class TimestampListenerJUnit extends RunListener {
 			// At the following point, tests can be either FAILED or PASSED.
 			// Ignored tests should not be considered.
 			if (!this.ignored.contains(testName)) {
-				StringBuilder sb = new StringBuilder();
+				StringBuilder sb = new StringBuilder("[DCHECKER]");
 
 				sb.append(testName).append(",");
 				sb.append(started.get(testName)).append(",").append(finished.get(testName)).append(",");
