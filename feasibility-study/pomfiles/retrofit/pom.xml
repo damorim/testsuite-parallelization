@@ -77,15 +77,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.19.1</version>
           <configuration>
-              <!-- Commented because this setting was cause too much trouble -->
-              <!-- <parallel>methods</parallel>
-              <threadCount>5</threadCount>
-              <perCoreThreadCount>true</perCoreThreadCount>
-              <forkCount>1C</forkCount>
-              <reuseFork>true</reuseFork> -->
 
-              <parallel>methods</parallel>
-              <threadCount>1</threadCount>
               <forkCount>2.5C</forkCount>
               <reuseFork>true</reuseFork>
 
@@ -96,17 +88,6 @@
                   <value>br.ufpe.cin.dchecker.TimestampListenerJUnit</value>
                 </property>
               </properties>
-
-              <!-- this is good! -->
-              <!-- <forkCount>2.5C</forkCount>
-              <reuseFork>true</reuseFork> -->
-
-              <!-- can this be better? no. execution hangs indefinitely -->
-              <!-- <parallel>methods</parallel>
-              <threadCount>2</threadCount>
-              <perCoreThreadCount>true</perCoreThreadCount>
-              <forkCount>2.5C</forkCount>
-              <reuseFork>true</reuseFork> -->
 
           </configuration>
       </plugin>

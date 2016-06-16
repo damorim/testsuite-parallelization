@@ -2,7 +2,6 @@
 BASE_DIR="`pwd`"
 SAMPLES_HOME="$BASE_DIR/samples"
 PARALLEL_SETTINGS_HOME="$BASE_DIR/parallel-settings"
-RERUNS=40
 
 function compile_only {
     local subject_path=$1
@@ -41,8 +40,10 @@ function parallel_version {
 }
 
 # Settings
-PROJECT_PATH=$1
-TEST_PATH=$2
+RERUNS=$1
+PROJECT_PATH=$2
+TEST_PATH=$3
+
 [[ -z "$PROJECT_PATH" ]] && echo "Missing project path" && exit 1
 [[ -z "$TEST_PATH" ]] && TEST_PATH="."
 [[ ! -d "$SAMPLES_HOME" ]] && mkdir -p "$SAMPLES_HOME"
