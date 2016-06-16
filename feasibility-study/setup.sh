@@ -49,6 +49,3 @@ echo "Installing new \"pom.xml\" for \"$NAME\""
 install_pom "$PROJECT_PATH" "$TEST_PATH"
 echo "Building project \"$NAME\" with new pom.xml file"
 compile_only "$PROJECT_PATH"
-
-echo "Running test suite from \"$TEST_PATH\""
-test_only "$PROJECT_PATH/$TEST_PATH"

@@ -14,14 +14,12 @@
   <name>Retrofit</name>
 
   <dependencies>
-
     <dependency>
-        <groupId>br.ufpe.cin</groupId>
-        <artifactId>dchecker</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <scope>test</scope>
+      <groupId>br.ufpe.cin</groupId>
+      <artifactId>dchecker</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
@@ -78,10 +76,9 @@
           <version>2.19.1</version>
           <configuration>
 
-              <forkCount>2.5C</forkCount>
-              <reuseFork>true</reuseFork>
+              <parallel>methods</parallel>
+              <useUnlimitedThreads>true</useUnlimitedThreads>
 
-              <!-- Custom Listener -->
               <properties>
                 <property>
                   <name>listener</name>
