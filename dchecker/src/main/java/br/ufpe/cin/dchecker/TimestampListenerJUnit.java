@@ -33,6 +33,8 @@ public class TimestampListenerJUnit extends RunListener {
 	private Set<String> ignored;
 	private String hostVm;
 
+	public static final String COLUMN_SEP = ";";
+
 	@Override
 	public void testRunStarted(Description description) throws Exception {
 		started = new HashMap<>();
@@ -77,9 +79,9 @@ public class TimestampListenerJUnit extends RunListener {
 			if (!this.ignored.contains(testName)) {
 				StringBuilder sb = new StringBuilder("[DCHECKER]");
 
-				sb.append(testName).append(",");
-				sb.append(started.get(testName)).append(",").append(finished.get(testName)).append(",");
-				sb.append(thread.get(testName)).append(",").append(hostVm).append(",");
+				sb.append(testName).append(COLUMN_SEP);
+				sb.append(started.get(testName)).append(COLUMN_SEP).append(finished.get(testName)).append(COLUMN_SEP);
+				sb.append(thread.get(testName)).append(COLUMN_SEP).append(hostVm).append(COLUMN_SEP);
 				sb.append(failedTests.contains(testName) ? Verdict.FAIL : Verdict.PASS);
 
 				logger.info(sb.toString());

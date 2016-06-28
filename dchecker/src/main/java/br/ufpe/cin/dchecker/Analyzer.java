@@ -24,7 +24,8 @@ public class Analyzer {
 		// Parse and load all entries in memory
 		Map<String, RunningInfo> all = new HashMap<>();
 		while (sc.hasNext()) {
-			String[] entryLineFields = sc.nextLine().split(",");
+			String[] entryLineFields = sc.nextLine().split(TimestampListenerJUnit.COLUMN_SEP);
+
 			String key = entryLineFields[0];
 			RunningInfo info = new RunningInfo();
 			info.start = Long.parseLong(entryLineFields[1]);
