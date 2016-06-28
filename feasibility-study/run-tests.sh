@@ -26,7 +26,7 @@ DEPENDENCY_FILE="$OUTPUT_DIR/$LOGPREFFIX-deps.txt"
 [[ ! -d "$OUTPUT_DIR" ]] && mkdir "$OUTPUT_DIR"
 
 cd "$TEST_PATH"
-mvn test &> $MVNLOG_FILE
+mvn -X -e -DtrimStackTrace=false test &> $MVNLOG_FILE
 create_timestamp_report $MVNLOG_FILE > $TIMESTAMP_FILE
 cd "$BASEDIR"
 
