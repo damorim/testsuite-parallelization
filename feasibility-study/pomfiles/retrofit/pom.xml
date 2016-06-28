@@ -76,7 +76,7 @@
           <version>2.19.1</version>
           <configuration>
 
-              <parallel>methods</parallel>
+              <parallel>all</parallel>
               <useUnlimitedThreads>true</useUnlimitedThreads>
 
               <properties>
