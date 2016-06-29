@@ -1,4 +1,4 @@
-package br.ufpe.cin.dchecker.info;
+package br.ufpe.cin.dchecker.model;
 
 /**
  * Information about a test execution.

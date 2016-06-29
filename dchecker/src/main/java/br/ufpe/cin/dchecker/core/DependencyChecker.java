@@ -1,36 +1,49 @@
 package br.ufpe.cin.dchecker.core;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import br.ufpe.cin.dchecker.info.RunningInfo;
-import br.ufpe.cin.dchecker.info.Verdict;
+import br.ufpe.cin.dchecker.model.DependencyGroup;
+import br.ufpe.cin.dchecker.model.RunningInfo;
+import br.ufpe.cin.dchecker.model.Verdict;
 
 public class DependencyChecker {
 
-	public static int checkDependencies(Entry<String, RunningInfo> entry, Map<String, RunningInfo> allTests) {
-		int dependencyCounter = 0;
-
-		// If result is different from FAIL, this entry has no dependency
-		if (!entry.getValue().getResult().equals(Verdict.FAIL)) {
-			return dependencyCounter;
+	public static Set<DependencyGroup> dependenciesFrom(Map<String, RunningInfo> all) {
+		HashSet<DependencyGroup> allDependencies = new HashSet<>();
+		for (Entry<String, RunningInfo> entry : all.entrySet()) {
+			DependencyGroup dependencyGroup = dependencyGroupFrom(entry, all);
+			if (dependencyGroup != null) {
+				allDependencies.add(dependencyGroup);
+			}
 		}
-		for (Entry<String, RunningInfo> other : allTests.entrySet()) {
+		return allDependencies;
+	}
+
+	private static DependencyGroup dependencyGroupFrom(Entry<String, RunningInfo> entry, Map<String, RunningInfo> all) {
+		// If result is different from FAIL, this entry has no dependency.
+		if (!hasFailed(entry)) {
+			return null;
+		}
+		DependencyGroup dependencyGroup = new DependencyGroup(entry);
+		for (Entry<String, RunningInfo> other : all.entrySet()) {
 			if (!other.getKey().equals(entry.getKey())) {
-				RunningInfo entryInfo = entry.getValue();
+				RunningInfo failingEntryInfo = entry.getValue();
 				RunningInfo otherInfo = other.getValue();
 
 				// Heuristic for test dependency: overlap on the same host VM
-				if (hasOverlap(entryInfo, otherInfo) && isSameHostVM(entryInfo, otherInfo)) {
-					System.out.println(entry.getKey() + " ==> " + other.getKey());
-					System.out.println(" 1) " + entryInfo.toString());
-					System.out.println(" 2) " + otherInfo.toString());
-					dependencyCounter++;
+				if (hasOverlap(failingEntryInfo, otherInfo) && isSameHostVM(failingEntryInfo, otherInfo)) {
+					dependencyGroup.put(other);
 				}
 			}
 		}
-		return dependencyCounter;
+		return dependencyGroup;
+	}
+
+	private static boolean hasFailed(Entry<String, RunningInfo> failingEntry) {
+		return failingEntry.getValue().getResult().equals(Verdict.FAIL);
 	}
 
 	private static boolean hasOverlap(RunningInfo entry, RunningInfo other) {
@@ -41,27 +54,4 @@ public class DependencyChecker {
 		return (other.getHost().equals(entry.getHost()));
 	}
 
-	public static void run(Map<String, RunningInfo> all) {
-		// Check dependencies
-		Map<String, Integer> vms = new HashMap<>();
-		int dependencyCounter = 0;
-		for (Entry<String, RunningInfo> entry : all.entrySet()) {
-			dependencyCounter += checkDependencies(entry, all);
-			vms.put(entry.getValue().getHost(),
-					!vms.containsKey(entry.getValue().getHost()) ? 1 : vms.get(entry.getValue().getHost()) + 1);
-		}
-
-		System.out.println("-------- Running Information --------");
-		int vmCounter = 0;
-		int total = 0;
-		for (Entry<String, Integer> entry : vms.entrySet()) {
-			total += entry.getValue();
-			System.out.println(String.format(" %2d) %-47s %d tests", ++vmCounter, entry.getKey(), entry.getValue()));
-		}
-		System.out.println("-------- Statistics --------");
-		System.out.println(String.format(" %12s: %d", "Total Tests", total));
-		System.out.println(String.format(" %12s: %d", "Dependencies", dependencyCounter));
-		System.out.println(String.format(" %12s: %d", "VM Counter", vms.size()));
-
-	}
 }

@@ -1,4 +1,4 @@
-package br.ufpe.cin.dchecker.info;
+package br.ufpe.cin.dchecker.model;
 
 /**
  * Test verdicts.
