@@ -5,6 +5,7 @@ ANALYZER_JAR="dchecker-0.0.1-SNAPSHOT.jar"
 
 TEST_PATH="$1"
 NAME="$2"
+DTEST_PARAM="$3"
 if [ -z "$TEST_PATH" ]; then
     echo " > Usage: ./run-tests <path to tests>"
     exit 1;
@@ -26,7 +27,11 @@ DEPENDENCY_FILE="$OUTPUT_DIR/$LOGPREFFIX-deps.txt"
 [[ ! -d "$OUTPUT_DIR" ]] && mkdir "$OUTPUT_DIR"
 
 cd "$TEST_PATH"
-mvn -X -e -DtrimStackTrace=false test &> $MVNLOG_FILE
+if [ -z "$DTEST_PARAM" ]; then
+    mvn -DtrimStackTrace=false test &> $MVNLOG_FILE
+else
+    mvn -DtrimStackTrace=false -Dtest="$DTEST_PARAM" test &> $MVNLOG_FILE
+fi
 create_timestamp_report $MVNLOG_FILE > $TIMESTAMP_FILE
 cd "$BASEDIR"
 
