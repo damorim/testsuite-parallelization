@@ -13,7 +13,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-import br.ufpe.cin.dchecker.RunningInfo.Verdict;
+import br.ufpe.cin.dchecker.info.Verdict;
 
 /**
  * An auxiliary listener for JUnit.<br>
