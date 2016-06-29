@@ -20,18 +20,10 @@ function download_git {
 
 [[ ! -d "$SUBJECT_HOME" ]] && mkdir "$SUBJECT_HOME"
 
-# Ref: https://travis-ci.org/graphhopper/graphhopper/builds/131435929
-download_git "https://github.com/graphhopper/graphhopper.git" "graphhopper" "a5bfe93dc5d13bdd86c47f5b7fdacabf034a6cd3"
-download_git "https://github.com/square/retrofit.git" "retrofit" "28d350d99430c87b4ada7d1aa9e08c96884cb388"
+# download_git "https://github.com/graphhopper/graphhopper.git" "graphhopper" "a5bfe93dc5d13bdd86c47f5b7fdacabf034a6cd3"
+# download_git "https://github.com/square/retrofit.git" "retrofit" "28d350d99430c87b4ada7d1aa9e08c96884cb388"
+download_git "https://git.eclipse.org/r/jgit/jgit.git" "jgit" "1f86350c5a97d8c6966fe1146d649eb5cbc60f53"
 
-# Commented subjects were already executed and results should be available
-# in the dropbox folder.
-#
-#./run_mvn_experiment.sh "subjects/retrofit" "retrofit" > retrofit-summary.txt
-./setup.sh "subjects/graphhopper" "core"
-./setup.sh "subjects/retrofit" "retrofit"
-
-#./run_mvn_experiment.sh "subjects/jgit" "org.eclipse.jgit.test" > jgit-summary.txt
-#./run_mvn_experiment.sh "subjects/camel/camel-core" > camel-core-summary.txt
-#./run_mvn_experiment.sh "subjects/jetty.project" "jetty-client" > jetty.project-summary.txt
-# ./run_mvn_experiment.sh "subjects/okhttp" "okhttp-tests" > okhttp-summary.txt
+# ./setup.sh "subjects/graphhopper" "core"
+# ./setup.sh "subjects/retrofit" "retrofit"
+./setup.sh "subjects/jgit" "org.eclipse.jgit.test"
