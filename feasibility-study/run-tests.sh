@@ -12,7 +12,7 @@ if [ -z "$TEST_PATH" ]; then
 fi
 
 create_timestamp_report() {
-    local preffix="INFO: \[DCHECKER\]"
+    local preffix=".*\[DCHECKER\]"
     cat "$1" | grep "$preffix" | sed "s/$preffix//g"
 }
 
