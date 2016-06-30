@@ -8,10 +8,6 @@ package br.ufpe.cin.dchecker.model;
  */
 public enum Verdict {
 	/**
-	 * Test does not have a verdict yet.
-	 */
-	UNKNOWN,
-	/**
 	 * Test has passed.
 	 */
 	PASS,

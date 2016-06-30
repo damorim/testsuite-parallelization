@@ -13,6 +13,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
+import br.ufpe.cin.dchecker.model.TestRunInfo;
 import br.ufpe.cin.dchecker.model.Verdict;
 
 /**
@@ -33,15 +34,16 @@ public class TimestampListenerJUnit extends RunListener {
 	private Set<String> ignored;
 	private String hostVm;
 
-	public static final String COLUMN_SEP = ";";
-
 	@Override
 	public void testRunStarted(Description description) throws Exception {
 		started = new HashMap<>();
 		finished = new HashMap<>();
 		ignored = new HashSet<>();
 		thread = new HashMap<>();
-		hostVm = (new VMID()).toString();
+		String vmid = (new VMID()).toString();
+
+		// Ignoring last field which is a UUID
+		hostVm = vmid.substring(0, vmid.lastIndexOf(":"));
 		super.testRunStarted(description);
 	}
 
@@ -79,11 +81,15 @@ public class TimestampListenerJUnit extends RunListener {
 			if (!this.ignored.contains(testName)) {
 				StringBuilder sb = new StringBuilder("[DCHECKER]");
 
-				sb.append(testName).append(COLUMN_SEP);
-				sb.append(started.get(testName)).append(COLUMN_SEP).append(finished.get(testName)).append(COLUMN_SEP);
-				sb.append(thread.get(testName)).append(COLUMN_SEP).append(hostVm).append(COLUMN_SEP);
-				sb.append(failedTests.contains(testName) ? Verdict.FAIL : Verdict.PASS);
+				TestRunInfo runningInfo = new TestRunInfo();
+				runningInfo.setEnd(finished.get(testName));
+				runningInfo.setHost(hostVm);
+				runningInfo.setName(testName);
+				runningInfo.setResult(failedTests.contains(testName) ? Verdict.FAIL : Verdict.PASS);
+				runningInfo.setStart(started.get(testName));
+				runningInfo.setThread(thread.get(testName));
 
+				sb.append(runningInfo.toString());
 				logger.info(sb.toString());
 			}
 		}
