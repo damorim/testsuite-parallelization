@@ -93,8 +93,8 @@ public class DependencyAnalyzer {
 			dependencyCounter += entry.size();
 		}
 		System.out.println("-------- Statistics --------");
-		System.out.println(String.format(" %12s: %d", "Dependency Groups", dependencies.size()));
-		System.out.println(String.format(" %12s: %d", "Dependencies", dependencyCounter));
+		System.out.println(String.format(" %5d %s", dependencies.size(), "Dependency Groups"));
+		System.out.println(String.format(" %5d %s ", dependencyCounter, "Dependencies"));
 	}
 
 	private static void showRunningInformationFrom(Set<CheckableInfo> entries) {
@@ -112,9 +112,9 @@ public class DependencyAnalyzer {
 			vmCounter.add(info.hostVm());
 
 		}
-		System.out.println(String.format(" %12s: %d", "VMs used", vmCounter.size()));
-		System.out.println(String.format(" %12s: %d", "Tests executed", successCounter));
-		System.out.println(String.format(" %12s: %d", "Tests failed", failsCounter));
+		System.out.println(String.format(" %5d %s", vmCounter.size(), "VMs used"));
+		System.out.println(String.format(" %5d %s", successCounter, "Tests Success"));
+		System.out.println(String.format(" %5d %s", failsCounter, "Tests failed"));
 	}
 
 }
