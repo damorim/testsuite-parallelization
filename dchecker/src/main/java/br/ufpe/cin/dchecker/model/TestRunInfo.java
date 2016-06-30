@@ -114,7 +114,7 @@ public class TestRunInfo implements CheckableInfo {
 	 *            the thread to set
 	 */
 	public void setThread(String thread) {
-		if (this.host == null)
+		if (this.thread == null)
 			this.thread = thread;
 	}
 
