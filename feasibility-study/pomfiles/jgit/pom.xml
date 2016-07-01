@@ -163,13 +163,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
 
-          <!--PARALLEL SETTINGS-->
-          <parallel>methods</parallel>
-          <useUnlimitedThreads>true</useUnlimitedThreads>
-          <forkCount>1C</forkCount>
-          <reuseFork>true</reuseFork>
-          <!--/PARALLEL SETTINGS-->
-
           <!-- Custom Listener -->
           <properties>
             <property>
@@ -177,7 +170,6 @@
               <value>br.ufpe.cin.dchecker.TimestampListenerJUnit</value>
             </property>
           </properties>
-
 
           <argLine>-Xmx256m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=${project.build.directory}</argLine>
         </configuration>

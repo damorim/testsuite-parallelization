@@ -76,9 +76,6 @@
           <version>2.19.1</version>
           <configuration>
 
-              <parallel>all</parallel>
-              <useUnlimitedThreads>true</useUnlimitedThreads>
-
               <properties>
                 <property>
                   <name>listener</name>
