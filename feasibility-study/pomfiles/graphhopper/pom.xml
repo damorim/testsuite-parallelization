@@ -148,7 +148,7 @@
                         <properties>
                           <property>
                             <name>listener</name>
-                            <value>br.ufpe.cin.dchecker.TimestampListenerJUnit</value>
+                            <value>br.ufpe.cin.dchecker.listener.TimestampListenerJUnit</value>
                           </property>
                         </properties>
 
