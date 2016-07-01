@@ -1,6 +1,6 @@
 #!/bin/bash
 BASEDIR="`pwd`"
-ANALYZER_HOME="$BASEDIR/../dchecker/target"
+ANALYZER_HOME="$HOME/.m2/repository/br/ufpe/cin/dchecker/0.0.1-SNAPSHOT"
 ANALYZER_JAR="dchecker-0.0.1-SNAPSHOT.jar"
 
 TEST_PATH="$1"
