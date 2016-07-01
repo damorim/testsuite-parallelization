@@ -11,14 +11,6 @@ function compile_only {
     cd "$curdir"
 }
 
-function test_only {
-    local subject_path=$1
-    local curdir="`pwd`"
-    cd "$subject_path"
-    mvn -Dmaven.javadoc.skip=true test
-    cd "$curdir"
-}
-
 function install_pom {
     local subject_path=$1
     local test_path=$2
