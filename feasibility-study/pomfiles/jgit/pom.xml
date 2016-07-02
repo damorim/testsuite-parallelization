@@ -163,6 +163,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
 
+          <!-- Enforcing initial sequential execution -->
+          <forkCount>1</forkCount>
+          <reuseFork>true</reuseFork>
+
           <!-- Custom Listener -->
           <properties>
             <property>
@@ -171,7 +175,7 @@
             </property>
           </properties>
 
-          <argLine>-Xmx256m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=${project.build.directory}</argLine>
+          <argLine>-Xmx256m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=${project.build.directory} -Djgit.test.long=true</argLine>
         </configuration>
       </plugin>
     </plugins>

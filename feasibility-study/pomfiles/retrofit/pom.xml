@@ -76,12 +76,16 @@
           <version>2.19.1</version>
           <configuration>
 
-              <properties>
-                <property>
-                  <name>listener</name>
-                  <value>br.ufpe.cin.dchecker.listener.TimestampListenerJUnit</value>
-                </property>
-              </properties>
+            <!-- Enforcing initial sequential execution -->
+            <forkCount>1</forkCount>
+            <reuseFork>true</reuseFork>
+
+            <properties>
+              <property>
+                <name>listener</name>
+                <value>br.ufpe.cin.dchecker.listener.TimestampListenerJUnit</value>
+              </property>
+            </properties>
 
           </configuration>
       </plugin>

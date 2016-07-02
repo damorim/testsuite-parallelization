@@ -140,8 +140,8 @@
                     <version>2.19.1</version>
                     <configuration>
 
-                        <!-- this is good! -->
-                        <forkCount>2.5C</forkCount>
+                        <!-- Enforcing initial sequential execution -->
+                        <forkCount>1</forkCount>
                         <reuseFork>true</reuseFork>
 
                         <!-- Custom Listener -->
