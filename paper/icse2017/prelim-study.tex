@@ -8,7 +8,11 @@
     \cline{3-4}
     & & Seq & Par \\
     \hline
-    jgit & - & - & - \\
+    jgit & 3364 & 04:12 min & 53.003 s \\
+    \hline
+    jetty (client) & 5679 & 04:15 min & 18.752 s \\
+    \hline
+    camel (core) & 527 & 24:50 min & 02:28 min \\
     \hline
   \end{tabular}
   \caption{\label{table:cost}...}
@@ -20,7 +24,11 @@
     \hline
     \emph{Subject} & Fail-Par. & Fail-Ind. \\
     \hline
-    jgit & - & - \\
+    jgit & 239 & 4 \\
+    \hline
+    jetty (client) & 232 & - \\
+    \hline
+    camel (core) & 142 & - \\
     \hline
   \end{tabular}
   \caption{\label{table:failures}...}
@@ -38,4 +46,3 @@ it executed.  The process terminates when all tests eventually pass or
 when the the bound N is reached.\Fix{illustrate with small
   figure...}~To note that ITE is supported by the popular maven
 surefire plugin [cite].
-
