@@ -55,7 +55,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <!--PARALLEL SETTINGS-->
-          <forkCount>3C</forkCount>
+          <parallel>methods</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
+          <forkCount>1C</forkCount>
           <reuseFork>true</reuseFork>
           <!--/PARALLEL SETTINGS-->
         </configuration>

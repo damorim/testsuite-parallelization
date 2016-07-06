@@ -155,7 +155,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
 
-          <forkCount>1C</forkCount>
+          <forkCount>1</forkCount>
           <reuseFork>true</reuseFork>
 
           <argLine>-Xmx256m -Dfile.encoding=UTF-8 -Djava.io.tmpdir=${project.build.directory}</argLine>

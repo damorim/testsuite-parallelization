@@ -136,9 +136,12 @@
                     <version>2.19.1</version>
                     <configuration>
 
-                        <!-- this is good! -->
-                        <forkCount>2.5C</forkCount>
+                        <!--PARALLEL SETTINGS-->
+                        <parallel>methods</parallel>
+                        <useUnlimitedThreads>true</useUnlimitedThreads>
+                        <forkCount>1C</forkCount>
                         <reuseFork>true</reuseFork>
+                        <!--/PARALLEL SETTINGS-->
 
                     </configuration>
                 </plugin>

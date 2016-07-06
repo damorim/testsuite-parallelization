@@ -300,11 +300,12 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
 
+          <!--PARALLEL SETTINGS-->
           <parallel>methods</parallel>
-          <threadCount>5</threadCount>
-          <perCoreThreadCount>true</perCoreThreadCount>
-          <forkCount>3C</forkCount>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
+          <forkCount>1C</forkCount>
           <reuseFork>true</reuseFork>
+          <!--/PARALLEL SETTINGS-->
 
           <!-- skip file stress tests as they are intended to run manually -->
           <excludes>
