@@ -41,3 +41,4 @@ download_git "https://github.com/eclipse/vert.x.git" "vert.x" "edf61c5b7c4b4675b
 download_git "https://github.com/eclipse/eclipse-collections.git" "eclipse-collections" "c2e2effd20ca55334882ee653809ce1636a8ffcc"
 
 download_git "https://github.com/apache/camel.git" "camel" "8447297a23203be0a39dcb971ef2c3c0f0f7909f"
+echo "Downloads Finished"

@@ -34,5 +34,5 @@ TEST_PATH=$2
 [[ -z "$PROJECT_PATH" ]] && echo "Missing project path" && exit 1
 [[ -z "$TEST_PATH" ]] && TEST_PATH="."
 
-echo "Generating parallel and sequential versions of \"$NAME\""
+echo "Generating parallel and sequential versions of \"`basename ${PROJECT_PATH}`\""
 generate_versions "$PROJECT_PATH" "$TEST_PATH"
