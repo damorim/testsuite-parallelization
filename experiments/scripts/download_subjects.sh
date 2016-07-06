@@ -41,4 +41,7 @@ download_git "https://github.com/eclipse/vert.x.git" "vert.x" "edf61c5b7c4b4675b
 download_git "https://github.com/eclipse/eclipse-collections.git" "eclipse-collections" "c2e2effd20ca55334882ee653809ce1636a8ffcc"
 
 download_git "https://github.com/apache/camel.git" "camel" "8447297a23203be0a39dcb971ef2c3c0f0f7909f"
+
+download_git "https://github.com/junit-team/junit4.git" "junit4" "64155f8a9babcfcf4263cf4d08253a1556e75481"
+download_git "https://github.com/cbeust/testng.git" "testng" "73fce4a63c6dc24a547c159e76af66fa0bb93e9f"
 echo "Downloads Finished"
