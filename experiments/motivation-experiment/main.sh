@@ -1,8 +1,19 @@
 #!/bin/bash
-../scripts/download_subjects.sh
-
+#
+# Main experiment script.
+# Executes the experiment on each subject.
+#
+# Examples:
+#     ~$ ./main.sh 10
+#     ~$ ./main.sh 50
+#     ~$ ./main.sh 100
+#
+# Author: Jeanderson Candido
+#
 RUNS=$1
-[[ -z $RUNS ]] && echo "Usage: ./main.sh <RUNS>" && exit 1
+[[ -z "$RUNS" ]] && echo "Usage: ./main.sh <RUNS>" && exit 1
+
+../scripts/download_subjects.sh
 
 ./experiment.sh $RUNS "subjects/retrofit" "retrofit" > retrofit-summary.txt
 
