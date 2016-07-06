@@ -1,5 +1,5 @@
 #!/bin/bash
-./download_subjects.sh
+../download_subjects.sh
 
 RUNS=100
 # Commented subjects were already executed and results should be available

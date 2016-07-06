@@ -2,7 +2,6 @@
 BASE_DIR="`pwd`"
 SAMPLES_HOME="$BASE_DIR/samples"
 PARALLEL_SETTINGS_HOME="$BASE_DIR/parallel-settings"
-RERUNS=50
 
 function compile_only {
     local subject_path=$1
@@ -20,14 +19,6 @@ function test_only {
     cd "$curdir"
 }
 
-function build_all {
-    local subject_path=$1
-    local curdir="`pwd`"
-    cd "$subject_path"
-    mvn -Dmaven.javadoc.skip=true clean install
-    cd "$curdir"
-}
-
 function parallel_version {
     local subject_path=$1
     local test_path=$2
@@ -41,17 +32,14 @@ function parallel_version {
 }
 
 # Settings
-PROJECT_PATH=$1
-TEST_PATH=$2
+RERUNS=$1
+PROJECT_PATH=$2
+TEST_PATH=$3
+
 [[ -z "$PROJECT_PATH" ]] && echo "Missing project path" && exit 1
 [[ -z "$TEST_PATH" ]] && TEST_PATH="."
 [[ ! -d "$SAMPLES_HOME" ]] && mkdir -p "$SAMPLES_HOME"
 
-# Should not proceed if this is not a Maven project.
-ls "$PROJECT_PATH" | grep "pom.xml" &>/dev/null
-if [ `echo $?` -eq 1 ]; then
-    (>&2 echo "Aborted: \"pom.xml\" not found") && exit 1
-fi
 NAME="`basename "$PROJECT_PATH"`"
 LOGNAME_PREFFIX="`date +"$NAME-%m%d%H%M%S"`"
 
