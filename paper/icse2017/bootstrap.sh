@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #
 # This script installs required tools to generate the final
 # PDF file.
