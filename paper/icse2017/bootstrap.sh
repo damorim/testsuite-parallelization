@@ -1,12 +1,14 @@
 #!/bin/bash
 #
-# This script installs required tools to generate the final
-# PDF file.
+# This script installs required tools and packages to build the final PDF file.
 #
 # Author: Jeanderson Candido
 
 # Building tool
-sudo apt-get install latexmk
+sudo apt-get install -y latexmk
 
-# Installs missing fonts
-sudo apt-get install texlive-fonts-recommended
+# Missing fonts
+sudo apt-get install -y texlive-fonts-recommended
+
+# Missing packages
+sudo apt-get install -y texlive-latex-extra mathpartir
