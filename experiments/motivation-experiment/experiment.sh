@@ -32,20 +32,21 @@ fi
 
 NAME="`basename "$PROJECT_PATH"`"
 LOGNAME_PREFFIX="`date +"$NAME-%m%d%H%M%S"`"
+SAMPLE_HOME="samples/$NAME"
 
 echo "Elapsed time comparison"
-for version in `ls samples/$NAME`; do
-    echo "Building project \"$NAME\" version \"$version\""
-    compile_only "samples/$NAME/$version" &>/dev/null
-    test_only "samples/$NAME/$version/$TEST_PATH" | grep "\[INFO\] Total time:" | sed "s/\[INFO\]/$version/g"
+for version in `ls $SAMPLE_HOME`; do
+    echo " - Building project \"$NAME\" version \"$version\""
+    compile_only "$SAMPLE_HOME/$version" &>/dev/null
+    test_only "$SAMPLE_HOME/$version/$TEST_PATH" | grep "\[INFO\] Total time:" | sed "s/\[INFO\]/ \- \[$version\]/g"
 done
 
 echo "Detecting failing tests in parallel (Reruns: $RERUNS)..."
-./find_parallel_failures.py $RERUNS "$SAMPLES_HOME/$NAME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel" > "$LOGNAME_PREFFIX-fails-parallel.txt"
+./find_parallel_failures.py $RERUNS "$SAMPLE_HOME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel" > "$LOGNAME_PREFFIX-fails-parallel.txt"
 cat "$LOGNAME_PREFFIX-fails-parallel.txt" | tail -n 1
 echo "Log saved on \"$LOGNAME_PREFFIX-fails-parallel.txt\""
 
 echo "Checking if detected failing tests would fail individually (Reruns: $RERUNS)..."
-./check_failures_individually.py $RERUNS "$SAMPLES_HOME/$NAME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel.txt" "$LOGNAME_PREFFIX-failed-individually" > "$LOGNAME_PREFFIX-failed-individually.txt"
+./check_failures_individually.py $RERUNS "$SAMPLE_HOME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel.txt" "$LOGNAME_PREFFIX-failed-individually" > "$LOGNAME_PREFFIX-failed-individually.txt"
 cat "$LOGNAME_PREFFIX-failed-individually.txt" | tail -n 1
 echo "Log saved on \"$LOGNAME_PREFFIX-failed-individually.txt\""
