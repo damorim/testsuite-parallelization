@@ -47,7 +47,6 @@ def compute_statistcs(results):
             statistics['skips'] += 1
         elif 'F' in r:
             statistics['fails'] += 1
-            print t, r
 
     statistics['runs'] = statistics['total'] - statistics['skips']
     statistics['passes'] = statistics['runs'] - statistics['fails']
