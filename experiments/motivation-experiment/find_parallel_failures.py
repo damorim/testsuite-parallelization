@@ -7,10 +7,9 @@ from sys import argv
 
 from utils import *
 
-if __name__ == "__main__":
-    freq = 30 #FIXME
-    test_path = argv[1]
-    log_mvn = argv[2]
+freq = 30 #FIXME
+
+def find_parallel_failures(test_path, log_mvn):
     results = {}
 
     log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-mvnlog.txt")
@@ -37,3 +36,10 @@ if __name__ == "__main__":
     log_mvn.close()
     statistics = compute_statistcs(results)
     print "[Statistics] All: {total}, Skipped: {skips}, Runs: {runs}, Failed (any): {fails}, ".format(**statistics)
+
+if __name__ == "__main__":
+    test_path = argv[1]
+    log_mvn = argv[2]
+
+    find_parallel_failures(test_path, log_mvn)
+
