@@ -10,9 +10,9 @@ from utils import *
 
 if __name__ == "__main__":
     freq = 30 #FIXME
-    test_path = os.path.abspath(argv[2])
-    logfile = open(argv[3])
-    output_log = argv[4]
+    test_path = os.path.abspath(argv[1])
+    logfile = open(argv[2])
+    output_log = argv[3]
     output_log = os.path.join(os.path.abspath(os.curdir), output_log + "-mvnlog.txt")
     output_log = open(output_log, "w")
 
@@ -23,6 +23,7 @@ if __name__ == "__main__":
     for line in logfile.readlines():
         if not line.startswith("[Statistics]"):
             test_case = line.split(" ")[0]
+
             output[test_case] = []
             rmtree(reports_dir)
             for f in range(freq):
