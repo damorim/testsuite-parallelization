@@ -8,9 +8,9 @@ from sys import argv
 from utils import *
 
 if __name__ == "__main__":
-    freq = int(argv[1])
-    test_path = argv[2]
-    log_mvn = argv[3]
+    freq = 30 #FIXME
+    test_path = argv[1]
+    log_mvn = argv[2]
     results = {}
 
     log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-mvnlog.txt")

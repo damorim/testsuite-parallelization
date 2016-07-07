@@ -9,7 +9,7 @@ from sys import argv
 from utils import *
 
 if __name__ == "__main__":
-    freq = int(argv[1])
+    freq = 30 #FIXME
     test_path = os.path.abspath(argv[2])
     logfile = open(argv[3])
     output_log = argv[4]
