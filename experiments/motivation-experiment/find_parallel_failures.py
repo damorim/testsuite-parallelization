@@ -7,7 +7,7 @@ from sys import argv
 
 from utils import *
 
-freq = 30 #FIXME
+freq = 10 #FIXME
 
 def find_parallel_failures(test_path, reports_dir, log_mvn):
     results = {}
@@ -35,8 +35,20 @@ def find_parallel_failures(test_path, reports_dir, log_mvn):
     log_mvn.close()
     os.chdir(curdir)
 
+    failing_tests = []
+    for test,r in results.items():
+        if 'F' in r:
+            failing_tests.append(test)
+            print test,r
+
     statistics = compute_statistcs(results)
     print "[Statistics] All: {total}, Skipped: {skips}, Runs: {runs}, Failed (any): {fails}, ".format(**statistics)
+
+    return failing_tests
+
+def check_failures_individually(test_path, reports_dir, output_log):
+    # TODO: Should merge this with the other script
+    pass
 
 if __name__ == "__main__":
     test_path = argv[1]
@@ -45,5 +57,6 @@ if __name__ == "__main__":
     test_path = os.path.abspath(test_path)
     reports_dir = os.path.join(test_path, "target", "surefire-reports")
 
-    find_parallel_failures(test_path, reports_dir, log_mvn)
+    failures = find_parallel_failures(test_path, reports_dir, log_mvn)
+    check_failures_individually(test_path, reports_dir, failures)
 
