@@ -1,17 +1,16 @@
 import os
 
-def result_label(atype):
-    ''' Returns a label for the given xml report node representing a testcase.
+PASS_LABEL = 'P'
+IGNORE_LABEL = 'S'
+FAIL_LABEL = 'F'
 
-        - 'S' if the current node has a 'skipped' child
-        - 'P' if the current not does not have a 'failure' nor 'error' children
-        - 'F' otherwise
-    '''
+def result_label(atype):
+    '''Returns a label for the given xml report node representing a testcase.'''
     if not (atype.find('skipped') == None):
-        return 'S'
+        return IGNORE_LABEL
     elif (atype.find('failure') == None) and (atype.find('error') == None):
-        return 'P'
-    return 'F'
+        return PASS_LABEL
+    return FAIL_LABEL
 
 
 def report_from(path_dir):
