@@ -9,15 +9,14 @@ from utils import *
 
 freq = 30 #FIXME
 
-def find_parallel_failures(test_path, log_mvn):
+def find_parallel_failures(test_path, reports_dir, log_mvn):
     results = {}
 
     log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-mvnlog.txt")
     log_mvn = open(log_mvn, "w")
 
-    test_path = os.path.abspath(test_path)
+    curdir = os.path.abspath(os.curdir)
     os.chdir(test_path)
-    reports_dir = os.path.join(test_path, "target", "surefire-reports")
 
     for i in range(freq):
         call(['mvn', 'test'], stderr=log_mvn, stdout=log_mvn)
@@ -34,6 +33,8 @@ def find_parallel_failures(test_path, log_mvn):
                     results[key] = [label]
 
     log_mvn.close()
+    os.chdir(curdir)
+
     statistics = compute_statistcs(results)
     print "[Statistics] All: {total}, Skipped: {skips}, Runs: {runs}, Failed (any): {fails}, ".format(**statistics)
 
@@ -41,5 +42,8 @@ if __name__ == "__main__":
     test_path = argv[1]
     log_mvn = argv[2]
 
-    find_parallel_failures(test_path, log_mvn)
+    test_path = os.path.abspath(test_path)
+    reports_dir = os.path.join(test_path, "target", "surefire-reports")
+
+    find_parallel_failures(test_path, reports_dir, log_mvn)
 
