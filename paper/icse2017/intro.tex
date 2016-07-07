@@ -2,45 +2,70 @@
 
 \sloppy Testing is important...Test execution is
 expensive...\Fix{examples}...Several approaches have been proposed to
-mitigate this problem...In the literature, research has focused mostly
-in test selection\Fix{cite}, test reduction \Fix{cite}, and test
-prioritization \Fix{cite}.  This work focuses on an orthogonal
-dimension to optimize regression testing~--~parallelization, which
-intuitively enables regression testing to scale with computing
-capacity.
+mitigate this problem... Research has focused mostly on test
+selection~\Fix{cite}, test reduction~\Fix{cite}, and test
+prioritization~\Fix{cite}.
 
-Given the proliferation of multicore machines it is not surprising
-that popular testing frameworks provide today support for parallel
-test execution (e.g., JUnit since version 4.?  \Fix{cite}, TestNG
-since version \Fix{cite}, and \Fix{??NUnit??} since version \Fix{??}
-\Fix{cite}).  Unfortunately, unrestricted parallel execution of tests
-can produce non-deterministic results as developers typically do not
-provision protection from concurrent accesses originated from
-arbitrary program points (\ie{}, tests)\footnote{Testing frameworks
-  document this limitation on the parallel execution
-  feature~\Fix{cite}}.  We refer to this problem as Parallel Execution
-Flakiness (\pef{}).  To illustrate the \pef{} problem and discuss
-potential solutions, we conducted a feasibility study involving
-\Fix{M} subject programs containing test suites with at least
-\Fix{X,000} tests and observed the following:
+This work focuses on an orthogonal dimension to optimize regression
+testing~--~parallelization, which intuitively enables regression
+testing to scale with computing capacity.  Given the proliferation of
+multicore machines it is not surprising that popular testing
+frameworks and build systems provide today support for parallel test
+execution~\Fix{cite}.  Unfortunately, these solutions can't be used
+out-of-the-box: unrestricted parallel execution can produce
+non-deterministic results as developers typically do not provision
+protection to concurrent accesses originated from arbitrary program
+points (\ie{}, tests).  We refer to this problem as Parallel Execution
+Flakiness (\pef{}).
 
-\Fix{move this!}Furthermore, we observed that parallel test execution can
-significantly speedup regression testing.  The speedup obtained with
-parallel test execution of the test suites we analyzed ranges from
-\Fix{A} to \Fix{B}\%.  
+To illustrate the importance of parallel test execution and the
+problem of \pef{} let's consider the case of the ``core'' module from
+the Apache Camel project~\cite{apache-camel-web}.  This module
+contains 5,679 test cases, declared in \Fix{NN} test classes.  We ran
+those tests in a machine with 16GB of memory and 8 virtual CPUs (4
+cores with 2 native threads each).  Sequential test execution takes
+24m50s to run this test set.  Execution of the same test set takes
+2m28s when we consider a parallel execution configuration that spawns
+a JVM on each CPU and forks a thread per test class allocated to a
+given JVM.  Note that this is an order of magnitude (10.07x)
+speedup\Fix{Should we expect something close to 7x as opposed to
+  10x?}.  Unfortunately, due to \pef{}, $\sim$2\% (114 of the 5,679)
+of the tests fail when executed in parallel.  It is important to
+notice that the ratio of failures varies with the project as it
+depends on factors such as length of test cases and amount of shared
+state across tests, for example.
 
-%% Furthermore,
-%% provisioning for such flexibility would create a significant burden on
-%% developers and certainly produce hard-to-maintain code. 
+This paper reports an empirical study to evaluate the impact of
+parallelization options on test execution speedup and \pef{}. Based on
+these results, we proposed different low-cost strategies to avoid
+\pef{}.
 
-\begin{itemize}
-\item \textbf{\pef{} is prevalent.} For a given subject program, we ran
-  the test suite in parallel multiple times.  \pef{} was observed in N of
-  the M cases we considered.
-\item \textbf{\pef{} affects a small but significant amount of tests.}
-  Of the N cases where we observed \pef{}, the outcome of X\% of the
-  tests, on average, was non-deterministic.
-\end{itemize}
+%% To illustrate the \pef{} problem and discuss potential solutions, we
+%% conducted a feasibility study involving \Fix{M} subject programs
+%% containing test suites with at least \Fix{X,000} tests and observed
+%% the following:
+
+%% \Fix{move this!}Furthermore, we observed that parallel test execution can
+%% significantly speedup regression testing.  The speedup obtained with
+%% parallel test execution of the test suites we analyzed ranges from
+%% \Fix{A} to \Fix{B}\%.  
+
+%% %% Furthermore,
+%% %% provisioning for such flexibility would create a significant burden on
+%% %% developers and certainly produce hard-to-maintain code. 
+
+%% \begin{itemize}
+%% \item \textbf{\pef{} is prevalent.} For a given subject program, we ran
+%%   the test suite in parallel multiple times.  \pef{} was observed in N of
+%%   the M cases we considered.
+%% \item \textbf{\pef{} affects a small but significant amount of tests.}
+%%   Of the N cases where we observed \pef{}, the outcome of X\% of the
+%%   tests, on average, was non-deterministic.
+%% \end{itemize}
+
+\Fix{-- I am here...}
+
+\Fix{Move the following pars. somewhere else...}
 
 These observations indicate that \pef{} is an important obstacle to
 enable parallel test execution: it is important to enable reliable
