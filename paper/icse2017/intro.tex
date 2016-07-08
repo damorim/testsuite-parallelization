@@ -1,35 +1,35 @@
 \section{Introduction}
 
 Optimizing regression testing is important.  As software evolves the
-size of test sets (both in number and length of tests) increases,
-potentially leading to increasing disruption of the development
-process caused by late reports of test failures.  This problem
-manifests more dramatically at large IT companies (e.g.,\Comment{
-  Groupon~\Fix{cite},} Google~\Fix{cite} and Microsoft~\Fix{cite})
-where the size of test sets often exceeds the size of the code base.
-Several approaches have been proposed to optimize test execution.
-Research has focused mostly on test selection~\Fix{cite}, test
-reduction~\Fix{cite}, and test prioritization~\Fix{cite}.  Although
-these approaches can also be applied in industrial settings, the focus
-in industry has been mostly in parallelizing test execution with
-server farms, where worker machines from the farm are assigned to
-execute distinct subsets of the original test suite.
+size of test sets increases, potentially leading to disruption of the
+development process caused by late reports of test failures.  This
+problem manifests more dramatically at large IT companies
+(e.g.,\Comment{ Groupon~\Fix{cite},} Google~\Fix{cite} and
+Microsoft~\Fix{cite}) where the size of test sets often exceeds the
+size of the code base.  Several approaches have been proposed to
+optimize regression testing.  Research has focused mostly on test
+selection~\Fix{cite}, test reduction~\Fix{cite}, and test
+prioritization~\Fix{cite}.  Although these approaches can also be
+applied in industrial settings, the focus in industry has been mostly
+in parallelizing execution of tests using server farms, where worker
+machines from the farm are assigned to execute distinct subsets of the
+original test suite.
 
 Given the proliferation of multicore machines it is not surprising
 that popular testing frameworks and build systems provide today
-support for parallel test execution~\Fix{cite}.  These solutions
-attempt to maximize CPU usage in individual machines with the goal of
-running tests more efficiently.  In the case of the Java language, it
-is possible to explore parallelism across JVMs and within the JVM.  We
-conjecture that such lower-level solutions that use commodity hardware
-to optimize test execution are also important (compared to
-higher-level parallelism from server farms).  For the scenario of
-large IT organizations, lower-level parallelization schemes leverage
-the computing power on each individual node of a server farm in
-addition to the aggregate processing power of the farm.  Lower-level
-parallelization fits particularly well smaller organizations
-(/projects) with relatively high testing costs but lower budgets.
-
+support for parallel test execution with the goal of running tests
+more efficiently~\cite{junit-org,testng,nunit,maven-surefire-plugin}.
+These solutions use commodity hardware to maximize CPU usage in
+individual machines.  In the case of the Java language, it is possible
+to explore parallelism across JVMs and within the JVM.  The
+lower-level parallelism enabled through build systems is an important
+complement to the higher-level parallelism enabled through server
+farms.  For the scenario of large IT organizations, lower-level
+parallelization schemes leverage the computing power on each
+individual node of a server farm in addition to the aggregate
+processing power of the farm.  Lower-level parallelism fits
+particularly well smaller organizations (/projects) with relatively
+high testing costs but lower budgets.
 
 Unfortunately, these solutions can't be used out-of-the-box:
 unrestricted parallel execution of tests can produce non-deterministic
