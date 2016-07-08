@@ -59,7 +59,7 @@ def find_parallel_failures(test_path, reports_dir, log_prefix):
         print " -",test,results[test]
 
     statistics = compute_statistcs(results)
-    print "[Runs]:", runs, "Threshold:" reruns
+    print "[Runs]:", runs, "Threshold:", reruns
     print "[Statistics] All: {total}, Skipped: {skips}, Runs: {runs}, " \
           "Failed (any): {fails}, ".format(**statistics)
 
