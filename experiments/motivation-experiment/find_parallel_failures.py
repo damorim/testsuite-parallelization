@@ -10,12 +10,12 @@ from utils import *
 
 THRESHOLD = 5
 
-def find_parallel_failures(test_path, reports_dir, log_mvn):
+def find_parallel_failures(test_path, reports_dir, log_prefix):
     results = {}
     failing_tests = []
 
-    log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-parallel-log.txt")
-    log_mvn = open(log_mvn, "a")
+    output_log = os.path.join(os.path.abspath(os.curdir), log_prefix + "-parallel-log.txt")
+    output_log = open(output_log, "a")
 
     curdir = os.path.abspath(os.curdir)
     os.chdir(test_path)
@@ -24,7 +24,7 @@ def find_parallel_failures(test_path, reports_dir, log_mvn):
     runs = 0
     has_exausted = False
     while (reruns < THRESHOLD):
-        call(['mvn', 'test'], stderr=log_mvn, stdout=log_mvn)
+        call(['mvn', 'test'], stderr=output_log, stdout=output_log)
         reports = reports_from(reports_dir)
 
         # Assume this execution has exausted (ie no new failing tests discovered)
@@ -51,7 +51,7 @@ def find_parallel_failures(test_path, reports_dir, log_mvn):
         if has_exausted:
             reruns += 1
 
-    log_mvn.close()
+    output_log.close()
     os.chdir(curdir)
 
     print "Parallel Flaky Tests"
@@ -66,10 +66,10 @@ def find_parallel_failures(test_path, reports_dir, log_mvn):
     return failing_tests
 
 
-def check_failures_individually(test_path, reports_dir, output_log, failures):
+def check_failures_individually(test_path, reports_dir, log_prefix, failures):
     output = {}
 
-    output_log = os.path.join(os.path.abspath(os.curdir), output_log + "individual-log.txt")
+    output_log = os.path.join(os.path.abspath(os.curdir), log_prefix + "individual-log.txt")
     output_log = open(output_log, "a")
 
     curdir = os.path.abspath(os.curdir)
@@ -113,11 +113,11 @@ def check_failures_individually(test_path, reports_dir, output_log, failures):
 
 if __name__ == "__main__":
     test_path = argv[1]
-    log_mvn = argv[2]
+    log_prefix = argv[2]
 
     test_path = os.path.abspath(test_path)
     reports_dir = os.path.join(test_path, "target", "surefire-reports")
 
-    failures = find_parallel_failures(test_path, reports_dir, log_mvn)
-    check_failures_individually(test_path, reports_dir, log_mvn, failures)
+    failures = find_parallel_failures(test_path, reports_dir, log_prefix)
+    check_failures_individually(test_path, reports_dir, log_prefix, failures)
 
