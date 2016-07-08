@@ -95,14 +95,14 @@ def check_failures_individually(test_path, reports_dir, log_prefix, failures):
             output[key].append(label)
 
             # prune if this execution has failed
-            if label == 'f': break
+            if label == FAIL_LABEL: break
 
     output_log.close()
     os.chdir(curdir)
 
     print "Sequential Flaky Tests"
     for test,r in output.items():
-        if 'F' in r:
+        if FAIL_LABEL in r:
             print " -",test,r
 
     statistics = compute_statistcs(output)
