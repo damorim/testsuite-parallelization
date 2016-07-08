@@ -14,7 +14,7 @@ def find_parallel_failures(test_path, reports_dir, log_mvn):
     results = {}
     failing_tests = []
 
-    log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-mvnlog.txt")
+    log_mvn = os.path.join(os.path.abspath(os.curdir), log_mvn + "-parallel-log.txt")
     log_mvn = open(log_mvn, "a")
 
     curdir = os.path.abspath(os.curdir)
@@ -69,7 +69,7 @@ def find_parallel_failures(test_path, reports_dir, log_mvn):
 def check_failures_individually(test_path, reports_dir, output_log, failures):
     output = {}
 
-    output_log = os.path.join(os.path.abspath(os.curdir), output_log + "-mvnlog.txt")
+    output_log = os.path.join(os.path.abspath(os.curdir), output_log + "individual-log.txt")
     output_log = open(output_log, "a")
 
     curdir = os.path.abspath(os.curdir)
