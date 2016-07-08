@@ -22,13 +22,13 @@ def find_parallel_failures(test_path, reports_dir, log_prefix):
 
     reruns = 0
     runs = 0
-    has_exausted = False
+    has_exhausted = False
     while (reruns < THRESHOLD):
         call(['mvn', 'test'], stderr=output_log, stdout=output_log)
         reports = reports_from(reports_dir)
 
-        # Assume this execution has exausted (ie no new failing tests discovered)
-        has_exausted =  True
+        # Assume this execution has exhausted (ie no new failing tests discovered)
+        has_exhausted =  True
         for xmlFile in reports:
             xmlFileName = os.path.join(reports_dir, xmlFile)
             e = xml.etree.ElementTree.parse(xmlFileName).getroot()
@@ -39,7 +39,7 @@ def find_parallel_failures(test_path, reports_dir, log_prefix):
                 # Check if this is a failing test
                 if label == FAIL_LABEL and not key in failing_tests:
                     failing_tests.append(key)
-                    has_exausted = False
+                    has_exhausted = False
                     reruns = 0
 
                 if key in results:
@@ -48,7 +48,7 @@ def find_parallel_failures(test_path, reports_dir, log_prefix):
                     results[key] = [label]
 
         runs += 1
-        if has_exausted:
+        if has_exhausted:
             reruns += 1
 
     output_log.close()
