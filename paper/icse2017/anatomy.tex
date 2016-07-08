@@ -1,3 +1,15 @@
 \section{Anatomy of \pef{} failure}
 
 \Fix{...}
+
+It is important to note that previous work investigated test flakiness
+manifested in sequential executions [cite cite].  For example, a test
+case can fail because of a broken test dependency caused when ... or
+because of an implicit ordering assumption was broken in a
+multi-threaded test (under a sequential execution of the test suite).
+Treating this source of flakiness is important but complementary to
+this work: parallel execution flakiness can arise even without
+sequential execution flakiness.  Discovering and fixing this source of
+flakiness is challenging and essential to enable test parallelization.
+
+

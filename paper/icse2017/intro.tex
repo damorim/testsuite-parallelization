@@ -1,102 +1,65 @@
 \section{Introduction}
 
-\sloppy Testing is important...Test execution is
-expensive...\Fix{examples}...Several approaches have been proposed to
-mitigate this problem... Research has focused mostly on test
-selection~\Fix{cite}, test reduction~\Fix{cite}, and test
-prioritization~\Fix{cite}.
+Optimizing regression testing is important.  As software evolves the
+size of test sets (both in number and length of tests) increases,
+potentially leading to increasing disruption of the development
+process caused by late reports of test failures.  This problem
+manifests more dramatically at large IT companies (e.g.,\Comment{
+  Groupon~\Fix{cite},} Google~\Fix{cite} and Microsoft~\Fix{cite})
+where the size of test sets often exceeds the size of the code base.
+Several approaches have been proposed to optimize test execution.
+Research has focused mostly on test selection~\Fix{cite}, test
+reduction~\Fix{cite}, and test prioritization~\Fix{cite}.  Although
+these approaches can also be applied in industrial settings, the focus
+in industry has been mostly in parallelizing test execution with
+server farms, where worker machines from the farm are assigned to
+execute distinct subsets of the original test suite.
 
-This work focuses on an orthogonal dimension to optimize regression
-testing~--~parallelization, which intuitively enables regression
-testing to scale with computing capacity.  Given the proliferation of
-multicore machines it is not surprising that popular testing
-frameworks and build systems provide today support for parallel test
-execution~\Fix{cite}.  Unfortunately, these solutions can't be used
-out-of-the-box: unrestricted parallel execution can produce
-non-deterministic results as developers typically do not provision
-protection to concurrent accesses originated from arbitrary program
-points (\ie{}, tests).  We refer to this problem as Parallel Execution
-Flakiness (\pef{}).
+Given the proliferation of multicore machines it is not surprising
+that popular testing frameworks and build systems provide today
+support for parallel test execution~\Fix{cite}.  These solutions
+attempt to maximize CPU usage in individual machines with the goal of
+running tests more efficiently.  In the case of the Java language, it
+is possible to explore parallelism across JVMs and within the JVM.  We
+conjecture that such lower-level solutions that use commodity hardware
+to optimize test execution are also important (compared to
+higher-level parallelism from server farms).  For the scenario of
+large IT organizations, lower-level parallelization schemes leverage
+the computing power on each individual node of a server farm in
+addition to the aggregate processing power of the farm.  Lower-level
+parallelization fits particularly well smaller organizations
+(/projects) with relatively high testing costs but lower budgets.
 
-To illustrate the importance of parallel test execution and the
-problem of \pef{} let's consider the case of the ``core'' module from
-the Apache Camel project~\cite{apache-camel-web}.  This module
+
+Unfortunately, these solutions can't be used out-of-the-box:
+unrestricted parallel execution of tests can produce non-deterministic
+results as developers typically do not provision protection to
+concurrent accesses originated from arbitrary program points (\ie{},
+tests).  We refer to this problem as Parallel Execution Flakiness
+(\pef{}).  To illustrate the importance of parallel test execution and
+the problem of \pef{} let's consider the case of the ``core'' module
+from the Apache Camel project~\cite{apache-camel-web}.  This module
 contains 5,679 test cases, declared in \Fix{NN} test classes.  We ran
 those tests in a machine with 16GB of memory and 8 virtual CPUs (4
 cores with 2 native threads each).  Sequential test execution takes
 24m50s to run this test set.  Execution of the same test set takes
-2m28s when we consider a parallel execution configuration that spawns
-a JVM on each CPU and forks a thread per test class allocated to a
-given JVM.  Note that this is an order of magnitude (10.07x)
-speedup\Fix{Should we expect something close to 7x as opposed to
-  10x?}.  Unfortunately, due to \pef{}, $\sim$2\% (114 of the 5,679)
-of the tests fail when executed in parallel.  It is important to
-notice that the ratio of failures varies with the project as it
-depends on factors such as length of test cases and amount of shared
-state across tests, for example.
+2m28s when we configured parallel execution to spawn a JVM on each CPU
+and fork a thread per test class, uniquely allocated to one JVM.  Note
+that this is an order of magnitude (10.07x) speedup\Fix{Need to
+  understand why this is 10x as opposed to something closer to 7x}.
+Unfortunately, due to \pef{}, $\sim$2\% (114 of 5,679) of the tests
+fail when executed in parallel.  It is important to notice that the
+ratio of failures varies with the project as it depends on factors
+such as length of test cases and amount of shared state across tests,
+for example.  \pef{} is an important obstacle to enable parallel test
+execution: it is important to execute tests efficiently without
+sacrificing reliability.  Conceptually, higher parallelization can
+result in higher chances of concurrency-related problems.  
 
 This paper reports an empirical study to evaluate the impact of
 parallelization options on test execution speedup and \pef{}. Based on
-these results, we proposed different low-cost strategies to avoid
-\pef{}.
-
-%% To illustrate the \pef{} problem and discuss potential solutions, we
-%% conducted a feasibility study involving \Fix{M} subject programs
-%% containing test suites with at least \Fix{X,000} tests and observed
-%% the following:
-
-%% \Fix{move this!}Furthermore, we observed that parallel test execution can
-%% significantly speedup regression testing.  The speedup obtained with
-%% parallel test execution of the test suites we analyzed ranges from
-%% \Fix{A} to \Fix{B}\%.  
-
-%% %% Furthermore,
-%% %% provisioning for such flexibility would create a significant burden on
-%% %% developers and certainly produce hard-to-maintain code. 
-
-%% \begin{itemize}
-%% \item \textbf{\pef{} is prevalent.} For a given subject program, we ran
-%%   the test suite in parallel multiple times.  \pef{} was observed in N of
-%%   the M cases we considered.
-%% \item \textbf{\pef{} affects a small but significant amount of tests.}
-%%   Of the N cases where we observed \pef{}, the outcome of X\% of the
-%%   tests, on average, was non-deterministic.
-%% \end{itemize}
-
-\Fix{-- I am here...}
-
-\Fix{Move the following pars. somewhere else...}
-
-These observations indicate that \pef{} is an important obstacle to
-enable parallel test execution: it is important to enable reliable
-execution of all tests in addition to executing tests efficiently.  It
-is also important to shed some light on the practical value of
-speeding up test execution.  In large IT companies (e.g.,
-Groupon~\Fix{cite}, Google~\Fix{cite}, and Microsoft~\Fix{cite})
-testing costs can be much higher compared to the costs we observed in
-open-source projects, where test execution time ranged from \Fix{XXm}
-to \Fix{YYm}.  Assigning worker machines from a server farm to execute
-distinct subsets of test suites is not
-uncommon\Fix{data!!}\footnote{Ideally, each part of the test suite
-  would have cost proportional to the capacity of the assigned
-  machine.}.  We conjecture that lighter weight solutions that use
-commodity hardware to optimize test execution are also important.  For
-the scenario above, these solutions could leverage the computing power
-on each individual node of a server farm in addition to the aggregate
-processing power of the farm.  Lighter weight solutions fits
-particularly well relatively smaller lower-budget projects with
-relatively high testing costs such as those that we observed in this
-preliminary study.
-
-It is important to note that previous work investigated test flakiness
-manifested in sequential executions [cite cite].  For example, a test
-case can fail because of a broken test dependency caused when ... or
-because of an implicit ordering assumption was broken in a
-multi-threaded test (under a sequential execution of the test suite).
-Treating this source of flakiness is important but complementary to
-this work: parallel execution flakiness can arise even without
-sequential execution flakiness.  Discovering and fixing this source of
-flakiness is challenging and essential to enable test parallelization.
+these results, we proposed different low-cost synchronization
+strategies to avoid \pef{}.
 
 %%  LocalWords:  parallelization multicore JUnit TestNG NUnit XXm YYm
 %%  LocalWords:  Groupon parallelizing multi
