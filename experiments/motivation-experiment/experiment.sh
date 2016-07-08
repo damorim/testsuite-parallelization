@@ -17,15 +17,14 @@ function test_only {
 }
 
 # Input parameters
-RERUNS=$1
-PROJECT_PATH=$2
-TEST_PATH=$3
+PROJECT_PATH=$1
+TEST_PATH=$2
 
 # Assuming the relative path to test directory as "PROJECT_PATH"
 [[ -z "$TEST_PATH" ]] && TEST_PATH="."
 
-if [[ -z "$RERUNS" || -z "$PROJECT_PATH" ]]; then
-    echo "Usage: ./experiment.sh <RERUNS> <PROJECT_PATH> [<TEST_PATH>]"
+if [[ -z "$PROJECT_PATH" ]]; then
+    echo "Usage: ./experiment.sh <PROJECT_PATH> [<TEST_PATH>]"
     exit 1
 fi
 ../scripts/generate_versions.sh "$PROJECT_PATH" "$TEST_PATH"
@@ -41,12 +40,5 @@ for version in `ls $SAMPLE_HOME`; do
     test_only "$SAMPLE_HOME/$version/$TEST_PATH" | grep "\[INFO\] Total time:" | sed "s/\[INFO\]/ \- \[$version\]/g"
 done
 
-echo "Detecting failing tests in parallel (Reruns: $RERUNS)..."
-./find_parallel_failures.py $RERUNS "$SAMPLE_HOME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel" > "$LOGNAME_PREFFIX-fails-parallel.txt"
-cat "$LOGNAME_PREFFIX-fails-parallel.txt" | tail -n 1
-echo "Log saved on \"$LOGNAME_PREFFIX-fails-parallel.txt\""
-
-echo "Checking if detected failing tests would fail individually (Reruns: $RERUNS)..."
-./check_failures_individually.py $RERUNS "$SAMPLE_HOME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel.txt" "$LOGNAME_PREFFIX-failed-individually" > "$LOGNAME_PREFFIX-failed-individually.txt"
-cat "$LOGNAME_PREFFIX-failed-individually.txt" | tail -n 1
-echo "Log saved on \"$LOGNAME_PREFFIX-failed-individually.txt\""
+./find_parallel_failures.py "$SAMPLE_HOME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel" > "$LOGNAME_PREFFIX-failures.txt"
+echo "Log saved on \"$LOGNAME_PREFFIX-failures.txt\""
