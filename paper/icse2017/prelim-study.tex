@@ -34,15 +34,4 @@
   \caption{\label{table:failures}...}
 \end{table}
 
-Iterative Test Execution (ITE) provides a means to reveal flakiness in
-test runs caused by non-determinism.  In ITE the developer determines
-a bound N for the number of re-executions.  Only tests that fail in
-one given iteration (consequently, failed in all previous iterations)
-are scheduled for re-execution in the next iteration.  At the end of
-the process, a test is considered passing if it passed in the first
-iteration, a test is considered failing if it fails in all iterations,
-and it is considered flaky if it fails in all iterations but the last
-it executed.  The process terminates when all tests eventually pass or
-when the the bound N is reached.\Fix{illustrate with small
-  figure...}~To note that ITE is supported by the popular maven
-surefire plugin [cite].
+
