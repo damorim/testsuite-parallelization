@@ -1,0 +1,76 @@
+\section{Preliminary Study}
+
+\newcommand{\forkSeq}{F-S}
+\newcommand{\forkDia}{F-D}
+\newcommand{\singleJVMSeq}{S-S}
+\newcommand{\singleJVMDia}{S-D}
+\newcommand{\singleJVMClass}{S-C}
+\newcommand{\singleJVMMethod}{S-B}
+
+\begin{table*}[t]
+  \centering
+  \begin{tabular}{|c|r|r|r|r|r|r|r|}
+    \hline
+    \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}} &  \multicolumn{6}{c|}{\emph{Time}}\\
+    \cline{3-8}
+    & & \multicolumn{2}{c|}{\emph{Forked JVM}} & \multicolumn{4}{c|}{\emph{Single JVM}}   \\
+%    & & \multicolumn{1}{c|}{\forkSeq{}} &
+%    \multicolumn{1}{c|}{\forkDia{}} &
+%    \multicolumn{1}{c|}{\singleJVMSeq{}} &
+%    \multicolumn{1}{c|}{\singleJVMDia{}} &
+%    \multicolumn{1}{c|}{\singleJVMClass{}} &
+    %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
+    \cline{3-8}
+    & & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{C} & \multicolumn{1}{c|}{B}\\     \hline
+    jgit & 3364 & - & 0m53s & 4m12s  & - & -  & - \\
+    \hline
+    jetty (client) & 5679 & - & 0m19s  & 4m15s  & - & - & - \\
+    \hline
+    camel (core) & 527 & - & 2m28s & 24m50s & - & - & -\\
+    \hline
+  \end{tabular}
+  \caption{\label{table:cost}Test execution time.}
+\end{table*}
+
+\begin{table*}[t]
+  \centering
+  \begin{tabular}{|c|r|r|r|r|r|r|r|}
+    \hline
+    \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}} &  \multicolumn{6}{c|}{\emph{Time}}\\
+    \cline{3-8}
+    & & \multicolumn{2}{c|}{\emph{Forked JVM}} & \multicolumn{4}{c|}{\emph{Single JVM}}   \\
+%    & & \multicolumn{1}{c|}{\forkSeq{}} &
+%    \multicolumn{1}{c|}{\forkDia{}} &
+%    \multicolumn{1}{c|}{\singleJVMSeq{}} &
+%    \multicolumn{1}{c|}{\singleJVMDia{}} &
+%    \multicolumn{1}{c|}{\singleJVMClass{}} &
+    %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
+    \cline{3-8}
+    & & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{C} & \multicolumn{1}{c|}{B}\\     \hline
+    jgit & 3364 & - & 239 & -  & - & -  & - \\
+    \hline
+    jetty (client) & 5679 & - & 232  & -  & - & - & - \\
+    \hline
+    camel (core) & 527 & - & 142 & - & - & - & -\\
+    \hline
+  \end{tabular}
+  \caption{\label{table:failures}Number of flaky tests.}
+\end{table*}
+
+%% \begin{table*}[t]
+%%   \centering
+%%   \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+%%     \hline
+%%     \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}}
+%%     &  \multicolumn{7}{c|}{\emph{\# Flaky tests}}\\
+%%     \cline{3-9}
+%%     & & Seq & Mod-1 & Mod-2 & Mod-3 & Mod-1 & Mod-2 & Mod-3 \\
+%%     \hline
+%%     jgit & 3364 & 4 & 239 & - & - & -  & - & - \\
+%%     \hline
+%%     jetty (client) & 5679 & - & 232  & - & - & - & - & - \\
+%%     \hline
+%%     camel (core) & 527 & - & 142 & - & - & - & - & - \\
+%%     \hline
+%%   \end{tabular}
+%\end{table*}
