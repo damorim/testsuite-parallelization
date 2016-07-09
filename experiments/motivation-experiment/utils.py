@@ -6,11 +6,14 @@ FAIL_LABEL = 'F'
 
 def result_label(atype):
     '''Returns a label for the given xml report node representing a testcase.'''
-    if not (atype.find('skipped') == None):
+    if atype.find('skipped'):
         return IGNORE_LABEL
-    elif (atype.find('failure') == None) and (atype.find('error') == None):
-        return PASS_LABEL
-    return FAIL_LABEL
+
+    for tag in ['failure', 'error', 'flakyError', 'flakyFailure']:
+        if atype.find(tag):
+            return FAIL_LABEL
+
+    return PASS_LABEL
 
 
 def report_from(path_dir):
