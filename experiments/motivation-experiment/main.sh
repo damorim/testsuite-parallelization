@@ -12,14 +12,14 @@ if [ ! -d "$SUBJECTS_HOME" ]; then
     exit 1
 fi
 
-echo "Running experiment on \"Retrofit\""
-time ./experiment.sh "$SUBJECTS_HOME/retrofit" "retrofit"
+#echo "Running experiment on \"Retrofit\""
+#time ./experiment.sh "$SUBJECTS_HOME/retrofit" "retrofit"
 
 # Possibly with deadlock when executed with parallel threads
 # ./experiment.sh "$SUBJECTS_HOME/graphhopper" "core" > graphhopper-summary.txt
 
-#echo "Running experiment on \"JGit\""
-#time ./experiment.sh "$SUBJECTS_HOME/jgit" "org.eclipse.jgit.test"
+echo "Running experiment on \"JGit\""
+time ./experiment.sh "$SUBJECTS_HOME/jgit" "org.eclipse.jgit.test"
 
 #./experiment.sh "$SUBJECTS_HOME/camel/camel-core" > camel-core-summary.txt
 #./experiment.sh "$SUBJECTS_HOME/jetty.project" "jetty-client" > jetty.project-summary.txt

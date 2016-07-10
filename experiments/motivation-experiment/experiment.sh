@@ -57,7 +57,7 @@ for version in `ls $SAMPLE_HOME`; do
 done
 # END OF ELAPSED TIME EXPERIMENT
 
-echo "Running Flakiness analysis"
+echo -e "\nRunning Flakiness analysis"
 for version in `ls $SAMPLE_HOME`; do
     dir_path="$SAMPLE_HOME/$version/$TEST_PATH"
     echo -e "\n* Running setup \"$version\""

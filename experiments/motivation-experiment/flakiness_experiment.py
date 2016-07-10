@@ -17,9 +17,10 @@ def run_tests(test_path, reports_dir, log_prefix):
     curdir = os.path.abspath(os.curdir)
     os.chdir(test_path)
 
-    call(['mvn', '-Dsurefire.rerunFailingTestsCount=100', 'test'], stderr=output_log, stdout=output_log)
-    reports = reports_from(reports_dir)
+    cmds = ['mvn', '-Dsurefire.rerunFailingTestsCount=100', 'test']
+    call(cmds, stderr=output_log, stdout=output_log)
 
+    reports = reports_from(reports_dir)
     for xmlFile in reports:
         xmlFileName = os.path.join(reports_dir, xmlFile)
         e = xml.etree.ElementTree.parse(xmlFileName).getroot()
@@ -52,6 +53,7 @@ def rerun_individually(test_path, reports_dir, log_prefix, failures):
         results[test_case] = []
         for run in range(RERUNS):
             rmtree(reports_dir)
+
             call(['mvn', '-Dtest=' + test_case, 'test'], stderr=output_log, stdout=output_log)
 
             xmlfile = report_from(reports_dir)
@@ -59,14 +61,15 @@ def rerun_individually(test_path, reports_dir, log_prefix, failures):
             e = xml.etree.ElementTree.parse(xmlfilename).getroot()
 
             testcases = e.findall('testcase')
-            assert len(testcases) == 1, "Should have only 1 testcase since a test is executed individually"
-            testcase = testcases[0]
+            if not len(testcases) == 1:
+                print " - Test case: %s" %test_case
+                print " - Should have only 1 test case but found %d" %(len(testcases))
+                print " - Resolution: Skipping this run"
+                continue
 
-            label = result_label(testcase)
-            test_name = testcase.get('classname') + '#' + testcase.get('name')
-
-            assert test_name == test_case, "key: {0}, tc: {1}".format(key, test_case)
-            results[test_name].append(label)
+            testcase_xml = testcases[0]
+            label = result_label(testcase_xml)
+            results[test_case].append(label)
 
             # prune if this execution has failed
             if label == FAIL_LABEL: break
@@ -107,13 +110,13 @@ if __name__ == "__main__":
     print "[Statistics] All: {total}, Skipped: {skips}, Runs: {runs}, " \
           "Failed (any): {fails}, ".format(**statistics)
 
-    # Run individually failing tests
-    test_results = rerun_individually(test_path, reports_dir, log_prefix, pef_failures)
-    sef_failures = failures_from(test_results)
-    make_report(log_prefix + "-SEF.txt", sef_failures)
+    if len(pef_failures):
+        # Run individually failing tests
+        test_results = rerun_individually(test_path, reports_dir, log_prefix, pef_failures)
+        sef_failures = failures_from(test_results)
+        make_report(log_prefix + "-SEF.txt", sef_failures)
 
-    statistics = compute_statistcs(test_results)
-    assert statistics['skips'] == 0, "Should not have skipped tests here"
-    print "[Statistics] Failed Tests (parallel execution): {total}, " \
-          "Passed (individually): {passes}".format(**statistics)
+        statistics = compute_statistcs(test_results)
+        print "[Statistics] Failed Tests (parallel execution): {total}, " \
+            "Passed (individually): {passes}".format(**statistics)
 
