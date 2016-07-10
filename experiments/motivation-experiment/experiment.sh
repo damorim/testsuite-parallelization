@@ -1,20 +1,5 @@
 #!/bin/bash
-
-function compile_only {
-    local subject_path=$1
-    local curdir="`pwd`"
-    cd "$subject_path"
-    mvn -Dmaven.javadoc.skip=true -DskipTests clean install # TODO: Ant,Gradle support
-    cd "$curdir"
-}
-
-function test_only {
-    local subject_path=$1
-    local curdir="`pwd`"
-    cd "$subject_path"
-    mvn -Dmaven.javadoc.skip=true test # TODO: Ant,Gradle support
-    cd "$curdir"
-}
+BASE_DIR="`pwd`"
 
 # Input parameters
 PROJECT_PATH=$1
@@ -27,18 +12,55 @@ if [[ -z "$PROJECT_PATH" ]]; then
     echo "Usage: ./experiment.sh <PROJECT_PATH> [<TEST_PATH>]"
     exit 1
 fi
+
 ../scripts/generate_versions.sh "$PROJECT_PATH" "$TEST_PATH"
 
 NAME="`basename "$PROJECT_PATH"`"
-LOGNAME_PREFFIX="`date +"$NAME-%m%d%H%M%S"`"
-SAMPLE_HOME="samples/$NAME"
+LOGNAME_PREFIX="`date +"$NAME-%m%d%H%M%S"`"
+SAMPLE_HOME="$BASE_DIR/samples/$NAME"
 
-echo "Elapsed time comparison"
+MVN_BUILD_CMD="mvn -Dmaven.javadoc.skip=true -DskipTests clean install"
+MVN_TEST_CMD="mvn -Dmaven.javadoc.skip=true test"
+
+# SETUP
+echo "Compiling base version"
+if [ ! -d "$SAMPLE_HOME/seq" ]; then
+    echo "Base version missing!"
+    exit 1
+fi
+
+cd "$SAMPLE_HOME/seq"
+if [ -f 'pom.xml' ]; then
+    $MVN_BUILD_CMD &>/dev/null
+else
+    echo "Unsupported build system!"
+    exit 1
+fi
+cd "$BASE_DIR"
+
+# BEGINNING ELAPSED TIME EXPERIMENT
+echo "Measuring elapsed time for different running settings"
 for version in `ls $SAMPLE_HOME`; do
-    echo " - Building project \"$NAME\" version \"$version\""
-    compile_only "$SAMPLE_HOME/$version" &>/dev/null
-    test_only "$SAMPLE_HOME/$version/$TEST_PATH" | grep "\[INFO\] Total time:" | sed "s/\[INFO\]/ \- \[$version\]/g"
-done
+    LOG_FILE="$BASE_DIR/$LOGNAME_PREFIX-$version-timelog.txt"
 
-./find_parallel_failures.py "$SAMPLE_HOME/par/$TEST_PATH" "$LOGNAME_PREFFIX-fails-parallel" > "$LOGNAME_PREFFIX-failures.txt"
-echo "Log saved on \"$LOGNAME_PREFFIX-failures.txt\""
+    echo "Running setup \"$version\""
+    cd "$SAMPLE_HOME/$version/$TEST_PATH"
+    if [ -f 'pom.xml' ]; then
+        TEST_COMMAND=$MVN_TEST_CMD
+    else
+        echo "Unsupported build system!"
+        exit 1
+    fi
+    /usr/bin/time -v $TEST_COMMAND &> $LOG_FILE
+    cat $LOG_FILE | grep "Elapsed (wall clock) time"
+done
+# END OF ELAPSED TIME EXPERIMENT
+
+# FIXME
+#echo "Running Flakiness analysis on Parallel settings"
+#for version in "par"; do
+#   dir_path="$SAMPLE_HOME/$version/$TEST_PATH"
+#   if [ -d "$dir_path" ]; then
+#       ./flakiness_experiment.py "$dir_path" "$LOGNAME_PREFIX"
+#   fi
+#done
