@@ -56,6 +56,9 @@ def rerun_individually(test_path, reports_dir, log_prefix, failures):
 
             call(['mvn', '-Dtest=' + test_case, 'test'], stderr=output_log, stdout=output_log)
 
+            # FIXME If something unexpected occurs during the test
+            # it is not safe to proceed because the xml report
+            # may not exist
             xmlfile = report_from(reports_dir)
             xmlfilename = os.path.join(reports_dir, xmlfile)
             e = xml.etree.ElementTree.parse(xmlfilename).getroot()
