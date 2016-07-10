@@ -39,11 +39,11 @@ fi
 cd "$BASE_DIR"
 
 # BEGINNING ELAPSED TIME EXPERIMENT
-echo "Measuring elapsed time for different running settings"
+echo -e "Measuring elapsed time for different running settings\n"
 for version in `ls $SAMPLE_HOME`; do
     LOG_FILE="$BASE_DIR/$LOGNAME_PREFIX-$version-timelog.txt"
 
-    echo "Running setup \"$version\""
+    echo -e "\n\t* Running setup \"$version\""
     cd "$SAMPLE_HOME/$version/$TEST_PATH"
     if [ -f 'pom.xml' ]; then
         TEST_COMMAND=$MVN_TEST_CMD
@@ -53,14 +53,15 @@ for version in `ls $SAMPLE_HOME`; do
     fi
     /usr/bin/time -v $TEST_COMMAND &> $LOG_FILE
     cat $LOG_FILE | grep "Elapsed (wall clock) time"
+    cd "$BASE_DIR"
 done
 # END OF ELAPSED TIME EXPERIMENT
 
-# FIXME
-#echo "Running Flakiness analysis on Parallel settings"
-#for version in "par"; do
-#   dir_path="$SAMPLE_HOME/$version/$TEST_PATH"
-#   if [ -d "$dir_path" ]; then
-#       ./flakiness_experiment.py "$dir_path" "$LOGNAME_PREFIX"
-#   fi
-#done
+echo "Running Flakiness analysis"
+for version in `ls $SAMPLE_HOME`; do
+    dir_path="$SAMPLE_HOME/$version/$TEST_PATH"
+    echo -e "\n* Running setup \"$version\""
+    if [ -d "$dir_path" ]; then
+        ./flakiness_experiment.py "$dir_path" "$LOGNAME_PREFIX-$version"
+    fi
+done
