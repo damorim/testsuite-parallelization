@@ -1,125 +1,198 @@
 #!/usr/bin/env python2
 import os
+import time
+import datetime
 import xml.etree.ElementTree
 
-from subprocess import call
-from shutil import rmtree
+from os import path
+from subprocess import check_call, call
 from sys import argv
 
-from utils import *
+FAILED_LABEL = 'F'
+IGNORED_LABEL = 'S'
+PASSED_LABEL = 'P'
 
-def run_tests(test_path, reports_dir, log_prefix):
-    results = {}
+class BadSetup(Exception):
+    def __init__(self, value):
+        self.value = value
 
-    output_log = os.path.join(os.path.abspath(os.curdir), log_prefix + "-runlog.txt")
-    output_log = open(output_log, "a")
+    def __str__(self):
+        return repr(self.value)
 
-    curdir = os.path.abspath(os.curdir)
-    os.chdir(test_path)
+class TestResults:
+    def __init__(self):
+        self.failed = []
+        self.ignored = []
+        self.passed = []
 
-    cmds = ['mvn', '-Dsurefire.rerunFailingTestsCount=100', 'test']
-    call(cmds, stderr=output_log, stdout=output_log)
+    def addFailed(self, test):
+        if test not in self.failed:
+            self.failed.append(test)
 
-    reports = reports_from(reports_dir)
-    for xmlFile in reports:
-        xmlFileName = os.path.join(reports_dir, xmlFile)
-        e = xml.etree.ElementTree.parse(xmlFileName).getroot()
-        for atype in e.findall('testcase'):
-            label = result_label(atype)
-            test_name = atype.get('classname') + '#' + atype.get('name')
+    def addIgnored(self, test):
+        if test not in self.ignored:
+            self.ignored.append(test)
 
-            if test_name in results:
-                results[test_name].append(label);
-            else:
-                results[test_name] = [label]
+    def addPassed(self, test):
+        if test not in self.passed:
+            self.passed.append(test)
 
-    output_log.close()
-    os.chdir(curdir)
+    def failures(self):
+        return self.failed
 
-    return results 
+    def ignores(self):
+        return self.ignored
+
+    def __str__(self):
+        output = "TESTS - All: {total}, Ignored: {ignored}, Runs: {runs}, Failed: {failed}, Passed: {passed}"
+        ignoredCnt = len(self.ignored)
+        failedCnt= len(self.failed)
+        passedCnt= len(self.passed)
+        totalCnt = (ignoredCnt + failedCnt + passedCnt)
+        runsCnt = totalCnt - ignoredCnt
+        return output.format(total=totalCnt, ignored=ignoredCnt, \
+                failed=failedCnt, passed=passedCnt, runs=runsCnt)
+
+class MavenBuilder:
+    def compile(self, logPath):
+        with open(logPath, "a") as log:
+            check_call(['mvn', '-DskipTests', '-Dmaven.javadoc.skip', 'clean', 'install'], stdout=log)
+
+    def testIndividual(self, test, logPath):
+        # It's not appropriated to use check_call because the status code might be
+        # different from zero if tests fail
+        with open(logPath, "a") as log:
+            call(['mvn', '-Dmaven.javadoc.skip', '-Dtest=' + test, 'clean', 'test'], stdout=log, stderr=log)
+        return self._colectResults()
+
+    def test(self, logPath):
+        # It's not appropriated to use check_call because the status code might be
+        # different from zero if tests fail
+        with open(logPath, "a") as log:
+            startedTime = time.time()
+            call(['mvn', '-Dmaven.javadoc.skip', 'clean', 'test'], stdout=log, stderr=log)
+            elapsedTime = time.time() - startedTime
+            print "Elapsed time: %.2f s" %(elapsedTime)
+        return self._colectResults()
+
+    def _colectResults(self):
+        baseDir = path.abspath(os.curdir)
+        reportsDir = path.join(baseDir, 'target', 'surefire-reports')
+        if not path.exists(reportsDir):
+            raise Exception("Reports dir \"{0}\" does not exist".format(reportsDir))
+
+        xmlReports = []
+        for root, dir, files in os.walk(reportsDir):
+            xmlReports = [fi for fi in files if fi.startswith('TEST') and fi.endswith('.xml')]
+
+        results = TestResults()
+        for xmlReport in xmlReports:
+            xmlReportPath = path.join(reportsDir, xmlReport)
+
+            # Parsing XML report
+            xmlParseNode = xml.etree.ElementTree.parse(xmlReportPath).getroot()
+            for testCaseNode in xmlParseNode.findall('testcase'):
+                testName = testCaseNode.get('classname') + "#" + testCaseNode.get('name')
+                resultLabel = self._parseTestResult(testCaseNode)
+                if resultLabel == IGNORED_LABEL:
+                    results.addIgnored(testName)
+                elif resultLabel == FAILED_LABEL:
+                    results.addFailed(testName)
+                else:
+                    results.addPassed(testName)
+
+        return results
+
+    def _parseTestResult(self, testCaseNode):
+        if len(list(testCaseNode)) == 0:
+            return PASSED_LABEL
+        if testCaseNode.find('skipped') is not None:
+            return IGNORED_LABEL
+        return FAILED_LABEL
 
 
-def rerun_individually(test_path, reports_dir, log_prefix, failures):
-    results = {}
+class BuildSystem:
+    def __init__(self, projectPath):
+        # TODO: detect build system
+        self.builder = MavenBuilder()
 
-    output_log = os.path.join(os.path.abspath(os.curdir), log_prefix + "-rerunslog.txt")
-    output_log = open(output_log, "a")
+    def compile(self, logPath=os.devnull):
+        self.builder.compile(logPath)
 
-    curdir = os.path.abspath(os.curdir)
-    os.chdir(test_path)
+    def test(self, logPath=os.devnull):
+        return self.builder.test(logPath)
 
-    RERUNS = 10
-    for test_case in failures:
-        results[test_case] = []
-        for run in range(RERUNS):
-            rmtree(reports_dir)
-
-            call(['mvn', '-Dtest=' + test_case, 'test'], stderr=output_log, stdout=output_log)
-
-            # FIXME If something unexpected occurs during the test
-            # it is not safe to proceed because the xml report
-            # may not exist
-            xmlfile = report_from(reports_dir)
-            xmlfilename = os.path.join(reports_dir, xmlfile)
-            e = xml.etree.ElementTree.parse(xmlfilename).getroot()
-
-            testcases = e.findall('testcase')
-            if not len(testcases) == 1:
-                print " - Test case: %s" %test_case
-                print " - Should have only 1 test case but found %d" %(len(testcases))
-                print " - Resolution: Skipping this run"
-                continue
-
-            testcase_xml = testcases[0]
-            label = result_label(testcase_xml)
-            results[test_case].append(label)
-
-            # prune if this execution has failed
-            if label == FAIL_LABEL: break
-
-    output_log.close()
-    os.chdir(curdir)
-
-    return results 
+    def testIndividual(self, test, logPath=os.devnull):
+        return self.builder.testIndividual(test, logPath)
 
 
-def failures_from(tests):
-    return filter(lambda t: FAIL_LABEL in tests[t], tests.keys())
+class FlakinessExperiment:
+    def __init__(self, projectName, projectPath, testPath):
+        projectAbsPath = path.abspath(projectPath)
+        testAbsPath = path.join(projectAbsPath, testPath)
+        if not path.exists(projectAbsPath):
+            raise BadSetup(projectAbsPath)
+        if not path.exists(testAbsPath):
+            raise BadSetup(testAbsPath)
 
+        self.projectName = projectName
+        self.projectPath = projectAbsPath
+        self.testPath= testAbsPath
+        self.builder = BuildSystem(projectAbsPath)
 
-def make_report(report_name, iterable):
-    if len(iterable):
-        with open(report_name, 'w') as report:
-            for item in iterable:
-                report.write(item)
-                report.write("\n")
+        self.baseDir = path.abspath(os.curdir)
 
-        report.close()
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%m%d%H%M')
+        version = path.basename(self.projectPath)
+        self.logPrefix = "{0}-{1}-{2}".format(self.projectName, version, timestamp)
 
+        print "Subject: \"{0}\"\nProject dir: \"{1}\"\nTest dir: \"{2}\"" \
+                .format(self.projectName, self.projectPath, self.testPath)
+
+    def run(self):
+        print "Compiling project"
+        os.chdir(self.projectPath)
+        self.builder.compile()
+
+        print "Running tests"
+        os.chdir(self.testPath)
+        testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog.txt")
+        results = self.builder.test(testLogPath)
+        print results
+
+        if not len(results.failures()):
+            print "All tests passed"
+        else:
+            print "Checking Sequential Flakiness"
+            self._checkFailures(results.failures())
+
+    def _checkFailures(self, failures):
+        testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog-individual.txt")
+        results = self.builder.test(testLogPath)
+        RERUNS = 10
+        sequentialFlakiness = []
+        for test in failures:
+            for run in range(RERUNS):
+                result = self.builder.testIndividual(test, testLogPath)
+                if len(result.failures):
+                    sequentialFlakiness.extend(result.failures())
+                    break
+
+                if not len(result.ignores()) == 0:
+                    warning_msg = "WARNING: failed test \"{0}\" was skipped! Ignored"
+                    print warning_msg.format(test)
+                    break
+
+        output = "FLAKINESS - All: {all}, Pass: {passes}, Fail: {fail}"
+        seqFlakinessCnt = len(sequentialFlakiness)
+        allCnt = len(failures)
+        print output.format(all=allCnt, fail=seqFlakinessCnt, passes=(allCnt - sequentialFlakiness))
 
 if __name__ == "__main__":
-    test_path = argv[1]
-    log_prefix = argv[2]
+    projectName = argv[1]
+    projectPath = argv[2]
+    testPath = argv[3]
 
-    test_path = os.path.abspath(test_path)
-    reports_dir = os.path.join(test_path, "target", "surefire-reports")
-
-    # Run tests in parallel
-    test_results = run_tests(test_path, reports_dir, log_prefix)
-    pef_failures = failures_from(test_results)
-    make_report(log_prefix + "-PEF.txt", pef_failures)
-
-    statistics = compute_statistcs(test_results)
-    print "[Statistics] All: {total}, Skipped: {skips}, Runs: {runs}, " \
-          "Failed (any): {fails}, ".format(**statistics)
-
-    if len(pef_failures):
-        # Run individually failing tests
-        test_results = rerun_individually(test_path, reports_dir, log_prefix, pef_failures)
-        sef_failures = failures_from(test_results)
-        make_report(log_prefix + "-SEF.txt", sef_failures)
-
-        statistics = compute_statistcs(test_results)
-        print "[Statistics] Failed Tests (parallel execution): {total}, " \
-            "Passed (individually): {passes}".format(**statistics)
+    experiment = FlakinessExperiment(projectName, projectPath, testPath)
+    experiment.run()
 
