@@ -18,8 +18,8 @@ time ./experiment.sh "$SUBJECTS_HOME/retrofit" "retrofit"
 echo "Running experiment on \"JGit\""
 time ./experiment.sh "$SUBJECTS_HOME/jgit" "org.eclipse.jgit.test"
 
-# Possibly with deadlock when executed with parallel threads
-# ./experiment.sh "$SUBJECTS_HOME/graphhopper" "core" > graphhopper-summary.txt
+echo "Running experiment on \"GraphHopper\""
+time ./experiment.sh "$SUBJECTS_HOME/graphhopper" "core"
 
 echo "Running experiment on \"Camel\""
 time ./experiment.sh "$SUBJECTS_HOME/camel/camel-core"
@@ -29,3 +29,9 @@ time ./experiment.sh "$SUBJECTS_HOME/jetty.project" "jetty-client"
 
 echo "Running experiment on \"OkHttp\""
 time ./experiment.sh "$SUBJECTS_HOME/okhttp" "okhttp-tests"
+
+echo "Running experiment on \"Eclipse Collections\""
+time ./experiment.sh "$SUBJECTS_HOME/eclipse-collections" "unit-tests"
+
+echo "Running experiment on \"JUnit4\""
+time ./experiment.sh "$SUBJECTS_HOME/junit4"

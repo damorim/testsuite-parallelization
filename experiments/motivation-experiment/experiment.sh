@@ -13,8 +13,6 @@ if [[ -z "$PROJECT_PATH" ]]; then
     exit 1
 fi
 
-../scripts/generate_versions.sh "$PROJECT_PATH" "$TEST_PATH"
-
 NAME="`basename "$PROJECT_PATH"`"
 LOGNAME_PREFIX="`date +"$NAME-%m%d%H%M%S"`"
 SAMPLE_HOME="$BASE_DIR/samples/$NAME"
@@ -22,36 +20,28 @@ SAMPLE_HOME="$BASE_DIR/samples/$NAME"
 MVN_BUILD_CMD="mvn -Dmaven.javadoc.skip=true -DskipTests clean install"
 MVN_TEST_CMD="mvn -Dmaven.javadoc.skip=true test"
 
-# SETUP
-echo "Compiling base version"
-if [ ! -d "$SAMPLE_HOME/seq" ]; then
-    echo "Base version missing!"
-    exit 1
-fi
-
-cd "$SAMPLE_HOME/seq"
-if [ -f 'pom.xml' ]; then
-    $MVN_BUILD_CMD &>/dev/null
-else
-    echo "Unsupported build system!"
-    exit 1
-fi
-cd "$BASE_DIR"
+# Removing old files before generating new project
+rm -rf "$SAMPLE_HOME"
+../scripts/generate_versions.sh "$PROJECT_PATH" "$TEST_PATH"
 
 # BEGINNING ELAPSED TIME EXPERIMENT
-echo -e "Measuring elapsed time for different running settings\n"
+echo -e "Measuring elapsed time for different running settings"
 for version in `ls $SAMPLE_HOME`; do
     LOG_FILE="$BASE_DIR/$LOGNAME_PREFIX-$version-timelog.txt"
 
     echo -e "\n\t* Running setup \"$version\""
     cd "$SAMPLE_HOME/$version/$TEST_PATH"
+
     if [ -f 'pom.xml' ]; then
+        BUILD_COMMAND=$MVN_BUILD_CMD
         TEST_COMMAND=$MVN_TEST_CMD
     else
         echo "Unsupported build system!"
         exit 1
     fi
+    $BUILD_COMMAND &>/dev/null
     /usr/bin/time -v $TEST_COMMAND &> $LOG_FILE
+
     cat $LOG_FILE | grep "Elapsed (wall clock) time"
     cd "$BASE_DIR"
 done
