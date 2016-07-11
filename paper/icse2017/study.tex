@@ -1,12 +1,5 @@
 \section{Preliminary Study}
 
-\newcommand{\forkSeq}{F-S}
-\newcommand{\forkDia}{F-D}
-\newcommand{\singleJVMSeq}{S-S}
-\newcommand{\singleJVMDia}{S-D}
-\newcommand{\singleJVMClass}{S-C}
-\newcommand{\singleJVMMethod}{S-B}
-
 \begin{table*}[t]
   \centering
   \begin{tabular}{|c|r|r|r|r|r|r|r|}
@@ -21,7 +14,7 @@
 %    \multicolumn{1}{c|}{\singleJVMClass{}} &
     %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
     \cline{3-8}
-    & & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{C} & \multicolumn{1}{c|}{B}\\     \hline
+    & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline
     jgit & 3364 & - & 0m53s & 4m12s  & - & -  & - \\
     \hline
     jetty (client) & 5679 & - & 0m19s  & 4m15s  & - & - & - \\
@@ -46,7 +39,7 @@
 %    \multicolumn{1}{c|}{\singleJVMClass{}} &
     %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
     \cline{3-8}
-    & & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{S} & \multicolumn{1}{c|}{D} & \multicolumn{1}{c|}{C} & \multicolumn{1}{c|}{B}\\     \hline
+    & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline 
     jgit & 3364 & - & 239 & -  & - & -  & - \\
     \hline
     jetty (client) & 5679 & - & 232  & -  & - & - & - \\
