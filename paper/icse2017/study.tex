@@ -15,11 +15,19 @@
     %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
     \cline{3-8}
     & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline
-    jgit & 3364 & - & 0m53s & 4m12s  & - & -  & - \\
+    camel (core) & 5979 & 4m14.03s & - & 25m2.25s & - & - & - \\
     \hline
-    jetty (client) & 5679 & - & 0m19s  & 4m15s  & - & - & - \\
+    graphhopper & 1259 & 0m8.14s & - & 0m13.95s & - & - & - \\
     \hline
-    camel (core) & 527 & - & 2m28s & 24m50s & - & - & -\\
+    jetty (client) & 535 & 4m15.93s & - & 4m14.97s & - & - & - \\
+    \hline
+    jgit & 3364 & - & - & 4m4.57s & - & - & - \\
+    \hline
+    junit4 & 791 & 0m10.36s & - & 0m10.13s & - & - & - \\
+    \hline
+    okhttp & 1525 & 0m24.97s & - & 1m18.06s & - & - & - \\
+    \hline
+    retrofit & 261 & 0m5.51s & - & 0m6.52s & - & - & - \\
     \hline
   \end{tabular}
   \caption{\label{table:cost}Test execution time.}
@@ -40,11 +48,19 @@
     %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
     \cline{3-8}
     & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline 
-    jgit & 3364 & - & 239 & -  & - & -  & - \\
+    camel (core) & 5979 & 79/4 & - & 3 & - & - & - \\
     \hline
-    jetty (client) & 5679 & - & 232  & -  & - & - & - \\
+    graphhopper & 1259 & 9/0 & - & 0 & - & - & - \\
     \hline
-    camel (core) & 527 & - & 142 & - & - & - & -\\
+    jetty (client) & 535 & 0 & - & 0 & - & - & - \\
+    \hline
+    jgit & 3364 & - & - & 0 & - & - & - \\
+    \hline
+    junit4 & 791 & 0 & - & 0 & - & - & - \\
+    \hline
+    okhttp & 1525 & 0 & - & 0 & - & - & - \\
+    \hline
+    retrofit & 261 & 0 & - & 0 & - & - & - \\
     \hline
   \end{tabular}
   \caption{\label{table:failures}Number of flaky tests.}
