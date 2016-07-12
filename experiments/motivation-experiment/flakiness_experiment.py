@@ -22,27 +22,40 @@ class SetupError(Exception):
 
 class TestResults:
     def __init__(self):
-        self.failed = []
-        self.ignored = []
-        self.passed = []
+        self.failed = set({})
+        self.ignored = set({})
+        self.passed = set({})
 
     def addFailed(self, test):
-        if test not in self.failed:
-            self.failed.append(test)
+        self.failed.add(test)
 
     def addIgnored(self, test):
-        if test not in self.ignored:
-            self.ignored.append(test)
+        self.ignored.add(test)
 
     def addPassed(self, test):
-        if test not in self.passed:
-            self.passed.append(test)
+        self.passed.add(test)
 
     def failures(self):
         return self.failed
 
     def ignores(self):
         return self.ignored
+
+    def isFlaky(self, test):
+        return self.isFail(test) and self.isSuccess(test)
+
+    def isFail(self, test):
+        return test in self.failed
+
+    def isSuccess(self, test):
+        return test in self.passed
+
+    def merge(self, other):
+        tr = TestResults()
+        tr.failed = self.failed.union(other.failed)
+        tr.ignored = self.ignored.union(other.ignored)
+        tr.passed = self.passed.union(other.passed)
+        return tr
 
     def __str__(self):
         output = "TESTS - All: {total}, Ignored: {ignored}, Runs: {runs}, Failed: {failed}, Passed: {passed}"
@@ -65,6 +78,7 @@ class MavenBuilder:
         # It's not appropriated to use check_call because the status code might be
         # different from zero if tests fail
         with open(logPath, "a") as log:
+            log.write("RUNNING TEST: " + test + "\n")
             call(['mvn', '-Dtest=' + test, 'test'], stdout=log, stderr=log)
         return self._colectResults(reportsDir)
 
@@ -77,8 +91,7 @@ class MavenBuilder:
             startedTime = time.time()
             call(['mvn', '-Dmaven.javadoc.skip', 'test'], stdout=log, stderr=log)
             elapsedTime = time.time() - startedTime
-            print "Elapsed time: %.2f s" %(elapsedTime)
-
+        print "Elapsed time: %2dm%.2f s" %(elapsedTime // 60,  elapsedTime % 60)
         return self._colectResults(reportsDir)
 
     def _setupReportDir(self):
@@ -176,24 +189,30 @@ class FlakinessExperiment:
 
     def _checkFailures(self, failures):
         testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog-individual.txt")
+
         RERUNS = 10
-        sequentialFlakiness = []
+
+        failCnt = 0
+        flakyCnt= 0
         for test in failures:
+            resultReruns = TestResults()
             for run in range(RERUNS):
                 result = self.builder.testIndividual(test, testLogPath)
-                if len(result.failures()):
-                    sequentialFlakiness.extend(result.failures())
-                    break
-
                 if not len(result.ignores()) == 0:
                     warning_msg = "WARNING: failed test \"{0}\" was skipped! Ignored"
                     print warning_msg.format(test)
                     break
+                resultReruns = resultReruns.merge(result)
+                if resultReruns.isFlaky(test):
+                    flakyCnt += 1
+                    break
+            if resultReruns.isFail(test) and not resultReruns.isFlaky(test):
+                failCnt += 1
 
-        output = "FLAKINESS - All: {all}, Pass: {passes}, Fail: {fail}"
-        seqFlakinessCnt = len(sequentialFlakiness)
-        allCnt = len(failures)
-        print output.format(all=allCnt, fail=seqFlakinessCnt, passes=(allCnt - seqFlakinessCnt))
+        output = "FLAKINESS - All: {all}, Pass: {passes}, Fail: {fail}, Flaky: {flaky}"
+        totalCnt = len(failures)
+        passCnt= (totalCnt - (failCnt + flakyCnt))
+        print output.format(all=totalCnt, fail=failCnt, passes=passCnt, flaky=flakyCnt)
 
 if __name__ == "__main__":
     projectName = argv[1]
