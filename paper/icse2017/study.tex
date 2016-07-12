@@ -33,6 +33,8 @@
   \caption{\label{table:cost}Test execution time.}
 \end{table*}
 
+\Fix{Reminder: To not be confused with Sequential Flakiness. Sequential Flakiness must not be considered}
+
 \begin{table*}[t]
   \centering
   \begin{tabular}{|c|r|r|r|r|r|r|r|}
@@ -48,9 +50,9 @@
     %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
     \cline{3-8}
     & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline 
-    camel (core) & 5979 & 79/4 & - & 3 & - & - & - \\
+    camel (core) & 5979 & 76 & - & 0 & - & - & - \\
     \hline
-    graphhopper & 1259 & 9/0 & - & 0 & - & - & - \\
+    graphhopper & 1259 & 9 & - & 0 & - & - & - \\
     \hline
     jetty (client) & 535 & 0 & - & 0 & - & - & - \\
     \hline
