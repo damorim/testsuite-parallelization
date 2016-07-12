@@ -6,13 +6,14 @@ import xml.etree.ElementTree
 
 from os import path
 from subprocess import check_call, call
+from shutil import rmtree
 from sys import argv
 
 FAILED_LABEL = 'F'
 IGNORED_LABEL = 'S'
 PASSED_LABEL = 'P'
 
-class BadSetup(Exception):
+class SetupError(Exception):
     def __init__(self, value):
         self.value = value
 
@@ -59,28 +60,35 @@ class MavenBuilder:
             check_call(['mvn', '-DskipTests', '-Dmaven.javadoc.skip', 'clean', 'install'], stdout=log)
 
     def testIndividual(self, test, logPath):
+        reportsDir = self._setupReportDir()
+
         # It's not appropriated to use check_call because the status code might be
         # different from zero if tests fail
         with open(logPath, "a") as log:
-            call(['mvn', '-Dmaven.javadoc.skip', '-Dtest=' + test, 'clean', 'test'], stdout=log, stderr=log)
-        return self._colectResults()
+            call(['mvn', '-Dtest=' + test, 'test'], stdout=log, stderr=log)
+        return self._colectResults(reportsDir)
 
     def test(self, logPath):
+        reportsDir = self._setupReportDir()
+
         # It's not appropriated to use check_call because the status code might be
         # different from zero if tests fail
         with open(logPath, "a") as log:
             startedTime = time.time()
-            call(['mvn', '-Dmaven.javadoc.skip', 'clean', 'test'], stdout=log, stderr=log)
+            call(['mvn', '-Dmaven.javadoc.skip', 'test'], stdout=log, stderr=log)
             elapsedTime = time.time() - startedTime
             print "Elapsed time: %.2f s" %(elapsedTime)
-        return self._colectResults()
 
-    def _colectResults(self):
+        return self._colectResults(reportsDir)
+
+    def _setupReportDir(self):
         baseDir = path.abspath(os.curdir)
         reportsDir = path.join(baseDir, 'target', 'surefire-reports')
-        if not path.exists(reportsDir):
-            raise Exception("Reports dir \"{0}\" does not exist".format(reportsDir))
+        if path.exists(reportsDir):
+            rmtree(reportsDir)
+        return reportsDir
 
+    def _colectResults(self, reportsDir):
         xmlReports = []
         for root, dir, files in os.walk(reportsDir):
             xmlReports = [fi for fi in files if fi.startswith('TEST') and fi.endswith('.xml')]
@@ -131,9 +139,9 @@ class FlakinessExperiment:
         projectAbsPath = path.abspath(projectPath)
         testAbsPath = path.join(projectAbsPath, testPath)
         if not path.exists(projectAbsPath):
-            raise BadSetup(projectAbsPath)
+            raise SetupError(projectAbsPath)
         if not path.exists(testAbsPath):
-            raise BadSetup(testAbsPath)
+            raise SetupError(testAbsPath)
 
         self.projectName = projectName
         self.projectPath = projectAbsPath
@@ -168,13 +176,12 @@ class FlakinessExperiment:
 
     def _checkFailures(self, failures):
         testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog-individual.txt")
-        results = self.builder.test(testLogPath)
         RERUNS = 10
         sequentialFlakiness = []
         for test in failures:
             for run in range(RERUNS):
                 result = self.builder.testIndividual(test, testLogPath)
-                if len(result.failures):
+                if len(result.failures()):
                     sequentialFlakiness.extend(result.failures())
                     break
 
@@ -186,7 +193,7 @@ class FlakinessExperiment:
         output = "FLAKINESS - All: {all}, Pass: {passes}, Fail: {fail}"
         seqFlakinessCnt = len(sequentialFlakiness)
         allCnt = len(failures)
-        print output.format(all=allCnt, fail=seqFlakinessCnt, passes=(allCnt - sequentialFlakiness))
+        print output.format(all=allCnt, fail=seqFlakinessCnt, passes=(allCnt - seqFlakinessCnt))
 
 if __name__ == "__main__":
     projectName = argv[1]
