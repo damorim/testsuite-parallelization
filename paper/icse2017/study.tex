@@ -17,17 +17,17 @@
     & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline
     camel (core) & 5979 & 4m14.03s & - & 25m2.25s & - & - & - \\
     \hline
-    graphhopper & 1259 & 0m7.82s & 0m10.43 s & 0m13.95s & 0m13.90s & 0m16.24s & 0m30.50s \\
+    graphhopper & 1259 & 0m7.82s & 0m10.43 s & 0m13.95s & 0m13.9s & 0m16.24s & 0m30.5s \\
     \hline
-    jetty (client) & 535 & 4m15.93s & - & 4m14.97s & - & - & - \\
+    jetty (client) & 535 & 2m40.75s & 0m18.76s & 4m14.97s & - & 1m41.78s & 0m58.3s \\
     \hline
-    jgit & 3364 & - & - & 4m4.57s & - & - & - \\
+    jgit & 3364 & 1m29.78s & 0m47.23s & 4m4.57s & 1m42.51s & 1m23.79s & 1m21.17s \\
     \hline
     junit4 & 791 & 0m10.36s & - & 0m10.13s & - & - & - \\
     \hline
     okhttp & 1525 & 0m24.97s & - & 1m18.06s & - & - & - \\
     \hline
-    retrofit & 261 & 0m5.51s & - & 0m6.52s & - & - & - \\
+    retrofit & 261 & 0m5.51s & 0m5.23s & 0m6.52s & 0m5.81s & 0m4.89s & 0m5.22s \\
     \hline
   \end{tabular}
   \caption{\label{table:cost}Test execution time.}
@@ -54,20 +54,21 @@
     \hline
     graphhopper & 1259 & 14 & 67 & 0 & 152 & 55 & 347 \\
     \hline
-    jetty (client) & 535 & 0 & - & 0 & - & - & - \\
+    jetty (client) & 535 & 0 & 111 & 0 & - & 0 & 76** \\
     \hline
-    jgit & 3364 & - & - & 0 & - & - & - \\
+    jgit & 3364 & 1 & 79 & 0 & 75 & 57* & 99* \\
     \hline
     junit4 & 791 & 0 & - & 0 & - & - & - \\
     \hline
     okhttp & 1525 & 0 & - & 0 & - & - & - \\
     \hline
-    retrofit & 261 & 0 & - & 0 & - & - & - \\
+    retrofit & 261 & 0 & 1 & 0 & 1 & 0 & 1 \\
     \hline
   \end{tabular}
   \caption{\label{table:failures}Number of flaky tests.}
 \end{table*}
 
+\Fix{* = Contains a skipped test. I don't know yet why a failing test may be skipped when it is executed individually}
 %% \begin{table*}[t]
 %%   \centering
 %%   \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
