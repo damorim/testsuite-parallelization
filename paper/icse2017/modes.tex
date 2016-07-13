@@ -1,11 +1,5 @@
 \section{Modes of Parallel Execution}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.4\textwidth]{figs/parallel-levels.pdf}
-  \caption{\label{fig:levels}Levels of parallelism.}
-\end{figure}
-
 Parallelism in test execution can be achieved at different levels.
 Figure~\ref{fig:levels} illustrates that.\Fix{...}  This paper focuses
 at lower-level parallelism that can be achieved through build systems
@@ -29,6 +23,12 @@ classes as the unit to specify test tasks.\Fix{we need to know how
 
 The list below shortly describes the choices to control parallelism
 within each JVM.
+
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=0.4\textwidth]{figs/parallel-levels.pdf}
+  \caption{\label{fig:levels}Levels of parallelism.}
+\end{figure}
 
 \newcommand{\Seq}{L0}
 \newcommand{\ParClassSeqMeth}{L1}

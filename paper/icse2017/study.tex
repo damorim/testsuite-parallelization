@@ -1,4 +1,14 @@
-\section{Preliminary Study}
+\section{Empirical Study}
+
+Table~\ref{table:cost}...\Fix{Why Forked JVM-L1 is (in some cases) so much better
+compared to Forked JVM-L0? (io?)}\Fix{Why Forked JVM seems to be
+  superior to all other Single JVM methods?  Are all CPUs in use?  If
+  not, why one would use Single JVM (given that Forked JVM is faster
+  and reduces flakiness)?}
+
+Table~\ref{table:failures}...\Fix{I expected ``Single JVM + L3'' to
+  find most flaky tests.}\Fix{Need to compute these results with
+  another IRE method.}
 
 \begin{table*}[t]
   \centering
@@ -6,7 +16,7 @@
     \hline
     \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}} &  \multicolumn{6}{c|}{\emph{Time}}\\
     \cline{3-8}
-    & & \multicolumn{2}{c|}{\emph{Forked JVM}} & \multicolumn{4}{c|}{\emph{Single JVM}}   \\
+    & & \multicolumn{4}{c|}{\emph{Single JVM}} & \multicolumn{2}{c|}{\emph{Forked JVMs}} \\
 %    & & \multicolumn{1}{c|}{\forkSeq{}} &
 %    \multicolumn{1}{c|}{\forkDia{}} &
 %    \multicolumn{1}{c|}{\singleJVMSeq{}} &
@@ -14,26 +24,36 @@
 %    \multicolumn{1}{c|}{\singleJVMClass{}} &
     %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
     \cline{3-8}
-    & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline
-    camel (core) & 5979 & 4m18.22s & 4m19.44s & 25m2.25s & - & - & 25m3.26s \\
+    & &  \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}} &
+    \multicolumn{1}{c|}{\SeqClassParMeth{}} &
+    \multicolumn{1}{c|}{\ParClassParMeth{}} &
+    \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}}\\
     \hline
-    graphhopper & 1259 & 0m7.82s & 0m10.43 s & 0m13.95s & 0m13.9s & 0m16.24s & 0m30.5s \\
     \hline
-    jetty (client) & 535 & 2m40.75s & 0m18.76s & 4m14.97s & 1m18.1s & 1m41.78s & 0m58.3s \\
+    \multicolumn{8}{|c|}{\emph{Longer executions}} \\
     \hline
-    jgit & 3364 & 1m29.78s & 0m47.23s & 4m4.57s & 1m42.51s & 1m23.79s & 1m21.17s \\
+    camel (core) & 5,979 & 25m02s & - & - & 25m3.26s & 4m18.22s & 4m19.44s \\
     \hline
-    junit4 & 791 & 0m10.32s & 0m10.49s & 0m10.13s & 0m9.96s & 0m10.06s & 0m10.08s \\
+    jetty (client) & 535 & 4m15s & 1m18.1s & 1m41.78s & 0m58.3s &  2m40.75s & 0m18.76s \\
     \hline
-    okhttp & 1525 & 0m25.07s & ! & 1m18.06s & - & - & ! \\
+    jgit & 3,364 & 4m05s & 1m43s & 1m23.79s & 1m21.17s & 1m29.78s  & 0m47.23s \\      \hline
+    okhttp & 1,525 & 1m18s & - & - & ! & 0m25.07s & ! \\
+    \hline    
     \hline
-    retrofit & 261 & 0m5.51s & 0m5.23s & 0m6.52s & 0m5.81s & 0m4.89s & 0m5.22s \\
+    \multicolumn{8}{|c|}{\emph{Shorter executions}} \\
+    \hline
+    graphhopper & 1,259 & 14s & 0m13.9s & 0m16.24s & 0m30.5s & 0m7.82s & 0m10.43 s \\
+    \hline
+    junit4 & 791 & 10s & 0m10.08s & 0m10.32s & 0m10.49s & 0m10.13s & 0m9.96s \\
+    \hline
+    retrofit & 261 & 7s & 0m5.81s & 0m4.89s & 0m5.22s & 0m5.51s & 0m5.23s \\
     \hline
   \end{tabular}
   \caption{\label{table:cost}Test execution time.}
 \end{table*}
 
-\Fix{Reminder: To not be confused with Sequential Flakiness. Sequential Flakiness must not be considered}
 
 \begin{table*}[t]
   \centering
@@ -41,48 +61,41 @@
     \hline
     \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}} &  \multicolumn{6}{c|}{\emph{Time}}\\
     \cline{3-8}
-    & & \multicolumn{2}{c|}{\emph{Forked JVM}} & \multicolumn{4}{c|}{\emph{Single JVM}}   \\
-%    & & \multicolumn{1}{c|}{\forkSeq{}} &
-%    \multicolumn{1}{c|}{\forkDia{}} &
-%    \multicolumn{1}{c|}{\singleJVMSeq{}} &
-%    \multicolumn{1}{c|}{\singleJVMDia{}} &
-%    \multicolumn{1}{c|}{\singleJVMClass{}} &
-    %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
+    & & \multicolumn{4}{c|}{\emph{Single JVM}} & \multicolumn{2}{c|}{\emph{Forked JVM}s} \\
     \cline{3-8}
-    & & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\Seq{}} & \multicolumn{1}{c|}{\ParClassSeqMeth{}} & \multicolumn{1}{c|}{\SeqClassParMeth{}} & \multicolumn{1}{c|}{\ParClassParMeth{}}\\     \hline 
-    camel (core) & 5979 & 75 & 70 & 0 & ! & ! & ! \\
+    & & \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}} &
+    \multicolumn{1}{c|}{\SeqClassParMeth{}} &
+    \multicolumn{1}{c|}{\ParClassParMeth{}} &
+    \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}} \\
     \hline
-    graphhopper & 1259 & 14 & 67 & 0 & 152 & 55 & 347 \\
     \hline
-    jetty (client) & 535 & 0 & 111 & 0 & 106** & 0 & 76** \\
+    \multicolumn{8}{|c|}{\emph{Longer executions}} \\
     \hline
-    jgit & 3364 & 1 & 79 & 0 & 75 & 57* & 99* \\
+    camel (core) & 5,979 & 0 & ! & ! & ! & 75 & 70 \\
     \hline
+    jetty (client) & 535 & 0 & 106** & 0 & 76** & 0 & 111 \\
+    \hline
+    jgit & 3,364 & 0 & 75 & 57* & 99* & 1 & 79 \\
+    \hline
+    okhttp & 1,525 & 0 & - & - & ! & 0 & ! \\    
+    \hline
+    \hline
+    \multicolumn{8}{|c|}{\emph{Shorter executions}} \\
+    \hline
+    graphhopper & 1,259 & 0 & 152 & 55 & 347 & 14 & 67 \\
+    \hline    
     junit4 & 791 & 0 & 0 & 0 & 0 & 0 & 0 \\
     \hline
-    okhttp & 1525 & 0 & ! & 0 & - & - & ! \\
     \hline
     retrofit & 261 & 0 & 1 & 0 & 1 & 0 & 1 \\
     \hline
   \end{tabular}
-  \caption{\label{table:failures}Number of flaky tests.}
+  \caption{\label{table:failures}Number of flaky tests obtained with
+    Maven's IRE (see Section~\ref{sec:detect-flakiness-build}) using
+    bound of \Fix{?}.\Fix{* = Contains a skipped test. I don't know
+      yet why a failing test may be skipped when it is executed
+      individually}\Fix{Reminder: To not be confused with Sequential
+      Flakiness. Sequential Flakiness must not be considered}}
 \end{table*}
-
-\Fix{* = Contains a skipped test. I don't know yet why a failing test may be skipped when it is executed individually}
-%% \begin{table*}[t]
-%%   \centering
-%%   \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
-%%     \hline
-%%     \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}}
-%%     &  \multicolumn{7}{c|}{\emph{\# Flaky tests}}\\
-%%     \cline{3-9}
-%%     & & Seq & Mod-1 & Mod-2 & Mod-3 & Mod-1 & Mod-2 & Mod-3 \\
-%%     \hline
-%%     jgit & 3364 & 4 & 239 & - & - & -  & - & - \\
-%%     \hline
-%%     jetty (client) & 5679 & - & 232  & - & - & - & - & - \\
-%%     \hline
-%%     camel (core) & 527 & - & 142 & - & - & - & - & - \\
-%%     \hline
-%%   \end{tabular}
-%\end{table*}
