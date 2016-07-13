@@ -22,8 +22,12 @@ rm -rf "$SAMPLE_HOME"
 
 echo "Running Experiment on subject \"$NAME\""
 for version in `ls $SAMPLE_HOME`; do
-    echo -e "\n\t* Running setup \"$version\""
-    echo -e "\t* Started: `date`\n"
-    ./flakiness_experiment.py "$NAME" "$SAMPLE_HOME/$version" "$TEST_PATH"
-    echo -e "\n\t* Finished: `date`\n"
+    OUTPUT_FILE="$BASE_DIR/$NAME-$version-summary.txt"
+    echo -e "\n\t* Running setup \"$version\"" >> $OUTPUT_FILE
+    echo -e "\t* Started: `date`\n" >> $OUTPUT_FILE
+    ./flakiness_experiment.py "$NAME" "$SAMPLE_HOME/$version" "$TEST_PATH" >> $OUTPUT_FILE
+    echo -e "\n\t* Finished: `date`\n" >> $OUTPUT_FILE
 done
+
+[[ ! -d outputs ]] && mkdir outputs
+mv *testLog* outputs

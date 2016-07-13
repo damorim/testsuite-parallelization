@@ -12,7 +12,7 @@ if [ ! -d "$SUBJECTS_HOME" ]; then
     exit 1
 fi
 
-./experiment.sh "$SUBJECTS_HOME/retrofit" "retrofit"
+#./experiment.sh "$SUBJECTS_HOME/retrofit" "retrofit"
 ./experiment.sh "$SUBJECTS_HOME/jgit" "org.eclipse.jgit.test"
 ./experiment.sh "$SUBJECTS_HOME/graphhopper" "core"
 ./experiment.sh "$SUBJECTS_HOME/jetty.project" "jetty-client"
