@@ -21,7 +21,7 @@
     \hline
     jetty (client) & 535 & 4m15.93s & - & 4m14.97s & - & - & - \\
     \hline
-    jgit & 3364 & - & - & 4m4.57s & - & - & - \\
+    jgit & 3364 & 1m29.78s & 0m47.23s & 4m4.57s & 1m42.51s & 1m23.79s & 1m21.17s \\
     \hline
     junit4 & 791 & 0m10.36s & - & 0m10.13s & - & - & - \\
     \hline
@@ -56,7 +56,7 @@
     \hline
     jetty (client) & 535 & 0 & - & 0 & - & - & - \\
     \hline
-    jgit & 3364 & - & - & 0 & - & - & - \\
+    jgit & 3364 & 1 & 79 & 0 & 75 & 57* & 99* \\
     \hline
     junit4 & 791 & 0 & - & 0 & - & - & - \\
     \hline
@@ -68,6 +68,7 @@
   \caption{\label{table:failures}Number of flaky tests.}
 \end{table*}
 
+\Fix{* = Contains a skipped test. I don't know yet why a failing test may be skipped when it is executed individually}
 %% \begin{table*}[t]
 %%   \centering
 %%   \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
