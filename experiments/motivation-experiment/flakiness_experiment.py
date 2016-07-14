@@ -41,14 +41,8 @@ class TestResults:
     def isIgnored(self, test):
         return test in self.ignored
 
-    def isFlaky(self, test):
-        return self.isFail(test) and self.isSuccess(test)
-
     def isFail(self, test):
         return test in self.failed
-
-    def isSuccess(self, test):
-        return test in self.passed
 
     def merge(self, other):
         tr = TestResults()
@@ -170,6 +164,15 @@ class FlakinessExperiment:
         print "Subject: \"{0}\"\nProject dir: \"{1}\"\nTest dir: \"{2}\"" \
                 .format(self.projectName, self.projectPath, self.testPath)
 
+    def _iterativeExecution(self, bound):
+        print "Finding Flaky tests with iterative execution (BOUND = {0})".format(bound)
+        results = TestResults()
+        testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog.txt")
+        for i in range(bound):
+            result = self.builder.test(testLogPath)
+            results.merge(result)
+        return results
+
     def run(self):
         print "Compiling project"
         os.chdir(self.projectPath)
@@ -177,8 +180,8 @@ class FlakinessExperiment:
 
         print "Running tests"
         os.chdir(self.testPath)
-        testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog.txt")
-        results = self.builder.test(testLogPath)
+
+        results = self._iterativeExecution(bound=5)
         print results
 
         if not len(results.failures()):
@@ -190,7 +193,7 @@ class FlakinessExperiment:
     def _checkFailures(self, failures):
         testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog-individual.txt")
 
-        RERUNS = 10
+        RERUNS = 5
 
         totalCnt = len(failures)
         failCnt = 0
