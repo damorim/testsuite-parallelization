@@ -38,8 +38,8 @@ class TestResults:
     def failures(self):
         return self.failed
 
-    def ignores(self):
-        return self.ignored
+    def isIgnored(self, test):
+        return test in self.ignored
 
     def isFlaky(self, test):
         return self.isFail(test) and self.isSuccess(test)
@@ -192,27 +192,23 @@ class FlakinessExperiment:
 
         RERUNS = 10
 
+        totalCnt = len(failures)
         failCnt = 0
-        flakyCnt= 0
         for test in failures:
             resultReruns = TestResults()
             for run in range(RERUNS):
                 result = self.builder.testIndividual(test, testLogPath)
-                if not len(result.ignores()) == 0:
-                    warning_msg = "WARNING: failed test \"{0}\" was skipped! Ignored"
+                if result.isIgnored(test):
+                    warning_msg = "WARNING: failed test \"{0}\" was skipped!"
                     print warning_msg.format(test)
+                    totalCnt -= 1
                     break
-                resultReruns = resultReruns.merge(result)
-                if resultReruns.isFlaky(test):
-                    flakyCnt += 1
+                if resultReruns.isFail(test):
+                    failCnt += 1
                     break
-            if resultReruns.isFail(test) and not resultReruns.isFlaky(test):
-                failCnt += 1
 
-        output = "FLAKINESS - All: {all}, Pass: {passes}, Fail: {fail}, Flaky: {flaky}"
-        totalCnt = len(failures)
-        passCnt= (totalCnt - (failCnt + flakyCnt))
-        print output.format(all=totalCnt, fail=failCnt, passes=passCnt, flaky=flakyCnt)
+        output = "PEF - All: {all}, Pass: {passes}, Fail: {fail}"
+        print output.format(all=totalCnt, fail=failCnt, passes=(totalCnt - failCnt))
 
 if __name__ == "__main__":
     projectName = argv[1]
