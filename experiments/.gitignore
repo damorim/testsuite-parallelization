@@ -1,5 +1,6 @@
 samples/
 subjects/
+outputs/
 
 *.pyc
 *.swp
