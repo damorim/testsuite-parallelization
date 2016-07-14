@@ -91,7 +91,7 @@ class MavenBuilder:
             startedTime = time.time()
             call(['mvn', '-Dmaven.javadoc.skip', 'test'], stdout=log, stderr=log)
             elapsedTime = time.time() - startedTime
-        print "Elapsed time: %2dm%.2f s" %(elapsedTime // 60,  elapsedTime % 60)
+        print "Elapsed time: {0}s".format(elapsedTime)
         return self._colectResults(reportsDir)
 
     def _setupReportDir(self):
