@@ -30,4 +30,4 @@ for version in `ls $SAMPLE_HOME`; do
 done
 
 [[ ! -d outputs ]] && mkdir outputs
-mv *testLog* outputs
+mv *.txt outputs
