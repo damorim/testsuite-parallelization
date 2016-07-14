@@ -38,11 +38,17 @@ class TestResults:
     def failures(self):
         return self.failed
 
-    def isIgnored(self, test):
-        return test in self.ignored
+    def ignores(self):
+        return self.ignored
+
+    def isFlaky(self, test):
+        return self.isFail(test) and self.isSuccess(test)
 
     def isFail(self, test):
         return test in self.failed
+
+    def isSuccess(self, test):
+        return test in self.passed
 
     def merge(self, other):
         tr = TestResults()
@@ -164,15 +170,6 @@ class FlakinessExperiment:
         print "Subject: \"{0}\"\nProject dir: \"{1}\"\nTest dir: \"{2}\"" \
                 .format(self.projectName, self.projectPath, self.testPath)
 
-    def _iterativeExecution(self, bound):
-        print "Finding Flaky tests with iterative execution (BOUND = {0})".format(bound)
-        results = TestResults()
-        testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog.txt")
-        for i in range(bound):
-            result = self.builder.test(testLogPath)
-            results.merge(result)
-        return results
-
     def run(self):
         print "Compiling project"
         os.chdir(self.projectPath)
@@ -180,8 +177,8 @@ class FlakinessExperiment:
 
         print "Running tests"
         os.chdir(self.testPath)
-
-        results = self._iterativeExecution(bound=5)
+        testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog.txt")
+        results = self.builder.test(testLogPath)
         print results
 
         if not len(results.failures()):
@@ -193,25 +190,29 @@ class FlakinessExperiment:
     def _checkFailures(self, failures):
         testLogPath = path.join(self.baseDir, self.logPrefix + "-testLog-individual.txt")
 
-        RERUNS = 5
+        RERUNS = 10
 
-        totalCnt = len(failures)
         failCnt = 0
+        flakyCnt= 0
         for test in failures:
             resultReruns = TestResults()
             for run in range(RERUNS):
                 result = self.builder.testIndividual(test, testLogPath)
-                if result.isIgnored(test):
-                    warning_msg = "WARNING: failed test \"{0}\" was skipped!"
+                if not len(result.ignores()) == 0:
+                    warning_msg = "WARNING: failed test \"{0}\" was skipped! Ignored"
                     print warning_msg.format(test)
-                    totalCnt -= 1
                     break
-                if resultReruns.isFail(test):
-                    failCnt += 1
+                resultReruns = resultReruns.merge(result)
+                if resultReruns.isFlaky(test):
+                    flakyCnt += 1
                     break
+            if resultReruns.isFail(test) and not resultReruns.isFlaky(test):
+                failCnt += 1
 
-        output = "PEF - All: {all}, Pass: {passes}, Fail: {fail}"
-        print output.format(all=totalCnt, fail=failCnt, passes=(totalCnt - failCnt))
+        output = "FLAKINESS - All: {all}, Pass: {passes}, Fail: {fail}, Flaky: {flaky}"
+        totalCnt = len(failures)
+        passCnt= (totalCnt - (failCnt + flakyCnt))
+        print output.format(all=totalCnt, fail=failCnt, passes=passCnt, flaky=flakyCnt)
 
 if __name__ == "__main__":
     projectName = argv[1]
