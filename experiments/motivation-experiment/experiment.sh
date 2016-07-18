@@ -48,3 +48,4 @@ for file in `ls $BUILD_FILES_HOME`; do
     } >> $OUTPUT_FILE
 
 done
+mv *-rerun.txt *-mvnrerun.txt *-exhaustive.txt logs
