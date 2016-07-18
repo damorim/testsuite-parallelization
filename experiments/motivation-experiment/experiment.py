@@ -87,7 +87,7 @@ test_path = path.join(project_root, test_rel_path)
 project_name = path.basename(project_root)
 
 timestamp = datetime.fromtimestamp(time()).strftime("%m%d%H%M")
-log_prefix = "{0}-{1}-{2}".format(project_name, versioni, timestamp)
+log_prefix = "{0}-{1}-{2}".format(project_name, version, timestamp)
 
 print_msg = "Setup:\nVersion: {0}\nProject Path: {1}\nTest Path:{2}"
 print print_msg.format(version, project_root, test_path)
