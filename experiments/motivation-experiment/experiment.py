@@ -165,7 +165,7 @@ while runs < BOUND:
     if len(failures) > old_size:
         exhausted = False
 
-    print "#{0}:".format(i), exhausted, report
+    print "#{0}: {1},".format(i, exhausted), report
 
     if exhausted:
         runs += 1
