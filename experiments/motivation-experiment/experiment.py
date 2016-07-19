@@ -23,6 +23,7 @@ BASE_DIR = path.abspath(os.curdir)
 BUILD_FILES_DIR = path.abspath(build_files_path)
 PROJECT_ROOT = path.abspath(project_path)
 TEST_PATH = path.join(PROJECT_ROOT, test_rel_path)
+REPORTS_DIR = path.join(TEST_PATH, 'target', 'surefire-reports')
 PROJECT_NAME = path.basename(PROJECT_ROOT)
 
 
@@ -63,12 +64,12 @@ class TestReport:
                               + len(self.ignored) + len(self.flaky))
 
 
-def collect_test_results(directory):
+def collect_test_results():
     report = TestReport()
-    xmlfiles = [ f for f in os.listdir(directory) if f.startswith('TEST') and f.endswith('.xml') ]
+    xmlfiles = [ f for f in os.listdir(REPORTS_DIR) if f.startswith('TEST') and f.endswith('.xml') ]
     hasChild = lambda n,t: n.find(t) is not None
     for xmlfile in xmlfiles:
-        root = et.parse(os.path.join(reports_dir, xmlfile)).getroot()
+        root = et.parse(os.path.join(REPORTS_DIR, xmlfile)).getroot()
         for tc in root.findall('testcase'):
             tcname = "{0}#{1}".format(tc.get('classname'), tc.get('name'))
             if not len(list(tc)):
@@ -90,13 +91,13 @@ def system_call(cmds, logpath=os.devnull):
         return elapsedtime
 
 
-def iterative_run(BOUND, reports_dir, log_file_path):
+def iterative_run(BOUND, log_file_path):
     print "\nIterative rerun [BOUND: {0}]".format(BOUND)
     elapsedtime = 0
     failures = set({})
     for rep in range(BOUND):
         elapsedtime =+ system_call(['mvn','-Dmaven.javadoc.skip','test'], log_file_path)
-        report = collect_test_results(reports_dir)
+        report = collect_test_results()
         print "#{0}:".format(rep + 1), report
         failures = failures.union(report.fail)
 
@@ -105,10 +106,10 @@ def iterative_run(BOUND, reports_dir, log_file_path):
     individual_fails = set({})
     for tc in failures:
         for i in range(BOUND):
-            rmtree(reports_dir)
+            rmtree(REPORTS_DIR)
             elapsedtime += system_call(['mvn', '-Dmaven.javadoc.skip', '-Dtest=' + tc,
                                         'test'], log_file_path)
-            report = collect_test_results(reports_dir)
+            report = collect_test_results()
             if len(report.fail):
                 individual_fails.add(tc)
                 break
@@ -118,17 +119,17 @@ def iterative_run(BOUND, reports_dir, log_file_path):
           "Fail:", len(individual_fails)
 
 
-def mvnrerun(BOUND, reports_dir, log_file_path):
+def mvnrerun(BOUND, log_file_path):
     print "\nMaven RERUN [BOUND: {0}]".format(BOUND)
     elapsedtime = system_call(['mvn', '-Dsurefire.rerunFailingTestsCount=' + str(BOUND),
                             '-Dmaven.javadoc.skip','test'], log_file_path)
 
     print "Elapsed time:", elapsedtime
-    report = collect_test_results(reports_dir)
+    report = collect_test_results()
     print report
 
 
-def exhaustive_run(BOUND, reports_dir, log_file_path):
+def exhaustive_run(BOUND, log_file_path):
     print "\nExhaustive execution [THRESHOLD: {0}]".format(BOUND)
     elapsedtime = 0
     failures = set({})
@@ -139,7 +140,7 @@ def exhaustive_run(BOUND, reports_dir, log_file_path):
         elapsedtime =+ system_call(['mvn','-Dmaven.javadoc.skip','test'], log_file_path)
 
         exhausted = True
-        report = collect_test_results(reports_dir)
+        report = collect_test_results()
         old_size = len(failures)
         failures = failures.union(report.fail)
         if len(failures) > old_size:
@@ -158,7 +159,7 @@ def exhaustive_run(BOUND, reports_dir, log_file_path):
             rmtree(reports_dir)
             elapsedtime += system_call(['mvn', '-Dmaven.javadoc.skip', '-Dtest=' + tc,
                                         'test'], log_file_path)
-            report = collect_test_results(reports_dir)
+            report = collect_test_results()
             if len(report.fail):
                 individual_fails.add(tc)
                 break
@@ -171,7 +172,6 @@ def exhaustive_run(BOUND, reports_dir, log_file_path):
 def flakiness_experiment():
     print "Checking flakiness"
 
-    reports_dir = path.join(TEST_PATH, 'target', 'surefire-reports')
     ignore = ['seq.xml']
 
     buildfiles = [ f for f in os.listdir(BUILD_FILES_DIR) ]
@@ -186,20 +186,20 @@ def flakiness_experiment():
 
             print "Testing version", version
 
-            rmtree(reports_dir)
+            rmtree(REPORTS_DIR)
             BOUND = 5
 
             # FIXME
             #log_file_path = log_file_path_prefix + "flakiness-mvnrerun.txtbb"
-            #mvnrerun(BOUND, reports_dir, log_file_path)
+            #mvnrerun(BOUND, log_file_path)
 
             #log_file_path = log_file_path_prefix + "flakiness-rerun.txt"
-            #rmtree(reports_dir)
-            #iterative_run(BOUND, reports_dir, log_file_path)
+            #rmtree(REPORTS_DIR)
+            #iterative_run(BOUND, log_file_path)
 
             #log_file_path = log_file_path_prefix + "flakiness-exhaustive.txt"
             #rmtree(reports_dir)
-            #exhaustive_run(BOUND, reports_dir, log_file_path)
+            #exhaustive_run(BOUND, log_file_path)
 
 
 def compare_elapsed_time():
@@ -222,14 +222,21 @@ def compare_elapsed_time():
         print "\t- Testing version", version,
         elapsedtime = system_call(['mvn', '-X', '-Dsurefire.timeout=1800',
                                    '-Dmaven.javadoc.skip', 'test'], log_path)
-        times[version] = elapsedtime
-        print "...Finished!"
+
+        # Timeout has occurred and no reports were generated
+        if not path.exists(REPORTS_DIR):
+            times[version] = -1
+            print "...TIMEOUT!"
+        else:
+            times[version] = elapsedtime
+            print "...Finished!"
+            rmtree(REPORTS_DIR)
 
     print "\nSeq, ParClasses, ParMethods, ParBoth, ForkSeq, ForkPar"
     print "{seq}, {parallel-classes}, {parallel-methods}, {parallel-both}, " \
           "{fork-only}, {fork-parallel}".format(**times)
 
-    speedup = lambda ts: "%.2fx" %(times['seq'] / ts)
+    speedup = lambda ts: "%.2fx" %(times['seq'] / ts) if ts > 0 else "TIMEOUT"
     labels = ['parallel-classes', 'parallel-methods', 'parallel-both',
               'fork-only', 'fork-parallel']
 
