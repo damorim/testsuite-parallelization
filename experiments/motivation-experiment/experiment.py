@@ -206,6 +206,8 @@ def compare_elapsed_time():
     print "Comparing elapsed times\n"
     times = {}
 
+    logpath = path.join(BASE_DIR, 'elapsedtime-log.txt')
+
     buildfiles = [ f for f in os.listdir(BUILD_FILES_DIR) ]
     for buildfile in buildfiles:
         buildfile_path = path.join(BUILD_FILES_DIR, buildfile)
@@ -216,9 +218,11 @@ def compare_elapsed_time():
         version = buildfile.replace(".xml", "")
 
         print "\t- Testing version", version,
-        elapsedtime = system_call(['mvn', '-Dmaven.javadoc.skip', 'test'])
+        elapsedtime = system_call(['mvn', '-Dmaven.javadoc.skip', 'test'], logpath)
         times[version] = elapsedtime
         print "...Finished!"
+
+    os.remove(logpath)
 
     print "\nSeq, ParClasses, ParMethods, ParBoth, ForkSeq, ForkPar"
     print "{seq}, {parallel-classes}, {parallel-methods}, {parallel-both}, " \
@@ -246,7 +250,7 @@ def compare_elapsed_time():
 # MAIN
 print "Compiling project"
 os.chdir(PROJECT_ROOT)
-system_call(['mvn','clean','install','-DskipTest','-Dmaven.javadoc.skip'])
+system_call(['mvn','clean','install','-DskipTests','-Dmaven.javadoc.skip'])
 
 os.chdir(TEST_PATH)
 
