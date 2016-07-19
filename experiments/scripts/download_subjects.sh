@@ -42,7 +42,7 @@ download_git "https://github.com/eclipse/jetty.project.git" "012a5864be5627bd321
 download_git "https://github.com/eclipse/vert.x.git" "edf61c5b7c4b4675bb9c69c4f44467d67faa03f7"
 download_git "https://github.com/eclipse/eclipse-collections.git" "c2e2effd20ca55334882ee653809ce1636a8ffcc"
 download_git "https://github.com/apache/camel.git" "8447297a23203be0a39dcb971ef2c3c0f0f7909f"
-download_git "https://github.com/junit-team/junit4.git" "64155f8a9babcfcf4263cf4d08253a1556e75481"
+download_git "https://github.com/junit-team/junit4.git" "41d44734f41aba0cf6ba5a11ff5d32ffed155027"
 download_git "https://github.com/cbeust/testng.git" "73fce4a63c6dc24a547c159e76af66fa0bb93e9f"
 
 echo "Downloads Finished"
