@@ -34,26 +34,34 @@ Table~\ref{table:failures}...\Fix{I expected ``Single JVM + L3'' to
     \hline
     \multicolumn{8}{|c|}{\emph{Longer executions}} \\
     \hline
-    camel (core) & 5,979 & 25m02s & - & - & 25m3.26s & 4m18.22s & 4m19.44s \\
+    camel-core & 5,683 & 24m:52s & 1.00x & 1.00x & 1.00x & 5.88x & 5.82x \\
     \hline
-    jetty (client) & 535 & 4m15s & 1m18.1s & 1m41.78s & 0m58.3s &  2m40.75s & 0m18.76s \\
+    jetty.project & 543 & 4m:14s & 2.41x & 2.97x & 5.61x & 2.44x & 13.70x \\
     \hline
-    jgit & 3,364 & 4m05s & 1m43s & 1m23.79s & 1m21.17s & 1m29.78s  & 0m47.23s \\      \hline
-    okhttp & 1,525 & 1m18s & - & - & ! & 0m25.07s & ! \\
+    jgit & 3,422 & 3m:59s & 2.68x & 2.37x & 1.95x & 2.31x & 4.50x \\
+    \hline
+    okhttp & 1545 & 1m:16s & crash I & crash II & crash II & 3.40x & TIMEOUT \\
     \hline    
     \hline
     \multicolumn{8}{|c|}{\emph{Shorter executions}} \\
     \hline
-    graphhopper & 1,259 & 14s & 0m13.9s & 0m16.24s & 0m30.5s & 0m7.82s & 0m10.43 s \\
+    graphhopper & 1,259 & 12s & 0.92x & 1.01x & 0.53x & 1.72x & 1.17x \\
     \hline
     junit4 & 791 & 10s & 0m10.08s & 0m10.32s & 0m10.49s & 0m10.13s & 0m9.96s \\
+    junit4** & <TESTCASES> & 10s & TIMEOUT & crash II & crash II & 0.99x & FIX \\
     \hline
-    retrofit & 261 & 7s & 0m5.81s & 0m4.89s & 0m5.22s & 0m5.51s & 0m5.23s \\
+    retrofit & 263 & 6s & 1.25x & 1.08x & 1.22x & 1.11x & 1.14x \\
     \hline
   \end{tabular}
   \caption{\label{table:cost}Test execution time.}
 \end{table*}
 
+\Fix{junit4 - need to look more carefully the log file}
+\Fix{FIX - I used a wrong configuration in the pom.xml file}
+\Fix{Camel - still couldn't find an explanation to unexpected behavior with parallel settings}
+\Fix{Crash I - Surefire internal error (NullPointerException)}
+\Fix{Crash II - JVM Crash (e.g. System.exit)}
+\Fix{TIMEOUT - Possibly a deadlock: Execution could not finish within 30min}
 
 \begin{table*}[t]
   \centering
