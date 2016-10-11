@@ -23,14 +23,16 @@ def run_tests_from(project):
     # FIXME: consider detecting build system instead of assuming Maven
     p = Popen(["mvn", "clean", "test"], stderr=PIPE, stdout=PIPE)
     stdout, stderr = p.communicate()
-    print("Return code:", p.returncode)
 
-    stderr = stderr.decode()
-    stdout = stdout.decode()
-    with open("stderr-log.txt", "w") as log:
-        log.write(stderr)
-    with open("stdout-log.txt", "w") as log:
-        log.write(stdout)
+    print("Return code:", p.returncode)
+    if not p.returncode:
+        stdout = stdout.decode()
+        with open("stdout-log.txt", "w") as log:
+            log.write(stdout)
+    else:
+        stderr = stderr.decode()
+        with open("stderr-log.txt", "w") as log:
+            log.write(stderr)
 
     os.chdir(working_dir)
 
