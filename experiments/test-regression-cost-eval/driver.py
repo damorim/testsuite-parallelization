@@ -5,7 +5,7 @@
 import os
 import json
 import urllib.request
-from subprocess import call, Popen, CalledProcessError, PIPE
+from subprocess import call, Popen, PIPE
 
 from ghwrappers.search import RepositoryQuery
 
@@ -17,13 +17,13 @@ def run(queryable):
 
 
 def run_tests_from(project):
-    print("Trying to run tests from {name}".format(name=project))
     working_dir = os.path.abspath(os.curdir)
     os.chdir(project)
 
     # FIXME: consider detecting build system instead of assuming Maven
     p = Popen(["mvn", "clean", "test"], stderr=PIPE, stdout=PIPE)
     stdout, stderr = p.communicate()
+    print("Return code:", p.returncode)
 
     stderr = stderr.decode()
     stdout = stdout.decode()
@@ -42,6 +42,7 @@ os.chdir("subjects")
 
 data = run(RepositoryQuery().lang("java").stars(">=100"))
 print("Total items from criteria:", data["total_count"])
+counter = 1
 for item in data["items"]:
     proj_name = item["name"]
     git_url = item["html_url"]
@@ -49,5 +50,9 @@ for item in data["items"]:
     if not os.path.exists(proj_name):
         call(["git", "clone", git_url])
 
+    print("{curr}/{total} - Trying to run tests from {name}".format(name=proj_name,
+                                                                    total=len(data["items"]),
+                                                                    curr=counter))
     run_tests_from(proj_name)
+    counter += 1
 
