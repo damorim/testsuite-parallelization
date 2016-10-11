@@ -11,6 +11,7 @@ from ghwrappers.search import RepositoryQuery
 
 
 def run(queryable):
+    # FIXME: Consider handling pagination
     with urllib.request.urlopen(queryable.query()) as response:
         return json.loads(response.read().decode())
 
