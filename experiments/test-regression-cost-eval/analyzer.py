@@ -26,6 +26,7 @@ def check(subject):
 
     csv_line = []
     csv_line.append(subject)
+    csv_line.append(str(builder))
     csv_line.append(str(compiled))
     csv_line.append(str(tested))
     csv_line.append(elapsed_time)
@@ -36,11 +37,11 @@ def check(subject):
 
 if __name__ == "__main__":
     # Limit execution
-    max_rows = 5
+    max_rows = None
 
     with open(TIMECOST_CSV_FILE, "w") as timecost:
-        timecost.write(COLUMN_SEP.join(["SUBJECT", "COMPILED", "TESTS_PASS",
-                                        "ELAPSED_TIME"]))
+        timecost.write(COLUMN_SEP.join(["SUBJECT", "BUILDER", "COMPILED",
+                                        "TESTS_PASS", "ELAPSED_TIME"]))
         timecost.write("\n")
 
     with open(SUBJECTS_CSV_FILE, newline="") as subjects:
@@ -49,7 +50,6 @@ if __name__ == "__main__":
         for row in reader:
             if max_rows and cur_row > max_rows:
                 break
-
             project = row["SUBJECT"]
             if not row["BUILDER"] == "N/A":
                 print("Checking", project)
