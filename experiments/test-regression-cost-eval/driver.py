@@ -11,12 +11,16 @@ from urllib.error import HTTPError
 import helpers
 from ghwrappers.search import RepositoryQuery
 
-
 RAW_DATA_DIR = os.path.abspath(os.curdir)
-CSV_FILE = os.path.join(RAW_DATA_DIR, "timecost.csv")
+TIMECOST_CSV_FILE = os.path.join(RAW_DATA_DIR, "timecost.csv")
 COLUMN_SEP = ", "
 
+
 def run(queryable, callback=None):
+    """
+    This routine executes the given query and send the output data
+    to a callback function (if any).
+    """
     url = queryable.query()
     print(url)
     with urllib.request.urlopen(queryable.query()) as response:
@@ -26,6 +30,9 @@ def run(queryable, callback=None):
 
 
 def analyze(data):
+    """
+    Callback function
+    """
     for item in data["items"]:
         proj_name = item["name"]
         git_url = item["html_url"]
@@ -67,7 +74,7 @@ def analyze(data):
         log_info.append(str(tested))
         log_info.append(elapsed_time)
 
-        with open(CSV_FILE, "a") as csv:
+        with open(TIMECOST_CSV_FILE, "a") as csv:
             csv.write(COLUMN_SEP.join(log_info))
             csv.write("\n")
 
@@ -77,17 +84,27 @@ if __name__ == "__main__":
         os.mkdir("subjects")
 
     os.chdir("subjects")
-    with open(CSV_FILE, "w") as csv:
+    with open(TIMECOST_CSV_FILE, "w") as csv:
         csv.write(COLUMN_SEP.join(["SUBJECT", "URL", "VERSION", "BUILDER",
-                                   "COMPILED", "TESTED", "ELAPSED_TIME"]))
+                                   "COMPILED", "TESTS_PASSED", "ELAPSED_TIME"]))
         csv.write("\n")
 
-    MAX_PAGES = 3
+    max_pages = 1
+    current_page = 0
+    page_size = 5
     try:
-        for page in range(1, MAX_PAGES+1):
-            print("Processing page", page)
-            run(RepositoryQuery().lang("java").stars(">=100").at(page), analyze)
-            page += 1
+        while True:
+            current_page += 1
+            if max_pages and current_page > max_pages:
+                break
+            print("Processing page", current_page)
+            run(RepositoryQuery().lang("java")
+                                 .stars(">=100")
+                                 .at(current_page)
+                                 .size(page_size), analyze)
+
     except HTTPError as err:
         print(err)
+        print("Github API Query has exhausted")
+        print("Total pages:", current_page)
 

@@ -6,6 +6,8 @@
 class Paginatable:
     def at(self, page):
         pass
+    def size(self, page_size):
+        pass
 
 class Queryable:
     def query(self):
@@ -14,6 +16,7 @@ class Queryable:
 class RepositoryQuery(Queryable, Paginatable):
     def __init__(self):
         self._API_URL = "https://api.github.com/search/repositories"
+        self._page_size = 10
         self._page = 1
         self._params = {"q": [],
                         "sort": None,
@@ -35,13 +38,18 @@ class RepositoryQuery(Queryable, Paginatable):
         self._page = page
         return self
 
+    def size(self, page_size):
+        self._page_size = page_size
+        return self
+
     def query(self):
         qfield = "+".join(self._params["q"])
         url = "{base}?q={query_field}".format(base=self._API_URL,
                                               query_field=qfield)
-        if self._page:
-            url = "{prefix}&page={page}".format(prefix=url,
-                                                page=self._page)
+
+        url = "{prefix}&page={page}&per_page={sz}".format(prefix=url,
+                                                          page=self._page,
+                                                          sz=self._page_size)
 
         return url
 
