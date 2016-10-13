@@ -3,6 +3,7 @@
 # Author: Jeanderson Candido
 #
 import os
+from time import time
 from subprocess import Popen, PIPE, TimeoutExpired
 
 class Builder:
@@ -16,12 +17,15 @@ class Builder:
 
 
 class Maven(Builder):
+    def __init__(self):
+        self._test_time = 0
+
     def compile(self):
         p = Popen(["mvn", "clean", "install", "-DskipTests",
                    "-Dmaven.javadoc.skip=true"], stdout=PIPE, stderr=PIPE)
         print("Compiling. PID =", p.pid)
         try:
-            stdout_raw, stderr_raw = p.communicate(timeout=60*10)
+            stdout_raw, stderr_raw = p.communicate(timeout=60*15)
         except TimeoutExpired:
             p.kill()
             stdout_raw, stderr_raw = p.communicate()
@@ -35,10 +39,13 @@ class Maven(Builder):
         return False if p.returncode else True
 
     def test(self):
+        init = time()
         p = Popen(["mvn", "test", "-Dmaven.javadoc.skip=true"],
                    stdout=PIPE, stderr=PIPE)
         print("Testing. PID =", p.pid)
         stdout_raw, stderr_raw = p.communicate()
+        self._test_time = time() - init
+
         with open("test-log", "w") as log:
             log.write(stdout_raw.decode())
             if stderr_raw:
@@ -46,18 +53,26 @@ class Maven(Builder):
                 log.write(stderr_raw.decode())
 
         return False if p.returncode else True
+
+    def test_elapsed_time(self):
+        if self._test_time <= 60:
+            return "%ds" % (self._test_time)
+        return "%dm%ds" % (self._test_time // 60, self._test_time % 60)
 
     def __str__(self):
         return "Maven"
 
 
 class Gradle(Builder):
+    def __init__(self):
+        self._test_time = 0
+
     def compile(self):
         p = Popen(["./gradlew", "build", "-x", "test" "javadoc"],
                    stdout=PIPE, stderr=PIPE)
         print("Compiling. PID =", p.pid)
         try:
-            stdout_raw, stderr_raw = p.communicate(timeout=60*10)
+            stdout_raw, stderr_raw = p.communicate(timeout=60*15)
         except TimeoutExpired:
             p.kill()
             stdout_raw, stderr_raw = p.communicate()
@@ -71,10 +86,13 @@ class Gradle(Builder):
         return False if p.returncode else True
 
     def test(self):
+        init = time()
         p = Popen(["./gradlew", "test", "-x", "javadoc"],
                    stdout=PIPE, stderr=PIPE)
         print("Testing. PID =", p.pid)
         stdout_raw, stderr_raw = p.communicate()
+        self._test_time = time() - init
+
         with open("test-log", "w") as log:
             log.write(stdout_raw.decode())
             if stderr_raw:
@@ -82,6 +100,11 @@ class Gradle(Builder):
                 log.write(stderr_raw.decode())
 
         return False if p.returncode else True
+
+    def test_elapsed_time(self):
+        if self._test_time <= 60:
+            return "%ds" % (self._test_time)
+        return "%dm%ds" % (self._test_time // 60, self._test_time % 60)
 
     def __str__(self):
         return "Gradle"
