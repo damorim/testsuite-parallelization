@@ -44,7 +44,6 @@ def analyze(data):
 
         print("Subject:", proj_name)
         try:
-            raise Exception
             builder = helpers.detect_build_system()
             compiled = builder.compile()
             tested = False if not compiled else builder.test()
@@ -83,7 +82,7 @@ if __name__ == "__main__":
                                    "COMPILED", "TESTED", "ELAPSED_TIME"]))
         csv.write("\n")
 
-    MAX_PAGES = 2
+    MAX_PAGES = 3
     try:
         for page in range(1, MAX_PAGES+1):
             print("Processing page", page)
