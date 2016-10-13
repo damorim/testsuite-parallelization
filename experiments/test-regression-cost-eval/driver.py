@@ -6,39 +6,27 @@ import os
 import json
 import urllib.request
 from subprocess import call, check_output
+from urllib.error import HTTPError
 
 import helpers
 from ghwrappers.search import RepositoryQuery
 
 
 RAW_DATA_DIR = os.path.abspath(os.curdir)
-
-# FIXME temporary flag to limit execution
-MAX_PROJECTS = 5
+CSV_FILE = os.path.join(RAW_DATA_DIR, "subjects-data.csv")
+COLUMN_SEP = ", "
 
 def run(queryable, callback=None):
-    # FIXME: Consider handling pagination
+    url = queryable.query()
+    print(url)
     with urllib.request.urlopen(queryable.query()) as response:
         data = json.loads(response.read().decode())
-        print("Total items from criteria:", data["total_count"], "\n")
         if callback:
             callback(data)
 
 
 def analyze(data):
-    column_sep = ", "
-    csv_file = os.path.join(RAW_DATA_DIR, "subjects-data.csv")
-
-    with open(csv_file, "w") as csv:
-        csv.write(column_sep.join(["SUBJECT", "URL", "VERSION", "BUILDER",
-                                   "COMPILED", "TESTED", "ELAPSED_TIME"]))
-        csv.write("\n")
-
-    item_counter = 1
     for item in data["items"]:
-        if item_counter > MAX_PROJECTS:
-            break
-
         proj_name = item["name"]
         git_url = item["html_url"]
 
@@ -54,8 +42,9 @@ def analyze(data):
         commit_ver_raw = check_output(["git", "rev-parse", "HEAD"])
         commit_ver = commit_ver_raw.decode().strip()
 
-        print("{id}) {subj}".format(id=item_counter, subj=proj_name))
+        print("Subject:", proj_name)
         try:
+            raise Exception
             builder = helpers.detect_build_system()
             compiled = builder.compile()
             tested = False if not compiled else builder.test()
@@ -79,11 +68,9 @@ def analyze(data):
         log_info.append(str(tested))
         log_info.append(elapsed_time)
 
-        with open(csv_file, "a") as csv:
-            csv.write(column_sep.join(log_info))
+        with open(CSV_FILE, "a") as csv:
+            csv.write(COLUMN_SEP.join(log_info))
             csv.write("\n")
-
-        item_counter += 1
 
 
 if __name__ == "__main__":
@@ -91,5 +78,17 @@ if __name__ == "__main__":
         os.mkdir("subjects")
 
     os.chdir("subjects")
+    with open(CSV_FILE, "w") as csv:
+        csv.write(COLUMN_SEP.join(["SUBJECT", "URL", "VERSION", "BUILDER",
+                                   "COMPILED", "TESTED", "ELAPSED_TIME"]))
+        csv.write("\n")
 
-    run(RepositoryQuery().lang("java").stars(">=100"), analyze)
+    MAX_PAGES = 2
+    try:
+        for page in range(1, MAX_PAGES+1):
+            print("Processing page", page)
+            run(RepositoryQuery().lang("java").stars(">=100").at(page), analyze)
+            page += 1
+    except HTTPError as err:
+        print(err)
+
