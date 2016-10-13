@@ -48,8 +48,8 @@ class Maven(Builder):
 
         with open("test-log", "w") as log:
             log.write(stdout_raw.decode())
-            if stderr_raw:
-                log.write("----SDTERR----\n")
+        if stderr_raw:
+            with open("test-log-err", "w") as log:
                 log.write(stderr_raw.decode())
 
         return False if p.returncode else True
@@ -95,8 +95,8 @@ class Gradle(Builder):
 
         with open("test-log", "w") as log:
             log.write(stdout_raw.decode())
-            if stderr_raw:
-                log.write("----SDTERR----\n")
+        if stderr_raw:
+            with open("test-log-err", "w") as log:
                 log.write(stderr_raw.decode())
 
         return False if p.returncode else True
@@ -126,11 +126,11 @@ def detect_build_system():
     If this routine can't determine the build system, N/A is returned
     """
     if os.path.exists("pom.xml"):
-        return str(Maven())
+        return Maven()
     elif os.path.exists("build.xml"):
-        return str(Ant())
+        return Ant()
     elif os.path.exists("gradlew"):
-        return str(Gradle())
+        return Gradle()
 
     return "N/A"
 
