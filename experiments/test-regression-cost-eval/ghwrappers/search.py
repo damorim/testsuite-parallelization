@@ -14,25 +14,12 @@ class Queryable:
         pass
 
 class RepositoryQuery(Queryable, Paginatable):
-    def __init__(self):
+    def __init__(self, criteria):
         self._API_URL = "https://api.github.com/search/repositories"
-        self._page_size = 10
-        self._page = 1
-        self._params = {"q": [],
-                        "sort": None,
-                        "order": None}
+        self._criteria = criteria
 
-    def lang(self, criteria):
-        self._params["q"].append("language:{0}".format(criteria))
-        return self
-
-    def stars(self, criteria):
-        self._params["q"].append("stars:{0}".format(criteria))
-        return self
-
-    def stars(self, criteria):
-        self._params["q"].append("stars:{0}".format(criteria))
-        return self
+        self._page_size = None
+        self._page = None
 
     def at(self, page):
         self._page = page
@@ -43,13 +30,19 @@ class RepositoryQuery(Queryable, Paginatable):
         return self
 
     def query(self):
-        qfield = "+".join(self._params["q"])
+        query_args = []
+        for k, v in self._criteria.items():
+            query_args.append("{}:{}".format(k, v))
+
+        qfield = "+".join(query_args)
+
         url = "{base}?q={query_field}".format(base=self._API_URL,
                                               query_field=qfield)
 
-        url = "{prefix}&page={page}&per_page={sz}".format(prefix=url,
-                                                          page=self._page,
-                                                          sz=self._page_size)
+        if self._page:
+            url = "{prefix}&page={page}".format(prefix=url,page=self._page)
+        if self._page_size:
+            url = "{prefix}&per_page={sz}".format(prefix=url, sz=self._page_size)
 
         return url
 

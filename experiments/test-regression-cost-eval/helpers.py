@@ -123,15 +123,14 @@ def detect_build_system():
     if the project has support to multiple build systems, it gives
     preferences in the following order: Maven > Ant > Gradle
 
-    If this routine can't determine the build system, an exception
-    is raised.
+    If this routine can't determine the build system, N/A is returned
     """
     if os.path.exists("pom.xml"):
-        return Maven()
+        return str(Maven())
     elif os.path.exists("build.xml"):
-        return Ant()
+        return str(Ant())
     elif os.path.exists("gradlew"):
-        return Gradle()
+        return str(Gradle())
 
-    raise Exception("Could not determine build system")
+    return "N/A"
 
