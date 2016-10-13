@@ -13,7 +13,7 @@ from ghwrappers.search import RepositoryQuery
 
 
 RAW_DATA_DIR = os.path.abspath(os.curdir)
-CSV_FILE = os.path.join(RAW_DATA_DIR, "subjects-data.csv")
+CSV_FILE = os.path.join(RAW_DATA_DIR, "timecost.csv")
 COLUMN_SEP = ", "
 
 def run(queryable, callback=None):
