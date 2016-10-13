@@ -11,7 +11,10 @@ from urllib.error import HTTPError
 import helpers
 from ghwrappers.search import RepositoryQuery
 
-RAW_DATA_DIR = os.path.abspath(os.curdir)
+BASE_DIR = os.path.abspath(os.curdir)
+RAW_DATA_DIR = BASE_DIR
+SUBJECT_DIR = os.path.join(os.path.abspath(os.curdir, "subjects")
+
 TIMECOST_CSV_FILE = os.path.join(RAW_DATA_DIR, "timecost.csv")
 SUBJECTS_CSV_FILE = os.path.join(RAW_DATA_DIR, "subjects.csv")
 COLUMN_SEP = ", "
@@ -79,10 +82,10 @@ def download(data):
 
 
 if __name__ == "__main__":
-    if not os.path.exists("subjects"):
-        os.mkdir("subjects")
+    if not os.path.exists(SUBJECT_DIR):
+        os.mkdir(SUBJECT_DIR)
 
-    os.chdir("subjects")
+    os.chdir(SUBJECT_DIR)
     with open(SUBJECTS_CSV_FILE, "w") as csv:
         csv.write(COLUMN_SEP.join(["SUBJECT", "URL", "VERSION", "BUILDER"]))
         csv.write("\n")
@@ -96,7 +99,9 @@ if __name__ == "__main__":
             if max_pages and current_page > max_pages:
                 break
             print("Processing page", current_page)
-            criteria = {"language": "java", "stars": ">=100"}
+            criteria = {"language": "java",
+                        "stars": ">=100"}
+
             run(RepositoryQuery(criteria).at(current_page)
                                          .size(page_size), download)
 
