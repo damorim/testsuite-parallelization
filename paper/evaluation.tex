@@ -36,12 +36,19 @@ To evaluate the cost of test execution, we first compiled the project
 and test source files, later, we measured the elapsed time to run the
 tests via the build system. We ignored non-related tasks such as
 \emph{javadoc} generation.  We grouped the resulting time from test
-execution in four different groups: (1) tests that ran in less than
-one minute, (2) one to five minutes, (3) five to ten minutes, and (4)
-more than ten minutes to execute. Figure \Fix{x} shows the
-distribution of subjects per group. It is important to mention that
-Figure \Fix{x} represents a lower bound for elapsed time: since the
-subjects were tested in a potentially unstable revision, some tests
-may fail, interrupting the execution.
+execution in four different groups: tests that ran in less than one
+minute (group A), one to five minutes (group B), five to ten minutes
+(group C), and more than ten minutes to execute (group D).
+Figure~\ref{fig:timecost-barplot} shows the distribution of subjects
+per group. It is important to mention that
+Figure~\ref{fig:timecost-barplot} represents a lower bound for elapsed
+time: since the subjects were tested in a potentially unstable
+revision, some tests may fail, interrupting the execution.
 
-\Fix{Histogram to appear}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.5\textwidth]{plots/timecost-barplot/timecost-barplot.pdf}
+    \caption{\Fix{...}}
+    \label{fig:timecost-barplot}
+\end{figure}
+
