@@ -1,5 +1,5 @@
 #!/bin/bash
-RAW_DATA_PATH=$1
+RAW_DATA_PATH=../../../experiments/test-regression-cost-eval/timecost.csv
 if [ -z $RAW_DATA_PATH ]; then
     echo "Missing raw data path!"
     exit 1
