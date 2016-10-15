@@ -40,9 +40,11 @@ class Maven(Builder):
 
     def test(self):
         init = time()
-        p = Popen(["mvn", "test", "-Dmaven.javadoc.skip=true"],
+        p = Popen(["/usr/bin/time" "-ao", "statistics-exec.txt", "-v",
+                   "mvn", "test", "-Dmaven.javadoc.skip=true"],
                    stdout=PIPE, stderr=PIPE)
-        print("Testing. PID =", p.pid)
+
+        print("Testing (use 'pstree -p $PID' to inspect). PID =", p.pid)
         stdout_raw, stderr_raw = p.communicate()
         self._test_time = time() - init
 
