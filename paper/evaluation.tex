@@ -16,17 +16,32 @@ The first research question \Fix{...}
 
 We used the Github's Search API to fetch the top 1.000 projects in
 Java with at least 100 stars. The number of stars indicates the
-interest and appreciation from the community to a project.
+interest and appreciation from the community to a given project.
 \Comment{(https://help.github.com/articles/about-stars/)} Although our
 criteria is subjective, it is an approximation for relevant projects
-to conduct our study. From the 1.000 downloaded projects, \Fix{N}
-compiled.  \Fix{...}
+to conduct our study. For each project, we detected the build manager
+system based on the files located in the root directory from the
+project in the following precedence: \textsc{Maven} if there is a
+\emph{pom.xml} file; \textsc{Gradle} if there is a \emph{gradlew}
+file; \textsc{Ant} if there is a \emph{build.xml} file;. From the
+1.000 downloaded projects, we automatically detected the build system
+from 806 subjects and selected \Fix{154} projects that we were able to
+compile.  The full list of subjects is publicly available at
+\Fix{...}.
 
+\subsection{Cost of regression test}
+\label{sec:timecost}
 
-%% We downloaded the first 1.000 relevant projects from GitHub in Java
-%% ranked by the number of \emph{stars}. On Github, the number of stars
-%% indicate by the number of stars: each project We believe that this
-%% criteria, although subjective, is an approximation for relevant
-%% projects to conduct our study: the number of stars indicate popularity
-%% and the number of forks is an indicator of collaborators.
+To evaluate the cost of test execution, we first compiled the project
+and test source files, later, we measured the elapsed time to run the
+tests via the build system. We ignored non-related tasks such as
+\emph{javadoc} generation.  We grouped the resulting time from test
+execution in four different groups: (1) tests that ran in less than
+one minute, (2) one to five minutes, (3) five to ten minutes, and (4)
+more than ten minutes to execute. Figure \Fix{x} shows the
+distribution of subjects per group. It is important to mention that
+Figure \Fix{x} represents a lower bound for elapsed time: since the
+subjects were tested in a potentially unstable revision, some tests
+may fail, interrupting the execution.
 
+\Fix{Histogram to appear}
