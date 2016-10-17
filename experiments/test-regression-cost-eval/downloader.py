@@ -8,8 +8,8 @@ import urllib.request
 from subprocess import call, check_output
 from urllib.error import HTTPError
 
-from constants import SUBJECT_DIR, SUBJECTS_CSV_FILE, COLUMN_SEP, SUBJECTS_CSV_HEADER_FIELDS
 from ghwrappers.search import RepositoryQuery
+from support.constants import SUBJECT_DIR, SUBJECTS_CSV_FILE, COLUMN_SEP, SUBJECTS_CSV_HEADER_FIELDS
 
 
 def download_from_github():
