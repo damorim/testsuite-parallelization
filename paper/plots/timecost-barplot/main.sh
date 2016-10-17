@@ -5,4 +5,4 @@ if [ -z $RAW_DATA_PATH ]; then
     exit 1
 fi
 ./gendata.py "$RAW_DATA_PATH"
-./genplot.sh "timecost-groups.csv"
+./genplot.sh

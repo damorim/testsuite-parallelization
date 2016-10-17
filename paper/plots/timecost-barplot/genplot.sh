@@ -1,3 +1,3 @@
 #!/bin/bash
-DATA_PATH=$1
+DATA_PATH="timecost-groups.csv"
 R --vanilla < script.r --args $DATA_PATH
