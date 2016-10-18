@@ -48,7 +48,7 @@ class Maven(AbstractBuilder):
             if line.startswith("Results :"):
                 for j in range(len(output)):
                     test_line = output[i + j]
-                    if "run" in test_line:
+                    if "Tests run" in test_line:
                         total += int(re.sub(",.*", "", re.sub("Tests run: ", "", test_line)))
                         break
         if data:
