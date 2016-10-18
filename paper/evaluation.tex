@@ -1,15 +1,36 @@
 \section{Evaluation}
+\label{sec:eval}
 
-We pose the following research questions:
+We evaluated the characteristics of regression tests in open-source
+development from a sample set of Java projects from Github. We pose
+the following research questions:
 
 \newcommand{\RQONE}{\textbf{RQ1.}}
-\newcommand{\rqOne}{\RQONE{}~\Fix{Regression-test cost}}
+\newcommand{\rqOne}{\RQONE{} \Fix{How prevalent is the occurence of costly
+regression tests?}}
+
+\newcommand{\RQTWO}{\textbf{RQ2.}}
+\newcommand{\rqTwo}{\RQTWO{} \Fix{...}}
+
+\newcommand{\RQTHREE}{\textbf{RQ3.}}
+\newcommand{\rqThree}{\RQTHREE{} \Fix{...}}
+
+\newcommand{\RQFOUR}{\textbf{RQ4.}}
+\newcommand{\rqFour}{\RQFOUR{} How often developers use \Fix{...} to
+improve performance on test execution?}
+
+\newcommand{\RQFIVE}{\textbf{RQ5.}}
+\newcommand{\rqFive}{\RQFIVE{} \Fix{...}}
 
 \begin{itemize}
     \item \rqOne
+    \item \rqTwo
+    \item \rqThree
+    \item \rqFour
+    \item \rqFive
 \end{itemize}
 
-The first research question \Fix{...}
+\Fix{describe what I'm looking for with these RQs}
 
 \subsection{Subjects}
 \label{sec:subjects}
@@ -20,21 +41,21 @@ interest and appreciation from the community to a given project.
 \Comment{(https://help.github.com/articles/about-stars/)} Although our
 criteria is subjective, it is an approximation for relevant projects
 to conduct our study. For each project, we detected the build manager
-system based on the files located in the root directory from the
-project in the following precedence: \textsc{Maven} if there is a
-\emph{pom.xml} file; \textsc{Gradle} if there is a \emph{gradlew}
-file; \textsc{Ant} if there is a \emph{build.xml} file;. From the
-1.000 downloaded projects, we automatically detected the build system
-from 806 subjects and selected \Fix{154} projects that we were able to
+system based on the files located in the root directory (\eg,
+\emph{pom.xml}) from the project in the following precedence:
+\textsc{Maven}, \textsc{Gradle}, and \textsc{Ant}. From the 1.000
+downloaded projects, we automatically detected the build system from
+806 subjects and selected the \Fix{154} projects that we were able to
 compile.  The full list of subjects is publicly available at
 \Fix{...}.
 
-\subsection{Cost of regression test}
-\label{sec:timecost}
+\subsection{Results}
+\label{sec:results}
 
-To evaluate the cost of test execution, we first compiled the project
-and test source files, later, we measured the elapsed time to run the
-tests via the build system ignoring non-related tasks (\eg,
+\RQONE{} To evaluate the frequency of costly \Jbc{How to define
+"costly" in terms of time?}regression tests, we first compiled the
+project and test source files, later, we measured the elapsed time to
+run the tests via the build system ignoring non-related tasks (\eg,
 \emph{javadoc} generation).  We grouped the resulting time from test
 executions in four different groups: tests that ran in less than one
 minute (group A), one to five minutes (group B), five to ten minutes
@@ -45,13 +66,24 @@ Figure~\ref{fig:timecost-barplot} represents a lower bound for elapsed
 time: since the subjects were tested in a potentially unstable
 revision, some tests may fail, interrupting the execution.
 
-\begin{figure}[t]
-    \begin{center}
-        \includegraphics[width=0.5\textwidth]{plots/timecost-barplot/timecost-barplot.pdf}
-        \caption{\Fix{Subjects grouped by elapsed time on test execution ($t$):
-        group A ($t < 1m$), group B ($1m \leq t < 5m$), group C ($5m \leq t <
-        10m$(, group D ($10m \leq t$)}}
-    \end{center}
-    \label{fig:timecost-barplot}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{plots/timecost-barplot/timecost-barplot.pdf}
+    \caption{\label{fig:timecost-barplot} \Fix{Subjects grouped by
+        elapsed time on test execution ($t$): group A ($t < 1m$), group B
+        ($1m \leq t < 5m$), group C ($5m \leq t < 10m$), group D ($10m \leq t$)}}
 \end{figure}
 
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{plots/teststime-scatter/timetests-scatter.pdf}
+    \caption{\label{fig:timetests-scatter} \Fix{...}}
+\end{figure}
+
+\RQTWO{} \Fix{to appear...}
+
+\RQTHREE{} \Fix{to appear...}
+
+\RQFOUR{} \Fix{to appear...}
+
+\RQFIVE{} \Fix{to appear...}

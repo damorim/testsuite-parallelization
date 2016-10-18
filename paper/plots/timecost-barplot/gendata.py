@@ -15,14 +15,7 @@ if __name__ == "__main__":
         reader = csv.DictReader(f)
         for row in reader:
             if row["COMPILED"] == "True":
-                elapsed_time_raw = row["ELAPSED_TIME"]
-
-                time = elapsed_time_raw.replace("s","")
-                if "m" in elapsed_time_raw:
-                    tfields = time.split("m")
-                    seconds = (int(tfields[0]) * 60) + int(tfields[1])
-                else:
-                    seconds = int(time)
+                seconds = float(row["ELAPSED_T"])
                 
                 # Group 1: t < 1m
                 if seconds < 60:
