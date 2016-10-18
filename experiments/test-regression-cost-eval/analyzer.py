@@ -38,7 +38,7 @@ def register_data_from(project):
 def main():
     # Execution configuration
     max_rows = None
-    init_row = 336
+    init_row = None
     skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop'] #FIXME ignoring just to get output faster
 
     if not init_row:
@@ -66,7 +66,7 @@ def main():
                 register_data_from(project)
                 row_counter += 1
 
-    # FIXME REMOVE ME
+    # FIXME REMOVE ME (temporary code)
     print("Running skipped subjects....")
     for p in skip_subjects:
         print("Checking", p)
