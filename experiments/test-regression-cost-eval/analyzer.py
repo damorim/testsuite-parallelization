@@ -32,6 +32,7 @@ def inspect(subject):
 def main():
     # Limit execution
     max_rows = None
+    init_row = None
 
     with open(TIMECOST_CSV_FILE, "w") as timecost:
         timecost.write(COLUMN_SEP.join(["SUBJECT", "BUILDER", "COMPILED", "TESTS_PASS", "ELAPSED_T",
@@ -40,10 +41,16 @@ def main():
 
     with open(SUBJECTS_CSV_FILE, newline="") as subjects:
         reader = csv.DictReader(subjects)
-        cur_row = 1
+        row_counter = 1
+        cur_row = 2
         for row in reader:
-            if max_rows and cur_row > max_rows:
+            if init_row and cur_row < init_row:
+                cur_row += 1
+                continue
+
+            if max_rows and row_counter > max_rows:
                 break
+
             project = row["SUBJECT"]
             print("Checking", project)
             csv_line = inspect(project)
@@ -51,6 +58,7 @@ def main():
                 timecost.write(COLUMN_SEP.join(csv_line))
                 timecost.write("\n")
             cur_row += 1
+            row_counter += 1
 
 
 if __name__ == "__main__":
