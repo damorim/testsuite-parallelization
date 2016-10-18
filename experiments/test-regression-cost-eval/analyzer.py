@@ -30,9 +30,10 @@ def inspect(subject):
 
 
 def main():
-    # Limit execution
+    # Execution configuration
     max_rows = None
     init_row = None
+    skip_subjects = ['hadoop'] #FIXME ignoring just to get output faster
 
     with open(TIMECOST_CSV_FILE, "w") as timecost:
         timecost.write(COLUMN_SEP.join(["SUBJECT", "BUILDER", "COMPILED", "TESTS_PASS", "ELAPSED_T",
@@ -41,6 +42,7 @@ def main():
 
     with open(SUBJECTS_CSV_FILE, newline="") as subjects:
         reader = csv.DictReader(subjects)
+
         row_counter = 1
         cur_row = 2
         for row in reader:
@@ -52,13 +54,13 @@ def main():
                 break
 
             project = row["SUBJECT"]
-            print("Checking", project)
-            csv_line = inspect(project)
-            with open(TIMECOST_CSV_FILE, "a") as timecost:
-                timecost.write(COLUMN_SEP.join(csv_line))
-                timecost.write("\n")
-            cur_row += 1
-            row_counter += 1
+            if not project in skip_subjects:
+                print("Checking", project)
+                csv_line = inspect(project)
+                with open(TIMECOST_CSV_FILE, "a") as timecost:
+                    timecost.write(COLUMN_SEP.join(csv_line))
+                    timecost.write("\n")
+                row_counter += 1
 
 
 if __name__ == "__main__":
