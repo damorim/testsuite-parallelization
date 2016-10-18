@@ -26,15 +26,15 @@ def inspect(subject):
         # STEP 2: TEST SUBJECT AND COLLECT DATA
         data["tests_pass"] = builder.test(data)
         # FIXME: How to deal when the project has multiple threads?
+        # One option would be dividing by # of CPUs
 
-    return COLUMN_SEP.join([subject, data["builder_name"], str(data["compiled"]), str(data["tests_pass"]),
-                            str(data["#tests"]), data["elapsed_t"], data["system_t"], data["user_t"],
-                            data["cpu_usage"]])
+    return [subject, data["builder_name"], str(data["compiled"]), str(data["tests_pass"]), str(data["#tests"]),
+            data["elapsed_t"], data["system_t"], data["user_t"], data["cpu_usage"]]
 
 
 def main():
     # Limit execution
-    max_rows = 5
+    max_rows = None
 
     with open(TIMECOST_CSV_FILE, "w") as timecost:
         timecost.write(COLUMN_SEP.join(["SUBJECT", "BUILDER", "COMPILED", "TESTS_PASS", "ELAPSED_T",
@@ -51,7 +51,7 @@ def main():
             print("Checking", project)
             csv_line = inspect(project)
             with open(TIMECOST_CSV_FILE, "a") as timecost:
-                timecost.write(csv_line)
+                timecost.write(COLUMN_SEP.join(csv_line))
                 timecost.write("\n")
             cur_row += 1
 
