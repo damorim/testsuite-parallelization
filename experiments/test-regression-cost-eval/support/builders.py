@@ -17,7 +17,7 @@ class AbstractBuilder:
         """ Returns True if finished successfully """
         with open("/dev/null", "wb") as DEVNULL:
             try:
-                result = not call(self.compile_args, stdout=DEVNULL, timeout=1800)
+                result = not call(self.compile_args, stdout=DEVNULL, timeout=900)
             except TimeoutExpired:
                 result = False
         return result

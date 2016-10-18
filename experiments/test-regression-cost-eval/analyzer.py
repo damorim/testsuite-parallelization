@@ -19,14 +19,11 @@ def inspect(subject):
     builder = builders.detect_system()
     if builder:
         data["builder_name"] = builder.name
-
-        # STEP 1: COMPILE SUBJECT
-        data["compiled"] = builder.compile()
-
-        # STEP 2: TEST SUBJECT AND COLLECT DATA
-        data["tests_pass"] = builder.test(data)
-        # FIXME: How to deal when the project has multiple threads?
-        # One option would be dividing by # of CPUs
+        if builder.compile():
+            data["compiled"] = True
+            # FIXME: How to deal when the project has multiple threads?
+            # One option would be dividing by # of CPUs
+            data["tests_pass"] = builder.test(data)
 
     return [subject, data["builder_name"], str(data["compiled"]), str(data["tests_pass"]), str(data["#tests"]),
             data["elapsed_t"], data["system_t"], data["user_t"], data["cpu_usage"]]
