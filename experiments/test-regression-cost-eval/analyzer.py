@@ -29,16 +29,23 @@ def inspect(subject):
             data["elapsed_t"], data["system_t"], data["user_t"], data["cpu_usage"]]
 
 
+def register_data_from(project):
+    csv_line = inspect(project)
+    with open(TIMECOST_CSV_FILE, "a") as timecost:
+        timecost.write(COLUMN_SEP.join(csv_line))
+        timecost.write("\n")
+
 def main():
     # Execution configuration
     max_rows = None
-    init_row = None
-    skip_subjects = ['hadoop'] #FIXME ignoring just to get output faster
+    init_row = 336
+    skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop'] #FIXME ignoring just to get output faster
 
-    with open(TIMECOST_CSV_FILE, "w") as timecost:
-        timecost.write(COLUMN_SEP.join(["SUBJECT", "BUILDER", "COMPILED", "TESTS_PASS", "ELAPSED_T",
-                                        "SYSTEM_T", "USER_T", "CPU_USAGE"]))
-        timecost.write("\n")
+    if not init_row:
+        with open(TIMECOST_CSV_FILE, "w") as timecost:
+            timecost.write(COLUMN_SEP.join(["SUBJECT", "BUILDER", "COMPILED", "TESTS_PASS", "TESTS", "ELAPSED_T",
+                                            "SYSTEM_T", "USER_T", "CPU_USAGE"]))
+            timecost.write("\n")
 
     with open(SUBJECTS_CSV_FILE, newline="") as subjects:
         reader = csv.DictReader(subjects)
@@ -56,12 +63,14 @@ def main():
             project = row["SUBJECT"]
             if not project in skip_subjects:
                 print("Checking", project)
-                csv_line = inspect(project)
-                with open(TIMECOST_CSV_FILE, "a") as timecost:
-                    timecost.write(COLUMN_SEP.join(csv_line))
-                    timecost.write("\n")
+                register_data_from(project)
                 row_counter += 1
 
+    # FIXME REMOVE ME
+    print("Running skipped subjects....")
+    for p in skip_subjects:
+        print("Checking", p)
+        register_data_from(p)
 
 if __name__ == "__main__":
     main()
