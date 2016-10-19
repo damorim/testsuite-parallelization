@@ -2,25 +2,30 @@
 \label{sec:eval}
 
 We evaluated the characteristics of regression tests in open-source
-development from a sample set of Java projects from Github. We pose
-the following research questions:
+development from a sample set of Java projects from Github. We are
+interested in opportunities to improve performance of test execution
+with parallelism \Jbc{Should we use the term parallelism indistinctly
+to refer to multi-process and multi-threaded execution?}, measure the
+obtained gain (if any), and discuss the major concerns that affect
+performance based on the obtained findings.  We pose the following
+research questions:
 
-\newcommand{\RQONE}{\textbf{RQ1.}}
-\newcommand{\rqOne}{\RQONE{} \Fix{How prevalent is the occurence of costly
-regression tests?}}
+\newcommand{\RQONE}{How prevalent is the occurence of costly
+regression tests?}
+\newcommand{\rqOne}{\textbf{RQ1.} \RQONE}
 
-\newcommand{\RQTWO}{\textbf{RQ2.}}
-\newcommand{\rqTwo}{\RQTWO{} \Fix{...}}
+\newcommand{\RQTWO}{\Fix{...}}
+\newcommand{\rqTwo}{\textbf{RQ2.} \RQTWO{}}
 
-\newcommand{\RQTHREE}{\textbf{RQ3.}}
-\newcommand{\rqThree}{\RQTHREE{} \Fix{...}}
+\newcommand{\RQTHREE}{\Fix{...}}
+\newcommand{\rqThree}{\textbf{RQ3.} \RQTHREE{}}
 
-\newcommand{\RQFOUR}{\textbf{RQ4.}}
-\newcommand{\rqFour}{\RQFOUR{} How often developers use \Fix{...} to
+\newcommand{\RQFOUR}{How often developers use \Fix{...} to
 improve performance on test execution?}
+\newcommand{\rqFour}{\textbf{RQ4.} \RQFOUR{}}
 
-\newcommand{\RQFIVE}{\textbf{RQ5.}}
-\newcommand{\rqFive}{\RQFIVE{} \Fix{...}}
+\newcommand{\RQFIVE}{\Fix{...}}
+\newcommand{\rqFive}{\textbf{RQ5.} \RQFIVE{}}
 
 \begin{itemize}
     \item \rqOne
@@ -49,13 +54,17 @@ downloaded projects, we automatically detected the build system from
 compile.  The full list of subjects is publicly available at
 \Fix{...}.
 
-\subsection{Results}
-\label{sec:results}
+\subsection{Answering research question RQ1}
+\label{sec:rqone}
 
-\RQONE{} To evaluate the frequency of costly \Jbc{How to define
-"costly" in terms of time?}regression tests, we first compiled the
-project and test source files, later, we measured the elapsed time to
-run the tests via the build system ignoring non-related tasks (\eg,
+\begin{itemize}
+    \item \RQONE
+\end{itemize}
+
+To evaluate the frequency of costly \Jbc{How to define "costly" in
+terms of time?}regression tests, we first compiled the project and
+test source files, later, we measured the elapsed time to run the
+tests via the build system ignoring non-related tasks (\eg,
 \emph{javadoc} generation).  We grouped the resulting time from test
 executions in four different groups: tests that ran in less than one
 minute (group A), one to five minutes (group B), five to ten minutes
@@ -79,11 +88,3 @@ revision, some tests may fail, interrupting the execution.
     \includegraphics[width=0.5\textwidth]{plots/teststime-scatter/timetests-scatter.pdf}
     \caption{\label{fig:timetests-scatter} \Fix{...}}
 \end{figure}
-
-\RQTWO{} \Fix{to appear...}
-
-\RQTHREE{} \Fix{to appear...}
-
-\RQFOUR{} \Fix{to appear...}
-
-\RQFIVE{} \Fix{to appear...}
