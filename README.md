@@ -1,5 +1,5 @@
-# parallel-execution-flakiness
+# Regression test study
 
-This repository is dedicated to our study on Parallel Execution Flakiness (PEF).
+This repository is dedicated to a research focused on the nature of regression tests in open-source projects.
 
-This work is currently in progress.
+More details soon.
