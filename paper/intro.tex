@@ -10,12 +10,11 @@ size of the code base.  Several approaches have been proposed to
 optimize regression testing.  Research has focused mostly on test
 selection~\Fix{cite}, test reduction~\Fix{cite}, and test
 prioritization~\Fix{cite}.  Although these approaches can also be
-applied in industrial settings, the focus in industry has been
-mostly in parallelizing execution of tests using server
-farms,\Fix{@Jean: Is
-this an assumption? Is there any evidence?} where worker machines
-from the farm are assigned to execute distinct subsets of the original
-test suite.
+applied in industrial settings, the focus in industry has been mostly
+in parallelizing execution of tests using server farms,\Jbc{Is this an
+assumption? Is there any evidence?} where worker machines from the
+farm are assigned to execute distinct subsets of the original test
+suite.
 
 Given the proliferation of multicore machines it is not surprising
 that popular build systems and testing frameworks provide today
@@ -25,22 +24,26 @@ The lower-level parallelism enabled through build systems and testing
 frameworks is an important complement to the higher-level parallelism
 enabled through server farms.  These solutions enable the use of
 commodity hardware to maximize CPU usage\footnote{In the case of the
-  Java language, for example, it is possible to explore parallelism
-  across and within JVMs.}.  For the scenario of large IT
-organizations, lower-level parallelization schemes could leverage the
-computing power of server nodes in addition to the aggregate
-processing power of the farm.  Lower-level parallelism fits
-particularly well smaller organizations (/projects) with relatively
-high testing costs but lower budgets.  Unfortunately, these solutions
-can't be used out-of-the-box: unrestricted parallel execution of tests
-can produce non-deterministic results as developers typically do not
-provision protection to concurrent accesses originated from arbitrary
-program points (\ie{}, tests).  We refer to this problem as Parallel
-Execution Flakiness (\pef{}).
+Java language, for example, it is possible to explore parallelism
+across and within JVMs.}.  For the scenario of large IT organizations,
+lower-level parallelization schemes could leverage the computing power
+of server nodes in addition to the aggregate processing power of the
+farm.  Lower-level parallelism fits particularly well smaller
+organizations (/projects) with relatively high testing costs but lower
+budgets.  \Comment{Unfortunately, these solutions can't be used out-of-the-box:
+unrestricted parallel execution of tests can produce non-deterministic
+results as developers typically do not provision protection to
+concurrent accesses originated from arbitrary program points (\ie{},
+tests).  We refer to this problem as Parallel Execution Flakiness
+(\pef{}).}
 
-To illustrate the importance of parallel test execution and the
-problem of \pef{} let's consider the case of the ``core'' module from
-the Apache Camel project~\cite{apache-camel-web}.  This module
+To illustrate the importance of parallel test execution, \Jbc{TODO -
+Write a paragraph motivating this paper.}
+
+\Comment{
+To illustrate the importance of parallel test execution and
+the problem of \pef{} let's consider the case of the ``core'' module
+from the Apache Camel project~\cite{apache-camel-web}.  This module
 contains 5,679 test cases, declared in 2,356 test classes.  We ran
 those tests in a machine with 16GB of memory and 8 virtual CPUs (4
 cores with 2 native threads each).  Sequential test execution takes
@@ -49,12 +52,12 @@ cores with 2 native threads each).  Sequential test execution takes
 execute test classes, uniquely allocated to that JVM, sequentially but
 running test methods from each class in separate threads.  Note that
 this is an order of magnitude speedup (10.07x)\Fix{Need to understand
-  why this is 10x as opposed to something closer to 7x - I didn't get
-  your concern here}.
-Unfortunately, due to \pef{}, $\sim$2\% (114 of 5,679) of the tests
-fail when executed in parallel.  It is important to notice that the
-ratio of failures varies with the project as it depends on factors
-such as length of test cases and amount of shared state across tests.
+why this is 10x as opposed to something closer to 7x - I didn't get
+your concern here}.  Unfortunately, due to \pef{}, $\sim$2\% (114 of
+5,679) of the tests fail when executed in parallel.  It is important
+to notice that the ratio of failures varies with the project as it
+depends on factors such as length of test cases and amount of shared
+state across tests.
 
 \pef{} is an important obstacle to enable parallel test execution.
 Conceptually, higher parallelization can result in higher chances of
@@ -62,10 +65,11 @@ concurrency-related problems.  It is important to execute tests
 efficiently without sacrificing reliability
 \Fix{gap between pars?? What gap?}
 
+}
+
 This paper reports an empirical study to evaluate the impact of
-parallelization options on test execution speedup and \pef{}. Based on
-these results, we proposed different low-cost synchronization
-strategies to avoid \pef{}.
+parallelization options on test execution speedup \Fix{...}\Jbc{TODO -
+Summary of the contributions of this paper} .
 
 %%  LocalWords:  parallelization multicore JUnit TestNG NUnit XXm YYm
 %%  LocalWords:  Groupon parallelizing multi JVMs CPUs JVM
