@@ -1,0 +1,1 @@
+camel-core & <TESTCASES> & 25m:22s & 0.99x & 0.98x & 0.99x & 2.94x & 2.99x
