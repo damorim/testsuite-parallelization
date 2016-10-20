@@ -3,7 +3,7 @@ import csv
 import os
 
 from support import builders
-from support.constants import COLUMN_SEP, TIMECOST_CSV_FILE, SUBJECTS_CSV_FILE
+from support.constants import COLUMN_SEP, RAW_DATA_CSV_FILE, SUBJECTS_CSV_FILE
 from support.constants import SUBJECT_DIR
 
 
@@ -42,8 +42,8 @@ def inspect(subject):
 
 def register_data_from(project):
     data = inspect(project)
-    with open(TIMECOST_CSV_FILE, "a") as time_cost:
-        time_cost.write(COLUMN_SEP.join("%s" % str(value) for attrib, value in vars(data).items()))
+    with open(RAW_DATA_CSV_FILE, "a") as time_cost:
+        time_cost.write(COLUMN_SEP.join("%s" % str(value) for (attrib, value) in vars(data).items()))
         time_cost.write("\n")
 
 
@@ -56,8 +56,8 @@ def main():
     skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop']
 
     if not init_row:
-        with open(TIMECOST_CSV_FILE, "w") as time_cost:
-            time_cost.write(COLUMN_SEP.join("%s" % attrib for attrib, value in vars(ExecutionData()).items()))
+        with open(RAW_DATA_CSV_FILE, "w") as time_cost:
+            time_cost.write(COLUMN_SEP.join("%s" % attrib for (attrib, value) in vars(ExecutionData()).items()))
             time_cost.write("\n")
 
     with open(SUBJECTS_CSV_FILE, newline="") as subjects:
