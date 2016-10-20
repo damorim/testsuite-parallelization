@@ -36,23 +36,23 @@ def download_from_github():
                     project_name = item["name"]
                     git_url = item["html_url"]
 
-                    # Cloning if project doesn't exist
+                    # Cloning if project doesn't exist and ensuring we are avoiding duplicated projects
                     if not os.path.exists(project_name):
                         call(["git", "clone", "--depth", "1", git_url])
 
-                    # Moving to project directory to collect data and going back
-                    # to the subject directory.
-                    os.chdir(project_name)
+                        # Moving to project directory to collect data and going back
+                        # to the subject directory.
+                        os.chdir(project_name)
 
-                    commit_ver_raw = check_output(["git", "rev-parse", "HEAD"])
-                    commit_ver = commit_ver_raw.decode().strip()
+                        commit_ver_raw = check_output(["git", "rev-parse", "HEAD"])
+                        commit_ver = commit_ver_raw.decode().strip()
 
-                    os.chdir(SUBJECT_DIR)
+                        os.chdir(SUBJECT_DIR)
 
-                    csv_line = [project_name, git_url, commit_ver]
-                    with open(SUBJECTS_CSV_FILE, "a") as f:
-                        f.write(COLUMN_SEP.join(csv_line))
-                        f.write("\n")
+                        csv_line = [project_name, git_url, commit_ver]
+                        with open(SUBJECTS_CSV_FILE, "a") as f:
+                            f.write(COLUMN_SEP.join(csv_line))
+                            f.write("\n")
 
     except HTTPError as err:
         print(err)
@@ -77,8 +77,8 @@ def download_from_file(file_path):
                 os.chdir(SUBJECT_DIR)
                 call(["git", "clone", url])
 
-            os.chdir(project_name)
-            call(["git", "reset", "--hard", rev])
+                os.chdir(project_name)
+                call(["git", "reset", "--hard", rev])
 
 
 if __name__ == "__main__":
