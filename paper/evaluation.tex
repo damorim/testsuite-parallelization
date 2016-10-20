@@ -1,13 +1,25 @@
 \section{Evaluation}
 \label{sec:eval}
 
+\Mar{I think the high-level goal should be something along the lines
+  of understanding prevalence of long test runs and main sources of
+  cost in open-source Java projects.  Intuitively, the problem should
+  come before the solution :).  Based on that, we study
+  parallelization of testing frameworks.  More precisely, we
+  investigage how prevalent test parallelization is, the potential for
+  improving execution cost, issues of flakiness that hinders use of
+  parallelization, and how to address those issues.}
+
 We evaluated the characteristics of regression tests in open-source
 development from a sample set of Java projects from Github. We are
 interested in opportunities to improve performance of test execution
 with parallelism \Jbc{Should we use the term parallelism indistinctly
-to refer to multi-process and multi-threaded execution?}, measure the
+to refer to multi-process and multi-threaded execution?}\Mar{I think I
+used the term low-level parallelism on intro to make this distiction.
+Please confirm if that is correct and coherent with what you want to
+say.  If yes, use this term.}, measure the
 obtained gain (if any), and discuss the major concerns that affect
-performance based on the obtained findings.  We pose the following
+performance based on the obtained findings. We pose the followinga
 research questions:
 
 \newcommand{\RQONE}{How prevalent is the occurence of time-consuming
