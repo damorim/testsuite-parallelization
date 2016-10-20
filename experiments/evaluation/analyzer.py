@@ -7,45 +7,58 @@ from support.constants import COLUMN_SEP, TIMECOST_CSV_FILE, SUBJECTS_CSV_FILE
 from support.constants import SUBJECT_DIR
 
 
+class ExecutionData:
+    def __init__(self, subject="N/A"):
+        self.subject = subject
+        self.builder_name = "N/A"
+        self.compiled = False
+        self.tests_pass = False
+        self.tests = 0
+        self.skipped = 0
+        self.elapsed_t = 0
+        self.system_t = 0
+        self.user_t = 0
+
+
 def inspect(subject):
     subject_dir = os.path.join(SUBJECT_DIR, subject)
     if not os.path.exists(subject_dir):
+        print("Missing path:", subject_dir)
         return
     os.chdir(subject_dir)
 
-    data = {"builder_name": "N/A", "compiled": False, "tests_pass": False, "#tests": "N/A",
-            "elapsed_t": "N/A", "system_t": "N/A", "user_t": "N/A", "cpu_usage": "N/A"}
-
+    execution_data = ExecutionData(subject)
     builder = builders.detect_system()
     if builder:
-        data["builder_name"] = builder.name
+        execution_data.builder_name = builder.name
         if builder.compile():
-            data["compiled"] = True
+            execution_data.compiled = True
             # FIXME: How to deal when the project has multiple threads?
             # One option would be dividing by # of CPUs
-            data["tests_pass"] = builder.test(data)
+            execution_data.tests_pass = builder.test(execution_data)
 
-    return [subject, data["builder_name"], str(data["compiled"]), str(data["tests_pass"]), str(data["#tests"]),
-            data["elapsed_t"], data["system_t"], data["user_t"], data["cpu_usage"]]
+    return execution_data
 
 
 def register_data_from(project):
-    csv_line = inspect(project)
-    with open(TIMECOST_CSV_FILE, "a") as timecost:
-        timecost.write(COLUMN_SEP.join(csv_line))
-        timecost.write("\n")
+    data = inspect(project)
+    with open(TIMECOST_CSV_FILE, "a") as time_cost:
+        time_cost.write(COLUMN_SEP.join("%s" % str(value) for attrib, value in vars(data).items()))
+        time_cost.write("\n")
+
 
 def main():
     # Execution configuration
     max_rows = None
     init_row = None
-    skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop'] #FIXME ignoring just to get output faster
+
+    # FIXME ignoring just to get output faster
+    skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop']
 
     if not init_row:
-        with open(TIMECOST_CSV_FILE, "w") as timecost:
-            timecost.write(COLUMN_SEP.join(["SUBJECT", "BUILDER", "COMPILED", "TESTS_PASS", "TESTS", "ELAPSED_T",
-                                            "SYSTEM_T", "USER_T", "CPU_USAGE"]))
-            timecost.write("\n")
+        with open(TIMECOST_CSV_FILE, "w") as time_cost:
+            time_cost.write(COLUMN_SEP.join("%s" % attrib for attrib, value in vars(ExecutionData()).items()))
+            time_cost.write("\n")
 
     with open(SUBJECTS_CSV_FILE, newline="") as subjects:
         reader = csv.DictReader(subjects)
@@ -61,7 +74,7 @@ def main():
                 break
 
             project = row["SUBJECT"]
-            if not project in skip_subjects:
+            if project not in skip_subjects:
                 print("Checking", project)
                 register_data_from(project)
                 row_counter += 1
@@ -72,5 +85,7 @@ def main():
         print("Checking", p)
         register_data_from(p)
 
+
 if __name__ == "__main__":
     main()
+    # print(inspect("retrofit"))

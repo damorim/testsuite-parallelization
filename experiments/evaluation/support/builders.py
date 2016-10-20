@@ -33,34 +33,28 @@ class Maven(AbstractBuilder):
         self.compile_args = ["mvn", "clean", "install", "-DskipTests", "-Dmaven.javadoc.skip=true"]
         self.test_args = ["mvn", "test", "-Dmaven.javadoc.skip=true"]
 
-    def test(self, data=None):
+    def test(self, inspect_data=None):
         args = ["time", "-o", "/tmp/timeinfo", "-f", "%e,%S,%U,%P"]
         args.extend(self.test_args)
         with open("/dev/null", "wb") as DEVNULL:
             p = Popen(args, stdout=PIPE, stderr=DEVNULL)
-        print("PID (use pstree):", p.pid)
+        print("Running tests - PID (use pstree):", p.pid)
         out, err = p.communicate()
+        if inspect_data:
+            output = out.decode()
+            pattern = re.compile(r"Results :\n\nTests run: .*", re.MULTILINE)
+            for m in re.finditer(pattern, output):
+                result = re.findall("\d+", m.group(0))
+                inspect_data.tests += int(result[0])
+                inspect_data.skipped += int(result[3])
 
-        output = out.decode().splitlines()
-        total = 0
-        for i in range(len(output)):
-            line = output[i]
-            if line.startswith("Results :"):
-                for j in range(len(output)):
-                    test_line = output[i + j]
-                    if "Tests run" in test_line:
-                        total += int(re.sub(",.*", "", re.sub("Tests run: ", "", test_line)))
-                        break
-        if data:
-            data["#tests"] = total
             with open("/tmp/timeinfo") as f:
                 for line in f:
                     if not line.startswith("Command"):
                         output = line.strip().split(",")
-                        data["elapsed_t"] = output[0]
-                        data["system_t"] = output[1]
-                        data["user_t"] = output[2]
-                        data["cpu_usage"] = output[3]
+                        inspect_data.elapsed_t = float(output[0])
+                        inspect_data.system_t = float(output[1])
+                        inspect_data.user_t = float(output[2])
 
         return not p.returncode
 
