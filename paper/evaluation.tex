@@ -72,7 +72,7 @@ are publicly available at \Fix{...}.
 %%     \item \RQONE
 %% \end{itemize}
 
-To evaluate the frequency of costly regression tests, we first
+To evaluate the frequency of time-consuming regression tests, we first
 compiled the project and test source files, later, we measured the
 elapsed time to run the tests via the build system ignoring
 non-related tasks (\eg, \emph{javadoc} generation).  We grouped the
@@ -89,10 +89,13 @@ revision, some tests may fail, interrupting the execution.
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.5\textwidth]{plots/timecost-barplot/timecost-barplot.pdf}
-    \caption{\label{fig:timecost-barplot} \Fix{Subjects grouped by
-        elapsed time on test execution ($t$): group A ($t < 1m$), group B
-        ($1m \leq t < 5m$), group C ($5m \leq t < 10m$), group D ($10m \leq t$)}}
+    \caption{\label{fig:timecost-barplot} Subjects grouped by elapsed
+    time on test execution ($t$): short execution ($t < 1m$), normal
+    execution ($1m \leq t < 5m$), and long execution ($5m \leq t <
+    10m$), very long execution ($10m \leq t$).}
 \end{figure}
+
+\Fix{Explain scatter plot}
 
 \begin{figure}[t!]
     \centering
