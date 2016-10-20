@@ -58,7 +58,7 @@ def register_data_from(project):
 
 def main():
     # Execution configuration
-    max_rows = 3
+    max_rows = None
     init_row = None
 
     # FIXME ignoring just to get output faster
@@ -89,10 +89,10 @@ def main():
                 row_counter += 1
 
     # FIXME REMOVE ME (temporary code)
-    # print("Running skipped subjects....")
-    # for p in skip_subjects:
-    #     print("Checking", p)
-    #     register_data_from(p)
+    print("Running skipped subjects....")
+    for p in skip_subjects:
+        print("Checking", p)
+        register_data_from(p)
 
 
 if __name__ == "__main__":
