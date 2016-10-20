@@ -19,6 +19,15 @@ class ExecutionData:
         self.system_t = 0
         self.user_t = 0
 
+    def values(self):
+        return [self.subject, self.builder_name, self.compiled, self.tests_pass, self.tests, self.skipped,
+                self.elapsed_t, self.system_t, self.user_t]
+
+    @staticmethod
+    def header():
+        return ["subject", "builder_name", "compiled", "tests_pass", "tests", "skipped",
+                "elapsed_t", "system_t", "user_t"]
+
 
 def inspect(subject):
     subject_dir = os.path.join(SUBJECT_DIR, subject)
@@ -43,21 +52,21 @@ def inspect(subject):
 def register_data_from(project):
     data = inspect(project)
     with open(RAW_DATA_CSV_FILE, "a") as time_cost:
-        time_cost.write(COLUMN_SEP.join("%s" % str(value) for (attrib, value) in vars(data).items()))
+        time_cost.write(COLUMN_SEP.join("%s" % str(value) for value in data.values()))
         time_cost.write("\n")
 
 
 def main():
     # Execution configuration
-    max_rows = None
-    init_row = None
+    max_rows = 1
+    init_row = 5
 
     # FIXME ignoring just to get output faster
     skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop']
 
     if not init_row:
         with open(RAW_DATA_CSV_FILE, "w") as time_cost:
-            time_cost.write(COLUMN_SEP.join("%s" % attrib for (attrib, value) in vars(ExecutionData()).items()))
+            time_cost.write(COLUMN_SEP.join("%s" % attrib for attrib in ExecutionData.header()))
             time_cost.write("\n")
 
     with open(SUBJECTS_CSV_FILE, newline="") as subjects:
@@ -80,10 +89,10 @@ def main():
                 row_counter += 1
 
     # FIXME REMOVE ME (temporary code)
-    print("Running skipped subjects....")
-    for p in skip_subjects:
-        print("Checking", p)
-        register_data_from(p)
+    # print("Running skipped subjects....")
+    # for p in skip_subjects:
+    #     print("Checking", p)
+    #     register_data_from(p)
 
 
 if __name__ == "__main__":
