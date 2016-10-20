@@ -2,6 +2,7 @@
 #
 # Author: Jeanderson Candido
 #
+import csv
 import json
 import os
 import urllib.request
@@ -9,13 +10,13 @@ from subprocess import call, check_output
 from urllib.error import HTTPError
 
 from ghwrappers.search import RepositoryQuery
-from support.constants import SUBJECT_DIR, SUBJECTS_CSV_FILE, COLUMN_SEP, SUBJECTS_CSV_HEADER_FIELDS
+from support.constants import SUBJECT_DIR, SUBJECTS_CSV_FILE, COLUMN_SEP, SUBJECTS_CSV_HEADER_FIELDS, BASE_DIR
 
 
 def download_from_github():
-    with open(SUBJECTS_CSV_FILE, "w") as csv:
-        csv.write(COLUMN_SEP.join(SUBJECTS_CSV_HEADER_FIELDS))
-        csv.write("\n")
+    with open(SUBJECTS_CSV_FILE, "w") as f:
+        f.write(COLUMN_SEP.join(SUBJECTS_CSV_HEADER_FIELDS))
+        f.write("\n")
 
     max_pages = None
     current_page = 0
@@ -49,22 +50,35 @@ def download_from_github():
                     os.chdir(SUBJECT_DIR)
 
                     csv_line = [project_name, git_url, commit_ver]
-                    with open(SUBJECTS_CSV_FILE, "a") as csv:
-                        csv.write(COLUMN_SEP.join(csv_line))
-                        csv.write("\n")
+                    with open(SUBJECTS_CSV_FILE, "a") as f:
+                        f.write(COLUMN_SEP.join(csv_line))
+                        f.write("\n")
 
     except HTTPError as err:
         print(err)
-        print("Github API Query has exhausted")
+        print("GitHub API Query has exhausted")
         print("Total pages:", current_page)
 
 
 def download_from_file(file_path):
-    file_abs_path = os.path.abspath(file_path)
+    file_abs_path = os.path.join(BASE_DIR, file_path)
     if not os.path.exists(file_abs_path):
-        print("Invalid path:", file_abs_path)
-        exit(1)
-    # TODO: Feature to be implemented
+        raise Exception("Invalid path:", file_abs_path)
+
+    with open(file_abs_path) as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            url = row["URL"]
+            rev = row["VERSION"]
+            project_name = row["SUBJECT"]
+
+            if not os.path.exists(project_name):
+                print("Fetching project", project_name)
+                os.chdir(SUBJECT_DIR)
+                call(["git", "clone", url])
+
+            os.chdir(project_name)
+            call(["git", "reset", "--hard", rev])
 
 
 if __name__ == "__main__":
@@ -72,4 +86,7 @@ if __name__ == "__main__":
         os.mkdir(SUBJECT_DIR)
 
     os.chdir(SUBJECT_DIR)
-    download_from_github()
+
+    # Download either from the existing file or from GitHub. Downloading from GitHub generates a new subject list
+    download_from_file("subjects.csv")
+    # download_from_github()
