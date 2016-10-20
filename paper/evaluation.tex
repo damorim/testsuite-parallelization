@@ -10,32 +10,34 @@ obtained gain (if any), and discuss the major concerns that affect
 performance based on the obtained findings.  We pose the following
 research questions:
 
-\newcommand{\RQONE}{How prevalent is the occurence of costly
-regression tests?}
-\newcommand{\rqOne}{\textbf{RQ1.} \RQONE}
+\newcommand{\RQONE}{How prevalent is the occurence of time-consuming
+regression tests in open-source projects?}
+\newcommand{\RQTWO}{What is the distribution of CPU and IO bound
+regression tests from the sample set?}
+\newcommand{\RQTHREE}{What is the proportion of \Fix{time-consuming?}
+test cases per project?}
+\newcommand{\RQFOUR}{How often developers use the parallelism features
+from build manager systems to improve performance on test execution?}
 
-\newcommand{\RQTWO}{\Fix{...}}
-\newcommand{\rqTwo}{\textbf{RQ2.} \RQTWO{}}
-
-\newcommand{\RQTHREE}{\Fix{...}}
-\newcommand{\rqThree}{\textbf{RQ3.} \RQTHREE{}}
-
-\newcommand{\RQFOUR}{How often developers use \Fix{...} to
-improve performance on test execution?}
-\newcommand{\rqFour}{\textbf{RQ4.} \RQFOUR{}}
-
-\newcommand{\RQFIVE}{\Fix{...}}
-\newcommand{\rqFive}{\textbf{RQ5.} \RQFIVE{}}
+\newcommand{\rqA}{\textbf{RQ1.} \RQONE}
+\newcommand{\rqB}{\textbf{RQ2.} \RQTWO}
+\newcommand{\rqC}{\textbf{RQ3.} \RQTHREE}
+\newcommand{\rqD}{\textbf{RQ4.} \RQFOUR}
 
 \begin{itemize}
-    \item \rqOne
-    \item \rqTwo
-    \item \rqThree
-    \item \rqFour
-    \item \rqFive
+    \item \rqA
+    \item \rqB
+    \item \rqC
+    \item \rqD
 \end{itemize}
 
-\Fix{describe what I'm looking for with these RQs}
+The first research question addresses the distribution of subjects per
+elapsed time to execute regression tests. We are interested on
+identifying time-consuming test suites for further investigation. The
+second research question addresses addresses \Fix{...}. The third
+research question addresses the distribution of \Fix{...}. Finally,
+the fourth research question investigates the relevance of supporting
+parallel execution on builder tools.
 
 \subsection{Subjects}
 \label{sec:subjects}
@@ -47,30 +49,39 @@ interest and appreciation from the community to a given project.
 criteria is subjective, it is an approximation for relevant projects
 to conduct our study. For each project, we detected the build manager
 system based on the files located in the root directory (\eg,
-\emph{pom.xml}) from the project in the following precedence:
-\textsc{Maven}, \textsc{Gradle}, and \textsc{Ant}. From the 1.000
-downloaded projects, we automatically detected the build system from
-806 subjects and selected the \Fix{154} projects that we were able to
-compile.  The full list of subjects is publicly available at
-\Fix{...}.
+\emph{pom.xml}) from the project in the following precedence: Maven,
+Gradle, and Ant. From the 1.000 downloaded projects, we automatically
+detected the build system from 806 subjects and selected the \Fix{154}
+projects that we were able to compile.
+
+\subsection{Setup and Replication}
+\label{sec:setup}
+
+To run our experiments we used a Core i7-4790 (3.60GHz) Intel
+processor machine with 8 virtual CPUs (4 cores with 2 native threads
+each) and 16GB of memory, running on Ubuntu 14.04 LTS (64-bit
+version). \Fix{add Vagrantfile with software settings} All the source
+artifacts, including supporting scripts (\eg, the script that test
+subjects and generates the raw data), and the full list of projects
+are publicly available at \Fix{...}.
 
 \subsection{Answering research question RQ1}
 \label{sec:rqone}
 
-\begin{itemize}
-    \item \RQONE
-\end{itemize}
+%% \begin{itemize}
+%%     \item \RQONE
+%% \end{itemize}
 
-To evaluate the frequency of costly \Jbc{How to define "costly" in
-terms of time?}regression tests, we first compiled the project and
-test source files, later, we measured the elapsed time to run the
-tests via the build system ignoring non-related tasks (\eg,
-\emph{javadoc} generation).  We grouped the resulting time from test
-executions in four different groups: tests that ran in less than one
-minute (group A), one to five minutes (group B), five to ten minutes
-(group C), and more than ten minutes to execute (group D).
-Figure~\ref{fig:timecost-barplot} shows the distribution of subjects
-per group. It is important to mention that
+To evaluate the frequency of costly regression tests, we first
+compiled the project and test source files, later, we measured the
+elapsed time to run the tests via the build system ignoring
+non-related tasks (\eg, \emph{javadoc} generation).  We grouped the
+resulting time from test executions into four different groups: tests
+that ran in less than one minute (\emph{short execution}), one to five
+minutes (\emph{normal execution}), five to ten minutes (\emph{long
+execution}), and more than ten minutes to execute (\emph{very long
+execution}).  Figure~\ref{fig:timecost-barplot} shows the distribution
+of subjects per group. It is important to mention that
 Figure~\ref{fig:timecost-barplot} represents a lower bound for elapsed
 time: since the subjects were tested in a potentially unstable
 revision, some tests may fail, interrupting the execution.
@@ -88,3 +99,31 @@ revision, some tests may fail, interrupting the execution.
     \includegraphics[width=0.5\textwidth]{plots/teststime-scatter/timetests-scatter.pdf}
     \caption{\label{fig:timetests-scatter} \Fix{...}}
 \end{figure}
+
+\subsection{Answering research question RQ2}
+\label{sec:rqtwo}
+
+%% \begin{itemize}
+%%     \item \RQTWO
+%% \end{itemize}
+
+\Fix{to appear...}
+
+\subsection{Answering research question RQ3}
+\label{sec:rqthree}
+
+%% \begin{itemize}
+%%     \item \RQTHREE
+%% \end{itemize}
+
+\Fix{to appear...}
+
+\subsection{Answering research question RQ4}
+\label{sec:rqfour}
+
+%% \begin{itemize}
+%%     \item \RQFOUR
+%% \end{itemize}
+
+\Fix{to appear...}
+
