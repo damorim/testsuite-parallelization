@@ -59,6 +59,26 @@ class Maven(AbstractBuilder):
         return not p.returncode
 
 
+class Ant(AbstractBuilder):
+    # TODO Feel free to implement Ant support
+    def __init__(self):
+        super().__init__()
+        self.name = "Ant"
+
+    def compile(self):
+        pass
+
+
+class Gradle(AbstractBuilder):
+    # TODO Feel free to implement Gradle support
+    def __init__(self):
+        super().__init__()
+        self.name = "Gradle"
+
+    def compile(self):
+        pass
+
+
 def detect_system():
     """
     Detects the build system in the current directory and returns the related Builder object.
@@ -72,8 +92,8 @@ def detect_system():
     if os.path.exists("pom.xml"):
         return Maven()
     elif os.path.exists("gradlew"):
-        return None  # TODO Feel free to implement Gradle support
+        return Gradle()
     elif os.path.exists("build.xml"):
-        return None  # TODO Feel free to implement Ant support
+        return Ant()
 
     return None

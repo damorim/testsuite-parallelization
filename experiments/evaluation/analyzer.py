@@ -58,8 +58,8 @@ def register_data_from(project):
 
 def main():
     # Execution configuration
-    max_rows = 1
-    init_row = 5
+    max_rows = 3
+    init_row = None
 
     # FIXME ignoring just to get output faster
     skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop']
