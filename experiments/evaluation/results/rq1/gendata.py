@@ -12,7 +12,7 @@ def classify_group(raw_time):
         return "Short"
     # Group 2: 1m <= t < 5m
     elif seconds < 5*60:
-        return "Norm"
+        return "Normal"
     # Group 3: 5m <= t < 10m
     elif seconds < 600:
         return "Long"
