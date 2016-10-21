@@ -1,10 +1,13 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-out_name <- args[2]
+out_name <- args[3]
 pdf(paste(out_name,".pdf",sep=""))
 
-name <- args[1]
-data <- read.table(name, header=T, sep=",")
-plot(data$ELAPSED_T, data$TESTS,
+input_file <- args[1]
+type <- args[2]
+data <- read.csv(input_file, sep=",", header=T)
+
+values = subset(data, group == type)
+plot(values$elapsed_t, values$tests,
      xlab="Elapsed time (in secs)",
      ylab="# of tests")
