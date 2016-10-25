@@ -11,9 +11,9 @@ dist <- as.data.frame(table(data$group))
 slices <- dist$Freq
 pct <- round(slices / sum(slices) * 100)
 lbls <- paste(pct, "%", sep="")
-colors <- c("gray10", "gray40", "gray80", "gray100")
+colors <- c("gray10", "gray30", "gray80", "white")
 
 pie(slices, labels=lbls, col=colors)
-legend_lbls <- c("label", "label", "label", "label")
+legend_lbls <- names(table(dist$Var1))
 legend("topright", legend_lbls, fill=colors)
 
