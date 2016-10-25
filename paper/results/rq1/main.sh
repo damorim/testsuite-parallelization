@@ -1,5 +1,5 @@
 #!/bin/bash
-RAW_DATA_PATH=../../rawdata.csv
+RAW_DATA_PATH=../rawdata.csv
 PLOTS_DIR=plots
 if [ -z $RAW_DATA_PATH ]; then
     echo "Missing raw data path!"
@@ -11,9 +11,8 @@ fi
 # Replaced by the piechart
 #R --vanilla < R/barplot.r --args data.csv "$PLOTS_DIR/barplot-timecost"
 
-R --vanilla < R/scatter.r --args data.csv "Normal" "$PLOTS_DIR/scatterplot-norm"
+R --vanilla < R/scatter.r --args data.csv "Medium" "$PLOTS_DIR/scatterplot-med"
 R --vanilla < R/scatter.r --args data.csv "Long" "$PLOTS_DIR/scatterplot-long"
-R --vanilla < R/scatter.r --args data.csv "Very Long" "$PLOTS_DIR/scatterplot-vlong"
 
 R --vanilla < R/piechart.r --args data.csv "$PLOTS_DIR/piechart"
 
