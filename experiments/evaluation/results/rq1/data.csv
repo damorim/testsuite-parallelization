@@ -112,3 +112,5 @@ jetty.project,5513,1472.0,Very Long,24m32s
 hive,1452,3393.04,Very Long,56m33s
 pinot,625,4003.88,Very Long,66m43s
 hazelcast,12623,4794.54,Very Long,79m54s
+hbase,1872,5778.85,Very Long,96m18s
+hadoop,3594,14228.85,Very Long,237m8s
