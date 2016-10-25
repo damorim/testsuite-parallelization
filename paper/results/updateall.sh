@@ -8,7 +8,10 @@ for d in $(ls .); do
     fi
 done
 
+# TODO: Move pdfcrop calls to R scripts so I can use
+#       different margins
+#
 # Crop blank spaces
 for PDF in $(find . -name *.pdf); do
-    pdfcrop --margins '3 3 3 3' $PDF $PDF
+    pdfcrop $PDF $PDF
 done;
