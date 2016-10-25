@@ -103,22 +103,21 @@ revision, some tests may fail, interrupting the execution.
     10m$), and very long execution ($10m \leq t$).}
 \end{figure}
 
-\Fix{Explain scatter plot}
+We compared the execution time and number of tests for each subject. \Fix{...}
 
 \begin{figure}[h!]%
     \centering
-    \manpage{}
-    \subfigure[\Fix{normal}]{
-        \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-norm.pdf}
-    }
-    \\
-    \subfigure[\Fix{long}]{
-        \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-long.pdf}
-    }\\
-    \subfigure[\Fix{vlong}]{
-        \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-vlong.pdf}
-    }
-    \\
+    \begin{minipage}{4.5in}%
+        \subfigure[\Fix{normal}]{
+            \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-norm.pdf}
+        }%
+        \subfigure[\Fix{long}]{
+            \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-long.pdf}
+        }\\
+        \subfigure[\Fix{vlong}]{
+            \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-vlong.pdf}
+        }%
+    \end{minipage}
     \caption{\Fix{...}}
 \end{figure}
 
@@ -129,7 +128,15 @@ revision, some tests may fail, interrupting the execution.
 %%     \item \RQTWO
 %% \end{itemize}
 
-\Fix{to appear...}
+To evaluate the distribution of CPU and IO bound in regression tests
+from the sample set, we proposed the definition of \emph{cpuness}
+computed as the follow: $((user\_t + system\_t) / elapsed\_t) * 100$,
+where \emph{user\_t} is the elapsed time of execution in \emph{user
+mode}, \emph{system\_t} is the elapsed in \emph{kernel mode}, and
+\emph{elapsed\_t} is the elapsed time to finish the execution. We
+measured the \emph{cpuness} of each regression test \Fix{...elaborate
+the meaning of cpuness} \Fix{Describe how I measured user, system and
+"wall" time}.  \Fix{Explain results}.  \Fix{show plots}
 
 \subsection{Answering research question RQ3}
 \label{sec:rqthree}
