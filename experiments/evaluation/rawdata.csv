@@ -997,3 +997,5 @@ jetty.project,Maven,True,False,5662,149,1472.0,88.71,498.18
 hive,Maven,True,False,1452,0,3393.04,117.32,2605.57
 pinot,Maven,True,True,625,0,4003.88,93.19,3424.99
 hazelcast,Maven,True,False,12794,171,4794.54,1844.1,4434.59
+hbase,Maven,True,False,1896,24,5778.85,580.56,7456.44
+hadoop,Maven,True,False,3856,262,14228.85,687.85,7216.63
