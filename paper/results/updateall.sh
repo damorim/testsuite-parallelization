@@ -7,3 +7,8 @@ for d in $(ls .); do
         cd $BASEDIR
     fi
 done
+
+# Crop blank spaces
+for PDF in $(find . -name *.pdf); do
+    pdfcrop --margins '3 3 3 3' $PDF $PDF
+done;
