@@ -14,3 +14,5 @@ R --vanilla < R/scatter.r --args data.csv "Normal" "$PLOTS_DIR/scatterplot-norm"
 R --vanilla < R/scatter.r --args data.csv "Long" "$PLOTS_DIR/scatterplot-long"
 R --vanilla < R/scatter.r --args data.csv "Very Long" "$PLOTS_DIR/scatterplot-vlong"
 
+R --vanilla < R/piechart.r --args data.csv "$PLOTS_DIR/piechart"
+
