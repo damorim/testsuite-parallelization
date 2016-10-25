@@ -79,46 +79,46 @@ are publicly available at \Fix{...}.
 %%     \item \RQONE
 %% \end{itemize}
 
-\Fix{TODO: MERGE VERY LONG INTO LONG}
 To evaluate the frequency of time-consuming regression tests, we first
-compiled the project and test source files, later, we measured the
-elapsed time to run the tests via the build system ignoring
-non-related tasks (\eg, \emph{javadoc} generation).  We grouped the
-resulting time from test executions into four different groups: tests
-that ran in less than one minute (\emph{short execution}), one to five
-minutes (\emph{normal execution}), five to ten minutes (\emph{long
-execution}), and more than ten minutes to execute (\emph{very long
-execution}).  Figure~\ref{fig:piechart-time} shows the distribution
-of subjects per group. It is important to mention that
-Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
-time: since the subjects were tested in a potentially unstable
-revision, some tests may fail, interrupting the execution.
+compiled source and test files, later, we measured the elapsed time to
+run the tests via the build system ignoring non-related tasks (\eg,
+\emph{javadoc} generation).  We grouped the subjects according to the
+execution time: tests that ran in less than one minute (\emph{short
+execution}), one to five minutes (\emph{medium execution}), and more
+than five minutes (\emph{long execution}).
+Figure~\ref{fig:piechart-time} shows the proportion of subjects per
+group. It is important to mention that Figure~\ref{fig:piechart-time}
+represents a lower bound for elapsed time: some tests may finish early
+due to a failure since the subjects were tested in a potentially
+unstable revision.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{results/rq1/plots/piechart.pdf}
+    \includegraphics[width=0.4\textwidth]{results/rq1/plots/piechart.pdf}
     \caption{\label{fig:piechart-time} Subjects grouped by elapsed
-    time on test execution ($t$): short execution ($t < 1m$), normal
-    execution ($1m \leq t < 5m$), long execution ($5m \leq t <
-    10m$), and very long execution ($10m \leq t$).}
+    time on test execution ($t$): short execution ($t < 1m$), medium 
+    execution ($1m \leq t < 5m$), and long execution ($5m \leq t$).}
 \end{figure}
 
-We compared the execution time and number of tests for each subject. \Fix{...}
+For the subjects from the groups \emph{medium} and \emph{long}, we
+compared the execution time and the number of tests successfully
+executed. As expected, Figure~\ref{fig:scatters} reveals that the
+number of tests cases are not related to the elapsed time.
+\Fix{explain briefly what dominates a test execution/types of tests}.
+We ignored outliers for better visualization.
 
 \begin{figure}[h!]%
     \centering
-    \begin{minipage}{4.5in}%
-        \subfigure[\Fix{normal}]{
-            \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-norm.pdf}
-        }%
-        \subfigure[\Fix{long}]{
-            \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-long.pdf}
+    \begin{minipage}{0.5\textwidth}
+        \subfigure[\Fix{medium}]{
+            \includegraphics[width=\textwidth]{results/rq1/plots/scatterplot-med.pdf}
         }\\
-        \subfigure[\Fix{vlong}]{
-            \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-vlong.pdf}
+        \subfigure[\Fix{long}]{
+            \includegraphics[width=\textwidth]{results/rq1/plots/scatterplot-long.pdf}
         }%
-    \end{minipage}
-    \caption{\Fix{...}}
+    \end{minipage}%
+    \caption{\Fix{...use minutes instead of secs...}}%
+    \label{fig:scatters}%
 \end{figure}
 
 \subsection{Answering research question RQ2}
