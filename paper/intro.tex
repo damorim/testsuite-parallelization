@@ -1,20 +1,25 @@
 \section{Introduction}
 
-Optimizing regression testing is important.  As software evolves the
-size of test sets increases, potentially leading to disruption in the
-development process caused by late reports of test failures.  This
-problem manifests more dramatically at large IT companies
-(e.g.,\Comment{ Groupon~\Fix{cite},} Google~\Fix{cite} and
-Microsoft~\Fix{cite}) where the size of test sets often exceeds the
-size of the code base.  Several approaches have been proposed to
-optimize regression testing.  Research has focused mostly on test
-selection~\Fix{cite}, test reduction~\Fix{cite}, and test
-prioritization~\Fix{cite}.  Although these approaches can also be
-applied in industrial settings, the focus in industry has been mostly
-in parallelizing execution of tests using server farms,\Jbc{Is this an
-assumption? Is there any evidence?} where worker machines from the
-farm are assigned to execute distinct subsets of the original test
-suite.
+Optimizing regression testing is important.  As software evolves test
+sets become more complex (in number of tests or length of test runs),
+potentially leading to disruption in the development process caused by
+late reports of test failures. Several approaches have been
+proposed in the literature to optimize regression testing.  Research
+has focused mostly on test selection, test reduction, and test
+prioritization~\Fix{cite cite...}.
+
+Dealing with high testing costs is a common problem at large IT
+companies (e.g., Groupon~\cite{kim-etal-fse2013}).  \Mar{Ask Milos if
+  there is evidence on how prevalent regression testing is at
+  Microsoft and Google, if he can explain how they run tests, and how
+  prevalent is parallelization (in constrast to regression testing).}
+
+\Fix{...decide how to motivate this study after results are shown.}
+
+%% Although these approaches can also be
+%% applied in industrial settings, the focus in industry has been mostly
+%% in parallelizing execution of tests using server farms, where worker machines from the farm are
+%% assigned to execute distinct subsets of the original test suite.
 
 Given the proliferation of multicore machines it is not surprising
 that popular build systems and testing frameworks provide today

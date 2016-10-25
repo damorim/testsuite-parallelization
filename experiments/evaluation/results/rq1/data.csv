@@ -1,0 +1,114 @@
+subject,tests,elapsed_t,group,elapsed_t_debug
+retrofit,387,18.01,Short,18s
+okhttp,147,97.84,Normal,1m37s
+java-design-patterns,4265,134.93,Normal,2m14s
+guava,812497,324.58,Long,5m24s
+libgdx,30,4.91,Short,4s
+spring-boot,211,15.53,Short,15s
+fastjson,3512,19.94,Short,19s
+dubbo,1212,80.7,Normal,1m20s
+junit4,963,10.9,Short,10s
+presto,7594,2832.09,Very Long,47m12s
+dropwizard,1221,95.37,Normal,1m35s
+spark,291,19.21,Short,19s
+otto,51,3.53,Short,3s
+zipkin,474,146.57,Normal,2m26s
+druid,3873,57.01,Short,57s
+metrics,427,17.18,Short,17s
+android-volley,100,7.56,Short,7s
+guice,3723,39.76,Short,39s
+druid,3873,54.56,Short,54s
+scribejava,109,5.44,Short,5s
+swagger-core,702,24.35,Short,24s
+HikariCP,108,141.43,Normal,2m21s
+jsoup,507,2.95,Short,2s
+async-http-client,48,138.9,Normal,2m18s
+DiskLruCache,61,3.17,Short,3s
+okio,690,112.88,Normal,1m52s
+closure-compiler,11043,69.45,Normal,1m9s
+atmosphere,258,35.77,Short,35s
+alluxio,1631,461.61,Long,7m41s
+orientdb,5359,634.11,Very Long,10m34s
+javapoet,268,7.84,Short,7s
+jstorm,43,349.13,Long,5m49s
+joda-time,4201,4.74,Short,4s
+graylog2-server,1207,205.42,Normal,3m25s
+parceler,82,6.07,Short,6s
+spring-mvc-showcase,81,15.89,Short,15s
+dex2jar,586,16.98,Short,16s
+nanohttpd,239,42.49,Short,42s
+mapdb,4112,620.73,Very Long,10m20s
+moshi,341,3.61,Short,3s
+jsonschema2pojo,157,17.37,Short,17s
+zeppelin,69,123.95,Normal,2m3s
+motan,170,28.85,Short,28s
+distributedlog,6,427.82,Long,7m7s
+http-request,163,2.51,Short,2s
+Bukkit,903,1.86,Short,1s
+Algorithms,486,1.63,Short,1s
+wire,413,6.84,Short,6s
+javacpp,26,20.88,Short,20s
+jersey,4277,1008.8,Very Long,16m48s
+spring-security-oauth,49,13.58,Short,13s
+flink,6234,461.32,Long,7m41s
+vectalign,9,2.51,Short,2s
+aws-sdk-java,1014,210.88,Normal,3m30s
+robovm,164,12.54,Short,12s
+gs-collections,166,9.61,Short,9s
+Activiti,1909,244.25,Normal,4m4s
+solo,99,15.83,Short,15s
+helios,328,104.91,Normal,1m44s
+disconf,28,6.97,Short,6s
+disunity,164,3.64,Short,3s
+rest-assured,417,21.32,Short,21s
+ninja,733,26.94,Short,26s
+curator,42,86.32,Normal,1m26s
+stream-lib,138,91.86,Normal,1m31s
+GCViewer,327,6.86,Short,6s
+failsafe,149,9.53,Short,9s
+error-prone,69,38.4,Short,38s
+java-apns,108,71.96,Normal,1m11s
+oryx,208,39.95,Short,39s
+crawler4j,8,3.43,Short,3s
+commafeed,51,15.04,Short,15s
+torodb,118,9.33,Short,9s
+sharding-jdbc,964,43.51,Short,43s
+cucumber-jvm,1150,58.32,Short,58s
+YCSB,71,190.56,Normal,3m10s
+sonarqube,1582,41.78,Short,41s
+feign,316,105.14,Normal,1m45s
+JavaVerbalExpressions,72,1.47,Short,1s
+mysql_perf_analyzer,1,3.72,Short,3s
+Gaffer,1275,85.18,Normal,1m25s
+elastic-job,711,34.86,Short,34s
+javaslang,15472,394.81,Long,6m34s
+killbill,511,142.62,Normal,2m22s
+undertow,662,152.09,Normal,2m32s
+immutables,273,7.47,Short,7s
+EventHub,21,173.04,Normal,2m53s
+byte-buddy,6900,22.81,Short,22s
+ambrose,18,4.96,Short,4s
+reflections,68,2.07,Short,2s
+jeromq,88,30.81,Short,30s
+HdrHistogram,120,6.31,Short,6s
+jimfs,5830,3.87,Short,3s
+Java-Chronicle,30,162.39,Normal,2m42s
+spring-boot-admin,144,86.14,Normal,1m26s
+jjwt,273,16.08,Short,16s
+sms-backup-plus,192,8.48,Short,8s
+jvm-tools,112,33.24,Short,33s
+pulsar,852,952.52,Very Long,15m52s
+mustache.java,207,415.88,Long,6m55s
+spring-petclinic,62,6.24,Short,6s
+orbit,40,38.4,Short,38s
+graphhopper,1321,15.25,Short,15s
+unirest-java,45,148.28,Normal,2m28s
+mahout,3484,1031.68,Very Long,17m11s
+languagetool,790,233.52,Normal,3m53s
+oryx,208,39.65,Short,39s
+OpenTripPlanner,385,155.54,Normal,2m35s
+neo4j,60871,6321.46,Very Long,105m21s
+jetty.project,5513,1472.0,Very Long,24m32s
+hive,1452,3393.04,Very Long,56m33s
+pinot,625,4003.88,Very Long,66m43s
+hazelcast,12623,4794.54,Very Long,79m54s
