@@ -8,7 +8,8 @@ fi
 
 ./gendata.py "$RAW_DATA_PATH" data.csv
 
-R --vanilla < R/barplot.r --args data.csv "$PLOTS_DIR/barplot-timecost"
+# Replaced by the piechart
+#R --vanilla < R/barplot.r --args data.csv "$PLOTS_DIR/barplot-timecost"
 
 R --vanilla < R/scatter.r --args data.csv "Normal" "$PLOTS_DIR/scatterplot-norm"
 R --vanilla < R/scatter.r --args data.csv "Long" "$PLOTS_DIR/scatterplot-long"
