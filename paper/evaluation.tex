@@ -79,6 +79,7 @@ are publicly available at \Fix{...}.
 %%     \item \RQONE
 %% \end{itemize}
 
+\Fix{TODO: MERGE VERY LONG INTO LONG}
 To evaluate the frequency of time-consuming regression tests, we first
 compiled the project and test source files, later, we measured the
 elapsed time to run the tests via the build system ignoring
@@ -87,16 +88,16 @@ resulting time from test executions into four different groups: tests
 that ran in less than one minute (\emph{short execution}), one to five
 minutes (\emph{normal execution}), five to ten minutes (\emph{long
 execution}), and more than ten minutes to execute (\emph{very long
-execution}).  Figure~\ref{fig:timecost-barplot} shows the distribution
+execution}).  Figure~\ref{fig:piechart-time} shows the distribution
 of subjects per group. It is important to mention that
-Figure~\ref{fig:timecost-barplot} represents a lower bound for elapsed
+Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
 time: since the subjects were tested in a potentially unstable
 revision, some tests may fail, interrupting the execution.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{results/rq1/plots/piechart.pdf}
-    \caption{\label{fig:timecost-barplot} Subjects grouped by elapsed
+    \caption{\label{fig:piechart-time} Subjects grouped by elapsed
     time on test execution ($t$): short execution ($t < 1m$), normal
     execution ($1m \leq t < 5m$), long execution ($5m \leq t <
     10m$), and very long execution ($10m \leq t$).}
@@ -104,11 +105,22 @@ revision, some tests may fail, interrupting the execution.
 
 \Fix{Explain scatter plot}
 
-%% \begin{figure}[t!]
-%%     \centering
-%%     \includegraphics[width=0.5\textwidth]{plots/teststime-scatter/timetests-scatter.pdf}
-%%     \caption{\label{fig:timetests-scatter} \Fix{...}}
-%% \end{figure}
+\begin{figure}[h!]%
+    \centering
+    \manpage{}
+    \subfigure[\Fix{normal}]{
+        \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-norm.pdf}
+    }
+    \\
+    \subfigure[\Fix{long}]{
+        \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-long.pdf}
+    }\\
+    \subfigure[\Fix{vlong}]{
+        \includegraphics[width=0.3\textwidth]{results/rq1/plots/scatterplot-vlong.pdf}
+    }
+    \\
+    \caption{\Fix{...}}
+\end{figure}
 
 \subsection{Answering research question RQ2}
 \label{sec:rqtwo}
