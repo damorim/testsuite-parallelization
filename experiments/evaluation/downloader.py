@@ -72,7 +72,9 @@ def download_from_file(file_path):
             rev = row["VERSION"]
             project_name = row["SUBJECT"]
 
-            if not os.path.exists(project_name):
+            project_path = os.path.join(SUBJECT_DIR, project_name)
+
+            if not os.path.exists(project_path):
                 print("Fetching project", project_name)
                 os.chdir(SUBJECT_DIR)
                 call(["git", "clone", url])

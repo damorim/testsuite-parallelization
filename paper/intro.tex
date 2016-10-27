@@ -16,26 +16,26 @@ Several approaches have been proposed in the literature to optimize
 regression testing.  Research has focused mostly on test suite
 minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012}.  Most of these techniques are
-unsound (\ie{}, they do not guarantee that failure-revealing tests
-will be selected), however, more recently, sound techniques have been
+unsound (\ie{}, they do not guarantee that fault-revealing tests will
+be selected), however, more recently, sound techniques have been
 proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
-example, to obtain soundness,
-Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} runs a change-impact
-test analysis based on file dependencies computed and maintained at
-low cost.
+example, to soundly select tests for execution,
+Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} analyzes which files
+that a given test depends on have been impacted by changes. File
+dependencies are computed and maintained at low cost.
 
 Although regression testing is a recognized problem in academia and at
 large IT organizations, to the best of our knowledge no prior work has
 investigated how prevalent the problem is in open-source projects.  We
-assume that the alternative of renting server farms (or even building
-one) to mitigate the problem is economically tempting for large IT
-organizations but not so for open-source projects and projects of
-smaller organizations with lower budgets for building a testing
-infrastructure.  As such, this paper studies (1) how relevant the
-problem of long-running test suites in open-source software really is,
-(2) what are the causes of high execution costs (\eg{}, IO or CPU),
-and (3) what is the impact of existing open-source sound approaches to
-reducing cost.
+understand that the alternative of renting server farms (or even
+building one) to mitigate the regression testing problem is a
+potential escape for large IT organizations but not as attractive for
+open-source projects and projects from smaller organizations with
+lower budgets for building testing infrastructures.  As such, this
+paper studies (1) how relevant the problem of long-running test suites
+in open-source software really is, (2) what are the causes of high
+execution costs (\eg{}, IO or CPU), and (3) what is the impact of
+existing open-source sound approaches to reducing cost.
 
 \Fix{--------------}
 
