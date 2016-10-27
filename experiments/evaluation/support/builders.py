@@ -34,10 +34,11 @@ class Maven(AbstractBuilder):
         self.test_args = ["mvn", "test", "-Dmaven.javadoc.skip=true"]
 
     def test(self, inspect_data=None):
-        args = ["time", "-o", "/tmp/timeinfo", "-f", "%e,%S,%U,%P"]
-        args.extend(self.test_args)
-        with open("/dev/null", "wb") as DEVNULL:
-            p = Popen(args, stdout=PIPE, stderr=DEVNULL)
+        flag = "ANALYZERTIMMESTAMP,"
+        os.environ["TIMEFORMAT"] = flag + "%R,%S,%U,%P"
+        args = ["bash", "-c", "time " + " ".join(self.test_args)]
+
+        p = Popen(args, stdout=PIPE, stderr=PIPE)
         print("Running tests - PID (use pstree):", p.pid)
         out, err = p.communicate()
         if inspect_data:
@@ -48,13 +49,13 @@ class Maven(AbstractBuilder):
                 inspect_data.tests += int(result[0])
                 inspect_data.skipped += int(result[3])
 
-            with open("/tmp/timeinfo") as f:
-                for line in f:
-                    if not line.startswith("Command"):
-                        output = line.strip().split(",")
-                        inspect_data.elapsed_t = float(output[0])
-                        inspect_data.system_t = float(output[1])
-                        inspect_data.user_t = float(output[2])
+            error = err.decode()
+            for m in re.finditer(r"{}.*".format(flag), error):
+                values = (m.group(0).split(","))
+                inspect_data.elapsed_t = float(values[1])
+                inspect_data.system_t = float(values[2])
+                inspect_data.user_t = float(values[3])
+                inspect_data.cpu_usage = float(values[4])
 
         return not p.returncode
 

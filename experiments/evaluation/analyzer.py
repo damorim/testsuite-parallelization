@@ -18,15 +18,16 @@ class ExecutionData:
         self.elapsed_t = 0
         self.system_t = 0
         self.user_t = 0
+        self.cpu_usage = 0
 
     def values(self):
         return [self.subject, self.builder_name, self.compiled, self.tests_pass, self.tests, self.skipped,
-                self.elapsed_t, self.system_t, self.user_t]
+                self.elapsed_t, self.system_t, self.user_t, self.cpu_usage]
 
     @staticmethod
     def header():
         return ["subject", "builder_name", "compiled", "tests_pass", "tests", "skipped",
-                "elapsed_t", "system_t", "user_t"]
+                "elapsed_t", "system_t", "user_t", "cpu_usage"]
 
 
 def inspect(subject):
@@ -42,8 +43,6 @@ def inspect(subject):
         execution_data.builder_name = builder.name
         if builder.compile():
             execution_data.compiled = True
-            # FIXME: How to deal when the project has multiple threads?
-            # One option would be dividing by # of CPUs
             execution_data.tests_pass = builder.test(execution_data)
 
     return execution_data
@@ -96,5 +95,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # print(inspect("retrofit"))
+    # main()
+    print(inspect("retrofit").values())
