@@ -54,12 +54,20 @@ Java with at least 100 stars. The number of stars indicates the
 interest and appreciation from the community to a given project.
 \Comment{(https://help.github.com/articles/about-stars/)} Although our
 criteria is subjective, it is an approximation for relevant projects
-to conduct our study. For each project, we detected the build manager
-system based on the files located in the root directory (\eg,
+to conduct our study.\Jbc{Subject selection is currently OK but I will
+use another way (eg Google BigQuery) to have access to more subjects.} To
+scale the study, we considered only Maven projects with a
+\emph{pom.xml} file located in the project's root directory. We could
+also include support to other popular build manager systems but we
+noticed that they are commonly related to a particular platform (\eg,
+Gradle and Android) or the build process is based on user-defined
+tasks (\eg, Ant).  \Comment{For each project, we detected the build
+manager system based on the files located in the root directory (\eg,
 \emph{pom.xml}) from the project in the following precedence: Maven,
-Gradle, and Ant. From the 1.000 downloaded projects, we automatically
-detected the build system from 806 subjects and selected the \Fix{154}
-projects that we were able to compile.
+Gradle, and Ant.} From the 1.000 downloaded projects, we selected the
+154 projects that we were able to compile. \Jbc{Remember to update
+those numbers (download + projects) after updating the subject
+selection approach.}
 
 \subsection{Setup and Replication}
 \label{sec:setup}
