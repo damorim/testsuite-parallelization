@@ -30,13 +30,20 @@ def compute_time_distribution(data):
     if not data.statistics['time']:
         return -1
     test_cases = sorted(data.items, key=lambda t: t.time)
-    size = len(test_cases)
-    time_counter = 0
-    for i in range(round(size * 0.9)):
-        time_counter += test_cases[i].time
+    total_time = data.statistics['time']
+    total_tests = data.statistics['tests']  # - data.statistics['skipped']
 
-    # FIXME: this computation is not much accurate
-    return (time_counter / data.statistics['time']) * 100
+    threshold = round(total_time * 0.9)
+    size = len(test_cases)
+
+    time_counter = test_counter = 0
+    for i in range(size):
+        time_counter += test_cases[i].time
+        test_counter += 1
+        if (i < size - 1) and (time_counter + test_cases[i + 1].time > threshold):
+            break
+
+    return round((test_counter / total_tests) * 100)
 
 
 def main(subject_name, subjects_home=os.curdir):
@@ -63,8 +70,20 @@ if __name__ == "__main__":
     output_file = os.path.join(os.path.abspath(os.curdir), "distrib.csv")
     base_dir = os.path.join(os.path.abspath(os.curdir), "subjects")
     for p in os.listdir(base_dir):
-        os.chdir(os.path.join(base_dir, p))
-        if maven.is_maven_project():
-            d = compute_time_distribution(maven.collect_surefire_data())
-            with open(output_file, "a") as csv:
-                csv.write("%s, %.2f\n" % (p, d))
+        if os.path.isdir(os.path.join(base_dir, p)):
+            os.chdir(os.path.join(base_dir, p))
+            if maven.is_maven_project():
+                d = compute_time_distribution(maven.collect_surefire_data())
+                if 0 <= d < 20:
+                    d = "0%-20%"
+                elif 20 <= d < 40:
+                    d = "20%-40%"
+                elif 40 <= d < 60:
+                    d = "40%-60%"
+                elif 60 <= d < 80:
+                    d = "60%-80%"
+                elif 80 <= d:
+                    d = "80%-100%"
+
+                with open(output_file, "a") as csv:
+                    csv.write("%s,%s\n" % (p, d))

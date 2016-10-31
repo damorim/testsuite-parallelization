@@ -86,4 +86,4 @@ def is_maven_project():
 
 def get_value_from(xml_node, attribute, default_value, cast_type):
     """ Auxiliary function from collect_surefire_data """
-    return default_value if not xml_node.get(attribute) else cast_type(xml_node.get(attribute))
+    return default_value if not xml_node.get(attribute) else cast_type(xml_node.get(attribute).replace(",", ""))
