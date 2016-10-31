@@ -26,22 +26,17 @@ class ExecutionData:
                 "elapsed_t", "system_t", "user_t", "cpu_usage"]
 
 
-# FIXME test this!
 def compute_time_distribution(data):
+    if not data.statistics['time']:
+        return -1
     test_cases = sorted(data.items, key=lambda t: t.time)
-    total_time = data.statistics['time']
-    coverage = 0.9
+    size = len(test_cases)
+    time_counter = 0
+    for i in range(round(size * 0.9)):
+        time_counter += test_cases[i].time
 
-    threshold = total_time * coverage
-    counter = 0
-    current_time = 0.0
-    for tc in test_cases:
-        current_time += tc.time
-        counter += 1
-        print(" ", threshold, current_time)
-        if current_time >= threshold:
-            break
-    print(data.statistics, threshold, counter, current_time)
+    # FIXME: this computation is not much accurate
+    return (time_counter / data.statistics['time']) * 100
 
 
 def main(subject_name, subjects_home=os.curdir):
@@ -65,5 +60,11 @@ def main(subject_name, subjects_home=os.curdir):
     return output_data
 
 if __name__ == "__main__":
-    os.chdir("./subjects/storm")
-    compute_time_distribution(maven.collect_surefire_data())
+    output_file = os.path.join(os.path.abspath(os.curdir), "distrib.csv")
+    base_dir = os.path.join(os.path.abspath(os.curdir), "subjects")
+    for p in os.listdir(base_dir):
+        os.chdir(os.path.join(base_dir, p))
+        if maven.is_maven_project():
+            d = compute_time_distribution(maven.collect_surefire_data())
+            with open(output_file, "a") as csv:
+                csv.write("%s, %.2f\n" % (p, d))
