@@ -57,22 +57,26 @@ def collect_surefire_data():
     Returns a Data tuple with statistics counter and a list of test cases data.
     """
     output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
-
-    counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
+    total_counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
     test_cases = []
 
     for xml_path in output.splitlines():
         test_suite = ElementTree.parse(xml_path).getroot()
 
-        counter += Counter(failure=int(test_suite.get("errors")) + int(test_suite.get("failures")),
-                           tests=int(test_suite.get("tests")), skipped=int(test_suite.get("skipped")),
-                           time=float(test_suite.get("time")))
+        failure_cnt = get_value_from(test_suite, "failures", default_value=0, cast_type=int)
+        error_cnt = get_value_from(test_suite, "errors", default_value=0, cast_type=int)
+        tests_cnt = get_value_from(test_suite, "tests", default_value=0, cast_type=int)
+        skipped_cnt = get_value_from(test_suite, "skipped", default_value=0, cast_type=int)
+        time_cnt = get_value_from(test_suite, "time", default_value=0.0, cast_type=float)
+
+        total_counter.update(Counter(tests=tests_cnt, skipped=skipped_cnt, time=time_cnt,
+                                     failure=(failure_cnt + error_cnt)))
 
         for test_case in test_suite.iter("testcase"):
             test_name = "%s.%s" % (test_case.get("classname"), test_case.get("name"))
             test_cases.append(TestCase(name=test_name, time=float(test_case.get("time"))))
 
-    return SurefireData(items=test_cases, statistics=counter)
+    return SurefireData(items=test_cases, statistics=total_counter)
 
 
 def is_maven_project():
@@ -80,7 +84,6 @@ def is_maven_project():
     return os.path.exists("pom.xml")
 
 
-# FIXME remove this temporary code...
-if __name__ == "__main__":
-    os.chdir("../subjects/retrofit")
-    print(collect_surefire_data())
+def get_value_from(xml_node, attribute, default_value, cast_type):
+    """ Auxiliary function from collect_surefire_data """
+    return default_value if not xml_node.get(attribute) else cast_type(xml_node.get(attribute))
