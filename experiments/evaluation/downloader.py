@@ -10,12 +10,15 @@ from subprocess import call, check_output
 from urllib.error import HTTPError
 
 from ghwrappers.search import RepositoryQuery
-from support.constants import SUBJECT_DIR, SUBJECTS_CSV_FILE, COLUMN_SEP, SUBJECTS_CSV_HEADER_FIELDS, BASE_DIR
+
+BASE_DIR = os.path.abspath(os.curdir)
+SUBJECT_DIR = os.path.join(BASE_DIR, "subjects")
 
 
 def download_from_github():
-    with open(SUBJECTS_CSV_FILE, "w") as f:
-        f.write(COLUMN_SEP.join(SUBJECTS_CSV_HEADER_FIELDS))
+    subject_csv = "subjects.csv"
+    with open(subject_csv, "w") as f:
+        f.write(",".join(["SUBJECTS", "URL", "REVISION"]))
         f.write("\n")
 
     max_pages = None
@@ -50,8 +53,8 @@ def download_from_github():
                         os.chdir(SUBJECT_DIR)
 
                         csv_line = [project_name, git_url, commit_ver]
-                        with open(SUBJECTS_CSV_FILE, "a") as f:
-                            f.write(COLUMN_SEP.join(csv_line))
+                        with open(subject_csv, "a") as f:
+                            f.write(",".join(csv_line))
                             f.write("\n")
 
     except HTTPError as err:
@@ -69,7 +72,7 @@ def download_from_file(file_path):
         reader = csv.DictReader(f)
         for row in reader:
             url = row["URL"]
-            rev = row["VERSION"]
+            rev = row["REVISION"]
             project_name = row["SUBJECT"]
 
             project_path = os.path.join(SUBJECT_DIR, project_name)
