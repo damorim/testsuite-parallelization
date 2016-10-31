@@ -26,6 +26,24 @@ class ExecutionData:
                 "elapsed_t", "system_t", "user_t", "cpu_usage"]
 
 
+# FIXME test this!
+def compute_time_distribution(data):
+    test_cases = sorted(data.items, key=lambda t: t.time)
+    total_time = data.statistics['time']
+    coverage = 0.9
+
+    threshold = total_time * coverage
+    counter = 0
+    current_time = 0.0
+    for tc in test_cases:
+        current_time += tc.time
+        counter += 1
+        print(" ", threshold, current_time)
+        if current_time >= threshold:
+            break
+    print(data.statistics, threshold, counter, current_time)
+
+
 def main(subject_name, subjects_home=os.curdir):
     subject_dir = os.path.join(subjects_home, subject_name)
     if not os.path.exists(subject_dir):
@@ -40,9 +58,12 @@ def main(subject_name, subjects_home=os.curdir):
         if maven.build():
             output_data.compiled = True
             output_data.tests_pass = maven.test(output_data)
-            data = maven.collect_surefire_data()
+
+            test_data = maven.collect_surefire_data()
+            compute_time_distribution(test_data)
 
     return output_data
 
 if __name__ == "__main__":
-    pass
+    os.chdir("./subjects/storm")
+    compute_time_distribution(maven.collect_surefire_data())

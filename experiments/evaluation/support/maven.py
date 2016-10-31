@@ -8,6 +8,9 @@ from collections import namedtuple, Counter
 from subprocess import call, Popen, PIPE, TimeoutExpired, check_output
 from xml.etree import ElementTree
 
+TestCase = namedtuple("TestCase", "name, time")
+SurefireData = namedtuple("Data", "statistics, items")
+
 
 def build():
     with open(os.devnull, "wb") as DEVNULL:
@@ -55,7 +58,6 @@ def collect_surefire_data():
     """
     output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
 
-    TestCase = namedtuple("TestCase", "name, time")
     counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
     test_cases = []
 
@@ -70,8 +72,7 @@ def collect_surefire_data():
             test_name = "%s.%s" % (test_case.get("classname"), test_case.get("name"))
             test_cases.append(TestCase(name=test_name, time=float(test_case.get("time"))))
 
-    Data = namedtuple("Data", "statistics, items")
-    return Data(items=test_cases, statistics=counter)
+    return SurefireData(items=test_cases, statistics=counter)
 
 
 def is_maven_project():
