@@ -140,9 +140,15 @@ We ignored outliers for better visualization.
     \item \RQC
 \end{itemize}
 
-To evaluate the distribution of execution time, we collected from the
-test report (\ie, Surefire XML file) the elapsed time to execute
-each test case and \Fix{...to be continued...}.
+To evaluate the distribution of execution time, we calculated the cost
+from 90\% of test cases ordered by execution time and compared the
+resulting value to the total time.  We collected the elapsed time from
+test cases for each generated report. Maven Surefire generates an XML
+report with execution information (\eg, number of skipped tests and
+elapsed time) per test suite \Jbc{Should I use the previous sentence
+as a footnote or should I delete it?}. We noticed that some test
+cases reported an elapsed time of zero: since the reported time is in
+milliseconds, some tests may execute in a shorter time.
 
 \subsection{Answering research question RQ3}
 \label{sec:rqThree}
