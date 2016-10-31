@@ -18,34 +18,36 @@ of long test runs, the main source of cost, and how often developers
 explore parallelism to improve execution performance. We pose the
 following research questions:
 
-\newcommand{\RQONE}{How prevalent is the occurence of time-consuming
+\newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression tests in open-source projects?}
-\newcommand{\RQTWO}{What is the distribution of CPU and IO bound
+\newcommand{\RQB}{What is the distribution of CPU and IO bound
 regression tests from the sample set?}
-\newcommand{\RQTHREE}{What is the proportion of \Fix{time-consuming?}
-test cases per project?}
-\newcommand{\RQFOUR}{How often developers use the parallelism features
+\newcommand{\RQC}{How the execution time is distributed among test
+cases?}
+\newcommand{\RQD}{How often developers use the parallelism features
 from build manager systems to improve performance on test execution?}
 
-\newcommand{\rqA}{\textbf{RQ1.} \RQONE}
-\newcommand{\rqB}{\textbf{RQ2.} \RQTWO}
-\newcommand{\rqC}{\textbf{RQ3.} \RQTHREE}
-\newcommand{\rqD}{\textbf{RQ4.} \RQFOUR}
+\newcommand{\rqOne}{\textbf{RQ1.} \RQA}
+\newcommand{\rqTwo}{\textbf{RQ2.} \RQC}
+\newcommand{\rqThree}{\textbf{RQ3.} \RQB}
+\newcommand{\rqFour}{\textbf{RQ4.} \RQD}
 
 \begin{itemize}
-    \item \rqA
-    \item \rqB
-    \item \rqC
-    \item \rqD
+    \item \rqOne
+    \item \rqTwo
+    \item \rqThree
+    \item \rqFour
 \end{itemize}
 
 The first research question addresses the distribution of subjects per
 elapsed time to execute regression tests. We are interested on
 identifying time-consuming test suites for further investigation. The
-second research question addresses addresses \Fix{...}. The third
-research question addresses the distribution of \Fix{...}. Finally,
-the fourth research question investigates the relevance of supporting
-parallel execution on builder tools.
+second research question addresses the distribution of execution time
+per test case for each project. The rationale is that if the time cost
+of a regression test is equally distributed among test cases, the
+execution cost could be potentially improved by running tests in
+parallel (in contrast to the scenario where only one test case
+dominates most of the execution time).
 
 \subsection{Subjects}
 \label{sec:subjects}
@@ -85,9 +87,9 @@ list of projects are publicly available at \Fix{create gh-pages}.
 \subsection{Answering research question RQ1}
 \label{sec:rqone}
 
-%% \begin{itemize}
-%%     \item \RQONE
-%% \end{itemize}
+\begin{itemize}
+    \item \RQA
+\end{itemize}
 
 To evaluate the frequency of time-consuming regression tests, we first
 compiled source and test files, later, we measured the elapsed time to
@@ -132,11 +134,22 @@ We ignored outliers for better visualization.
 \end{figure}
 
 \subsection{Answering research question RQ2}
-\label{sec:rqtwo}
+\label{sec:rqTwo}
 
-%% \begin{itemize}
-%%     \item \RQTWO
-%% \end{itemize}
+\begin{itemize}
+    \item \RQC
+\end{itemize}
+
+To evaluate the distribution of execution time, we collected from the
+test report (\ie, Surefire XML file) the elapsed time to execute
+each test case and \Fix{...to be continued...}.
+
+\subsection{Answering research question RQ3}
+\label{sec:rqThree}
+
+\begin{itemize}
+    \item \RQB
+\end{itemize}
 
 To evaluate the distribution of CPU and IO bound in regression tests
 from the sample set, we proposed the definition of \emph{cpuness}
@@ -147,15 +160,6 @@ mode}, \emph{system\_t} is the elapsed in \emph{kernel mode}, and
 measured the \emph{cpuness} of each regression test \Fix{...elaborate
 the meaning of cpuness} \Fix{Describe how I measured user, system and
 "wall" time}.  \Fix{Explain results}.  \Fix{show plots}
-
-\subsection{Answering research question RQ3}
-\label{sec:rqthree}
-
-%% \begin{itemize}
-%%     \item \RQTHREE
-%% \end{itemize}
-
-\Fix{to appear...}
 
 \subsection{Answering research question RQ4}
 \label{sec:rqfour}
