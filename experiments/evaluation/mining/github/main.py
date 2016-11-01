@@ -6,7 +6,7 @@ from mining.github.search import RepositoryQuery
 
 
 def generate_subject_list():
-    subject_csv = "subjects.csv"
+    subject_csv = "download.csv"
     with open(subject_csv, "w") as f:
         f.write(",".join(["SUBJECT", "URL"]))
         f.write("\n")
