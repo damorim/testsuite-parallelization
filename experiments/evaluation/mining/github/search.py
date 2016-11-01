@@ -2,18 +2,22 @@
 # Ref.: https://developer.github.com/v3/search/
 #
 # Author: Jeanderson Candido
-#
-class Paginatable:
+
+
+class Paging:
     def at(self, page):
         pass
+
     def size(self, page_size):
         pass
+
 
 class Queryable:
     def query(self):
         pass
 
-class RepositoryQuery(Queryable, Paginatable):
+
+class RepositoryQuery(Queryable, Paging):
     def __init__(self, criteria):
         self._API_URL = "https://api.github.com/search/repositories"
         self._criteria = criteria
@@ -40,9 +44,8 @@ class RepositoryQuery(Queryable, Paginatable):
                                               query_field=qfield)
 
         if self._page:
-            url = "{prefix}&page={page}".format(prefix=url,page=self._page)
+            url = "{prefix}&page={page}".format(prefix=url, page=self._page)
         if self._page_size:
             url = "{prefix}&per_page={sz}".format(prefix=url, sz=self._page_size)
 
         return url
-
