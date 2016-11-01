@@ -3,95 +3,96 @@
 # Author: Jeanderson Candido
 #
 import csv
-import json
 import os
-import urllib.request
+from collections import Counter, namedtuple
 from subprocess import call, check_output
-from urllib.error import HTTPError
 
-from ghwrappers.search import RepositoryQuery
+import re
 
 BASE_DIR = os.path.abspath(os.curdir)
 SUBJECT_DIR = os.path.join(BASE_DIR, "subjects")
+Builder = namedtuple("Builder", "name, args")
 
 
-def download_from_github():
-    subject_csv = "subjects.csv"
-    with open(subject_csv, "w") as f:
-        f.write(",".join(["SUBJECTS", "URL", "REVISION"]))
-        f.write("\n")
-
-    max_pages = None
-    current_page = 0
-    page_size = 100
-    try:
-        while True:
-            current_page += 1
-            if max_pages and current_page > max_pages:
-                break
-            print("Processing page", current_page)
-            criteria = {"language": "java", "stars": ">=100"}
-
-            query_url = RepositoryQuery(criteria).at(current_page).size(page_size).query()
-            with urllib.request.urlopen(query_url) as response:
-                data = json.loads(response.read().decode())
-                for item in data["items"]:
-                    project_name = item["name"]
-                    git_url = item["html_url"]
-
-                    # Cloning if project doesn't exist and ensuring we are avoiding duplicated projects
-                    if not os.path.exists(project_name):
-                        call(["git", "clone", "--depth", "1", git_url])
-
-                        # Moving to project directory to collect data and going back
-                        # to the subject directory.
-                        os.chdir(project_name)
-
-                        commit_ver_raw = check_output(["git", "rev-parse", "HEAD"])
-                        commit_ver = commit_ver_raw.decode().strip()
-
-                        os.chdir(SUBJECT_DIR)
-
-                        csv_line = [project_name, git_url, commit_ver]
-                        with open(subject_csv, "a") as f:
-                            f.write(",".join(csv_line))
-                            f.write("\n")
-
-    except HTTPError as err:
-        print(err)
-        print("GitHub API Query has exhausted")
-        print("Total pages:", current_page)
-
-
-def download_from_file(file_path):
-    file_abs_path = os.path.join(BASE_DIR, file_path)
+def download_from_file(file_abs_path):
     if not os.path.exists(file_abs_path):
         raise Exception("Invalid path:", file_abs_path)
 
     with open(file_abs_path) as f:
         reader = csv.DictReader(f)
-        for row in reader:
-            url = row["URL"]
-            rev = row["REVISION"]
-            project_name = row["SUBJECT"]
 
-            project_path = os.path.join(SUBJECT_DIR, project_name)
+    for row in reader:
+        url = row["URL"]
+        project_name = row["SUBJECT"]
 
-            if not os.path.exists(project_path):
-                print("Fetching project", project_name)
-                os.chdir(SUBJECT_DIR)
-                call(["git", "clone", url])
+        project_path = os.path.join(SUBJECT_DIR, project_name)
+        if not os.path.exists(project_path):
+            print("Fetching project", project_name)
+            os.chdir(SUBJECT_DIR)
+            call(["git", "clone", url])
 
-                os.chdir(project_name)
-                call(["git", "reset", "--hard", rev])
+
+def detect_builder():
+    if os.path.exists("pom.xml"):
+        return Builder(name="Maven", args=["mvn", "clean", "install", "-DskipTests", "-Dmaven.javadoc.skip=true"])
+    elif os.path.exists("gradlew"):
+        return Builder(name="Gradle", args=["./gradlew", "clean", "build", "-X", "test"])
+    elif os.path.exists("build.xml"):
+        return Builder(name="Ant", args=["ant", "compile"])
+    return None
+
+
+def generate_subject_details(output_file):
+    output_file = os.path.abspath(output_file)
+    with open(output_file, "w") as out:
+        out.write("SUBJECT,URL,REV,BUILDER,COMPILED\n")
+
+    builder_counter = Counter()
+    compiled_counter = Counter()
+    progress_counter = 1
+
+    # FIXME consider reading from download.csv instead of listing the directory
+    for subject in sorted(os.listdir(SUBJECT_DIR)):
+        subject_path = os.path.join(SUBJECT_DIR, subject)
+        if os.path.isdir(subject_path):
+            print("Progress: {}# - {}".format(progress_counter, subject))
+            os.chdir(subject_path)
+
+            git_remote_output = check_output(["git", "remote", "-v"]).decode()
+            sanitized_output = re.sub(r"\s", " ", git_remote_output)
+            url = sanitized_output.split(" ")[1]
+
+            revision = check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+            builder = detect_builder()
+            if not builder:
+                compiled = "n/a"
+                builder_name = "unknown"
+            else:
+                builder_name = builder.name
+                with open(os.devnull, "wb") as ignore:
+                    try:
+                        exit_status = call(builder.args, stderr=ignore, stdout=ignore)
+                    except Exception as err:
+                        with open(os.path.join(BASE_DIR, "downloader-errors.txt"), "a") as log:
+                            log.write("{} - {}\n".format(subject, err))
+                        exit_status = 1
+                compiled = "false" if exit_status else "true"
+
+            compiled_counter.update([compiled])
+            builder_counter.update([builder_name])
+
+            print("  {}\n  {}\n".format(builder_counter, compiled_counter))
+            progress_counter += 1
+
+            output_entry = [subject, url, revision, builder_name, compiled]
+            with open(output_file, "a") as out:
+                out.write(",".join(output_entry))
+                out.write("\n")
 
 
 if __name__ == "__main__":
     if not os.path.exists(SUBJECT_DIR):
         os.mkdir(SUBJECT_DIR)
 
-    os.chdir(SUBJECT_DIR)
-
-    # Download either from the existing file or from GitHub. Downloading from GitHub generates a new subject list
-    download_from_file("subjects.csv")
-    # download_from_github()
+    # download_from_file(file_abs_path="./mining/github/download.csv")
+    generate_subject_details(output_file="subjects.csv")
