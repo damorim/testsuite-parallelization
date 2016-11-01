@@ -52,26 +52,27 @@ dominates most of the execution time).
 \subsection{Subjects}
 \label{sec:subjects}
 
-We used the Github's Search API to fetch the top 1,000 Java projects
-with at least 100 stars. The number of stars indicates the interest
-and appreciation from the community to a given project.
+\Jbc{Subject selection is currently OK but I will use another way (eg
+Google BigQuery) to have access to more subjects.}We used the Github's
+Search API~\cite{githubsearch} to fetch the top 1,000\footnote{The
+    Search API imposes the limit of 1,000 results regardless of the
+total number of matches from a search criteria.} Java projects with at
+least 100 stars. The number of stars indicates the interest and
+appreciation from the community to a given project.
 \Comment{(https://help.github.com/articles/about-stars/)} Although our
 criteria is subjective, it is an approximation to find relevant
-projects to conduct our study.\Jbc{Subject selection is currently OK
-    but I will use another way (eg Google BigQuery) to have access to
-more subjects.} For each project, we detected the build manager system
+projects to conduct our study. We detected the build manager system
 based on the files located in the root directory from the project in
 the following precedence: Maven (\emph{pom.xml)}, Gradle
-(\emph{gradlew}), and Ant (\emph{build.xml}). From the 1,000
-downloaded projects (composed by \Fix{X} Maven, \Fix{Y} Gradle,
-\Fix{W} Ant, and \Fix{W} unknown projects), we selected the 154 Maven
-projects that we were able to compile\Jbc{Remember to update those
-numbers (download + projects) after updating the subject selection
-approach.}. We noticed that we are unable to compile other subjects
-because other build systems are commonly related to a particular
-platform (\eg, Gradle implied Android), the build process is based on
-user-defined tasks (\eg, Ant), or the project has unsolved
-dependencies.
+(\emph{gradlew}), and Ant (\emph{build.xml}).\Jbc{Remember to update
+the following values after updating the subject selection approach.}
+From the 1,000 downloaded projects, we detected the build system of
+801 subjects (composed by 216 Maven, 564 Gradle, and 21 Ant projects)
+and considered \Fix{154} projects that we were able to compile.
+\Fix{We noticed that we are unable to compile other subjects because of
+unsolved dependencies, other build systems are commonly related to a
+particular platform (\eg, Gradle implied Android), or the build
+process is based on user-defined tasks (\eg, Ant).}
 
 \subsection{Setup and Replication}
 \label{sec:setup}
