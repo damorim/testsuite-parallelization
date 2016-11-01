@@ -81,7 +81,7 @@ def generate_subject_details(output_file):
             compiled_counter.update([compiled])
             builder_counter.update([builder_name])
 
-            print("  {}\n  {}\n".format(builder_counter, compiled_counter))
+            print("  Builder{}\n  Compiled{}\n".format(builder_counter, compiled_counter))
             progress_counter += 1
 
             output_entry = [subject, url, revision, builder_name, compiled]
