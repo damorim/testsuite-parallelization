@@ -4,10 +4,9 @@
 #
 import csv
 import os
-from collections import Counter, namedtuple
-from subprocess import call, check_output
-
 import re
+from collections import Counter, namedtuple
+from subprocess import call, check_output, Popen, PIPE
 
 BASE_DIR = os.path.abspath(os.curdir)
 SUBJECT_DIR = os.path.join(BASE_DIR, "subjects")
@@ -24,12 +23,18 @@ def download_from_file(file_abs_path):
     for row in reader:
         url = row["URL"]
         project_name = row["SUBJECT"]
+        try:
+            revision = row["REVISION"]
+        except KeyError:
+            revision = None
 
         project_path = os.path.join(SUBJECT_DIR, project_name)
         if not os.path.exists(project_path):
             print("Fetching project", project_name)
             os.chdir(SUBJECT_DIR)
             call(["git", "clone", url])
+            if revision:
+                call(["git", "reset", "--hard", revision])
 
 
 def detect_builder():
@@ -69,13 +74,15 @@ def generate_subject_details(output_file):
                 builder_name = "unknown"
             else:
                 builder_name = builder.name
-                with open(os.devnull, "wb") as ignore:
-                    try:
-                        exit_status = call(builder.args, stderr=ignore, stdout=ignore)
-                    except Exception as err:
-                        with open(os.path.join(BASE_DIR, "downloader-errors.txt"), "a") as log:
-                            log.write("{} - {}\n".format(subject, err))
-                        exit_status = 1
+                try:
+                    fifteen_min = 15 * 60
+                    p = Popen(builder.args, stderr=PIPE, stdout=PIPE)
+                    p.communicate(timeout=fifteen_min)
+                    exit_status = p.returncode
+                except Exception as err:
+                    with open(os.path.join(BASE_DIR, "downloader-errors.txt"), "a") as log:
+                        log.write("{} - {}\n".format(subject, err))
+                    exit_status = 1
                 compiled = "false" if exit_status else "true"
 
             compiled_counter.update([compiled])
