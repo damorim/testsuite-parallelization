@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Installs required third-party packages
+# Installs required third-party packages for vagrant provisioning.
+#
 # Author: Jeanderson Candido
 BASE_DIR=$(pwd)
 THIRDPARTY_HOME=$BASE_DIR/thirdparty
