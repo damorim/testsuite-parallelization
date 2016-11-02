@@ -1,12 +1,68 @@
 \section{Modes of Parallel Execution}
 
-Parallelism in test execution can be achieved at different levels.
-Figure~\ref{fig:levels} illustrates that.\Fix{...}  This paper focuses
-at lower-level parallelism that can be achieved through build systems
-and testing frameworks.  In the following we elaborate relevant
-features of these components focusing on Java, Maven, and JUnit but
-the discussion can be generalized to other languages, build systems,
-and testing frameworks.
+%%, potentially using commodity hardware
+
+Parallelism in test execution can be obtained at different levels.
+Figure~\ref{fig:levels} illustrates some of these levels.  This paper
+focuses at lower-level parallelism, obtained with parallel computation
+at cpus and threads in a given machine.  This kind of parallelism is
+enabled through build systems and testing frameworks.  Given the
+proliferation of multicore machines it is not surprising that testing
+frameworks provide today support for parallel test execution with the
+goal of running tests more efficiently~\cite{junit-org,testng,nunit}.
+Build systems wrap the features of these frameworks to facilitate the
+use of such technology\cite{maven-surefire-plugin}.  In the following
+we elaborate relevant features of these components focusing on Java,
+Maven, and JUnit but the discussion can be generalized to other
+languages, build systems, and testing frameworks.
+
+Note that lower-level parallelism is a complement to higher-level
+parallelism that could be enabled through server farms.  For the
+scenario of large IT organizations, lower-level parallelization
+schemes could leverage the computing power of server nodes in addition
+to the aggregate processing power of the farm.  Lower-level
+parallelism fits particularly well smaller organizations (/projects)
+with relatively high testing costs but lower budgets.
+\Comment{Unfortunately, these solutions can't be used out-of-the-box:
+  unrestricted parallel execution of tests can produce
+  non-deterministic results as developers typically do not provision
+  protection to concurrent accesses originated from arbitrary program
+  points (\ie{}, tests).  We refer to this problem as Parallel
+  Execution Flakiness (\pef{}).}
+
+%% These solutions enable the
+%% use of commodity hardware to maximize CPU usage\footnote{In the case
+%%   of the Java language, for example, it is possible to explore
+%%   parallelism across and within JVMs.}.  
+
+\Comment{
+To illustrate the importance of parallel test execution and
+the problem of \pef{} let's consider the case of the ``core'' module
+from the Apache Camel project~\cite{apache-camel-web}.  This module
+contains 5,679 test cases, declared in 2,356 test classes.  We ran
+those tests in a machine with 16GB of memory and 8 virtual CPUs (4
+cores with 2 native threads each).  Sequential test execution takes
+24m50s to run this test set.  Execution of the same test set takes
+2m28s when we configured parallel execution to fork a JVM per CPU and
+execute test classes, uniquely allocated to that JVM, sequentially but
+running test methods from each class in separate threads.  Note that
+this is an order of magnitude speedup (10.07x)\Fix{Need to understand
+why this is 10x as opposed to something closer to 7x - I didn't get
+your concern here}.  Unfortunately, due to \pef{}, $\sim$2\% (114 of
+5,679) of the tests fail when executed in parallel.  It is important
+to notice that the ratio of failures varies with the project as it
+depends on factors such as length of test cases and amount of shared
+state across tests.
+
+\pef{} is an important obstacle to enable parallel test execution.
+Conceptually, higher parallelization can result in higher chances of
+concurrency-related problems.  It is important to execute tests
+efficiently without sacrificing reliability
+\Fix{gap between pars?? What gap?}
+
+}
+
+
 
 \subsection{Build Systems}
 Build systems, such as Maven\footnote{\url{maven.apache.org}},

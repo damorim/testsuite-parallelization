@@ -1,11 +1,13 @@
 \section{Introduction}
 
+%% . which can disrupt the development
+%% process~\cite{hilton-etal-ase2016}.\Comment{  This is often referred to as the
+%% ``regression testing problem''.}
+
 As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both elements can add up to the
-aggregate cost of running a test suite, leading to late reports of test
-failures, which can disrupt the development
-process~\cite{hilton-etal-ase2016}.\Comment{  This is often referred to as the
-``regression testing problem''.}  At large IT companies (e.g.,
+aggregate cost of running a test suite, which can lead to late reports of test
+failures.  At large IT companies (e.g.,
 Groupon~\cite{kim-etal-fse2013}), dealing with high testing costs is a
 common problem .  \Mar{Ask Milos if he can share stories on how
   prevalent regression testing is at Microsoft and Google, if he can
@@ -20,75 +22,49 @@ unsound (\ie{}, they do not guarantee that fault-revealing tests will
 be selected), however, more recently, sound techniques have been
 proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
 example, to soundly select tests for execution,
-Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} analyzes which files
-that a given test depends on have been impacted by changes. File
-dependencies are computed and maintained at low cost.
+Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
+computes which tests have been impacted by changes.  It analyzes, for
+each test, which file dependencies have been change impacted.
+
+%; these
+%dependencies are computed and maintained at low cost.
 
 Although regression testing is a recognized problem in academia and at
 large IT organizations, to the best of our knowledge no prior work has
 investigated how prevalent the problem is in open-source projects.
 For large IT organizations, the alternative of renting server farms,
-or even building one, is a potential escape to mitigate the regression
-testing problem.  However, for open-source projects and projects from
+or even building one, is a potential escape to the regression testing
+problem.  However, for open-source projects and for projects of
 smaller organizations with lower budgets for building testing
-infrastructures, this alternative is not as attractive.  This paper
-studies (1) how relevant the problem of long-running test suites in
-open-source software is, (2) what are the causes of high execution
-cost (CPU vs. IO), and (3) what is the impact of existing open-source
-sound approaches to reducing cost.
+infrastructures, this alternative may not be as attractive.
+
+\newcommand{\numSubjs}{143}
+
+Motivated by this potential gap in regression testing practice, this
+paper studies (1) how prevalent long-running test suites are in
+open-source software projects.  To conduct this experiment we selected
+\numSubjs{} Java projects from github that are highly-popular and use
+the Maven build system.  (Section~\ref{sec:eval} details our selection
+criteria.)  Our experimental results indicate that long-running test
+suites (taking longer than 5m\Fix{check if Ekstazi paper also used
+  this value and cite} to complete) are not rare (\Fix{17\%} of the
+projects).  From this result we investigated (2) how frequently
+long-running test suites use parallelization.  Our results indicate
+that \Fix{80\%} of the long-running projects do use parallelization to
+speedup execution.  Given the popularity of this solution, we further
+studied: (3) what are the causes of high execution cost in individual
+tests (CPU vs. IO) and (4) how uniformly cost is distributed across
+tests.  These questions help to assess the impact of parallelization
+in each of these projects.  Intuitively, IO-intensive test suites and
+test suites with uneven distribution of cost per test are factors that
+limit the effects of parallelization.  Results indicate that \Fix{...}
+Finally, we investigated (5) what are the limitations related with
+parallelization that could justify adoption resistance.
 
 \Fix{--------------}
 
-Given the proliferation of multicore machines it is not surprising
-that popular build systems and testing frameworks provide today
-support for parallel test execution with the goal of running tests
-more efficiently~\cite{junit-org,testng,nunit,maven-surefire-plugin}.
-The lower-level parallelism enabled through build systems and testing
-frameworks is an important complement to the higher-level parallelism
-enabled through server farms.  These solutions enable the use of
-commodity hardware to maximize CPU usage\footnote{In the case of the
-Java language, for example, it is possible to explore parallelism
-across and within JVMs.}.  For the scenario of large IT organizations,
-lower-level parallelization schemes could leverage the computing power
-of server nodes in addition to the aggregate processing power of the
-farm.  Lower-level parallelism fits particularly well smaller
-organizations (/projects) with relatively high testing costs but lower
-budgets.  \Comment{Unfortunately, these solutions can't be used out-of-the-box:
-unrestricted parallel execution of tests can produce non-deterministic
-results as developers typically do not provision protection to
-concurrent accesses originated from arbitrary program points (\ie{},
-tests).  We refer to this problem as Parallel Execution Flakiness
-(\pef{}).}
-
 To illustrate the importance of parallel test execution, \Jbc{TODO -
 Write a paragraph motivating this paper.}
-
-\Comment{
-To illustrate the importance of parallel test execution and
-the problem of \pef{} let's consider the case of the ``core'' module
-from the Apache Camel project~\cite{apache-camel-web}.  This module
-contains 5,679 test cases, declared in 2,356 test classes.  We ran
-those tests in a machine with 16GB of memory and 8 virtual CPUs (4
-cores with 2 native threads each).  Sequential test execution takes
-24m50s to run this test set.  Execution of the same test set takes
-2m28s when we configured parallel execution to fork a JVM per CPU and
-execute test classes, uniquely allocated to that JVM, sequentially but
-running test methods from each class in separate threads.  Note that
-this is an order of magnitude speedup (10.07x)\Fix{Need to understand
-why this is 10x as opposed to something closer to 7x - I didn't get
-your concern here}.  Unfortunately, due to \pef{}, $\sim$2\% (114 of
-5,679) of the tests fail when executed in parallel.  It is important
-to notice that the ratio of failures varies with the project as it
-depends on factors such as length of test cases and amount of shared
-state across tests.
-
-\pef{} is an important obstacle to enable parallel test execution.
-Conceptually, higher parallelization can result in higher chances of
-concurrency-related problems.  It is important to execute tests
-efficiently without sacrificing reliability
-\Fix{gap between pars?? What gap?}
-
-}
 
 This paper reports an empirical study to evaluate the impact of
 parallelization options on test execution speedup \Fix{...}\Jbc{TODO -
@@ -96,4 +72,4 @@ Summary of the contributions of this paper} .
 
 %%  LocalWords:  parallelization multicore JUnit TestNG NUnit XXm YYm
 %%  LocalWords:  Groupon parallelizing multi JVMs CPUs JVM Milos TODO
-%%  LocalWords:  Ekstazi
+%%  LocalWords:  Ekstazi github
