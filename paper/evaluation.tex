@@ -80,13 +80,14 @@ process is based on user-defined tasks (\eg, Ant).}
 To run our experiments, we used a \emph{Core i7-4790} (3.60 GHz) Intel
 processor machine with 8 virtual CPUs (4 cores with 2 native threads
 each) and 16GB of memory, running \emph{Ubuntu 14.04 LTS Trusty Tahr}
-(64-bit version). Our evaluation scripts depends on \Fix{specify:
-unix-based tools} to measure CPU usage and \emph{Python 3.4} (or
-later). For replication, we provide all the source artifacts publicly
-available at \Fix{create gh-pages}, including supporting scripts (\eg,
-the script that test subjects and generates the raw data), the full
-list of projects, and a \emph{Vagrantfile} to emulate our hardware and
-software setup and dependency settings .
+(64-bit version). Software settings include the Linux \emph{sysstat}
+package to measure performance, \emph{git} to fetch subjects,
+\emph{Java 8} to build and test subjects, and \emph{Python 3.4} to run
+our evaluation scripts. For replication, we provide all the source
+artifacts publicly available at \Fix{create gh-pages}, including
+supporting scripts (\eg, the script that test subjects and generates
+the raw data), the full list of projects, and a \emph{Vagrantfile} to
+emulate our hardware and all software dependencies properly configured.
 
 \subsection{Answering research question RQ1}
 \label{sec:rqone}
