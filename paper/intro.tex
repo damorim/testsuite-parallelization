@@ -23,8 +23,9 @@ be selected), however, more recently, sound techniques have been
 proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
 example, to soundly select tests for execution,
 Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
-computes which tests have been impacted by changes.  It analyzes, for
-each test, which file dependencies have been change impacted.
+computes which tests have been impacted by changes.  To that end
+Ekstazi analyzes, for each test, which test-dependent files have
+changed.
 
 %; these
 %dependencies are computed and maintained at low cost.
@@ -40,26 +41,28 @@ infrastructures, this alternative may not be as attractive.
 
 \newcommand{\numSubjs}{143}
 
-Motivated by this potential gap in regression testing practice, this
-paper studies (1) how prevalent long-running test suites are in
+Motivated by this potential gap in regression testing practice, we
+first studied (1) how prevalent long-running test suites are in
 open-source software projects.  To conduct this experiment we selected
 \numSubjs{} Java projects from github that are highly-popular and use
 the Maven build system.  (Section~\ref{sec:eval} details our selection
 criteria.)  Our experimental results indicate that long-running test
 suites (taking longer than 5m\Fix{check if Ekstazi paper also used
-  this value and cite} to complete) are not rare (\Fix{17\%} of the
-projects).  From this result we investigated (2) how frequently
-long-running test suites use parallelization.  Our results indicate
-that \Fix{80\%} of the long-running projects do use parallelization to
-speedup execution.  Given the popularity of this solution, we further
-studied: (3) what are the causes of high execution cost in individual
-tests (CPU vs. IO) and (4) how uniformly cost is distributed across
-tests.  These questions help to assess the impact of parallelization
-in each of these projects.  Intuitively, IO-intensive test suites and
-test suites with uneven distribution of cost per test are factors that
-limit the effects of parallelization.  Results indicate that \Fix{...}
-Finally, we investigated (5) what are the limitations related with
-parallelization that could justify adoption resistance.
+  this value and cite} to complete) are not rare~--~\Fix{17\%} of the
+projects we analyzed contain long-running test suites.  From this
+result we investigated (2) how frequently long-running test suites use
+parallelization\Mar{justify why parallelization}.  Our results
+indicate that \Fix{80\%} of the long-running test suites do use
+parallelization to speedup execution.  Given the popularity of this
+solution, we further studied: (3) what are the causes of high
+execution cost in individual tests (CPU vs. IO) and (4) how uniformly
+cost is distributed across tests.  These questions help to assess the
+impact of parallelization in each of these projects.  Intuitively,
+IO-intensive test suites and test suites with uneven distribution of
+cost per test are factors that limit the effects of parallelization.
+Results indicate that \Fix{...}  Finally, we investigated (5) what are
+the limitations related with parallelization that could justify
+adoption resistance.
 
 \Fix{--------------}
 

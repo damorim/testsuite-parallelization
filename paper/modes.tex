@@ -1,18 +1,19 @@
-\section{Modes of Parallel Execution}
+\section{Parallel Execution of Test Suites}
 
-%%, potentially using commodity hardware
+\Mar{add a sentence to introduce this section at a higher abstraction
+  level.}  Parallelism in test execution can be obtained at different
+levels.  Figure~\ref{fig:levels} illustrates some of these levels.
 
-Parallelism in test execution can be obtained at different levels.
-Figure~\ref{fig:levels} illustrates some of these levels.  This paper
-focuses at lower-level parallelism, obtained with parallel computation
-at cpus and threads in a given machine.  This kind of parallelism is
-enabled through build systems and testing frameworks.  Given the
-proliferation of multicore machines it is not surprising that testing
-frameworks provide today support for parallel test execution with the
-goal of running tests more efficiently~\cite{junit-org,testng,nunit}.
-Build systems wrap the features of these frameworks to facilitate the
-use of such technology\cite{maven-surefire-plugin}.  In the following
-we elaborate relevant features of these components focusing on Java,
+This paper focuses at lower-level parallelism, obtained with parallel
+computation at cpus and threads in a given machine.  This kind of
+parallelism is enabled through build systems and testing frameworks.
+Given the proliferation of multicore machines it is not surprising
+that testing frameworks provide today support for parallel test
+execution with the goal of running tests more
+efficiently~\cite{junit-org,testng,nunit}.  Build systems wrap
+parallel features offered by testing frameworks to facilitate the use
+of such technology\cite{maven-surefire-plugin}.  In the following we
+elaborate relevant features of these components focusing on Java,
 Maven, and JUnit but the discussion can be generalized to other
 languages, build systems, and testing frameworks.
 
