@@ -13,13 +13,14 @@
 We evaluated the characteristics of regression tests in open-source
 development from a sample set of Java projects from
 Github\Jbc{Remember to update the previous sentence after updating the
-subject section}. We are interested in understanding the preva- lence
-of long test runs, the main source of cost, and how often developers
-explore parallelism to improve execution performance. We pose the
-following research questions:
+subject section}. We are interested in understanding the prevalence
+of long test runs, the main sources of cost, and how often developers
+explore parallelism to improve execution performance. More
+specifically, we pose the following research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
-regression tests in open-source projects?}
+regression test suites in open-source projects?}
+
 \newcommand{\RQB}{What is the distribution of CPU and IO bound
 regression tests from the sample set?}
 \newcommand{\RQC}{How the execution time is distributed among test
@@ -41,7 +42,8 @@ from build manager systems to improve performance on test execution?}
 
 The first research question addresses the distribution of subjects per
 elapsed time to execute regression tests. We are interested on
-identifying time-consuming test suites for further investigation. The
+identifying time-consuming test suites \Jbc{do we have a better
+argument than this?}for further investigation. The
 second research question addresses the distribution of execution time
 per test case for each project. The rationale is that if the time cost
 of a regression test is equally distributed among test cases, the
@@ -97,18 +99,27 @@ emulate our hardware and all software dependencies properly configured.
     \item \RQA
 \end{itemize}
 
-To evaluate the frequency of time-consuming regression tests, we first
-compiled source and test files, later, we measured the elapsed time to
-run the tests via the build system ignoring non-related tasks (\eg,
-\emph{javadoc} generation).  We grouped the subjects according to the
-execution time: tests that ran in less than one minute (\emph{short
-execution}), one to five minutes (\emph{medium execution}), and more
-than five minutes (\emph{long execution}).
-Figure~\ref{fig:piechart-time} shows the proportion of subjects per
-group. It is important to mention that Figure~\ref{fig:piechart-time}
-represents a lower bound for elapsed time: some tests may finish early
-due to a failure since the subjects were tested in a potentially
-unstable revision.
+To evaluate the frequency of time-consuming regression tests, we
+considered \Fix{X} Maven and \Fix{Y} Ant projects (\Fix{X+Y} total)
+that we were able to run the tests. For each subject, we first
+compiled the source and later, tested and collected the elapsed time
+reported from the build system using regular expressions. To avoid
+inflating the reported time, we run the tests ignoring non-related
+tasks (\eg, \emph{javadoc} generation). In case of \emph{Maven}
+projects, use \Jbc{How to show the following command?} \Fix{mvn test
+-Dmaven.javadoc.skip=true}; in contrast, for \emph{Ant} projects, we
+used \Fix{ant test} and manually inspected the test execution to
+ignore any non-related tasks, if any.
+
+We grouped the subjects according to the execution time: tests that
+ran in less than one minute (\emph{short execution}), one to five
+minutes (\emph{medium execution}), and more than five minutes
+(\emph{long execution}). Figure~\ref{fig:piechart-time} shows the
+proportion of subjects per group. It is important to mention that
+Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
+time: some tests may finish early due to a failure since the subjects
+were tested in a potentially unstable revision. \Fix{Results indicate
+that a relatively high number of projects...}.
 
 \begin{figure}[h!]
     \centering
