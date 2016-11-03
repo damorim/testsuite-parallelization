@@ -13,9 +13,8 @@ subjects = []
 with open(INPUT_FILE, newline="") as f:
     reader = csv.DictReader(f)
     for row in reader:
-        if row["true"] == "true":
-            subjects.append(row["name"])
-
+        if row["COMPILED"] == "true":
+            subjects.append(row["SUBJECT"])
 
 print("subject,elapsed_t,tests,balance,cpu_usage")  # TODO define an output format
 for subject in subjects:
