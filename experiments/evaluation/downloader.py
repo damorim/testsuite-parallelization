@@ -8,7 +8,7 @@ import re
 from collections import Counter
 from subprocess import call, check_output, Popen, PIPE
 
-from utils import detect_builder
+from support.utils import detect_builder
 
 BASE_DIR = os.path.abspath(os.curdir)
 SUBJECT_DIR = os.path.join(BASE_DIR, "subjects")
