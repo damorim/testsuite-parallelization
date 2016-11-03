@@ -1,6 +1,8 @@
+# FIXME DEPRECATED MODULE
 import os
 
 from support import maven
+from support.utils import collect_surefire_data, compute_time_distribution
 
 
 class ExecutionData:
@@ -26,26 +28,6 @@ class ExecutionData:
                 "elapsed_t", "system_t", "user_t", "cpu_usage"]
 
 
-def compute_time_distribution(data):
-    if not data.statistics['time']:
-        return -1
-    test_cases = sorted(data.items, key=lambda t: t.time)
-    total_time = data.statistics['time']
-    total_tests = data.statistics['tests']  # - data.statistics['skipped']
-
-    threshold = round(total_time * 0.9)
-    size = len(test_cases)
-
-    time_counter = test_counter = 0
-    for i in range(size):
-        time_counter += test_cases[i].time
-        test_counter += 1
-        if (i < size - 1) and (time_counter + test_cases[i + 1].time > threshold):
-            break
-
-    return round((test_counter / total_tests) * 100)
-
-
 def main(subject_name, subjects_home=os.curdir):
     subject_dir = os.path.join(subjects_home, subject_name)
     if not os.path.exists(subject_dir):
@@ -61,7 +43,7 @@ def main(subject_name, subjects_home=os.curdir):
             output_data.compiled = True
             output_data.tests_pass = maven.test(output_data)
 
-            test_data = maven.collect_surefire_data()
+            test_data = collect_surefire_data()
             compute_time_distribution(test_data)
 
     return output_data
@@ -73,7 +55,7 @@ if __name__ == "__main__":
         if os.path.isdir(os.path.join(base_dir, p)):
             os.chdir(os.path.join(base_dir, p))
             if maven.is_maven_project():
-                d = compute_time_distribution(maven.collect_surefire_data())
+                d = compute_time_distribution(collect_surefire_data())
                 if 0 <= d < 20:
                     d = "0%-20%"
                 elif 20 <= d < 40:

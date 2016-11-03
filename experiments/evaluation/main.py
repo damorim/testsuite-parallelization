@@ -1,59 +1,27 @@
 #!/usr/bin/python3
-import csv
 import os
 
-import analysis
+from support import performance, utils
 
 BASE_DIR = os.path.abspath(os.curdir)
-INPUT_CSV = os.path.join(BASE_DIR, "subjects.csv")
-OUTPUT_CSV = os.path.join(BASE_DIR, "rawdata.csv")
+SUBJECTS_HOME = os.path.join(BASE_DIR, "subjects")
 
+# TODO populate this list from csv file
+subjects = ["retrofit"]
 
-def main():
-    # Execution configuration
-    max_rows = None
-    init_row = None
+print("subject,elapsed_t,tests,balance,cpu_usage")  # TODO define an output format
+for subject in subjects:
+    subject_path = os.path.join(SUBJECTS_HOME, subject)
+    os.chdir(subject_path)
 
-    # FIXME ignoring just to get output faster
-    skip_subjects = ['neo4j', 'jetty.project', 'hive', 'pinot', 'hazelcast', 'hbase', 'hadoop']
+    performance.evaluate()
 
-    if not init_row:
-        with open(OUTPUT_CSV, "w") as time_cost:
-            time_cost.write(",".join("%s" % attrib for attrib in analysis.ExecutionData.header()))
-            time_cost.write("\n")
+    t = utils.check_time_cost()
+    report_data = utils.check_test_reports()
+    if report_data:
+        tests = report_data.statistics['tests']
+        balance = utils.compute_time_distribution(report_data)
+        cpu_usage = utils.check_cpu_usage()
 
-    with open(INPUT_CSV, newline="") as subjects:
-        reader = csv.DictReader(subjects)
-
-        row_counter = 1
-        cur_row = 2
-        for row in reader:
-            if init_row and cur_row < init_row:
-                cur_row += 1
-                continue
-
-            if max_rows and row_counter > max_rows:
-                break
-
-            project = row["SUBJECT"]
-            if project not in skip_subjects:
-                print("Checking", project)
-                data = analysis.main(project)
-                with open(OUTPUT_CSV, "a") as time_cost:
-                    time_cost.write(",".join("%s" % str(value) for value in data.values()))
-                    time_cost.write("\n")
-                row_counter += 1
-
-    # FIXME REMOVE ME (temporary code)
-    print("Running skipped subjects....")
-    for p in skip_subjects:
-        print("Checking", p)
-        data = analysis.main(p)
-        with open(OUTPUT_CSV, "a") as time_cost:
-            time_cost.write(",".join("%s" % str(value) for value in data.values()))
-            time_cost.write("\n")
-
-
-if __name__ == "__main__":
-    os.chdir(os.path.join(BASE_DIR, "subjects"))
-    main()
+        # TODO define an output format
+        print(",".join([subject, str(t), str(tests), str(balance), str(cpu_usage)]))
