@@ -5,6 +5,9 @@ from collections import Counter, namedtuple
 from subprocess import check_output
 from xml.etree import ElementTree
 
+BUILDER_LOG_TXT = "builder-output-log.txt"
+PERFORMANCE_LOG_TXT = "test-performance-log.txt"
+
 TestCaseInfo = namedtuple("TestCase", "name, time")
 ReportData = namedtuple("Data", "statistics, items")
 
@@ -81,7 +84,7 @@ def compute_time_distribution(data):
 
 
 def check_time_cost(subject_path=os.curdir):
-    with open(os.path.join(subject_path, "test-output.txt")) as builder_output:
+    with open(os.path.join(subject_path, BUILDER_LOG_TXT)) as builder_output:
         for line in builder_output:
             if line.startswith("TIME-COST="):
                 elapsed_time_raw = re.sub(r"TIME-COST=", "", line.strip())
