@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import os
-from subprocess import Popen, STDOUT, DEVNULL
+from subprocess import Popen, DEVNULL, PIPE
 
 from support import utils
 
@@ -18,8 +18,12 @@ def evaluate(subject_path):
         #      Consider using a tool (e.g sar, mpstat...) to run in background
         #      and output the data in a file, so we can use the data later, if necessary
         #
-        p = Popen(builder.test, stderr=STDOUT, stdout=DEVNULL)
-        p.communicate()
+        p = Popen(builder.test, stderr=DEVNULL, stdout=PIPE)
+        output_stream, error_stream = p.communicate()
+        with open("test-output.txt", "w") as f:
+            for line in output_stream.splitlines(keepends=True):
+                f.write(line)
+
 
 if __name__ == "__main__":
     print("Running test...")

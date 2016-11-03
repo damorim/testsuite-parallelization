@@ -1,4 +1,15 @@
 import os
+from collections import namedtuple
+
+TestCaseInfo = namedtuple("TestCase", "name, time")
+ReportData = namedtuple("Data", "statistics, items")
+
+
+class Builder:
+    def __init__(self, name, args, test):
+        self.name = name
+        self.args = args
+        self.test = test
 
 
 def detect_builder():
@@ -14,10 +25,3 @@ def detect_builder():
         return Builder(name="Ant", args=["ant", "compile"], test=["ant", "test"])
 
     return None
-
-
-class Builder:
-    def __init__(self, name, args, test):
-        self.name = name
-        self.args = args
-        self.test = test

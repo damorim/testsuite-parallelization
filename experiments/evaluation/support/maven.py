@@ -4,12 +4,11 @@
 #
 import os
 import re
-from collections import namedtuple, Counter
+from collections import Counter
 from subprocess import call, Popen, PIPE, TimeoutExpired, check_output
 from xml.etree import ElementTree
 
-TestCase = namedtuple("TestCase", "name, time")
-SurefireData = namedtuple("Data", "statistics, items")
+from support.utils import TestCaseInfo, ReportData
 
 
 def build():
@@ -74,9 +73,9 @@ def collect_surefire_data():
 
         for test_case in test_suite.iter("testcase"):
             test_name = "%s.%s" % (test_case.get("classname"), test_case.get("name"))
-            test_cases.append(TestCase(name=test_name, time=float(test_case.get("time"))))
+            test_cases.append(TestCaseInfo(name=test_name, time=float(test_case.get("time"))))
 
-    return SurefireData(items=test_cases, statistics=total_counter)
+    return ReportData(items=test_cases, statistics=total_counter)
 
 
 def is_maven_project():
