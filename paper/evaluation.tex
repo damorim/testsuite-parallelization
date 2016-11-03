@@ -55,10 +55,10 @@ dominates most of the execution time).
 \Jbc{Subject selection is currently OK but I will use another way (eg
 Google BigQuery) to have access to more subjects.}We used the Github's
 Search API~\cite{githubsearch} to fetch the top 1,000\footnote{The
-    Search API imposes the limit of 1,000 results regardless of the
-number of matches from a search criteria.} Java projects with at
-least 100 stars. The number of stars indicates the interest and
-appreciation from the community to a given project.
+Search API imposes the limit of 1,000 results regardless of the number
+of matches from a search criteria.} Java projects with at least 100
+stars. The number of stars indicates the interest and appreciation
+from the community to a given project.
 \Comment{(https://help.github.com/articles/about-stars/)} Although our
 criteria is subjective, it is an approximation to find relevant
 projects to conduct our study. We detected the build manager system
@@ -68,11 +68,12 @@ the following precedence: Maven (\emph{pom.xml)}, Gradle
 the following values after updating the subject selection approach.}
 From the 1,000 downloaded projects, we detected the build system of
 801 subjects (composed by 216 Maven, 564 Gradle, and 21 Ant projects)
-and considered \Fix{154} projects that we were able to compile.
-\Fix{We noticed that we are unable to compile other subjects because of
-unsolved dependencies, other build systems are commonly related to a
-particular platform (\eg, Gradle implied Android), or the build
-process is based on user-defined tasks (\eg, Ant).}
+and considered 164 projects that we were able to compile (153 Maven
+and 9 Ant projects).  We were unable to compile other subjects because
+some are related to a particular platform (\eg, Gradle implied
+Android), unsolved dependencies, or the build process is based on
+user-defined tasks (\eg, we considered the name \emph{compile} on Ant
+projects).
 
 \subsection{Setup and Replication}
 \label{sec:setup}
