@@ -5,12 +5,13 @@
 import csv
 import os
 import re
-from collections import Counter, namedtuple
+from collections import Counter
 from subprocess import call, check_output, Popen, PIPE
+
+from utils import detect_builder
 
 BASE_DIR = os.path.abspath(os.curdir)
 SUBJECT_DIR = os.path.join(BASE_DIR, "subjects")
-Builder = namedtuple("Builder", "name, args")
 
 
 def download_from_file(file_abs_path):
@@ -37,17 +38,7 @@ def download_from_file(file_abs_path):
                 call(["git", "reset", "--hard", revision])
 
 
-def detect_builder():
-    if os.path.exists("pom.xml"):
-        return Builder(name="Maven", args=["mvn", "clean", "install", "-DskipTests", "-Dmaven.javadoc.skip=true"])
-    elif os.path.exists("gradlew"):
-        return Builder(name="Gradle", args=["./gradlew", "clean", "build", "-X", "test"])
-    elif os.path.exists("build.xml"):
-        return Builder(name="Ant", args=["ant", "compile"])
-    return None
-
-
-def generate_subject_details(output_file):
+def verify_subjects_from(output_file):
     output_file = os.path.abspath(output_file)
     with open(output_file, "w") as out:
         out.write("SUBJECT,URL,REV,BUILDER,COMPILED\n")
@@ -102,4 +93,4 @@ if __name__ == "__main__":
         os.mkdir(SUBJECT_DIR)
 
     # download_from_file(file_abs_path="./mining/github/download.csv")
-    generate_subject_details(output_file="subjects.csv")
+    verify_subjects_from(output_file="subjects.csv")
