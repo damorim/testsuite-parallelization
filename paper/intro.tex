@@ -37,27 +37,32 @@ For large IT organizations, the alternative of renting server farms,
 or even building one, is a potential escape to the regression testing
 problem.  However, for open-source projects and for projects of
 smaller organizations with lower budgets for building testing
-infrastructures, this alternative may not be as attractive.
+infrastructures, this alternative is not as attractive.
 
+%% eventually move this to macros.tex
 \newcommand{\numSubjs}{143}
+\newcommand{\numLongRunning}{\Fix{17\%}}
+\newcommand{\percentParallelForLongRunning}{\Fix{80\%}}
 
 Motivated by this potential gap in regression testing practice, we
 first studied (1) how prevalent long-running test suites are in
 open-source software projects.  To conduct this experiment we selected
 \numSubjs{} Java projects from github that are highly-popular and use
 the Maven build system.  (Section~\ref{sec:eval} details our selection
-criteria.)  Our experimental results indicate that long-running test
-suites (taking longer than 5m\Fix{check if Ekstazi paper also used
-  this value and cite} to complete) are not rare~--~\Fix{17\%} of the
-projects we analyzed contain long-running test suites.  From this
-result we investigated (2) how frequently long-running test suites use
-parallelization\Mar{justify why parallelization}.  Our results
-indicate that \Fix{80\%} of the long-running test suites do use
-parallelization to speedup execution.  Given the popularity of this
+methodology.)  Our experimental results indicate that long-running
+test suites (taking longer than 5m to complete\Fix{check if Ekstazi
+  paper also used this value and cite}) are not
+rare~--~\numLongRunning{} of the projects we analyzed contain
+long-running test suites.  From this result we investigated (2) how
+frequently the projects we considered use parallelization to speedup
+test runs.  We parsed build files of projects to identify usage of
+parallelism. \Mar{justify parallelization}.  Our results indicate that
+\percentParallelForLongRunning{} of long-running test suites do use
+parallelism to speedup execution.  Given the popularity of this
 solution, we further studied: (3) what are the causes of high
 execution cost in individual tests (CPU vs. IO) and (4) how uniformly
 cost is distributed across tests.  These questions help to assess the
-impact of parallelization in each of these projects.  Intuitively,
+impact of parallelization in test suite execution.  Intuitively,
 IO-intensive test suites and test suites with uneven distribution of
 cost per test are factors that limit the effects of parallelization.
 Results indicate that \Fix{...}  Finally, we investigated (5) what are
