@@ -16,7 +16,7 @@ with open(INPUT_FILE, newline="") as f:
         if row["COMPILED"] == "true":
             subjects.append(row["SUBJECT"])
 
-print("subject,elapsed_t,tests,balance,cpu_usage")  # TODO define an output format
+print("subject,elapsed_t,tests,balance,cpu_usage,iowait,cpu_idle")  # TODO define an output format
 for subject in subjects:
     subject_path = os.path.join(SUBJECTS_HOME, subject)
     os.chdir(subject_path)
@@ -29,10 +29,10 @@ for subject in subjects:
         try:
             tests = report_data.statistics['tests']
             balance = utils.compute_time_distribution(report_data)
-            cpu_usage = utils.check_cpu_usage()
+            kernel_data = utils.check_resources_usage()
 
             # TODO define an output format
-            print(",".join([subject, str(t), str(tests), str(balance), str(cpu_usage)]))
+            print("{},{}".format(",".join([subject, str(t), str(tests), str(balance)]), ",".join(kernel_data)))
         except Exception as err:
             with open(os.path.join(BASE_DIR, "main-errors.txt"), "a") as log:
                 log.write("{} - {}\n".format(subject, err))
