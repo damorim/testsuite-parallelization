@@ -44,22 +44,22 @@ def collect_surefire_data():
     output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
     total_counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
     test_cases = []
-
     for xml_path in output.splitlines():
         test_suite = ElementTree.parse(xml_path).getroot()
+
+        time_cnt = 0
+        for test_case in test_suite.iter("testcase"):
+            test_name = "%s.%s" % (test_case.get("classname"), test_case.get("name"))
+            test_cases.append(TestCaseInfo(name=test_name, time=float(test_case.get("time"))))
+            time_cnt += float(test_case.get("time"))
 
         failure_cnt = get_value_from(test_suite, "failures", default_value=0, cast_type=int)
         error_cnt = get_value_from(test_suite, "errors", default_value=0, cast_type=int)
         tests_cnt = get_value_from(test_suite, "tests", default_value=0, cast_type=int)
         skipped_cnt = get_value_from(test_suite, "skipped", default_value=0, cast_type=int)
-        time_cnt = get_value_from(test_suite, "time", default_value=0.0, cast_type=float)
 
         total_counter.update(Counter(tests=tests_cnt, skipped=skipped_cnt, time=time_cnt,
                                      failure=(failure_cnt + error_cnt)))
-
-        for test_case in test_suite.iter("testcase"):
-            test_name = "%s.%s" % (test_case.get("classname"), test_case.get("name"))
-            test_cases.append(TestCaseInfo(name=test_name, time=float(test_case.get("time"))))
 
     return ReportData(items=test_cases, statistics=total_counter)
 
@@ -70,16 +70,18 @@ def get_value_from(xml_node, attribute, default_value, cast_type):
 
 
 def compute_time_distribution(data):
-    test_cases = sorted(data.items, key=lambda t: t.time)
+    test_cases = sorted(data.items, key=lambda t: t.time, reverse=True)
     total_time = data.statistics['time']
 
     counter = Counter(tests=0, time=0)
     threshold = total_time * 0.9
+
     for tc in test_cases:
         if counter['time'] + tc.time > threshold:
             break
         counter.update(Counter(tests=1, time=tc.time))
 
+    print(counter, threshold, data.statistics)
     return round((counter['tests'] / len(test_cases)) * 100, 2)
 
 
