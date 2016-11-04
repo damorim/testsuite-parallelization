@@ -23,8 +23,10 @@ regression test suites in open-source projects?}
 
 \newcommand{\RQB}{What is the distribution of CPU and IO bound
 regression tests from the sample set?}
-\newcommand{\RQC}{How the execution time is distributed among test
-cases?}
+
+\newcommand{\RQC}{How uniformly distributed is the execution time
+across test cases in costly projects?}
+
 \newcommand{\RQD}{How often developers use the parallelism features
 from build manager systems to improve performance on test execution?}
 
@@ -41,15 +43,22 @@ from build manager systems to improve performance on test execution?}
 \end{itemize}
 
 The first research question addresses the distribution of subjects per
-elapsed time to execute regression tests. We are interested on
-identifying time-consuming test suites \Jbc{do we have a better
-argument than this?}for further investigation. The
-second research question addresses the distribution of execution time
-per test case for each project. The rationale is that if the time cost
+time cost. We are interested on identifying time-consuming test suites
+to investigate further their characteristics (\eg, type of application
+and bottlenecks from execution) \Jbc{do we have a better arguments?}.
+The second research question addresses the distribution of execution
+time per test case. For each subject identified in the first research
+question, we are interested in understanding how balanced is the cost
+of the test suite in contrast to the cost of test cases and if there
+are subjects where the time cost is mostly dominated by a small
+fraction of test cases.
+
+
+\Comment{The rationale is that if the time cost
 of a regression test is equally distributed among test cases, the
 execution cost could be potentially improved by running tests in
 parallel (in contrast to the scenario where only one test case
-dominates most of the execution time).
+dominates most of the execution time).}
 
 \subsection{Subjects}
 \label{sec:subjects}
@@ -101,15 +110,15 @@ emulate our hardware and all software dependencies properly configured.
 
 To evaluate the frequency of time-consuming regression tests, we
 considered \Fix{X} Maven and \Fix{Y} Ant projects (\Fix{X+Y} total)
-that we were able to run the tests. For each subject, we first
-compiled the source and later, tested and collected the elapsed time
-reported from the build system using regular expressions. To avoid
-inflating the reported time, we run the tests ignoring non-related
-tasks (\eg, \emph{javadoc} generation). In case of \emph{Maven}
-projects, use \Jbc{How to show the following command?} \Fix{mvn test
--Dmaven.javadoc.skip=true}; in contrast, for \emph{Ant} projects, we
-used \Fix{ant test} and manually inspected the test execution to
-ignore any non-related tasks, if any.
+that we were able to test. For each subject, we first compiled the
+source files and later, we ran the tests and used regular expressions
+to collect the elapsed time reported from the build system. To avoid
+inflating the time cost from test execution, we ignored non-related
+tasks (\eg, \emph{javadoc} generation). \Fix{elaborate: In case of
+\emph{Maven} projects, we use \Jbc{How to show the following command?}
+\Fix{mvn test -Dmaven.javadoc.skip=true}; in contrast, for \emph{Ant}
+projects, we used \Fix{ant test} and manually inspected the test
+execution to ignore any non-related tasks, if any}.
 
 We grouped the subjects according to the execution time: tests that
 ran in less than one minute (\emph{short execution}), one to five
@@ -118,8 +127,10 @@ minutes (\emph{medium execution}), and more than five minutes
 proportion of subjects per group. It is important to mention that
 Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
 time: some tests may finish early due to a failure since the subjects
-were tested in a potentially unstable revision. \Fix{Results indicate
-that a relatively high number of projects...}.
+were tested in a potentially unstable revision. Results indicate
+that a relatively high number of projects from the sample set requires
+at least five minutes to execute. The longest execution takes \Fix{x}
+to finish.
 
 \begin{figure}[h!]
     \centering
@@ -129,12 +140,13 @@ that a relatively high number of projects...}.
     execution ($1m \leq t < 5m$), and long execution ($5m \leq t$).}
 \end{figure}
 
-For the subjects from the groups \emph{medium} and \emph{long}, we
-compared the execution time and the number of tests successfully
-executed. As expected, Figure~\ref{fig:scatters} reveals that the
-number of tests cases are not related to the elapsed time.
-\Fix{explain briefly what dominates a test execution/types of tests}.
-We ignored outliers for better visualization.
+Considering the groups \emph{medium} and \emph{long}, we investigated
+the relation between number of tests cases and time cost from
+subjects.  \Fix{elaborate: As expected, Figure~\ref{fig:scatters}
+reveals that the number of tests cases are not related to the elapsed
+time.  \Fix{explain briefly what dominates a test execution/types of
+tests}.  We ignored outliers for better visualization.} Results
+indicate that \Fix{...conclusion...}.
 
 \begin{figure}[h!]%
     \centering
