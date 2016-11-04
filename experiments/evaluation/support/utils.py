@@ -81,7 +81,6 @@ def compute_time_distribution(data):
             break
         counter.update(Counter(tests=1, time=tc.time))
 
-    print(counter, threshold, data.statistics)
     return round((counter['tests'] / len(test_cases)) * 100, 2)
 
 
@@ -104,6 +103,11 @@ def check_test_reports(subject_path=os.curdir):
         return builder.test_report_inspector()
 
 
-def check_cpu_usage():
-    # TODO implement function to read data from 'performance.evaluate' output file and return %CPU
-    return 0
+def check_resources_usage(subject_path=os.curdir):
+    performance_log_path = os.path.join(subject_path, PERFORMANCE_LOG_TXT)
+    if os.path.exists(performance_log_path):
+        statistics_raw = check_output(["tail", "-n", "1", performance_log_path])
+        statistics = re.sub("\s+", " ", statistics_raw.decode().strip()).split(" ")
+        return [str(round(float(statistics[2]) + float(statistics[3]) + float(statistics[4]), 2)),
+                statistics[5], statistics[7]]
+    return []
