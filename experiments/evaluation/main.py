@@ -34,5 +34,5 @@ for subject in subjects:
             # TODO define an output format
             print(",".join([subject, str(t), str(tests), str(balance), str(cpu_usage)]))
         except Exception as err:
-            with open("main-errors.txt", "a") as log:
+            with open(os.path.join(BASE_DIR, "main-errors.txt"), "a") as log:
                 log.write("{} - {}\n".format(subject, err))
