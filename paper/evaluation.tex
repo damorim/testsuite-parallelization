@@ -22,13 +22,13 @@ specifically, we pose the following research questions:
 regression test suites in open-source projects?}
 
 \newcommand{\RQB}{What is the distribution of CPU and IO bound
-regression tests from the sample set?}
+regression test suites from the sample set?}
 
 \newcommand{\RQC}{How uniformly distributed is the execution time
 across test cases in costly projects?}
 
 \newcommand{\RQD}{How often developers use the parallelism features
-from build manager systems to improve performance on test execution?}
+from build systems to improve runtime performance?}
 
 \newcommand{\rqOne}{\textbf{RQ1.} \RQA}
 \newcommand{\rqTwo}{\textbf{RQ2.} \RQC}
@@ -45,13 +45,17 @@ from build manager systems to improve performance on test execution?}
 The first research question addresses the distribution of subjects per
 time cost. We are interested on identifying time-consuming test suites
 to investigate further their characteristics (\eg, type of application
-and bottlenecks from execution) \Jbc{do we have a better arguments?}.
-The second research question addresses the distribution of execution
-time per test case. For each subject identified in the first research
-question, we are interested in understanding how balanced is the cost
-of the test suite in contrast to the cost of test cases and if there
-are subjects where the time cost is mostly dominated by a small
-fraction of test cases.
+and bottlenecks from execution) \Jbc{do we have more arguments?}.  The
+second research question addresses the distribution of execution time
+per test case. For each subject identified in the first research
+question, we investigate how balanced is the cost of the test suite in
+contrast to the cost of test cases and if there are subjects where the
+time cost is mostly dominated by a small fraction of test cases. The
+third research question addresses the distribution of regression tests
+according to the use of computational resources. We are interested in
+investigating if regression test suites are CPU intensive and if there
+are opportunities to improve performance. The RQ4 addresses
+\Fix{...elaborate...}
 
 
 \Comment{The rationale is that if the time cost
@@ -169,16 +173,20 @@ indicate that \Fix{...conclusion...}.
     \item \RQC
 \end{itemize}
 
-To evaluate the distribution of execution time, we calculated the cost
-from 90\% of test cases ordered by execution time and compared the
-resulting value to the total time.  We collected the elapsed time from
-test cases for each generated report. Maven Surefire generates an XML
-report with execution information (\eg, number of skipped tests and
-elapsed time) per test suite \Jbc{Should I use the previous sentence
-as a footnote or should I delete it?}. We noticed that some test cases
-reported an elapsed time of zero: since the reported time is in
-milliseconds, some tests may execute in a shorter time. \Fix{..to be
-continued...}
+To evaluate the distribution of execution time per project, we sorted
+the test cases by increasing order of elapsed time and calculated the
+number of tests executed in 90\% of the total time. Later, we reported
+the \Fix{balance} of execution time by dividing the number of tests
+that represents 90\% of the execution time by the number of tests
+cases. For instance, a balance of 50\% indicates \Fix{...}.  \Fix{We
+collected the elapsed time from test cases for each generated report.
+Maven Surefire generates an XML report with execution information
+(\eg, number of skipped tests and elapsed time) per test suite
+\Jbc{Should I use the previous sentence as a footnote or should I
+delete it?}. We noticed that some test cases reported an elapsed time
+of zero: since the reported time is in milliseconds, some tests may
+execute in a shorter time. \Fix{..to be continued...}}. Results
+indicate that \Fix{...}.
 
 \begin{figure}[h!]
     \centering
@@ -193,22 +201,33 @@ continued...}
     \item \RQB
 \end{itemize}
 
-To evaluate the distribution of CPU and IO bound in regression tests
-from the sample set, we proposed the definition of \emph{cpuness}
+To evaluate the distribution of CPU and IO intensive test suites from
+the sample set, we used the command \emph{sar} to monitor the system
+activity in background while tests ran. \emph{Sar} is a command that
+collects and reports statistics (\eg, percentage of IO waiting and
+usage of CPU in user mode) based on the kernel activity and it is
+highly configurable to collect detailed information (\eg, usage of a
+specific processor core or percentage of network interface
+utilization). We configured \emph{sar} to report \Fix{...explain how
+we executed and what fields we are interested}. \Fix{explain fields}.
+Figure \Fix{A} shows the distribution of subjects grouped in intervals
+of \Fix{W}\% of CPU utilization. Results indicates that \Fix{...}
+
+\Comment{we proposed the definition of \emph{cpuness}
 computed as the follow: $((user\_t + system\_t) / elapsed\_t) * 100$,
 where \emph{user\_t} is the elapsed time of execution in \emph{user
 mode}, \emph{system\_t} is the elapsed in \emph{kernel mode}, and
 \emph{elapsed\_t} is the elapsed time to finish the execution. We
 measured the \emph{cpuness} of each regression test \Fix{...elaborate
 the meaning of cpuness} \Fix{Describe how I measured user, system and
-"wall" time}.  \Fix{Explain results}.  \Fix{show plots}
+"wall" time}.  \Fix{Explain results}.  \Fix{show plots}}
 
 \subsection{Answering research question RQ4}
 \label{sec:rqfour}
 
-%% \begin{itemize}
-%%     \item \RQFOUR
-%% \end{itemize}
+\begin{itemize}
+    \item \RQD
+\end{itemize}
 
 \Fix{to appear...}
 
