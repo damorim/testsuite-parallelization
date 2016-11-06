@@ -2,6 +2,7 @@
 #
 # Author: Jeanderson Candido
 #
+import argparse
 import csv
 import os
 import re
@@ -14,32 +15,36 @@ BASE_DIR = os.path.abspath(os.curdir)
 SUBJECT_DIR = os.path.join(BASE_DIR, "subjects")
 
 
-def download_from_file(file_abs_path):
-    if not os.path.exists(file_abs_path):
-        raise Exception("Invalid path:", file_abs_path)
+def download_subjects(from_file):
+    if not os.path.exists(from_file):
+        raise Exception("Invalid path:", from_file)
 
-    with open(file_abs_path) as f:
+    with open(from_file) as f:
         reader = csv.DictReader(f)
 
-    for row in reader:
-        url = row["URL"]
-        project_name = row["SUBJECT"]
-        try:
-            revision = row["REVISION"]
-        except KeyError:
-            revision = None
+        for row in reader:
+            url = row["URL"]
+            project_name = row["SUBJECT"]
+            try:
+                revision = row["REVISION"]
+            except KeyError:
+                revision = None
 
-        project_path = os.path.join(SUBJECT_DIR, project_name)
-        if not os.path.exists(project_path):
-            print("Fetching project", project_name)
-            os.chdir(SUBJECT_DIR)
-            call(["git", "clone", url])
+            project_path = os.path.join(SUBJECT_DIR, project_name)
+            if not os.path.exists(project_path):
+                print("Fetching project", project_name)
+                os.chdir(SUBJECT_DIR)
+                call(["git", "clone", url])
+
             if revision:
+                os.chdir(project_path)
                 call(["git", "reset", "--hard", revision])
 
 
-def verify_subjects_from(output_file):
-    output_file = os.path.abspath(output_file)
+def verify_subjects(from_file, output_file):
+    if not os.path.exists(from_file):
+        raise Exception("Invalid path:", from_file)
+
     with open(output_file, "w") as out:
         out.write("SUBJECT,URL,REV,BUILDER,COMPILED\n")
 
@@ -47,8 +52,13 @@ def verify_subjects_from(output_file):
     compiled_counter = Counter()
     progress_counter = 1
 
-    # FIXME consider reading from download.csv instead of listing the directory
-    for subject in sorted(os.listdir(SUBJECT_DIR)):
+    subjects = []
+    with open(from_file, newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            subjects.append(row["SUBJECT"])
+
+    for subject in sorted(subjects):
         subject_path = os.path.join(SUBJECT_DIR, subject)
         if os.path.isdir(subject_path):
             print("Progress: {}# - {}".format(progress_counter, subject))
@@ -89,8 +99,20 @@ def verify_subjects_from(output_file):
 
 
 if __name__ == "__main__":
+    # Setup arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source", help="csv file with columns SUBJECT, URL (required) and REVISION (optional)")
+    parser.add_argument("-o", "--output", help="output csv with verified subjects (default: verified_subjects.csv)")
+    args = parser.parse_args()
+
+    # Instantiate arguments
+    subjects_csv = os.path.abspath(args.source)
+    output_csv = args.output if args.output else "verified-subjects.csv"
+    output_csv = os.path.abspath(output_csv)
+
+    # Actual main
     if not os.path.exists(SUBJECT_DIR):
         os.mkdir(SUBJECT_DIR)
 
-    # download_from_file(file_abs_path="./mining/github/download.csv")
-    verify_subjects_from(output_file="subjects.csv")
+    download_subjects(from_file=subjects_csv)
+    verify_subjects(from_file=subjects_csv, output_file=output_csv)
