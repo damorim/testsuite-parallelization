@@ -26,9 +26,11 @@ def load_subjects_from(csv_file):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="csv file with subjects to analyze (columns required: COMPILED and SUBJECT)")
+    parser.add_argument("-o", "--output", help="csv file to output raw data")
     args = parser.parse_args()
 
     input_file = os.path.abspath(args.input)
+    output_file = os.path.abspath(args.output if args.output else "raw-data.csv")
 
     # Check if SUBJECTS_HOME exist (REQUIRED)
     if not os.path.exists(SUBJECTS_HOME):
@@ -37,7 +39,9 @@ if __name__ == "__main__":
 
     subjects = load_subjects_from(input_file)
 
-    print("subject,elapsed_t,tests,balance,cpu_usage,iowait,cpu_idle")  # TODO define an output format
+    with open(output_file, "w") as output:
+        output.write("subject,elapsed_t,tests,balance,cpu_usage,iowait,cpu_idle\n")
+
     for subject in subjects:
         subject_path = os.path.join(SUBJECTS_HOME, subject)
 
@@ -56,8 +60,10 @@ if __name__ == "__main__":
                 balance = utils.compute_time_distribution(report_data)
                 kernel_data = utils.check_resources_usage()
 
-                # TODO define an output format
-                print("{},{}".format(",".join([subject, str(t), str(tests), str(balance)]), ",".join(kernel_data)))
+                with open(output_file, "a") as output:
+                    output.write("{},{}\n".format(",".join([subject, str(t), str(tests), str(balance)]),
+                                                  ",".join(kernel_data)))
+
             except Exception as err:
                 with open(os.path.join(BASE_DIR, "main-errors.txt"), "a") as log:
                     log.write("{} - {}\n".format(subject, err))
