@@ -27,10 +27,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="csv file with subjects to analyze (columns required: COMPILED and SUBJECT)")
     parser.add_argument("-o", "--output", help="csv file to output raw data")
+    parser.add_argument("-f", "--force", help="override existing output files (if any)", action="store_true")
     args = parser.parse_args()
 
     input_file = os.path.abspath(args.input)
     output_file = os.path.abspath(args.output if args.output else "raw-data.csv")
+    override = args.force
+    print("Input file: {}\nOutput file: {}\nOverride: {}\n".format(input_file, output_file, override))
 
     # Check if SUBJECTS_HOME exist (REQUIRED)
     if not os.path.exists(SUBJECTS_HOME):
@@ -50,7 +53,7 @@ if __name__ == "__main__":
             continue
 
         os.chdir(subject_path)
-        performance.evaluate()
+        performance.evaluate(override=override)
 
         report_data = utils.check_test_reports()
         if report_data:

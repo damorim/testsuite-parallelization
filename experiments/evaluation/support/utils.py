@@ -2,7 +2,7 @@ import os
 import re
 from collections import Counter, namedtuple
 
-from subprocess import check_output
+from subprocess import check_output, PIPE, Popen
 from xml.etree import ElementTree
 
 BUILDER_LOG_TXT = "builder-output-log.txt"
@@ -39,7 +39,7 @@ def detect_builder():
 
 
 def has_surefire_dir():
-    return os.path.exists(os.path.join("target", "surefire-reports"))
+    return os.path.exists(os.path.abspath(os.path.join("target", "surefire-reports")))
 
 
 def collect_surefire_data():
@@ -114,9 +114,21 @@ def check_test_reports(subject_path=os.curdir):
 def check_resources_usage(subject_path=os.curdir):
     performance_log_path = os.path.join(subject_path, PERFORMANCE_LOG_TXT)
     if os.path.exists(performance_log_path):
-        statistics_raw = check_output(["tail", "-n", "1", performance_log_path])
-        statistics = re.sub("\s+", " ", statistics_raw.decode().strip()).split(" ")
-        return [str(round(float(statistics[2].replace(",", ".")) + float(statistics[3].replace(",", "."))
-                          + float(statistics[4].replace(",", ".")), 2)),
-                statistics[5].replace(",", "."), statistics[7].replace(",", ".")]
-    return []
+        output = check_output(["cat", performance_log_path])
+        p = Popen(["grep", "Average"], stdin=PIPE, stdout=PIPE)
+        out, err = p.communicate(input=output)
+
+        results_avg = None
+        for line in out.decode().splitlines():
+            if "all" in line:
+                results_avg = line
+                break
+        values = re.sub("\s+", " ", results_avg).strip().split(" ")
+
+        io_wait = values[5].replace(",", ".")
+        cpu_idle = values[7].replace(",", ".")
+        cpu_usage = sum([float(v.replace(",", ".")) for v in values[2:5]])
+
+        return [str(cpu_usage), io_wait, cpu_idle]
+
+    return ["0.0", "0.0", "0.0"]

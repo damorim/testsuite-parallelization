@@ -9,7 +9,7 @@ from subprocess import Popen, DEVNULL, PIPE
 from support import utils
 
 
-def evaluate(subject_path=os.curdir, output_dir=os.curdir):
+def evaluate(subject_path=os.curdir, output_dir=os.curdir, override=False):
     subject_name = os.path.basename(subject_path)
     if not os.path.isdir(subject_path):
         raise Exception("Project: {}\nInvalid path: {}".format(subject_name, subject_path))
@@ -22,13 +22,16 @@ def evaluate(subject_path=os.curdir, output_dir=os.curdir):
     if not builder:
         return
 
-    if builder.has_test_reports() and os.path.exists(builder_log_txt) and os.path.exists(performance_log_txt):
+    if (not override) and builder.has_test_reports() \
+            and os.path.exists(builder_log_txt) \
+            and os.path.exists(performance_log_txt):
         return
 
+    print("Running performance analysis")
     ctrl_c_signal = 2
     initial_t = time.time()
 
-    analyzer_process = Popen(["sar", "-u", "1"], stdout=PIPE)
+    analyzer_process = Popen(["sar", "-u", "-P", "ALL", "1"], stdout=PIPE)
     p = Popen(builder.test, stderr=DEVNULL, stdout=PIPE)
     test_out, test_err = p.communicate()
 
