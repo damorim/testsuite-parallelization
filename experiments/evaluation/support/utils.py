@@ -13,18 +13,20 @@ ReportData = namedtuple("Data", "statistics, items")
 
 
 class Builder:
-    def __init__(self, name, args, test, test_report_inspector=None):
+    def __init__(self, name, args, test, test_report_inspector=None, has_test_reports=None):
         self.name = name
         self.args = args
         self.test = test
         self.test_report_inspector = test_report_inspector
+        self.has_test_reports = has_test_reports
 
 
 def detect_builder():
     if os.path.exists("pom.xml"):
         return Builder(name="Maven", args=["mvn", "clean", "install", "-DskipTests", "-Dmaven.javadoc.skip=true"],
                        test=["mvn", "test", "-Dmaven.javadoc.skip=true"],
-                       test_report_inspector=collect_surefire_data)
+                       test_report_inspector=collect_surefire_data,
+                       has_test_reports=has_surefire_dir)
 
     elif os.path.exists("gradlew"):
         return Builder(name="Gradle", args=["./gradlew", "clean", "build", "-X", "test"],
@@ -36,11 +38,17 @@ def detect_builder():
     return None
 
 
+def has_surefire_dir():
+    return os.path.exists(os.path.join("target", "surefire-reports"))
+
+
 def collect_surefire_data():
     """
     Collect data from surefire reports.
     Returns a Data tuple with statistics counter and a list of test cases data.
     """
+    if not os.path.exists(os.path.join("target", "surefire-reports")):
+        raise Exception("Missing test reports!")
     output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
     total_counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
     test_cases = []
@@ -108,6 +116,7 @@ def check_resources_usage(subject_path=os.curdir):
     if os.path.exists(performance_log_path):
         statistics_raw = check_output(["tail", "-n", "1", performance_log_path])
         statistics = re.sub("\s+", " ", statistics_raw.decode().strip()).split(" ")
-        return [str(round(float(statistics[2]) + float(statistics[3]) + float(statistics[4]), 2)),
-                statistics[5], statistics[7]]
+        return [str(round(float(statistics[2].replace(",", ".")) + float(statistics[3].replace(",", "."))
+                          + float(statistics[4].replace(",", ".")), 2)),
+                statistics[5].replace(",", "."), statistics[7].replace(",", ".")]
     return []
