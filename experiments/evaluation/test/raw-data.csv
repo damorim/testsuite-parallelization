@@ -1,2 +1,2 @@
 subject,elapsed_t,tests,balance,cpu_usage,iowait,cpu_idle
-demo-cpu-intense,98,4,25.0,29.87,0.23,69.90
+demo-cpu-intense,98,4,25.0,32.54,0.04,67.42
