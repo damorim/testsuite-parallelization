@@ -37,7 +37,7 @@ def find_prevalence(subject_path=os.curdir, recursive=False):
 
 SUBJECTS_CSV = argv[1]
 BASE_DIR = os.path.abspath(os.curdir)
-OUTPUT_FILE = os.path.join(BASE_DIR, "parallel-settings.csv")
+OUTPUT_FILE = os.path.join(BASE_DIR, argv[2])
 
 subjects = []
 with open(SUBJECTS_CSV, newline="") as f:
@@ -54,7 +54,7 @@ for i in range(len(subjects)):
     subject = subjects[i]
     subject_path = os.path.join(SUBJECTS_HOME, subject)
     if os.path.exists(subject_path):
-        counter = find_prevalence(subject_path=subject_path)
+        counter = find_prevalence(subject_path=subject_path, recursive=True)
         if sum([counter[t] for t in ['parallel', 'forkMode', 'forkCount']]):
             print(subject, counter)
             with open(OUTPUT_FILE, "a") as f:
