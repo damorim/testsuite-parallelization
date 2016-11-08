@@ -1,3 +1,4 @@
 subject,elapsed_t,tests,balance,cpu_usage,iowait,cpu_idle
-demo-cpu-intense,82,7,57.14,30.51,0.42,69.07
-demo-cpu-parallel,54,7,57.14,97.99999999999999,0.03,1.97
+demo-cpu-intense,83,7,57.14,26.860000000000003,0.05,73.10
+demo-cpu-parallel,37,7,57.14,97.4,0.01,2.59
+demo-cpu-parallel-2,46,7,57.14,73.1,0.03,26.87
