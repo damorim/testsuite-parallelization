@@ -55,10 +55,11 @@ for i in range(len(subjects)):
     subject_path = os.path.join(SUBJECTS_HOME, subject)
     if os.path.exists(subject_path):
         counter = find_prevalence(subject_path=subject_path)
-        print(subject, counter)
-        with open(OUTPUT_FILE, "a") as f:
-            f.write("{},{},{},{},{}\n".format(subject, counter['files'],
-                                              counter['parallel'],
-                                              counter['forkMode'],
-                                              counter['forkCount']))
+        if sum([counter[t] for t in ['parallel', 'forkMode', 'forkCount']]):
+            print(subject, counter)
+            with open(OUTPUT_FILE, "a") as f:
+                f.write("{},{},{},{},{}\n".format(subject, counter['files'],
+                                                counter['parallel'],
+                                                counter['forkMode'],
+                                                counter['forkCount']))
 
