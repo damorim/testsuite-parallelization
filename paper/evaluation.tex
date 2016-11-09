@@ -21,42 +21,50 @@ specifically, we pose the following research questions:
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
 
-\newcommand{\RQB}{What is the distribution of CPU and IO bound
-regression test suites from the sample set?}
+\newcommand{\RQB}{How often do developers use low-level parallelism
+to improve runtime performance?}
 
-\newcommand{\RQC}{How uniformly distributed is the execution time
-across test cases in costly projects?}
 
-\newcommand{\RQD}{How often developers use the parallelism features
-from build systems to improve runtime performance?}
+%%\newcommand{\RQB}{What is the distribution of CPU and IO bound
+%%regression test suites from the sample set?}
+%%
+%%\newcommand{\RQC}{How uniformly distributed is the execution time
+%%across test cases in costly projects?}
+%%
+%%\newcommand{\RQD}{How often developers use the parallelism features
+%%from build systems to improve runtime performance?}
+
 
 \newcommand{\rqOne}{\textbf{RQ1.} \RQA}
-\newcommand{\rqTwo}{\textbf{RQ2.} \RQC}
-\newcommand{\rqThree}{\textbf{RQ3.} \RQB}
-\newcommand{\rqFour}{\textbf{RQ4.} \RQD}
+\newcommand{\rqTwo}{\textbf{RQ2.} \RQB}
+%%\newcommand{\rqThree}{\textbf{RQ3.} \RQB}
+%%\newcommand{\rqFour}{\textbf{RQ4.} \RQD}
 
 \begin{itemize}
     \item \rqOne
     \item \rqTwo
-    \item \rqThree
-    \item \rqFour
 \end{itemize}
 
 The first research question addresses the distribution of subjects per
 time cost. We are interested on identifying time-consuming test suites
 to investigate further their characteristics (\eg, type of application
 and bottlenecks from execution) \Jbc{do we have more arguments?}.  The
-second research question addresses the distribution of execution time
-per test case. For each subject identified in the first research
-question, we investigate how balanced is the cost of the test suite in
-contrast to the cost of test cases and if there are subjects where the
-time cost is mostly dominated by a small fraction of test cases. The
-third research question addresses the distribution of regression tests
-according to the use of computational resources. We are interested in
-investigating if regression test suites are CPU intensive and if there
-are opportunities to improve performance. The RQ4 addresses
-\Fix{...elaborate...}
+second research question addresses our interest in understanding if
+developers are aware of parallelism features from testing frameworks
+available out-of-the-box through build systems (\eg, JUnit and TestNG
+with Maven Surefire) and what setting are often used.
 
+\Fix{distribution of execution
+    time per test case. For each subject identified in the first
+    research question, we investigate how balanced is the cost of the
+    test suite in contrast to the cost of test cases and if there are
+    subjects where the time cost is mostly dominated by a small
+fraction of test cases.} \Fix{The third research question addresses
+    the distribution of regression tests according to the use of
+    computational resources.  We are interested in investigating if
+regression test suites are CPU intensive and if there are
+opportunities to improve performance. The RQ4 addresses}
+\Fix{...elaborate...}
 
 \Comment{The rationale is that if the time cost
 of a regression test is equally distributed among test cases, the
@@ -170,70 +178,100 @@ indicate that \Fix{...conclusion...}.
 \label{sec:rqTwo}
 
 \begin{itemize}
-    \item \RQC
-\end{itemize}
-
-To evaluate the distribution of execution time per project, we sorted
-the test cases by decreasing order of elapsed time and calculated the
-number of tests executed in 90\% of the total time. Later, we reported
-the \Fix{balance} of execution time by dividing the number of tests
-that represents 90\% of the execution time by the number of tests
-cases. For instance, a balance of 50\% indicates \Fix{...}.  \Fix{We
-collected the elapsed time from test cases for each generated report.
-Maven Surefire generates an XML report with execution information
-(\eg, number of skipped tests and elapsed time) per test suite
-\Jbc{Should I use the previous sentence as a footnote or should I
-delete it?}. We noticed that some test cases reported an elapsed time
-of zero: since the reported time is in milliseconds, some tests may
-execute in a shorter time. \Fix{..to be continued...}}. Results
-indicate that \Fix{...}.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.4\textwidth]{results/plots/balance.pdf}
-    \caption{\Fix{balance}}
-\end{figure}
-
-\subsection{Answering research question RQ3}
-\label{sec:rqThree}
-
-\begin{itemize}
     \item \RQB
 \end{itemize}
 
-To evaluate the distribution of CPU and IO intensive test suites from
-the sample set, we used the command \emph{sar} to monitor the system
-activity in background while tests ran. \emph{Sar} is a command that
-collects and reports statistics (\eg, percentage of IO waiting and
-usage of CPU in user mode) based on the kernel activity and it is
-highly configurable to collect detailed information (\eg, usage of a
-specific processor core or percentage of network interface
-utilization). We configured \emph{sar} to report \Fix{...explain how
-we executed and what fields we are interested}. \Fix{explain fields}.
-Figure \Fix{A} shows the distribution of subjects grouped in intervals
-of \Fix{W}\% of CPU utilization. Results indicates that \Fix{...}
+To evaluate how often developers use low-level parallelism, we
+considered 216 Maven projects and analyzed \Fix{x} configurations
+files. \Fix{For each subject, we parsed all \emph{pom.xml} files from the
+project (including submodules) and searched for all \emph{surefire}
+settings on each XML file. Figure \Fix{...} illustrates how a
+developer can explore parallelism via Surefire settings.}
+
+\begin{center}
+\lstset{language=XML}
+\begin{lstlisting}
+ <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-surefire-plugin</artifactId>
+     <configuration>
+         <parallel>methods</parallel>
+         <threadCount>2</threadCount>
+         <perCoreThreadCount>true</perCoreThreadCount>
+     </configuration>
+</plugin>
+\caption{\Fix{...}}
+\end{lstlisting}
+\label{code:surefire}
+\end{center}
 
 \begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.4\textwidth]{results/plots/cpuness.pdf}
-    \caption{\Fix{cpu usage}}
+   \centering
+   \includegraphics[width=0.4\textwidth]{results/plots/parallelism-settings.pdf}
+   \caption{\Fix{...}}
 \end{figure}
 
-\Comment{we proposed the definition of \emph{cpuness}
-computed as the follow: $((user\_t + system\_t) / elapsed\_t) * 100$,
-where \emph{user\_t} is the elapsed time of execution in \emph{user
-mode}, \emph{system\_t} is the elapsed in \emph{kernel mode}, and
-\emph{elapsed\_t} is the elapsed time to finish the execution. We
-measured the \emph{cpuness} of each regression test \Fix{...elaborate
-the meaning of cpuness} \Fix{Describe how I measured user, system and
-"wall" time}.  \Fix{Explain results}.  \Fix{show plots}}
+%%To evaluate the distribution of execution time per project, we sorted
+%%the test cases by decreasing order of elapsed time and calculated the
+%%number of tests executed in 90\% of the total time. Later, we reported
+%%the \Fix{balance} of execution time by dividing the number of tests
+%%that represents 90\% of the execution time by the number of tests
+%%cases. For instance, a balance of 50\% indicates \Fix{...}.  \Fix{We
+%%collected the elapsed time from test cases for each generated report.
+%%Maven Surefire generates an XML report with execution information
+%%(\eg, number of skipped tests and elapsed time) per test suite
+%%\Jbc{Should I use the previous sentence as a footnote or should I
+%%delete it?}. We noticed that some test cases reported an elapsed time
+%%of zero: since the reported time is in milliseconds, some tests may
+%%execute in a shorter time. \Fix{..to be continued...}}. Results
+%%indicate that \Fix{...}.
+%%
+%%\begin{figure}[h!]
+%%    \centering
+%%    \includegraphics[width=0.4\textwidth]{results/plots/balance.pdf}
+%%    \caption{\Fix{balance}}
+%%\end{figure}
 
-\subsection{Answering research question RQ4}
-\label{sec:rqfour}
-
-\begin{itemize}
-    \item \RQD
-\end{itemize}
-
-\Fix{to appear...}
-
+%% \subsection{Answering research question RQ3}
+%% \label{sec:rqThree}
+%% 
+%% \begin{itemize}
+%%     \item \RQB
+%% \end{itemize}
+%% 
+%% To evaluate the distribution of CPU and IO intensive test suites from
+%% the sample set, we used the command \emph{sar} to monitor the system
+%% activity in background while tests ran. \emph{Sar} is a command that
+%% collects and reports statistics (\eg, percentage of IO waiting and
+%% usage of CPU in user mode) based on the kernel activity and it is
+%% highly configurable to collect detailed information (\eg, usage of a
+%% specific processor core or percentage of network interface
+%% utilization). We configured \emph{sar} to report \Fix{...explain how
+%% we executed and what fields we are interested}. \Fix{explain fields}.
+%% Figure \Fix{A} shows the distribution of subjects grouped in intervals
+%% of \Fix{W}\% of CPU utilization. Results indicates that \Fix{...}
+%% 
+%% \begin{figure}[h!]
+%%     \centering
+%%     \includegraphics[width=0.4\textwidth]{results/plots/cpuness.pdf}
+%%     \caption{\Fix{cpu usage}}
+%% \end{figure}
+%% 
+%% \Comment{we proposed the definition of \emph{cpuness}
+%% computed as the follow: $((user\_t + system\_t) / elapsed\_t) * 100$,
+%% where \emph{user\_t} is the elapsed time of execution in \emph{user
+%% mode}, \emph{system\_t} is the elapsed in \emph{kernel mode}, and
+%% \emph{elapsed\_t} is the elapsed time to finish the execution. We
+%% measured the \emph{cpuness} of each regression test \Fix{...elaborate
+%% the meaning of cpuness} \Fix{Describe how I measured user, system and
+%% "wall" time}.  \Fix{Explain results}.  \Fix{show plots}}
+%% 
+%% \subsection{Answering research question RQ4}
+%% \label{sec:rqfour}
+%% 
+%% \begin{itemize}
+%%     \item \RQD
+%% \end{itemize}
+%% 
+%% \Fix{to appear...}
+%% 
