@@ -21,9 +21,30 @@ specifically, we pose the following research questions:
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
 
-\newcommand{\RQB}{How often do developers use low-level parallelism
-to improve runtime performance?}
+\newcommand{\RQB}{How often do developers use parallelism to improve
+runtime performance?}
 
+\newcommand{\RQC}{What is the impact of parallalelization?}
+
+\newcommand{\RQD}{What factors contribute to improve performance
+through parallelization?\Jbc{Previously as "When does parallelization
+works and when it does not so great?"}}
+
+\newcommand{\RQE}{What are the limitations of parallelization?}
+
+\newcommand{\rqOne}{\textbf{RQ1.} \RQA}
+\newcommand{\rqTwo}{\textbf{RQ2.} \RQB}
+\newcommand{\rqThree}{\textbf{RQ3.} \RQC}
+\newcommand{\rqFour}{\textbf{RQ4.} \RQD}
+\newcommand{\rqFive}{\textbf{RQ5.} \RQE}
+
+\begin{itemize}
+    \item \rqOne
+    \item \rqTwo
+    \item \rqThree
+    \item \rqFour
+    \item \rqFive
+\end{itemize}
 
 %%\newcommand{\RQB}{What is the distribution of CPU and IO bound
 %%regression test suites from the sample set?}
@@ -34,43 +55,44 @@ to improve runtime performance?}
 %%\newcommand{\RQD}{How often developers use the parallelism features
 %%from build systems to improve runtime performance?}
 
-
-\newcommand{\rqOne}{\textbf{RQ1.} \RQA}
-\newcommand{\rqTwo}{\textbf{RQ2.} \RQB}
-%%\newcommand{\rqThree}{\textbf{RQ3.} \RQB}
-%%\newcommand{\rqFour}{\textbf{RQ4.} \RQD}
-
-\begin{itemize}
-    \item \rqOne
-    \item \rqTwo
-\end{itemize}
-
 The first research question addresses the distribution of subjects per
-time cost. We are interested on identifying time-consuming test suites
+time cost. We are interested in identifying time-consuming test suites
 to investigate further their characteristics (\eg, type of application
 and bottlenecks from execution) \Jbc{do we have more arguments?}.  The
 second research question addresses our interest in understanding if
 developers are aware of parallelism features from testing frameworks
-available out-of-the-box through build systems (\eg, JUnit and TestNG
-with Maven Surefire) and what setting are often used.
+available out-of-the-box through build systems (\eg, run JUnit test
+cases in parallel using Maven Surefire) and what setting are often
+used. The third research question addresses the impact of parallelism
+on the regression tests from our sample set. We are interested in
+compare the execution performance with different parallel settings
+(see Section~\ref{sec:modes}). The fourth research question addresses
+the characteristics of regression tests from the previous experiment.
+More specifically, we want to investigate if there is a relation
+between the balance of test execution (\ie, how uniformly distributed
+is the execution time across tests cases) and the usage of
+computational resources (\ie, if tests are mostly CPU or IO intense)
+that impacts the effectiveness of parallelization. Finally, the fifth
+research question discusses the limitations and insights to overcome
+the pitfalls of parallelization.
 
-\Fix{distribution of execution
-    time per test case. For each subject identified in the first
-    research question, we investigate how balanced is the cost of the
-    test suite in contrast to the cost of test cases and if there are
-    subjects where the time cost is mostly dominated by a small
-fraction of test cases.} \Fix{The third research question addresses
-    the distribution of regression tests according to the use of
-    computational resources.  We are interested in investigating if
-regression test suites are CPU intensive and if there are
-opportunities to improve performance. The RQ4 addresses}
-\Fix{...elaborate...}
+\Comment{
+    \Fix{distribution of execution time per test case. For each subject
+    identified in the first research question, we investigate how
+    balanced is the cost of the test suite in contrast to the cost of
+    test cases and if there are subjects where the time cost is mostly
+    dominated by a small fraction of test cases.} \Fix{The third research
+    question addresses the distribution of regression tests according
+    to the use of computational resources.  We are interested in
+    investigating if regression test suites are CPU intensive and if there
+    are opportunities to improve performance. The RQ4 addresses}
+    \Fix{...elaborate...}
 
-\Comment{The rationale is that if the time cost
-of a regression test is equally distributed among test cases, the
-execution cost could be potentially improved by running tests in
-parallel (in contrast to the scenario where only one test case
-dominates most of the execution time).}
+    The rationale is that if the time cost of a regression test is equally
+    distributed among test cases, the execution cost could be potentially
+    improved by running tests in parallel (in contrast to the scenario
+    where only one test case dominates most of the execution time).
+}
 
 \subsection{Subjects}
 \label{sec:subjects}
