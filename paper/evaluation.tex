@@ -210,23 +210,6 @@ project (including submodules) and searched for all \emph{surefire}
 settings on each XML file. Figure \Fix{...} illustrates how a
 developer can explore parallelism via Surefire settings.}
 
-\begin{center}
-\lstset{language=XML}
-\begin{lstlisting}
- <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-surefire-plugin</artifactId>
-     <configuration>
-         <parallel>methods</parallel>
-         <threadCount>2</threadCount>
-         <perCoreThreadCount>true</perCoreThreadCount>
-     </configuration>
-</plugin>
-\caption{\Fix{...}}
-\end{lstlisting}
-\label{code:surefire}
-\end{center}
-
 \begin{figure}[h!]
    \centering
    \includegraphics[width=0.4\textwidth]{results/plots/parallelism-settings.pdf}
