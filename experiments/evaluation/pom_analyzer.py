@@ -14,7 +14,7 @@ def is_surefire_node(node):
 
 def inspect_pom_file(xml_path):
     namespace = {"ns": "http://maven.apache.org/POM/4.0.0"}
-    frequency = Counter(L0=0, L1=0, L2=0, L3=0, UNKNOWN=0)
+    frequency = Counter(L0=0, L1=0, L2=0, L3=0, LX=0, L1F=0, L0F=0)
     try:
         root = ElementTree.parse(xml_path).getroot()
     except ParseError as err:
@@ -22,11 +22,27 @@ def inspect_pom_file(xml_path):
         return frequency
 
     surefire_nodes = [c for c in root.iter('{%s}plugin' % namespace['ns']) if is_surefire_node(c)]
+
+    # If there's no surefire nodes, default behavior is L0
+    if not len(surefire_nodes):
+        frequency["L0"] += 1
+        return frequency
+
     for node in surefire_nodes:
         config_node = node.find("{%s}configuration" % namespace['ns'])
         if config_node is not None:
             parallel_setting_node = config_node.find("{%s}parallel" % namespace['ns'])
-            if parallel_setting_node is not None:
+            fork_setting_node = config_node.find("{%s}forkCount" % namespace['ns'])
+            if fork_setting_node is None:
+                fork_setting_node = config_node.find("{%s}forkMode" % namespace['ns'])
+
+            if fork_setting_node is not None:
+                if parallel_setting_node is not None:
+                    frequency["L1F"] += 1
+                else:
+                    frequency['L0F'] += 1
+
+            elif parallel_setting_node is not None:
                 if parallel_setting_node.text == "classes":
                     frequency["L2"] += 1
                 elif parallel_setting_node.text == "none":
@@ -36,7 +52,8 @@ def inspect_pom_file(xml_path):
                 elif parallel_setting_node.text in ["classesAndMethods", "both", "all"]:
                     frequency["L3"] += 1
                 else:
-                    frequency["UNKNOWN"] += 1
+                    frequency["LX"] += 1
+
         else:
             frequency["L0"] += 1
 
@@ -55,7 +72,7 @@ def find_prevalence(subject_path=os.curdir, recursive=False):
     output = subprocess.check_output(find_command)
 
     # for each pom file, inspect it!
-    settings_frequency = Counter(L0=0, L1=0, L2=0, L3=0, UNKNOWN=0)
+    settings_frequency = Counter(L0=0, L1=0, L2=0, L3=0, LX=0, L1F=0, L0F=0)
     files = 0
     for xml_path in output.decode().splitlines():
         files += 1
@@ -82,7 +99,7 @@ if __name__ == "__main__":
                 subjects.append(row["SUBJECT"])
 
     with open(output_file, "w") as f:
-        f.write("subject,files,L0,L1,L2,L3,UNKNOWN\n")
+        f.write("subject,files,L0,L1,L2,L3,LX,L1F,L0F\n")
 
     SUBJECTS_HOME = os.path.abspath("subjects")
     for i in range(len(subjects)):
@@ -90,9 +107,10 @@ if __name__ == "__main__":
         target = os.path.join(SUBJECTS_HOME, subject)
         if os.path.exists(target):
             (counter, files_cnt) = find_prevalence(subject_path=target, recursive=args.recursive)
+            print(subject, counter)
             if sum([counter[t] for t in counter.keys()]):
                 with open(output_file, "a") as f:
-                    f.write("{},{},{},{},{},{},{}\n".format(subject, files_cnt,
-                                                            counter['L0'], counter['L1'],
-                                                            counter['L2'], counter['L3'],
-                                                            counter['UNKNOWN']))
+                    f.write("{},{},{},{},{},{},{},{},{}\n".format(subject, files_cnt, counter['L0'],
+                                                                  counter['L1'], counter['L2'],
+                                                                  counter['L3'], counter['LX'],
+                                                                  counter['L1F'], counter['L0F']))
