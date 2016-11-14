@@ -6,68 +6,67 @@
 
 As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both elements can add up to the
-aggregate cost of running a test suite, which can lead to late reports of test
-failures.  At large IT companies (e.g.,
-Groupon~\cite{kim-etal-fse2013}), dealing with high testing costs is a
-common problem .  \Mar{Ask Milos if he can share stories on how
-  prevalent regression testing is at Microsoft and Google, if he can
-  explain how they run tests, and how prevalent is parallelization (in
-  contrast to regression testing).}
+aggregate cost of running a test suite, which can lead to late reports
+of test failures.  At large IT organizations, dealing with high
+testing costs is a common problem.  The Google TAP
+system~\cite{google-tap,google-ci} and the Microsoft CloudBuild
+system~\cite{prasad-shulte-ieee-microsoft-ci} provide evidence about
+the importance of speeding up test execution in industry.  This
+problem is not specific for giants like Microsoft and Google; it also
+occur in other domains.  For example, a recent paper from the
+automotive industry reported that test suites can take days to
+run~\cite{artl-etal-icst2015}.
+
+%% papers also indicate the important of speeding up the testing process
+%% in other industrial domain, e.g., in 
+%% \Mar{Ask Milos if he can share stories on how prevalent regression
+%%   testing is at Microsoft and Google, if he can explain how they run
+%%   tests, and how prevalent is parallelization (in contrast to
+%%   regression testing).}
 
 Several approaches have been proposed in the literature to optimize
 regression testing.  Research has focused mostly on test suite
 minimization, prioritization, reduction, and
-selection~\cite{yoo-harman-stvr2012}.  Most of these techniques are
-unsound (\ie{}, they do not guarantee that fault-revealing tests will
-be selected), however, more recently, sound techniques have been
-proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
-example, to soundly select tests for execution,
-Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
-computes which tests have been impacted by changes.  To that end
-Ekstazi analyzes, for each test, which test-dependent files have
-changed.
-
-%; these
-%dependencies are computed and maintained at low cost.
-
-Although regression testing is a recognized problem in academia and at
-large IT organizations, to the best of our knowledge no prior work has
-investigated how prevalent the problem is in open-source projects.
-For large IT organizations, the alternative of renting server farms,
-or even building one, is a potential escape to the regression testing
-problem.  However, for open-source projects and for projects of
-smaller organizations with lower budgets for building testing
-infrastructures, this alternative is not as attractive.
+selection~\cite{yoo-harman-stvr2012}.  Although regression testing is
+a recognized problem in academia and at large organizations, to the
+best of our knowledge no prior work has investigated how prevalent the
+problem is in open-source projects.  In large organizations, the
+alternative of renting a cloud
+service\footnote{\url{https://clutch.co/cloud}}, or even building a
+server farm (for increased security), is a potential escape to the
+regression testing problem.  Considering open-source projects and
+lower-budget projects, the alternative of building or using high-end
+infrastructures is not as attractive but it is unclear how relevant
+regression testing is in this scenario.
 
 %% eventually move this to macros.tex
 \newcommand{\numSubjs}{143}
 \newcommand{\numLongRunning}{\Fix{17\%}}
 \newcommand{\percentParallelForLongRunning}{\Fix{80\%}}
 
-Motivated by this potential gap in regression testing practice, we
-first studied (1) how prevalent long-running test suites are in
-open-source software projects.  To conduct this experiment we selected
-\numSubjs{} Java projects from github that are highly-popular and use
-the Maven build system.  (Section~\ref{sec:eval} details our selection
-methodology.)  Our experimental results indicate that long-running
-test suites (taking longer than 5m to complete\Fix{check if Ekstazi
-  paper also used this value and cite}) are not
+Motivated by this potential gap in regression testing, we studied (1)
+how prevalent long-running test suites are in open-source software
+projects.  To conduct this experiment we selected \numSubjs{} Java
+projects from github that are highly-popular and use the Maven build
+system.  (Section~\ref{sec:eval} details our selection methodology.)
+Our experimental results indicate that long-running test suites
+(taking longer than 5m to complete\Fix{check if Ekstazi paper also
+  used this value to indicate long runs and cite}) are not
 rare~--~\numLongRunning{} of the projects we analyzed contain
-long-running test suites.  From this result we investigated (2) how
-frequently the projects we considered use parallelization to speedup
-test runs.  We parsed build files of projects to identify usage of
-parallelism. \Mar{justify parallelization}.  Our results indicate that
-\percentParallelForLongRunning{} of long-running test suites do use
-parallelism to speedup execution.  Given the popularity of this
-solution, we further studied: (3) what are the causes of high
+long-running test suites.  \Mar{missing connection. why parallelism?}
+From this result we investigated (2) how frequently the projects we
+considered use parallelization to speedup test runs.  Our results
+indicate that \percentParallelForLongRunning{} of long-running test
+suites do use parallelism to speedup execution.  Given the popularity
+of this solution, we further studied: (3) what are the causes of high
 execution cost in individual tests (CPU vs. IO) and (4) how uniformly
 cost is distributed across tests.  These questions help to assess the
 impact of parallelization in test suite execution.  Intuitively,
 IO-intensive test suites and test suites with uneven distribution of
-cost per test are factors that limit the effects of parallelization.
+cost per test are factors that limit the benefits of parallelization.
 Results indicate that \Fix{...}  Finally, we investigated (5) what are
-the limitations related with parallelization that could justify
-adoption resistance.
+the limitations related to parallelization that could justify adoption
+resistance.
 
 \Fix{--------------}
 
@@ -80,4 +79,4 @@ Summary of the contributions of this paper} .
 
 %%  LocalWords:  parallelization multicore JUnit TestNG NUnit XXm YYm
 %%  LocalWords:  Groupon parallelizing multi JVMs CPUs JVM Milos TODO
-%%  LocalWords:  Ekstazi github
+%%  LocalWords:  Ekstazi github CloudBuild

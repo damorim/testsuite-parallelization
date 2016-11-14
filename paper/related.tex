@@ -1,0 +1,19 @@
+\section{Related Work}
+\label{sec:related}
+
+\Fix{elaborate...}
+
+Several approaches have been proposed in the literature to optimize
+regression testing.  Research has focused mostly on test suite
+minimization, prioritization, reduction, and
+selection~\cite{yoo-harman-stvr2012}.  Most of these techniques are
+unsound (\ie{}, they do not guarantee that fault-revealing tests will
+be selected), however, more recently, sound techniques have been
+proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
+example, to soundly select tests for execution,
+Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
+computes which tests have been impacted by changes.  A test is
+discarded for execution if it does not depend on any changed file.
+Similar approach to regression test selection has been recently
+applied in the context of the GCC~\cite{gcc} configurable
+system~\cite{souto-damorim-jss}.
