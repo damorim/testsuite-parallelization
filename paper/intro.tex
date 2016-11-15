@@ -5,16 +5,17 @@
 %% ``regression testing problem''.}
 
 As software evolves it is expected that the number of tests and the
-length of test runs increase.  Both elements can add up to the
+length of test runs increase.  Both components can add up to the
 aggregate cost of running a test suite, which can lead to late reports
-of test failures.  At large IT organizations, dealing with high
-testing costs is a common problem.  The Google TAP
+of test failures.  Dealing with high testing costs is not uncommon at
+large IT organizations.  The Google TAP
 system~\cite{google-tap,google-ci} and the Microsoft CloudBuild
-system~\cite{prasad-shulte-ieee-microsoft-ci} evidence the importance
-of speeding up test execution in industry.  This problem, however, is
-not specific to industrial giants like Microsoft and Google.  For
-example, a recent paper from the automotive industry reported that
-test suites can take days to run~\cite{artl-etal-icst2015}.
+system~\cite{prasad-shulte-ieee-microsoft-ci} show that efficiently
+building and testing the software are a critically important process
+at Google and Microsoft.  The regression testing problem is, however,
+not specific to industrial giants.  For example, a recent paper from
+the automotive industry reported that test suites can take days to
+run~\cite{artl-etal-icst2015}.
 
 %% papers also indicate the important of speeding up the testing process
 %% in other industrial domain, e.g., in 
@@ -28,18 +29,19 @@ regression testing.  Research has focused mostly on test suite
 minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012}.  Although regression testing is
 a recognized problem both in industry and academia, to the best of our
-knowledge no prior work has investigated how prevalent the problem is
-in open-source projects.  Renting a cloud
-service\footnote{\url{https://clutch.co/cloud}}, or even building a
-server farm (for increased security), is a popular approach to
-mitigate the regression testing problem in large organizations.  This
-alternative can be used irrespective of complementary approaches to
-save testing costs (e.g., test selection).  For example, as of August
-2013, the Groupon PWA system, which powers the \url{groupon.com}
-website, included over 19K tests.  To run all those tests, Groupon
-used a cluster of 4 computers with 24 cores
-each~\cite{kim-etal-fse2013}.  This approach, however, is unlikely to
-be attractive for open-source and lower-budget projects.  
+knowledge no prior work has investigated the regression testing
+problem in open-source projects.  The alternative of renting a cloud
+service\footnote{\url{https://clutch.co/cloud}} to automate testing or
+even building a server farm (for increased security), can be a
+legitimate approach to mitigate the regression testing problem at
+large organizations.  Note that this alternative can be used
+irrespective of complementary approaches to save testing costs (e.g.,
+test selection).  For example, as of August 2013, the Groupon PWA
+system, which powers the \url{groupon.com} website, included over 19K
+tests.  To run all those tests under 10m, Groupon used a cluster of 4
+computers with 24 cores each~\cite{kim-etal-fse2013}.  For open-source
+projects and lower-budget projects, it is still important to run test
+suites efficiently in commodity hardware.
 
 %% eventually move this to macros.tex
 \newcommand{\numSubjs}{143}
