@@ -7,15 +7,15 @@
 As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both components can add up to the
 aggregate cost of running a test suite, which can lead to late reports
-of test failures.  Dealing with high testing costs is not uncommon at
-large IT organizations.  The Google TAP
-system~\cite{google-tap,google-ci} and the Microsoft CloudBuild
-system~\cite{prasad-shulte-ieee-microsoft-ci} show that efficiently
-building and testing the software are a critically important process
-at Google and Microsoft.  The regression testing problem is, however,
-not specific to industrial giants.  For example, a recent paper from
-the automotive industry reported that test suites can take days to
-run~\cite{artl-etal-icst2015}.
+of test failures.  Dealing with high testing costs is particularly
+critical at large IT organizations, with massive code and test bases.
+The Google TAP system~\cite{google-tap,google-ci} and the Microsoft
+CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci} provide
+evidence on the criticality of the build and testing processes at
+these organizations.  Note, however, that the regression testing
+problem is not specific to giants from the IT sector.  For example, a
+recent paper from the automotive industry reported that test suites
+can take days to run~\cite{artl-etal-icst2015}.
 
 %% papers also indicate the important of speeding up the testing process
 %% in other industrial domain, e.g., in 
@@ -39,9 +39,10 @@ irrespective of complementary approaches to save testing costs (e.g.,
 test selection).  For example, as of August 2013, the Groupon PWA
 system, which powers the \url{groupon.com} website, included over 19K
 tests.  To run all those tests under 10m, Groupon used a cluster of 4
-computers with 24 cores each~\cite{kim-etal-fse2013}.  For open-source
-projects and lower-budget projects, it is still important to run test
-suites efficiently in commodity hardware.
+computers with 24 cores each~\cite{kim-etal-fse2013}.  This paper
+assumes that, especially considering open-source projects and
+lower-budget projects, running test suites efficiently using commodity
+hardware is important.
 
 %% eventually move this to macros.tex
 \newcommand{\numSubjs}{143}
