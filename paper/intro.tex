@@ -41,16 +41,16 @@ and academia, to the best of our knowledge no prior work has
 investigated the regression testing problem in open-source projects.
 The alternative of renting a cloud
 service\footnote{\url{https://clutch.co/cloud}} or even building a
-server farm (for increased security) to automate the testing process
-may be a legitimate approach to mitigate the regression testing
-problem at large organizations.  However, building such infrastructure
-may not be feasibile for open-source and low-budget projects.  For
+server farm (for increased security) may be a legitimate approach to
+mitigate the regression testing problem at large organizations.  For
 example, as of August 2013, the Groupon PWA system, which powers the
 \url{groupon.com} website, included over 19K tests.  To run all those
 tests under 10m, Groupon used a cluster of 4 computers with 24 cores
-each~\cite{kim-etal-fse2013}.  This paper assumes that, given that it
-is not rare for open-source projects to face high testing costs, it is
-important to run test suites efficiently using commodity hardware.
+each~\cite{kim-etal-fse2013}.  Given that it is not rare for
+open-source projects to face high testing costs, this paper assumes
+that it is not economically viable for these projects to build
+high-end testing infrastructure.  Consequently, it is important to run
+test suites efficiently using commodity hardware in these scenarios.
 
 %% eventually move this to macros.tex
 \newcommand{\numSubjs}{143}
