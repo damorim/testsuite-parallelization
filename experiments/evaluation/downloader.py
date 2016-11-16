@@ -7,7 +7,7 @@ import csv
 import os
 import re
 from collections import Counter
-from subprocess import call, check_output, Popen, PIPE
+from subprocess import call, check_output
 
 from support.utils import detect_builder
 
@@ -71,19 +71,18 @@ def verify_subjects(from_file, output_file):
             revision = check_output(["git", "rev-parse", "HEAD"]).decode().strip()
             builder = detect_builder()
             if not builder:
+                builder_name = "n/a"
                 compiled = "n/a"
-                builder_name = "unknown"
             else:
                 builder_name = builder.name
                 try:
-                    fifteen_min = 15 * 60
-                    p = Popen(builder.args, stderr=PIPE, stdout=PIPE)
-                    p.communicate(timeout=fifteen_min)
-                    exit_status = p.returncode
+                    # imposes a time-out of 15 minutes
+                    exit_status = call(builder.args, timeout=(15 * 60))
                 except Exception as err:
                     with open(os.path.join(BASE_DIR, "downloader-errors.txt"), "a") as log:
                         log.write("{} - {}\n".format(subject, err))
                     exit_status = 1
+
                 compiled = "false" if exit_status else "true"
 
             compiled_counter.update([compiled])
