@@ -7,7 +7,7 @@ import csv
 import os
 import re
 from collections import Counter
-from subprocess import call, check_output
+from subprocess import call, check_output, DEVNULL
 
 from support.utils import detect_builder
 
@@ -77,7 +77,7 @@ def verify_subjects(from_file, output_file):
                 builder_name = builder.name
                 try:
                     # imposes a time-out of 15 minutes
-                    exit_status = call(builder.args, timeout=(15 * 60))
+                    exit_status = call(builder.args, timeout=(15 * 60), stdout=DEVNULL)
                 except Exception as err:
                     with open(os.path.join(BASE_DIR, "downloader-errors.txt"), "a") as log:
                         log.write("{} - {}\n".format(subject, err))
