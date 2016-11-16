@@ -80,40 +80,43 @@ within a JVM.
 \newcommand{\ParClassParMeth}{L3}
 
 \begin{itemize}
-\item \textbf{Sequential (\Seq).}~This configuration results in
-    sequential execution of test classes and their methods, according
-    to a given order defined in the testing framework (\eg, the order
-    of methods returned by Java Reflection
-    API)~\cite{junit-test-order}. For JUnit, this is the default
-    configuration.
-
-\item \textbf{Sequential classes; parallel methods
-  (\ParClassSeqMeth{}).} This configuration results in the sequential
-  execution of the test classes assigned to the JVM.  However, within
-  each class, test methods run in parallel. In JUnit,
-  \emph{ParallelComputer} provides support to parallel execution; it
-  instantiates a test runner with a \emph{ExecutorService} from the
-  Java Concurrent API. Each test method is executed in a separated
-  thread as the thread pool creates new threads on-demand and reuse
-  them if any thread is available.
-
-\Comment{http://junit.org/junit4/javadoc/latest/src-html/org/junit/experimental/ParallelComputer.html#line.14}
-
-\item \textbf{Parallel classes; sequential methods
-  (\SeqClassParMeth{}).}  This configuration results in the parallel
-  execution of test classes but test methods of any given class are
-  executed sequentially. As in \ParClassSeqMeth, the runner has a
-  cached thread poll. However, instead of executing test methods from
-  a single test class, the test suite runner executes classes in
-  separated threads and methods in sequence within each thread.
-
-\item \textbf{Parallel methods (\ParClassParMeth).} This configuration
-  results in parallel execution of any given test method of any class.
-  \Jbc{I need to confirm this but AFAIK this is how it happens}
-  It is the union of \ParClassSeqMeth and \SeqClassParMeth: there is a
-  thread pool for execution classes on separated threads and within
-  each test class, there is a runner with a \emph{ExecutorService} to
-  run test methods in parallel.
+\item
+    \textbf{Sequential (\Seq).}~This configuration results in
+        sequential execution of test classes and their methods,
+        according to a given order defined in the testing framework
+        (\eg, the order of methods returned by Java Reflection
+        API)~\cite{junit-test-order}. For JUnit, this is the default
+        configuration.
+\item
+    \textbf{Sequential classes; parallel methods
+        (\ParClassSeqMeth{}).}~This configuration results in the
+        sequential execution of the test classes assigned to the JVM.
+        However, within each class, test methods run in parallel. In
+        JUnit, \emph{ParallelComputer} provides support to parallel
+        execution: it instantiates a test runner with an
+        \emph{ExecutorService} from the Java Concurrent API. Each test
+        method is executed in a separated thread as the thread pool
+        creates new threads on-demand and reuse them if any thread is
+        available.
+    \Comment{http://junit.org/junit4/javadoc/latest/src-html/org/junit/experimental/ParallelComputer.html#line.14}
+\item
+    \textbf{Parallel classes; sequential methods
+        (\SeqClassParMeth{}).}~This configuration results in the
+        parallel execution of test classes and sequential test
+        methods. As in \ParClassSeqMeth, the test runner has a cached
+        thread poll but instead of executing test methods from a
+        single test class, the test suite runner executes classes in
+        separated threads and methods sequentially within each thread.
+\item
+    \textbf{Parallel methods (\ParClassParMeth).}~This configuration
+        results in the parallel execution of any test method from any
+        class.  \Jbc{I need to confirm this but AFAIK this is how it
+        happens} As in \SeqClassParMeth, classes execute on separated
+        threads but test methods are also executed in parallel. More
+        precisely, there is a thread pool to execute classes in
+        separated threads (\ie, like in \ParClassSeqMeth) and, within
+        each class runner, there is an \emph{ExecutorService} to run
+        test methods in parallel (\ie, like in \SeqClassParMeth).
 \end{itemize}
 
 \Jbc{I have to understand better how Surefire executes tests. I'm
@@ -128,20 +131,30 @@ forwarded to the underlying testing framework (\eg, JUnit). In case of
 JUnit,}
 
 \begin{figure}[h!]
-    \centering
-    \lstset{language=XML}
-    \begin{lstlisting}
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-            <parallel>methods</parallel>
-            <threadCount>2</threadCount>
-            <perCoreThreadCount>true</perCoreThreadCount>
-        </configuration>
-    </plugin>
-    \end{lstlisting}
-    \caption{\label{fig:surefire}\Fix{...}}
+\centering
+\scriptsize
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    morekeywords={parallel, threadCount, perCoreThreadCount},
+    deletekeywords={true}
+}
+\begin{lstlisting}
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+        <parallel>methods</parallel>
+        <threadCount>2</threadCount>
+        <perCoreThreadCount>true</perCoreThreadCount>
+    </configuration>
+</plugin>
+\end{lstlisting}
+\caption{\label{fig:surefire} Example of Maven Surefire configuration:
+    test methods in parallel (\emph{parallel} parameter) using two
+    threads (\emph{threadCount} parameter) per core (boolean flag
+    \emph{perCoreThreadCount}).}
 \end{figure}
 
 \Fix{We need a par. providing rationale in to explain (points in
