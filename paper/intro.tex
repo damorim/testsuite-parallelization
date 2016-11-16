@@ -7,15 +7,24 @@
 As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both components can add up to the
 aggregate cost of running a test suite, which can lead to late reports
-of test failures.  Dealing with high testing costs is particularly
-critical at large IT organizations, with massive code and test bases.
-The Google TAP system~\cite{google-tap,google-ci} and the Microsoft
+of test failures.  Dealing with high testing costs is critical at
+large IT organizations, with massive code and test bases.  The impact
+of the Google TAP system~\cite{google-tap,google-ci} and the Microsoft
 CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci} provide
 evidence on the criticality of the build and testing processes at
 these organizations.  Note, however, that the regression testing
 problem is not specific to giants from the IT sector.  For example, a
 recent paper from the automotive industry reported that test suites
 can take days to run~\cite{artl-etal-icst2015}.
+
+Several approaches have been proposed in the literature to address the
+regression testing problem.  Research has focused mostly on test suite
+minimization, prioritization, reduction, and
+selection~\cite{yoo-harman-stvr2012}.  It is important to note,
+however, that balancing the workload, either within or across
+machines, is a popular and sound approach to address cost associated
+with regression testing.  Furtheremore, this approach is complementary
+to those proposed in the literature.
 
 %% papers also indicate the important of speeding up the testing process
 %% in other industrial domain, e.g., in 
@@ -24,25 +33,24 @@ can take days to run~\cite{artl-etal-icst2015}.
 %%   tests, and how prevalent is parallelization (in contrast to
 %%   regression testing).}
 
-Several approaches have been proposed in the literature to optimize
-regression testing.  Research has focused mostly on test suite
-minimization, prioritization, reduction, and
-selection~\cite{yoo-harman-stvr2012}.  Although regression testing is
-a recognized problem both in industry and academia, to the best of our
-knowledge no prior work has investigated the regression testing
-problem in open-source projects.  The alternative of renting a cloud
-service\footnote{\url{https://clutch.co/cloud}} to automate testing or
-even building a server farm (for increased security), can be a
-legitimate approach to mitigate the regression testing problem at
-large organizations.  Note that this alternative can be used
-irrespective of complementary approaches to save testing costs (e.g.,
-test selection).  For example, as of August 2013, the Groupon PWA
-system, which powers the \url{groupon.com} website, included over 19K
-tests.  To run all those tests under 10m, Groupon used a cluster of 4
-computers with 24 cores each~\cite{kim-etal-fse2013}.  This paper
-assumes that, especially considering open-source projects and
-lower-budget projects, running test suites efficiently using commodity
-hardware is important.
+
+
+
+Although regression testing is a recognized problem both in industry
+and academia, to the best of our knowledge no prior work has
+investigated the regression testing problem in open-source projects.
+The alternative of renting a cloud
+service\footnote{\url{https://clutch.co/cloud}} or even building a
+server farm (for increased security) to automate the testing process
+may be a legitimate approach to mitigate the regression testing
+problem at large organizations.  However, building such infrastructure
+may not be feasibile for open-source and low-budget projects.  For
+example, as of August 2013, the Groupon PWA system, which powers the
+\url{groupon.com} website, included over 19K tests.  To run all those
+tests under 10m, Groupon used a cluster of 4 computers with 24 cores
+each~\cite{kim-etal-fse2013}.  This paper assumes that, given that it
+is not rare for open-source projects to face high testing costs, it is
+important to run test suites efficiently using commodity hardware.
 
 %% eventually move this to macros.tex
 \newcommand{\numSubjs}{143}
