@@ -588,7 +588,7 @@ byte-buddy,https://github.com/raphw/byte-buddy,7b42860bac965696244e139faedfbaa76
 bytecode-viewer,https://github.com/Konloch/bytecode-viewer,bca0f59dcbe400ced3b2a56f1127f06f1ab6a5e2,Maven,false
 cachecloud,https://github.com/sohutv/cachecloud,37c963cfb7d731b759ffe42fe3e7c9b75051503b,Maven,true
 caffeine,https://github.com/ben-manes/caffeine,45deefd6e72cbe281ea1ef2a4a8840bb599209f9,Gradle,false
-camel,https://github.com/apache/camel,f24b15be719206ab63b2c7c2a125b03a1d7d0a14,Maven,false
+camel,https://github.com/apache/camel,8447297a23203be0a39dcb971ef2c3c0f0f7909f,Maven,false
 cameraview,https://github.com/google/cameraview,ebc177251d5980a7351c7aa8371902cace5c63b3,Gradle,false
 canal,https://github.com/alibaba/canal,6284a429a0d2149795681f585ce92b809c0cabbf,Maven,true
 capsule,https://github.com/puniverse/capsule,2b56c11118e3e58d383a331cecd0924c5fdad5bd,unknown,n/a
