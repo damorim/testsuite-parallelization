@@ -117,15 +117,15 @@ within a JVM.
 \end{itemize}
 
 \Jbc{I have to understand better how Surefire executes tests. I'm
-    afraid it has its own wrapper classes and reuse JUnit core
-    functionalities. I'm saying this because JUnit does not offer a
-    finer control over thread numbers while this configuration is
-possible with Surefire} For example, Figure~\ref{fig:surefire}
-illustrates how to configure Maven to execute classes sequentially
-(default behavior) and test methods in parallel. Although the setting
-are configured on the build file (\eg, \emph{pom.xml} on Maven), these
-settings are forwarded to the underlying testing framework (\eg,
-JUnit). In case of JUnit, 
+afraid it has its own wrapper classes and reuse JUnit core
+functionalities. I'm saying this because JUnit does not offer a finer
+control over thread numbers while this configuration is possible with
+Surefire} For example, Figure~\ref{fig:surefire} illustrates how to
+configure Maven to execute classes sequentially (default behavior) and
+test methods in parallel. Although this configuration is defined in
+the build file (\eg, \emph{pom.xml} on Maven), \Fix{these settings are
+forwarded to the underlying testing framework (\eg, JUnit). In case of
+JUnit,}
 
 \begin{figure}[h!]
     \centering
