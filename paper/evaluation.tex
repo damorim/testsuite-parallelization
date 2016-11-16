@@ -109,16 +109,16 @@ criteria is subjective, it is an approximation to find relevant
 projects to conduct our study. We detected the build manager system
 based on the files located in the root directory from the project in
 the following precedence: Maven (\emph{pom.xml}), Gradle
-(\emph{gradlew}), and Ant (\emph{build.xml}).\Jbc{Remember to update
-the following values after updating the subject selection approach.}
-From the 1,000 downloaded projects, we detected the build system of
-801 subjects (composed by 216 Maven, 564 Gradle, and 21 Ant projects)
-and considered 164 projects that we were able to compile (153 Maven
-and 9 Ant projects).  We were unable to compile other subjects because
-some are related to a particular platform (\eg, Gradle implied
-Android), unsolved dependencies, or the build process is based on
-user-defined tasks (\eg, we considered the name \emph{compile} on Ant
-projects).
+(\emph{*.gradle} file), and Ant (\emph{build.xml}).\Jbc{Remember to
+update the following values after updating the subject selection
+approach.} From the 1,000 downloaded projects, we detected the build
+system of \Fix{801} subjects (composed by 216 Maven, \Fix{564} Gradle,
+and 21 Ant projects) and considered \Fix{164} Maven projects that we
+were able to compile and test.  We were unable to compile other
+subjects because some of them are related to a particular platform
+(\eg, Gradle implied Android), has unsolved dependencies (\eg, package
+no longer available from the Maven public repository), or the build
+process is based on user-defined tasks (\eg, Ant projects).
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -139,32 +139,54 @@ emulate our hardware and all software dependencies properly configured.
 \label{sec:rqone}
 
 \begin{itemize}
-    \item \RQA
+    \item \emph{\RQA}
 \end{itemize}
 
 To evaluate the frequency of time-consuming regression tests, we
-considered \Fix{X} Maven and \Fix{Y} Ant projects (\Fix{X+Y} total)
-that we were able to test. For each subject, we first compiled the
-source files and later, we ran the tests and used regular expressions
-to collect the elapsed time reported from the build system. To avoid
-inflating the time cost from test execution, we ignored non-related
-tasks (\eg, \emph{javadoc} generation). \Fix{elaborate: In case of
-\emph{Maven} projects, we use \Jbc{How to show the following command?}
-\Fix{mvn test -Dmaven.javadoc.skip=true}; in contrast, for \emph{Ant}
-projects, we used \Fix{ant test} and manually inspected the test
-execution to ignore any non-related tasks, if any}.
+considered the \Fix{X} Maven projects from Section~\ref{sec:subjects}
+and compared the elapsed time to run their tests.  To avoid inflating
+the measured time, we first compile the sources files (see
+Figure~\ref{fig:mvn-execution}, line 1) and later (see
+Figure~\ref{fig:mvn-execution}, line 2), we ran the tests ignoring
+non-related tasks (\eg, \emph{javadoc} generation). In addition, when
+we run a subject's test suite, we operate Maven in offline mode to
+limit the network access, avoiding any unnecessary package update as
+all required \emph{jars} are available locally. After the test
+execution, we use a simple regular expression over the builder output
+to extract the elapsed time.
+
+\begin{figure}[h!]
+\centering
+\scriptsize
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    morekeywords={o, DskipTests, Dmaven, javadoc, skip},
+    deletekeywords={true}
+}
+\begin{lstlisting}
+mvn clean install -DskipTests -Dmaven.javadoc.skip=true
+mvn -o test -Dmaven.javadoc.skip=true
+\end{lstlisting}
+\caption{\label{fig:mvn-execution} Compiling and testing a Maven
+    subject: line 1 compiles all subject's source artifacts and make
+    them available in a local repository (\ie, directory \emph{.m2} in
+    the user's home directory); line 2 runs the tests in offline mode
+    ignoring javadoc generation.}
+\end{figure}
 
 We grouped the subjects according to the execution time: tests that
 ran in less than one minute (\emph{short execution}), one to five
 minutes (\emph{medium execution}), and more than five minutes
 (\emph{long execution}).  Figure~\ref{fig:piechart-time} shows the
 proportion of subjects per group.  Results indicate that a relatively
-high number of projects from the sample set requires at least five
-minutes to execute. The longest execution takes \Fix{x} to finish. It
-is important to mention that Figure~\ref{fig:piechart-time} represents
-a lower bound for elapsed time: some tests may finish early due to a
-failure since the subjects were tested in a potentially unstable
-revision.
+high number of projects from the sample set (\ie, 17\%) requires at
+least five minutes to execute. The longest execution takes \Fix{x} to
+finish. It is important to mention that Figure~\ref{fig:piechart-time}
+represents a lower bound for elapsed time: some tests may finish early
+due to a failure since the subjects were tested in a potentially
+unstable revision.
 
 \begin{figure}[h!]
     \centering
