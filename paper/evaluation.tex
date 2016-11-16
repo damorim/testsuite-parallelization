@@ -114,7 +114,7 @@ update the following values after updating the subject selection
 approach.} From the 1,000 downloaded projects, we detected the build
 system of \Fix{801} subjects (composed by 216 Maven, \Fix{564} Gradle,
 and 21 Ant projects) and considered \Fix{164} Maven projects that we
-were able to compile and test.  We were unable to compile other
+were able to compile and test. We were unable to compile other
 subjects because some of them are related to a particular platform
 (\eg, Gradle implied Android), has unsolved dependencies (\eg, package
 no longer available from the Maven public repository), or the build
@@ -151,9 +151,12 @@ Figure~\ref{fig:mvn-execution}, line 2), we ran the tests ignoring
 non-related tasks (\eg, \emph{javadoc} generation). In addition, when
 we run a subject's test suite, we operate Maven in offline mode to
 limit the network access, avoiding any unnecessary package update as
-all required \emph{jars} are available locally. After the test
-execution, we use a simple regular expression over the builder output
-to extract the elapsed time.
+all required \emph{jars} are available locally. We also considered the
+execution of all subjects enforcing sequential execution to avoid
+having the real time cost masked by the use of any parallel setting
+mentioned in Section~\ref{sec:modes}.  After the test execution, we
+use a simple regular expression over the builder output to extract the
+elapsed time.
 
 \begin{figure}[h!]
 \centering
@@ -174,26 +177,31 @@ mvn -o test -Dmaven.javadoc.skip=true
     them available in a local repository (\ie, directory \emph{.m2} in
     the user's home directory); line 2 runs the tests in offline mode
     ignoring javadoc generation.}
+\vspace{-3ex}
 \end{figure}
 
 We grouped the subjects according to the execution time: tests that
 ran in less than one minute (\emph{short execution}), one to five
 minutes (\emph{medium execution}), and more than five minutes
 (\emph{long execution}).  Figure~\ref{fig:piechart-time} shows the
-proportion of subjects per group.  Results indicate that a relatively
-high number of projects from the sample set (\ie, 17\%) requires at
-least five minutes to execute. The longest execution takes \Fix{x} to
-finish. It is important to mention that Figure~\ref{fig:piechart-time}
-represents a lower bound for elapsed time: some tests may finish early
-due to a failure since the subjects were tested in a potentially
-unstable revision.
+proportion of subjects per group: on the left side, the pie chart
+reports the results enforcing sequential execution; on the right side,
+the results for the default execution.  Results indicate that a
+relatively high number of projects from the sample set (\ie, 17\%)
+requires at least five minutes to execute. The longest execution takes
+\Fix{x} to finish. It is important to mention that
+Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
+time: some tests may finish early due to a failure since the subjects
+were tested in a potentially unstable revision.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.4\textwidth]{results/rq1/plots/piechart.pdf}
     \caption{\label{fig:piechart-time} Subjects grouped by elapsed
     time on test execution ($t$): short execution ($t < 1m$), medium 
-    execution ($1m \leq t < 5m$), and long execution ($5m \leq t$).}
+    execution ($1m \leq t < 5m$), and long execution ($5m \leq t$).
+    \Fix{On the left side, results from sequential execution; the right side,
+    results from default execution.}}
 \end{figure}
 
 Considering the groups \emph{medium} and \emph{long}, we investigated
