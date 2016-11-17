@@ -177,7 +177,6 @@ mvn -o test -Dmaven.javadoc.skip=true
     them available in a local repository (\ie, directory \emph{.m2} in
     the user's home directory); line 2 runs the tests in offline mode
     ignoring javadoc generation.}
-\vspace{-3ex}
 \end{figure}
 
 We grouped the subjects according to the execution time: tests that
@@ -200,17 +199,20 @@ were tested in a potentially unstable revision.
     \caption{\label{fig:piechart-time} Subjects grouped by elapsed
     time on test execution ($t$): short execution ($t < 1m$), medium 
     execution ($1m \leq t < 5m$), and long execution ($5m \leq t$).
-    \Fix{On the left side, results from sequential execution; the right side,
-    results from default execution.}}
+    \Fix{On the left side, results from sequential execution; on the
+    right side, results from default execution.}}
 \end{figure}
 
-Considering the groups \emph{medium} and \emph{long}, we investigated
-the relation between number of tests cases and time cost from
-subjects.  \Fix{elaborate: As expected, Figure~\ref{fig:scatters}
-reveals that the number of tests cases are not related to the elapsed
-time.  \Fix{explain briefly what dominates a test execution/types of
-tests}.  We ignored outliers for better visualization.} Results
-indicate that \Fix{...conclusion...}.
+Considering the groups \emph{medium} and \emph{long} (\Fix{X}
+subjects), we investigated the relationship between the number of
+tests cases and the time cost from subjects.  Figure~\ref{fig:scatter}
+shows two scatter plots with We created a scatter plot for each group
+and computed the correlation of time cost and number of tests.
+\Fix{elaborate: As expected, Figure~\ref{fig:scatters} reveals that
+the number of tests cases are not related to the elapsed time.
+\Fix{explain briefly what dominates a test execution/types of tests}.
+We ignored outliers for better visualization.} Results indicate that
+\Fix{...conclusion...}.
 
 \begin{figure}[h!]%
     \centering
