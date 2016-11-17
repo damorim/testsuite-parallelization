@@ -8,14 +8,14 @@ As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both components can add up to the
 aggregate cost of running a test suite, which can lead to late reports
 of test failures.  Dealing with high testing costs is critical at
-large IT organizations, with massive code and test bases.  The impact
-of the Google TAP system~\cite{google-tap,google-ci} and the Microsoft
-CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci} provide
-evidence on the criticality of the build and the testing processes at
-these organizations.  Note, however, that the regression testing
-problem is not specific to giants from the IT sector.  For example, a
-recent paper from the automotive industry reported that test suites
-can take days to run~\cite{artl-etal-icst2015}.
+large IT organizations, with massive code and test bases.  The Google
+TAP system~\cite{google-tap,google-ci} and the Microsoft CloudBuild
+system~\cite{prasad-shulte-ieee-microsoft-ci} provide evidence on the
+criticality of the build and the testing processes at these
+organizations.  Note, however, that the regression testing problem is
+not specific to giants from the IT sector.  For example, a recent
+paper from the automotive industry reported that test suites can take
+days to run~\cite{artl-etal-icst2015}.
 
 Several approaches have been proposed in the literature to address the
 regression testing problem.  Research has focused mostly on test suite
@@ -28,12 +28,11 @@ complementary to those proposed in the literature. For example, as of
 August 2013, the Groupon PWA system, which powers the
 \url{groupon.com} website, included over 19K tests.  To run all those
 tests under 10m, Groupon used a cluster of 4 computers with 24 cores
-each~\cite{kim-etal-fse2013}.  As additional examples, The Google TAP
-system and the Microsoft CloudBuild system distribute the test
-workload in the cloud, which is part of their infrastructure.  Note,
-that the alternative of renting a cloud
+each~\cite{kim-etal-fse2013}.  As additional examples, Google's TAP
+and Microsoft's CloudBuild distribute task workloads in the cloud.
+Note, that the alternative of renting a cloud
 service\footnote{\url{https://clutch.co/cloud}} or even building a
-server farm (for increased security) can be a legitimate approach to
+server farm (for increased security) is a legitimate approach to
 mitigate the regression testing problem at large organizations.
 However, this solution may not be economically viable for smaller
 projects.
