@@ -2,9 +2,11 @@
 import argparse
 import csv
 import os
+import re
+import shutil
 from subprocess import call, DEVNULL, PIPE, Popen
 
-import re
+from lxml import etree
 
 from support import maven
 
@@ -14,17 +16,29 @@ SUBJECTS_HOME = os.path.join(BASE_DIR, "subjects")
 
 def measure_test_cost(override=False):
     # RQ1
-    call(maven.resolve_dependencies_task(), stdout=DEVNULL, stderr=DEVNULL)
-    test_log_default = "test-log-default.txt"
     test_log_sequential = "test-log-sequential.txt"
+    test_log_default = "test-log-default.txt"
+    experiment_pom = "experiment-pom.xml"
+
+    if not os.path.exists(experiment_pom) or override:
+        print("Creating \"{}\" file with parallel profiles".format(experiment_pom))
+        # shutil.copyfile("pom.xml", experiment_pom)
+        #
+        # tree = etree.parse(experiment_pom)
+        # namespace = {'ns': 'http://maven.apache.org/POM/4.0.0'}
+        # print(tree)
+
+    call(maven.resolve_dependencies_task("-f", experiment_pom), stdout=DEVNULL, stderr=DEVNULL)
+
     if not os.path.exists(test_log_default) or override:
         with open(test_log_default, "w") as log_file:
-            call(maven.test_task("-o", "-Dmaven.javadoc.skip=true"),
+            call(maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-f", experiment_pom),
                  stdout=log_file, stderr=DEVNULL)
     if not os.path.exists(test_log_sequential) or override:
         with open(test_log_sequential, "w") as log_file:
-            call(maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-P", "tests-seq"),
+            call(maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-P", "L0", "-f", experiment_pom),
                  stdout=log_file, stderr=DEVNULL)
+
     timestamps = {test_log_default: None, test_log_sequential: None}
     for log in timestamps.keys():
         cat = Popen(["cat", log], stdout=PIPE)
@@ -39,7 +53,7 @@ def measure_test_cost(override=False):
             reported_time = (60 * int(reported_time[0])) + int(reported_time[1])
             # FIXME test subjects with reported time > 60min
 
-        timestamps[log] = round(float(reported_time))
+        timestamps[log] = reported_time
 
     return timestamps
 
@@ -61,10 +75,13 @@ def experiment(subject_path, override=False):
         return
 
     print("Analyzing subject: \"{}\"".format(subject_name))
-
+    compiled = maven.has_compiled(subject_path)
     os.chdir(subject_path)
-    exit_status = call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
-                       stdout=DEVNULL, stderr=DEVNULL)
+
+    exit_status = 0
+    if not compiled:
+        exit_status = call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
+                           stdout=DEVNULL, stderr=DEVNULL)
     if not exit_status:
         timestamps = measure_test_cost(override=override)
         print(subject_name, timestamps)

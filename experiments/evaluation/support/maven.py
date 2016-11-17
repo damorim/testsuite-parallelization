@@ -15,12 +15,15 @@ def test_task(*additional_args):
     return args
 
 
-def resolve_dependencies_task():
+def resolve_dependencies_task(*additional_args):
     """
     Task arguments to ensure dependencies are resolved before running in offline mode
     :return: List of arguments to run in a system call
     """
-    return ["mvn", "dependency:go-offline"]
+    args = ["mvn", "dependency:go-offline"]
+    if additional_args:
+        args.extend(additional_args)
+    return args
 
 
 def is_valid_project(subject_path):
@@ -30,3 +33,8 @@ def is_valid_project(subject_path):
     :return: true if the informed path contains a pom.xml file (false otherwise).
     """
     return os.path.exists(os.path.join(subject_path, "pom.xml"))
+
+
+def has_compiled(subject_path):
+    return os.path.exists(os.path.join(subject_path, "target", "classes")) and os.path.exists(
+        os.path.join(subject_path, "target", "test-classes"))
