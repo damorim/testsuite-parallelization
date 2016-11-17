@@ -195,17 +195,16 @@ were tested in a potentially unstable revision.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.4\textwidth]{results/rq1/plots/piechart.pdf}
-    \caption{\label{fig:piechart-time} Subjects grouped by elapsed
-    time on test execution ($t$): short execution ($t < 1m$), medium 
-    execution ($1m \leq t < 5m$), and long execution ($5m \leq t$).
-    \Fix{On the left side, results from sequential execution; on the
-    right side, results from default execution.}}
+    \includegraphics[width=0.48\textwidth]{results/plots/piechart-timecost.pdf}
+    \caption{\label{fig:piechart-time} Subjects grouped by elapsed time on test
+    execution ($t$): short execution ($t < 1m$), medium execution ($1m \leq t <
+    5m$), and long execution ($5m \leq t$).  On the left side, results from
+    sequential execution; on the right side, results from default execution.}
 \end{figure}
 
 Considering the groups \emph{medium} and \emph{long} (\Fix{X}
 subjects), we investigated the relationship between the number of
-tests cases and the time cost from subjects.  Figure~\ref{fig:scatter}
+tests cases and the time cost from subjects.  Figure~\ref{fig:scatters}
 shows two scatter plots with We created a scatter plot for each group
 and computed the correlation of time cost and number of tests.
 \Fix{elaborate: As expected, Figure~\ref{fig:scatters} reveals that
@@ -216,14 +215,7 @@ We ignored outliers for better visualization.} Results indicate that
 
 \begin{figure}[h!]%
     \centering
-    \begin{minipage}{0.5\textwidth}
-        \subfigure[\Fix{medium}]{
-            \includegraphics[width=\textwidth]{results/rq1/plots/scatterplot-med.pdf}
-        }\\
-        \subfigure[\Fix{long}]{
-            \includegraphics[width=\textwidth]{results/rq1/plots/scatterplot-long.pdf}
-        }%
-    \end{minipage}%
+    \Fix{scatter top, scatter bottom, legend r-value regression}
     \caption{\Fix{...use minutes instead of secs...}}%
     \label{fig:scatters}%
 \end{figure}
@@ -232,7 +224,7 @@ We ignored outliers for better visualization.} Results indicate that
 \label{sec:rqTwo}
 
 \begin{itemize}
-    \item \RQB
+    \item \emph{\RQB}
 \end{itemize}
 
 To evaluate how often developers use low-level parallelism, we
@@ -244,7 +236,6 @@ developer can explore parallelism via Surefire settings.}
 
 \begin{figure}[h!]
    \centering
-   \includegraphics[width=0.4\textwidth]{results/plots/parallelism-settings.pdf}
    \caption{\Fix{...}}
 \end{figure}
 
