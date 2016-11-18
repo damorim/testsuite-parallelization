@@ -1,15 +1,11 @@
 import os
 import re
-from collections import Counter, namedtuple
+from collections import Counter
 
 from subprocess import check_output, PIPE, Popen
-from xml.etree import ElementTree
 
 BUILDER_LOG_TXT = "builder-output-log.txt"
 PERFORMANCE_LOG_TXT = "test-performance-log.txt"
-
-TestCaseInfo = namedtuple("TestCase", "name, time")
-ReportData = namedtuple("Data", "statistics, items")
 
 
 class Builder:
@@ -24,9 +20,7 @@ class Builder:
 def detect_builder():
     if os.path.exists("pom.xml"):
         return Builder(name="Maven", args=["mvn", "clean", "install", "-DskipTests", "-Dmaven.javadoc.skip=true"],
-                       test=["mvn", "test", "-Dmaven.javadoc.skip=true"],
-                       test_report_inspector=collect_surefire_data,
-                       has_test_reports=has_surefire_dir)
+                       test=["mvn", "test", "-Dmaven.javadoc.skip=true"])
 
     elif os.path.exists("gradlew"):
         return Builder(name="Gradle", args=["./gradlew", "clean", "build", "-X", "test"],
@@ -36,45 +30,6 @@ def detect_builder():
         return Builder(name="Ant", args=["ant", "compile"], test=["ant", "test"])
 
     return None
-
-
-def has_surefire_dir():
-    return os.path.exists(os.path.abspath(os.path.join("target", "surefire-reports")))
-
-
-def collect_surefire_data():
-    """
-    Collect data from surefire reports.
-    Returns a Data tuple with statistics counter and a list of test cases data.
-    """
-    if not os.path.exists(os.path.join("target", "surefire-reports")):
-        raise Exception("Missing test reports!")
-    output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
-    total_counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
-    test_cases = []
-    for xml_path in output.splitlines():
-        test_suite = ElementTree.parse(xml_path).getroot()
-
-        time_cnt = 0
-        for test_case in test_suite.iter("testcase"):
-            test_name = "%s.%s" % (test_case.get("classname"), test_case.get("name"))
-            test_cases.append(TestCaseInfo(name=test_name, time=float(test_case.get("time"))))
-            time_cnt += float(test_case.get("time"))
-
-        failure_cnt = get_value_from(test_suite, "failures", default_value=0, cast_type=int)
-        error_cnt = get_value_from(test_suite, "errors", default_value=0, cast_type=int)
-        tests_cnt = get_value_from(test_suite, "tests", default_value=0, cast_type=int)
-        skipped_cnt = get_value_from(test_suite, "skipped", default_value=0, cast_type=int)
-
-        total_counter.update(Counter(tests=tests_cnt, skipped=skipped_cnt, time=time_cnt,
-                                     failure=(failure_cnt + error_cnt)))
-
-    return ReportData(items=test_cases, statistics=total_counter)
-
-
-def get_value_from(xml_node, attribute, default_value, cast_type):
-    """ Auxiliary function from collect_surefire_data """
-    return default_value if not xml_node.get(attribute) else cast_type(xml_node.get(attribute).replace(",", ""))
 
 
 def compute_time_distribution(data):
@@ -90,25 +45,6 @@ def compute_time_distribution(data):
         counter.update(Counter(tests=1, time=tc.time))
 
     return round((counter['tests'] / len(test_cases)) * 100, 2)
-
-
-def check_time_cost(subject_path=os.curdir):
-    with open(os.path.join(subject_path, BUILDER_LOG_TXT)) as builder_output:
-        for line in builder_output:
-            if line.startswith("TIME-COST="):
-                elapsed_time_raw = re.sub(r"TIME-COST=", "", line.strip())
-                return int(elapsed_time_raw)
-
-
-def check_test_reports(subject_path=os.curdir):
-    subject_name = os.path.basename(subject_path)
-    if not os.path.isdir(subject_path):
-        raise Exception("Project: {}\nInvalid path: {}".format(subject_name, subject_path))
-
-    os.chdir(subject_path)
-    builder = detect_builder()
-    if builder and builder.test_report_inspector:
-        return builder.test_report_inspector()
 
 
 def check_resources_usage(subject_path=os.curdir):
