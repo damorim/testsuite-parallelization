@@ -1,2 +1,3 @@
 SUBJECT,URL,REV,BUILDER,COMPILED
-demo-cpu-intense,git@github.com:jeandersonbc/demo-cpu-intense.git,e4e63d1b27b971892ffe2a0439080ddf31a3df2e,Maven,true
+demo-cpu-intense,git@github.com:jeandersonbc/demo-cpu-intense.git,e82dc7bb5b51dbd81bb2f592d17897219ce66bcd,Maven,true
+demo-io-intense,git@github.com:jeandersonbc/demo-io-intense.git,b4c90b5b430ff543a0bba5ab8d81921f1afd78e1,Maven,true
