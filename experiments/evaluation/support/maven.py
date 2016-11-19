@@ -85,3 +85,23 @@ def collect_surefire_data():
 def _get_value_from(xml_node, attribute, default_value, cast_type):
     """ Auxiliary function from collect_surefire_data """
     return default_value if not xml_node.get(attribute) else cast_type(xml_node.get(attribute).replace(",", ""))
+
+
+PROFILE_L0_RAW = """
+<profile>
+    <id>L0</id>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <parallel>none</parallel>
+                    <forkCount>1</forkCount>
+                    <reuseFork>true</reuseFork>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</profile>
+"""
