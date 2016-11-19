@@ -1,4 +1,2 @@
 SUBJECT,URL,REV,BUILDER,COMPILED
 demo-cpu-intense,git@github.com:jeandersonbc/demo-cpu-intense.git,e4e63d1b27b971892ffe2a0439080ddf31a3df2e,Maven,true
-demo-cpu-parallel,-,-,Maven,true
-demo-cpu-parallel-2,-,-,Maven,true
