@@ -9,95 +9,70 @@ from lxml import etree
 
 from support import maven
 
-PROFILE_L0_RAW = """
-<profile>
-    <id>L0</id>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <parallel>none</parallel>
-                    <forkCount>1</forkCount>
-                    <reuseFork>true</reuseFork>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-</profile>
-"""
-
 BASE_DIR = os.path.abspath(os.curdir)
 SUBJECTS_HOME = os.path.join(BASE_DIR, "subjects")
 
 
-def measure_test_cost(override=False):
-    # RQ1
-    test_log_sequential = "test-log-sequential.txt"
-    test_log_default = "test-log-default.txt"
-    experiment_pom = "experiment-pom.xml"
-
-    if not os.path.exists(experiment_pom) or override:
-        print("Creating \"{}\" file with parallel profiles".format(experiment_pom))
-        tree = etree.parse("pom.xml")
-        namespace = {'ns': 'http://maven.apache.org/POM/4.0.0'}
-
-        root = tree.getroot()
-        profiles_node = root.find("{%s}profiles" % namespace['ns'])
-        if profiles_node is None:
-            profiles_node = etree.SubElement(root, "profiles")
-
-        profile_l0_node = etree.XML(PROFILE_L0_RAW)
-        profiles_node.append(profile_l0_node)
-
-        with open(experiment_pom, "w") as f:
-            f.write(etree.tostring(root, pretty_print=True).decode())
-
-    call(maven.resolve_dependencies_task("-f", experiment_pom), stdout=DEVNULL, stderr=DEVNULL)
-
-    if not os.path.exists(test_log_default) or override:
-        with open(test_log_default, "w") as log_file:
-            maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-f", experiment_pom)
-            time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", "time-output-default.txt"]
+def _run_test_profile(test_log, profile_args=None, pom_file="pom.xml", override=False):
+    if not os.path.exists(test_log) or override:
+        with open(test_log, "w") as log_file:
+            maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-f", pom_file)
+            if profile_args:
+                maven_args.extend(profile_args)
+            time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(test_log)]
             time_args.extend(maven_args)
             call(time_args, stdout=log_file, stderr=DEVNULL)
 
-    if not os.path.exists(test_log_sequential) or override:
-        with open(test_log_sequential, "w") as log_file:
-            maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-P", "L0", "-f", experiment_pom)
-            time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", "time-output-L0.txt"]
-            time_args.extend(maven_args)
-            call(time_args, stdout=log_file, stderr=DEVNULL)
 
-    timestamps = {}
-    for key, log in [("DEFAULT_T", test_log_default), ("L0", test_log_sequential)]:
-        cat = Popen(["cat", log], stdout=PIPE)
-        grep = Popen(["grep", "Total time:"], stdin=cat.stdout, stdout=PIPE)
-        cat.stdout.close()
-        out, err = grep.communicate()
+def _add_parallel_profiles(output_pom):
+    print("Creating \"{}\" file with parallel profiles".format(output_pom))
+    tree = etree.parse("pom.xml")
+    namespace = {'ns': 'http://maven.apache.org/POM/4.0.0'}
+    root = tree.getroot()
+    profiles_node = root.find("{%s}profiles" % namespace['ns'])
+    if profiles_node is None:
+        profiles_node = etree.SubElement(root, "profiles")
 
-        # normalize reported time
-        reported_time = re.sub(r".*: ", "", out.decode().replace("s", "").strip())
-        if "min" in reported_time:
-            reported_time = reported_time.replace("min", "").split(":")
-            reported_time = (60 * int(reported_time[0])) + int(reported_time[1])
-            # FIXME test subjects with reported time > 60min
+    profiles_to_add_raw = [maven.PROFILE_L0_RAW]
+    for profile_raw in profiles_to_add_raw:
+        profile_node = etree.XML(profile_raw)
+        profiles_node.append(profile_node)
 
-        timestamps[key] = round(float(reported_time))
-
-    return timestamps
+    with open(output_pom, "w") as f:
+        f.write(etree.tostring(root, pretty_print=True).decode())
 
 
-def compute_tests_statistics():
-    return maven.collect_surefire_data().statistics
+def _performance_log_from(test_log):
+    return test_log.replace("test", "performance")
 
 
-def compute_process_cpuness():
-    with open("time-output-L0.txt") as log:
+def _compute_tests_executed(fields=("tests", "skipped", "failure")):
+    statistics = maven.collect_surefire_data().statistics
+    return {field: statistics[field] for field in fields}
+
+
+def _compute_process_cpuness(log_file):
+    log_file = _performance_log_from(log_file)
+    with open(log_file) as log:
         line = log.readline()
     values = [float(v) for v in line.split(",")]
     return round((values[0] + values[1]) / values[2]) * 100
+
+
+def _compute_time_cost(log_file):
+    cat = Popen(["cat", log_file], stdout=PIPE)
+    grep = Popen(["grep", "Total time:"], stdin=cat.stdout, stdout=PIPE)
+    cat.stdout.close()
+    out, err = grep.communicate()
+
+    # normalize reported time
+    reported_time = re.sub(r".*: ", "", out.decode().replace("s", "").strip())
+    if "min" in reported_time:
+        reported_time = reported_time.replace("min", "").split(":")
+        reported_time = (60 * int(reported_time[0])) + int(reported_time[1])
+        # FIXME test subjects with reported time > 60min
+
+    return round(float(reported_time))
 
 
 def experiment(subject_path, override=False):
@@ -116,6 +91,11 @@ def experiment(subject_path, override=False):
         print("Subject \"{}\" is not a Maven project. Skipping...".format(subject_name))
         return
 
+    # REQUIRED FILES
+    test_log_seq = "test-log-sequential.txt"
+    test_log_default = "test-log-default.txt"
+    modified_pom = "experiment-pom.xml"
+
     print("Analyzing subject: \"{}\"".format(subject_name))
     compiled = maven.has_compiled(subject_path)
     os.chdir(subject_path)
@@ -125,12 +105,20 @@ def experiment(subject_path, override=False):
         exit_status = call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
                            stdout=DEVNULL, stderr=DEVNULL)
     if not exit_status:
-        timestamps = measure_test_cost(override=override)
+        if not os.path.exists(modified_pom) or override:
+            _add_parallel_profiles(modified_pom)
+
+        call(maven.resolve_dependencies_task("-f", modified_pom), stdout=DEVNULL, stderr=DEVNULL)
+
+        _run_test_profile(test_log_default, override=override)
+        _run_test_profile(test_log_seq, pom_file=modified_pom, profile_args=["-P", "L0"], override=override)
 
         # Read-only methods: no execution is required as long as the raw data exists
-        tests_executed = compute_tests_statistics()
-        cpuness = compute_process_cpuness()
-        print(subject_name, timestamps, tests_executed, cpuness)
+        elapsed_times = {log: _compute_time_cost(log) for log in (test_log_default, test_log_seq)}
+        tests_executed = _compute_tests_executed()
+        cpuness = _compute_process_cpuness(test_log_seq)
+
+        print(subject_name, elapsed_times, tests_executed, cpuness)
 
 
 def load_subjects_from(csv_file):
