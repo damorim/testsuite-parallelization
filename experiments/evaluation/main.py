@@ -56,7 +56,7 @@ def _compute_process_cpuness(log_file):
     with open(log_file) as log:
         line = log.readline()
     values = [float(v) for v in line.split(",")]
-    return round((values[0] + values[1]) / values[2]) * 100
+    return (values[0] + values[1]) / values[2]
 
 
 def _compute_time_cost(log_file):
