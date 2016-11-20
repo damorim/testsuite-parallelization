@@ -118,7 +118,7 @@ def experiment(subject_path, override=False):
         tests_executed = _compute_tests_executed()
         cpuness = _compute_process_cpuness(test_log_seq)
 
-        print(subject_name, elapsed_times, tests_executed, cpuness)
+        return subject_name, elapsed_times, tests_executed, cpuness
 
 
 def load_subjects_from(csv_file):
@@ -156,6 +156,12 @@ if __name__ == "__main__":
         print("Required directory missing: \"{}\"\nDid you execute \"downloader.py\" first?".format(SUBJECTS_HOME))
         exit(1)
 
+    with open(output_file, "w") as f:
+        f.write("output log:\n")
+
     subjects = load_subjects_from(input_file)
     for subject in subjects:
-        experiment(os.path.join(SUBJECTS_HOME, subject), override=args.force)
+        results = experiment(os.path.join(SUBJECTS_HOME, subject), override=args.force)
+        with open(output_file, "a") as f:
+            f.write(" ".join([str(r) for r in results]))
+            f.write("\n")
