@@ -25,7 +25,6 @@ def _run_test_profile(test_log, profile_args=None, pom_file="pom.xml", override=
 
 
 def _add_parallel_profiles(output_pom):
-    print("Creating \"{}\" file with parallel profiles".format(output_pom))
     tree = etree.parse("pom.xml")
     namespace = {'ns': 'http://maven.apache.org/POM/4.0.0'}
     root = tree.getroot()
@@ -107,11 +106,14 @@ def experiment(subject_path, override=False):
     if not exit_status:
         if not os.path.exists(modified_pom) or override:
             _add_parallel_profiles(modified_pom)
+            print("Created \"{}\" file with parallel profiles".format(modified_pom))
 
         call(maven.resolve_dependencies_task("-f", modified_pom), stdout=DEVNULL, stderr=DEVNULL)
+        print("Dependencies solved for offline execution")
 
         _run_test_profile(test_log_default, override=override)
         _run_test_profile(test_log_seq, pom_file=modified_pom, profile_args=["-P", "L0"], override=override)
+        print("Tests executed")
 
         # Read-only methods: no execution is required as long as the raw data exists
         try:
@@ -166,6 +168,7 @@ if __name__ == "__main__":
     subjects = load_subjects_from(input_file)
     for subject in subjects:
         results = experiment(os.path.join(SUBJECTS_HOME, subject), override=args.force)
+        print(results)
         with open(output_file, "a") as f:
             f.write(" ".join([str(r) for r in results]))
             f.write("\n")
