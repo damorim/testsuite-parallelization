@@ -37,8 +37,8 @@ def _add_parallel_profiles(output_pom):
         profile_node = etree.XML(profile_raw)
         profiles_node.append(profile_node)
 
-    with open(output_pom, "w") as f:
-        f.write(etree.tostring(root, pretty_print=True).decode())
+    with open(output_pom, "w") as pom:
+        pom.write(etree.tostring(root, pretty_print=True).decode())
 
 
 def _performance_log_from(test_log):
@@ -74,21 +74,14 @@ def _compute_time_cost(log_file):
     return round(float(reported_time))
 
 
-def experiment(subject_path, override=False):
+def experiment(path, override=False):
     """
     Runs the experiment for a Maven subject from the given path
-    :param subject_path: the path to the subject
+    :param path: the path to the subject
     :param override: flag indicating whether existing data should be overridden
     :return: None
     """
-    subject_name = os.path.basename(subject_path)
-    if not os.path.exists(subject_path):
-        print("Missing subject \"{}\". Skipping...".format(subject_name))
-        return
-
-    if not maven.is_valid_project(subject_path):
-        print("Subject \"{}\" is not a Maven project. Skipping...".format(subject_name))
-        return
+    subject_name = os.path.basename(path)
 
     # REQUIRED FILES
     test_log_seq = "test-log-sequential.txt"
@@ -96,8 +89,8 @@ def experiment(subject_path, override=False):
     modified_pom = "experiment-pom.xml"
 
     print("Analyzing subject: \"{}\"".format(subject_name))
-    compiled = maven.has_compiled(subject_path)
-    os.chdir(subject_path)
+    compiled = maven.has_compiled(path)
+    os.chdir(path)
 
     exit_status = 0
     if not compiled:
@@ -137,8 +130,8 @@ def load_subjects_from(csv_file):
         raise Exception("invalid input file path: \"{}\"".format(csv_file))
 
     loaded_subjects = []
-    with open(csv_file, newline="") as f:
-        reader = csv.DictReader(f)
+    with open(csv_file, newline="") as content:
+        reader = csv.DictReader(content)
         for row in reader:
             if row["COMPILED"] == "true":
                 loaded_subjects.append(row["SUBJECT"])
@@ -167,7 +160,16 @@ if __name__ == "__main__":
 
     subjects = load_subjects_from(input_file)
     for subject in subjects:
-        results = experiment(os.path.join(SUBJECTS_HOME, subject), override=args.force)
+        subject_path = os.path.join(SUBJECTS_HOME, subject)
+
+        if not os.path.exists(subject_path):
+            print("Missing subject \"{}\". Skipping...".format(subject))
+            continue
+        if not maven.is_valid_project(subject_path):
+            print("Subject \"{}\" is not a Maven project. Skipping...".format(subject))
+            continue
+
+        results = experiment(subject_path, override=args.force)
         print(results, "\n")
         with open(output_file, "a") as f:
             f.write(" ".join([str(r) for r in results]))
