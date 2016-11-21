@@ -168,7 +168,7 @@ if __name__ == "__main__":
     subjects = load_subjects_from(input_file)
     for subject in subjects:
         results = experiment(os.path.join(SUBJECTS_HOME, subject), override=args.force)
-        print(results)
+        print(results, "\n")
         with open(output_file, "a") as f:
             f.write(" ".join([str(r) for r in results]))
             f.write("\n")
