@@ -57,9 +57,6 @@ def collect_surefire_data():
     Collect data from surefire reports.
     Returns a Data tuple with statistics counter and a list of test cases data.
     """
-    if not has_surefire_dir():
-        raise Exception("Could not find surefire directory at \"{}\"".format(os.path.abspath(os.curdir)))
-
     output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
     total_counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
     test_cases = []
