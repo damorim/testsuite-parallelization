@@ -114,9 +114,13 @@ def experiment(subject_path, override=False):
         _run_test_profile(test_log_seq, pom_file=modified_pom, profile_args=["-P", "L0"], override=override)
 
         # Read-only methods: no execution is required as long as the raw data exists
-        elapsed_times = {log: _compute_time_cost(log) for log in (test_log_default, test_log_seq)}
-        tests_executed = _compute_tests_executed()
-        cpuness = _compute_process_cpuness(test_log_seq)
+        try:
+            elapsed_times = {log: _compute_time_cost(log) for log in (test_log_default, test_log_seq)}
+            tests_executed = _compute_tests_executed()
+            cpuness = _compute_process_cpuness(test_log_seq)
+        except Exception as err:
+            print(err)
+            return subject_name
 
         return subject_name, elapsed_times, tests_executed, cpuness
 
