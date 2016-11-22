@@ -126,13 +126,13 @@ def experiment(path, override=False):
                 "args": ["-P", "L0"]
             }
         }
-        results = []
+        results_to_return = []
         for mode, params in mode_settings.items():
             test_log_file = params["log-file"]
             pom_file = params["pom-file"]
-            args = params["args"]
+            profile_args = params["args"]
 
-            _run_test_profile(test_log_file, pom_file=pom_file, profile_args=args, override=override)
+            _run_test_profile(test_log_file, pom_file, profile_args, override)
 
             # Read-only methods: no execution is required as long as the raw data exists
             try:
@@ -143,7 +143,7 @@ def experiment(path, override=False):
                 print(" -", err)
                 return None
 
-            results.append(Result(
+            results_to_return.append(Result(
                 mode=mode,
                 name=subject_name,
                 elapsed_time=elapsed_time,
@@ -156,7 +156,7 @@ def experiment(path, override=False):
                 t_wall=cpuness[2]
             ))
 
-        return results
+        return results_to_return
 
 
 def load_subjects_from(csv_file, sample_size=None):
@@ -172,10 +172,10 @@ def load_subjects_from(csv_file, sample_size=None):
 
     loaded_subjects = []
     with open(csv_file, newline="") as content:
-        reader = csv.DictReader(content)
-        for row in reader:
-            if row["COMPILED"] == "true":
-                loaded_subjects.append(row["SUBJECT"])
+        csv_reader = csv.DictReader(content)
+        for csv_row in csv_reader:
+            if csv_row["COMPILED"] == "true":
+                loaded_subjects.append(csv_row["SUBJECT"])
 
     if sample_size:
         random.seed(1234)
@@ -204,17 +204,26 @@ if __name__ == "__main__":
         print("Required directory missing: \"{}\"\nDid you execute \"downloader.py\" first?".format(SUBJECTS_HOME))
         exit(1)
 
-    with open(output_file, "w") as f:
-        f.write(",".join(Result._fields))
-        f.write("\n")
-
     subjects = load_subjects_from(input_file, sample_size=n_args)
+    cached_results = set({})
+
+    if not os.path.exists(output_file):
+        with open(output_file, "w") as f:
+            f.write(",".join(Result._fields))
+            f.write("\n")
+    else:
+        with open(output_file) as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                cached_results.add(row["name"])
+
     for subject in subjects:
-        subject_path = os.path.join(SUBJECTS_HOME, subject)
-        results = experiment(subject_path, override=args.force)
-        if results:
-            for r in results:
-                print(" -", r)
-                with open(output_file, "a") as f:
-                    f.write(",".join([str(getattr(r, attr)) for attr in Result._fields]))
-                    f.write("\n")
+        if subject not in cached_results:
+            subject_path = os.path.join(SUBJECTS_HOME, subject)
+            results = experiment(subject_path, override=args.force)
+            if results:
+                for r in results:
+                    print(" -", r)
+                    with open(output_file, "a") as f:
+                        f.write(",".join([str(getattr(r, attr)) for attr in Result._fields]))
+                        f.write("\n")
