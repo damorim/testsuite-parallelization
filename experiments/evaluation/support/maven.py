@@ -1,8 +1,8 @@
 import os
 from collections import Counter, namedtuple
+from subprocess import check_output
 
 from lxml import etree
-from subprocess import check_output
 
 
 def build_task(*additional_args):
@@ -58,9 +58,13 @@ def collect_surefire_data():
     Returns a Data tuple with statistics counter and a list of test cases data.
     """
     output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
+    surefire_files = output.splitlines()
+    if not len(surefire_files):
+        raise Exception("Couldn't find *ANY* surefire report")
+
     total_counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
     test_cases = []
-    for xml_path in output.splitlines():
+    for xml_path in surefire_files:
         test_suite = etree.parse(xml_path).getroot()
 
         time_cnt = 0
