@@ -23,7 +23,7 @@ def _run_test_profile(test_log, pom_file, profile_args=None, override=False):
                 maven_args.extend(profile_args)
             time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(test_log)]
             time_args.extend(maven_args)
-            call(time_args, stdout=log_file, stderr=DEVNULL)
+            call(time_args, stdout=log_file, stderr=DEVNULL, timeout=60*60*2)  # timeout = 2 hours
 
 
 def _add_parallel_profiles(output_pom):
@@ -132,7 +132,10 @@ def experiment(path, override=False):
             pom_file = params["pom-file"]
             profile_args = params["args"]
 
-            _run_test_profile(test_log_file, pom_file, profile_args, override)
+            try:
+                _run_test_profile(test_log_file, pom_file, profile_args, override)
+            except TimeoutError:
+                return
 
             # Read-only methods: no execution is required as long as the raw data exists
             try:
@@ -141,7 +144,7 @@ def experiment(path, override=False):
                 cpuness = _compute_process_cpuness(test_log_file)
             except Exception as err:
                 print(" -", err)
-                return None
+                return
 
             results_to_return.append(Result(
                 mode=mode,
@@ -211,7 +214,8 @@ if __name__ == "__main__":
         with open(output_file, "w") as f:
             f.write(",".join(Result._fields))
             f.write("\n")
-    else:
+
+    if not args.force:
         with open(output_file) as f:
             reader = csv.DictReader(f)
             for row in reader:
