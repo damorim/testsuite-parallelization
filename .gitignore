@@ -1,3 +1,14 @@
+# Experiment directories
+.idea/
+samples/
+subjects/
+outputs/
+
+# RStudio files
+.Rhistory
+.Rproj.user/
+data.Rproj
+
 # Latex temp files
 *.aux
 *.bbl
