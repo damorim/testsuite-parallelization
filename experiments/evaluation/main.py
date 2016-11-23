@@ -5,7 +5,7 @@ import os
 import random
 import re
 from collections import namedtuple
-from subprocess import call, DEVNULL, PIPE, Popen, check_output
+from subprocess import call, DEVNULL, PIPE, Popen, check_output, TimeoutExpired
 
 from lxml import etree
 
@@ -23,7 +23,7 @@ def _run_test_profile(test_log, pom_file, profile_args=None, override=False):
                 maven_args.extend(profile_args)
             time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(test_log)]
             time_args.extend(maven_args)
-            call(time_args, stdout=log_file, stderr=DEVNULL, timeout=60*60*2)  # timeout = 2 hours
+            call(time_args, stdout=log_file, stderr=DEVNULL, timeout=60*60*3)  # timeout = 3 hours
 
 
 def _add_parallel_profiles(output_pom):
@@ -134,7 +134,8 @@ def experiment(path, override=False):
 
             try:
                 _run_test_profile(test_log_file, pom_file, profile_args, override)
-            except TimeoutError:
+            except TimeoutExpired as err:
+                print(" -", err)
                 return
 
             # Read-only methods: no execution is required as long as the raw data exists
