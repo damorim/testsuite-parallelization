@@ -24,9 +24,9 @@ rq1_timecost <- function(rawdata, plot_path) {
   
   # plot layout
   par(
-    mfrow = c(1, 3),
-    mar = c(1, 1, 1, 1),
-    oma = c(0, 0, 0, 0),
+    mfrow = c(1, 3),     # plot matrix
+    mar = c(1, 1, 1, 1), # margin
+    oma = c(0, 0, 0, 0), # outer margin
     xpd = T
   )
   modes <- c("L0", "ST")
