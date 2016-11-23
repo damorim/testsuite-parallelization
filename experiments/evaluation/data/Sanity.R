@@ -1,7 +1,5 @@
 check_test_flakiness <- function(df) {
-  # check if test execution is consistent
   flaky_subjects = character()
-  
   r_fields <- c("r_skipped", "r_tests", "r_failures")
   for (name in df$name) {
     df_subject <- df[df$name == name, r_fields]
@@ -17,5 +15,13 @@ check_test_flakiness <- function(df) {
 }
 
 df <- read.csv("rawdata.csv")
-print("FLAKY SUBJECTS:")
-print(check_test_flakiness(df))
+flaky_subjects <- check_test_flakiness(df)
+
+print("Flaky Subjects:")
+if (length(flaky_subjects) != 0) {
+  print(flaky_subjects)
+} else {
+  print("not found!")
+}
+
+# TODO check elapsed time!
