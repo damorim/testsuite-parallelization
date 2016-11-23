@@ -96,4 +96,5 @@ rawdata <- read.csv(name)
 rq1_timecost(rawdata, "plots/piechart-timecost.pdf")
 rq1_tests_time(rawdata, "plots/scatter-tests-time.pdf")
 
-print(paste("Experiment cost:", sum(rawdata$elapsed_time), "s"))
+print(paste("Experiment cost:",
+            round(sum(rawdata$elapsed_time)) / 3600, "hr"))
