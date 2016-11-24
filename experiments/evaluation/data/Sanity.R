@@ -13,6 +13,31 @@ check_test_flakiness <- function(df) {
   }
   return(flaky_subjects)
 }
+check_elapsed_time <- function(df) {
+  df_l0 <- df[df$mode == "L0", ]
+  df_st <- df[df$mode == "ST", ]
+  subjects_inspect = character()
+  deltas <- double()
+  for (subject in df_l0$name) {
+    t_l0 <- df_l0[df_l0$name == subject, ]$elapsed_t
+    t_st <- df_st[df_st$name == subject, ]$elapsed_t
+    delta <- abs(t_l0 - t_st)
+    if (delta >= 60) {
+      subjects_inspect <- c(subject, subjects_inspect)
+      deltas <- c(delta, deltas)
+    }
+  }
+  deltas <- sapply(deltas, FUN = function(t) {return(t / 60)})
+  pdf("plots/DEBUG-diff-L0_ST.pdf")
+  p <- barplot(deltas, space = 0, border = NA, ylab = "delta (absolute value in minutes)")
+  text(
+    x = p,
+    y = 0,
+    labels = subjects_inspect,
+    srt = 90,
+    xpd = T
+  )
+}
 
 df <- read.csv("rawdata.csv")
 flaky_subjects <- check_test_flakiness(df)
@@ -23,4 +48,5 @@ if (length(flaky_subjects) != 0) {
     print(df[df$name == subj, c(-8:-10)])
   }
 }
-# TODO check elapsed time!
+
+check_elapsed_time(df)

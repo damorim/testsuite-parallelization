@@ -1,4 +1,5 @@
 #!/bin/bash
+R --vanilla --salve < Sanity.R
 R --vanilla --slave < Main.R
 
 # Crop blank spaces from plots dir
