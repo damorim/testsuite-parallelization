@@ -1,7 +1,7 @@
 check_test_flakiness <- function(df) {
   flaky_subjects = character()
   r_fields <- c("r_skipped", "r_tests", "r_failures")
-  for (name in df$name) {
+  for (name in unique(df$name)) {
     df_subject <- df[df$name == name, r_fields]
     for (i in 1:3) {
       col_values <- as.numeric(unlist(df_subject[i]))
