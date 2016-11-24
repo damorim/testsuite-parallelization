@@ -24,16 +24,19 @@ rq1_timecost <- function(rawdata, plot_path) {
   
   # plot layout
   par(
-    mfrow = c(1, 3),     # plot matrix
-    mar = c(1, 1, 1, 1), # margin
-    oma = c(0, 0, 0, 0), # outer margin
+    mfrow = c(1, 3),
+    # plot matrix
+    mar = c(1, 1, 1, 1),
+    # margin
+    oma = c(0, 0, 0, 0),
+    # outer margin
     xpd = T
   )
   modes <- c("L0", "ST")
   main_pies <- c("Sequential", "Standard")
   for (i in 1:2) {
     mode <- modes[i]
-    df <- rawdata[rawdata$mode == mode, ]
+    df <- rawdata[rawdata$mode == mode,]
     groups <- compute_groups(df$elapsed_time)
     groups_distribution <- as.data.frame(table(groups))
     frequencies <- groups_distribution$Freq
@@ -49,11 +52,11 @@ rq1_timecost <- function(rawdata, plot_path) {
       labels = paste(perct_values, "%", sep = ""),
       col = c("gray30", "gray50", "gray90")
     )
-    
+
     # bring pie title down
     title(main_pies[i], line = -6)
   }
-  
+
   # plot legend
   plot.new()
   legend(
@@ -70,22 +73,22 @@ rq1_tests_time <- function(rawdata, plot_path) {
   df <- rawdata[rawdata$mode == mode, column_filter]
 
   # eliminates some unnecessary points
-  df <- df[df$r_tests <= 1000 & df$r_tests >= 100, ]
+  df <- df[df$r_tests <= 10000, ]
 
   # Convert seconds to minutes
   minutes <- double()
   for (t in df$elapsed_time) {
     minutes <- c(minutes, (t / 60))
   }
-  print("DEBUG:")
-  print(df[order(df[, 2]),])
+  print(paste("DEBUG: mode=", mode, " N=", length(df$name), sep = ""))
+  print(df[order(df[, 2]), ])
 
   pdf(plot_path)
   plot(
-    x = minutes,
-    y = df$r_tests,
-    xlab = "Elapsed time (min)",
-    ylab = "# of Tests",
+    y = minutes,
+    x = df$r_tests,
+    ylab = "Elapsed Time (min)",
+    xlab = "# of Tests",
     pch = 16 # changes dot type
   )
 }
@@ -97,4 +100,6 @@ rq1_timecost(rawdata, "plots/piechart-timecost.pdf")
 rq1_tests_time(rawdata, "plots/scatter-tests-time.pdf")
 
 print(paste("Experiment cost:",
-            round(sum(rawdata$elapsed_time)) / 3600, "hr"))
+            round(sum(
+              rawdata$elapsed_time
+            )) / 3600, "hr"))

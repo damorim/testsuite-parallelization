@@ -19,6 +19,8 @@ flaky_subjects <- check_test_flakiness(df)
 
 if (length(flaky_subjects) != 0) {
   print("Flaky Subjects:")
-  print(flaky_subjects)
+  for (subj in flaky_subjects) {
+    print(df[df$name == subj, c(-8:-10)])
+  }
 }
 # TODO check elapsed time!
