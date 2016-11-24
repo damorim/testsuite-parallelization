@@ -23,7 +23,7 @@ def _run_test_profile(test_log, pom_file, profile_args=None, override=False):
                 maven_args.extend(profile_args)
             time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(test_log)]
             time_args.extend(maven_args)
-            call(time_args, stdout=log_file, stderr=DEVNULL, timeout=60*60*3)  # timeout = 3 hours
+            call(time_args, stdout=log_file, stderr=DEVNULL, timeout=60 * 60 * 3)  # timeout = 3 hours
 
 
 def _add_parallel_profiles(output_pom):
@@ -70,7 +70,9 @@ def _compute_time_cost(log_file):
     if "min" in reported_time:
         reported_time = reported_time.replace("min", "").split(":")
         reported_time = (60 * int(reported_time[0])) + int(reported_time[1])
-        # FIXME test subjects with reported time > 60min
+    elif "h" in reported_time:
+        reported_time = reported_time.replace("h", "").split(":")
+        reported_time = (60 * int(reported_time[0]) + int(reported_time[1])) * 60
 
     return reported_time
 
