@@ -66,7 +66,8 @@ def _compute_time_cost(log_file):
     out, err = grep.communicate()
 
     # normalize reported time
-    reported_time = re.sub(r".*: ", "", out.decode().replace("s", "").strip())
+    last_reported_time = out.splitlines()[-1]
+    reported_time = re.sub(r".*: ", "", last_reported_time.decode().replace("s", "").strip())
     if "min" in reported_time:
         reported_time = reported_time.replace("min", "").split(":")
         reported_time = (60 * int(reported_time[0])) + int(reported_time[1])
