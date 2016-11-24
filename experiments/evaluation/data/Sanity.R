@@ -17,11 +17,8 @@ check_test_flakiness <- function(df) {
 df <- read.csv("rawdata.csv")
 flaky_subjects <- check_test_flakiness(df)
 
-print("Flaky Subjects:")
 if (length(flaky_subjects) != 0) {
+  print("Flaky Subjects:")
   print(flaky_subjects)
-} else {
-  print("not found!")
 }
-
 # TODO check elapsed time!
