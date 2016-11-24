@@ -1,0 +1,13 @@
+SUBJECT,URL,REV,BUILDER,COMPILED
+distributedlog,https://github.com/twitter/distributedlog,876bec03abbbdf7a440a166d6129d731be95ad56,Maven,true
+guava,https://github.com/google/guava,d67899df652c8a889c578a53a639d4c399925e2c,Maven,true
+hive,https://github.com/apache/hive,527f21b1750f54b69519e63088755463550e301c,Maven,true
+javaslang,https://github.com/javaslang/javaslang,41bb9141da297be201249c52b22a7cb780e773d0,Maven,true
+jersey,https://github.com/jersey/jersey,0849bd55162c6a0d76cd988e35bd28c124d4957c,Maven,true
+kryonet,https://github.com/EsotericSoftware/kryonet,98d3ad09f56c97ccf1af821bb34d21806dff2f26,Maven,true
+mahout,https://github.com/apache/mahout,1f5e36f249aabc68495ec15f64f5ed6754d9f1e2,Maven,true
+mustache.java,https://github.com/spullara/mustache.java,dccd1bf9096e730073728f68c307e6840cab8ce5,Maven,true
+orientdb,https://github.com/orientechnologies/orientdb,70b8f5c89965a11daf8fb92a83daea0a475c8ce8,Maven,true
+pulsar,https://github.com/yahoo/pulsar,e85a1c3706325a3f45226edf6fbfa46c919994a1,Maven,true
+titan,https://github.com/thinkaurelius/titan,ee226e52415b8bf43b700afac75fa5b9767993a5,Maven,true
+vert.x,https://github.com/eclipse/vert.x,460a32ded6ade2dbe3c5028a79f003285dc4e750,Maven,true
