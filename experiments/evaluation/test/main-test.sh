@@ -4,4 +4,4 @@
 # Author: Jeanderson Candido
 #
 cd ..
-./main.py "test/verified-subjects.csv" $1
+./main.py "test/verified-subjects.csv" -d test $1

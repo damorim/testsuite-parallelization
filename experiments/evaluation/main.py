@@ -40,19 +40,22 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="csv file with subjects to analyze (columns required: COMPILED and SUBJECT)")
     parser.add_argument("-f", "--force", help="override existing output files (if any)", action="store_true")
+    parser.add_argument("-d", "--dir", help="changes the default output directory")
     parser.add_argument("-n", "--sample-size", help="sample size, in case of running only a subset of the input",
                         type=int)
     args = parser.parse_args()
 
     input_file = os.path.abspath(args.input)
+    output_dir = os.path.abspath(args.dir if args.dir else os.curdir)
 
-    output_file_name = "dataset-{}".format(datetime.date.today())
-    counter = 1
-    while os.path.exists("{}.csv".format(output_file_name)):
-        output_file_name = "{}.{}".format(output_file_name, counter)
-        counter += 1
+    output_file_path = os.path.join(output_dir, "dataset-{}".format(datetime.date.today()))
+    if os.path.exists("{}.csv".format(output_file_path)):
+        counter = 1
+        while os.path.exists("{}.{}.csv".format(output_file_path, counter)):
+            counter += 1
+        output_file_path = "{}.{}".format(output_file_path, counter)
 
-    output_file = os.path.abspath("{}.csv".format(output_file_name))
+    output_file = os.path.abspath("{}.csv".format(output_file_path))
     n_args = args.sample_size
     print("Input file: {}\nOutput file: {}\nOverride: {}\nSample size: {}"
           "\n".format(input_file, output_file, args.force, n_args if n_args else "ALL"))
