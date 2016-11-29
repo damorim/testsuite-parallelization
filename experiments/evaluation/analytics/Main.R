@@ -62,7 +62,7 @@ rq1_timecost <- function(rawdata, plot_path) {
   legend(
     "topleft",
     inset = c(0, 0.35),
-    c("long", "regular", "short"),
+    c("short", "regular", "long"),
     fill = c("gray30", "gray50", "gray90")
   )
 }
@@ -92,12 +92,13 @@ rq1_tests_time <- function(rawdata, plot_path) {
     pch = 16 # changes dot type
   )
 }
-
-name <- "rawdata.csv"
+args <- commandArgs(trailingOnly = TRUE)
+name <- args[1]
+output <- args[2]
 rawdata <- read.csv(name)
 
-rq1_timecost(rawdata, "plots/piechart-timecost.pdf")
-rq1_tests_time(rawdata, "plots/scatter-tests-time.pdf")
+rq1_timecost(rawdata, paste(output, "piechart-timecost.pdf", sep="/"))
+rq1_tests_time(rawdata, paste(output, "scatter-tests-time.pdf", sep="/"))
 
 print(paste("Experiment cost:",
             round(sum(

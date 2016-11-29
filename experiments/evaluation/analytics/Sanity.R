@@ -28,7 +28,7 @@ check_elapsed_time <- function(df) {
     }
   }
   deltas <- sapply(deltas, FUN = function(t) {return(t / 60)})
-  pdf("plots/DEBUG-diff-L0_ST.pdf")
+  pdf("DEBUG-diff-L0_ST.pdf")
   p <- barplot(deltas, space = 0, border = NA, ylab = "delta (absolute value in minutes)")
   text(
     x = p,
@@ -38,8 +38,9 @@ check_elapsed_time <- function(df) {
     xpd = T
   )
 }
-
-df <- read.csv("rawdata.csv")
+args <- commandArgs(trailingOnly = TRUE)
+name <- args[1]
+df <- read.csv(name)
 flaky_subjects <- check_test_flakiness(df)
 
 if (length(flaky_subjects) != 0) {
