@@ -7,6 +7,7 @@ outputs/
 # RStudio files
 .RData
 .Rhistory
+*.Rproj
 .Rproj.user/
 data.Rproj
 
