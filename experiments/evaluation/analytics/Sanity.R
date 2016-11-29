@@ -13,36 +13,28 @@ check_test_flakiness <- function(df) {
   }
   return(flaky_subjects)
 }
-check_elapsed_time <- function(df) {
-  df_l0 <- df[df$mode == "L0", ]
-  df_st <- df[df$mode == "ST", ]
+compare_tcost_modes <- function(df, ref, other, threshold) {
+  df_l0 <- df[df$mode == ref, ]
+  df_st <- df[df$mode == other, ]
   subjects_inspect = character()
   deltas <- double()
   for (subject in df_l0$name) {
     t_l0 <- df_l0[df_l0$name == subject, ]$elapsed_t
     t_st <- df_st[df_st$name == subject, ]$elapsed_t
     delta <- abs(t_l0 - t_st)
-    if (delta >= 60) {
+    if (delta >= threshold) {
       subjects_inspect <- c(subject, subjects_inspect)
       deltas <- c(delta, deltas)
     }
   }
   deltas <- sapply(deltas, FUN = function(t) {return(t / 60)})
-  pdf("DEBUG-diff-L0_ST.pdf")
-  p <- barplot(deltas, space = 0, border = NA, ylab = "delta (absolute value in minutes)")
-  text(
-    x = p,
-    y = 0,
-    labels = subjects_inspect,
-    srt = 90,
-    xpd = T
-  )
+
 }
 args <- commandArgs(trailingOnly = TRUE)
 name <- args[1]
 df <- read.csv(name)
-flaky_subjects <- check_test_flakiness(df)
 
+flaky_subjects <- check_test_flakiness(df)
 if (length(flaky_subjects) != 0) {
   print("Flaky Subjects:")
   for (subj in flaky_subjects) {
@@ -50,4 +42,4 @@ if (length(flaky_subjects) != 0) {
   }
 }
 
-check_elapsed_time(df)
+compare_tcost_modes(df, ref="L0", other="ST", threshold=60)
