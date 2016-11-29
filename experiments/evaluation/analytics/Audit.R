@@ -14,24 +14,16 @@ check_test_flakiness <- function(df) {
   return(flaky_subjects)
 }
 compare_tcost_modes <- function(df, ref, other, threshold) {
-  df_l0 <- df[df$mode == ref, ]
-  df_st <- df[df$mode == other, ]
-  subjects_inspect = character()
-  deltas <- double()
-  for (subject in df_l0$name) {
-    t_l0 <- df_l0[df_l0$name == subject, ]$elapsed_t
-    t_st <- df_st[df_st$name == subject, ]$elapsed_t
-    delta <- abs(t_l0 - t_st)
-    if (delta >= threshold) {
-      subjects_inspect <- c(subject, subjects_inspect)
-      deltas <- c(delta, deltas)
-    }
-  }
-  deltas <- sapply(deltas, FUN = function(t) {return(t / 60)})
-
+  df_ref <- df[df$mode == ref, ]
+  df_other <- df[df$mode == other, ]
+  name <- df_ref$name
+  r_df <- data.frame(name)
+  r_df$delta <- abs(df_ref$elapsed_time - df_other$elapsed_time) 
+  return(r_df[r_df$delta >= threshold,])
 }
 args <- commandArgs(trailingOnly = TRUE)
 name <- args[1]
+# name <- file.choose()
 df <- read.csv(name)
 
 flaky_subjects <- check_test_flakiness(df)
