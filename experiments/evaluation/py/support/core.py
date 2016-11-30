@@ -98,6 +98,7 @@ def experiment(subject_path, override=False):
 
     exit_status = 0
     if not compiled:
+        print(" - Compiling sources")
         exit_status = call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
                            stdout=DEVNULL, stderr=DEVNULL)
     if not exit_status:
