@@ -1,18 +1,20 @@
+#!/usr/bin/env python3
+import argparse
 import json
 import urllib.request
 from urllib.error import HTTPError
 
-from mining.github.search import RepositoryQuery
+from search import RepositoryQuery
 
 
-def generate_subject_list():
-    subject_csv = "download.csv"
+def generate_subject_list(subject_csv):
     with open(subject_csv, "w") as f:
-        f.write("SUBJECT,URL\n")
+        f.write("name,url\n")
 
-    criteria = {"language": "java", "stars": ">=100"}
+    criteria = {"language": "java", "stars": ">=100", "pushed": ">=2016-01-01", "mvn%20in": "readme"}
     current_page = 0
     page_size = 100
+    query_url = None
     try:
         while True:
             current_page += 1
@@ -22,15 +24,21 @@ def generate_subject_list():
                 for item in data["items"]:
                     project_name = item["name"]
                     git_url = item["html_url"]
-                    csv_line = [project_name, git_url]
                     with open(subject_csv, "a") as f:
-                        f.write(",".join(csv_line))
+                        f.write(",".join([project_name, git_url]))
                         f.write("\n")
 
     except HTTPError as err:
         print(err)
-        print("GitHub API Query has exhausted")
+        if err.code == 400:
+            print(query_url)
+        elif err.code == 403:
+            print("GitHub API Query has exhausted")
         print("Total pages:", current_page)
 
 if __name__ == "__main__":
-    generate_subject_list()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("output", help="output csv file")
+    args = parser.parse_args()
+
+    generate_subject_list(args.output)
