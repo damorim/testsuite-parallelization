@@ -6,44 +6,55 @@ from datetime import datetime
 from time import time
 
 from support import git
-from support.core import RESULT_FIELDS
+from support import experiment
 
-SUBJECTS_HOME = os.path.abspath("subjects")
 
-if __name__ == "__main__":
+def main():
+    subjects_home = os.path.abspath("downloads")
+    error_log = os.path.abspath("experiment-errors.csv")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="csv file with subjects to analyze")
-    parser.add_argument("-f", "--force", help="override existing output files (if any)", action="store_true")
+    parser.add_argument("-f", "--force", help="force to cleanup test reports", action="store_true")
     parser.add_argument("-d", "--output-dir", help="changes the default output directory")
+    parser.add_argument("-n", "--limit", help="execute only the first n subjects from the input file", type=int)
+
     args = parser.parse_args()
 
     input_file = os.path.abspath(args.input)
     output_dir = os.path.abspath(args.output_dir if args.output_dir else os.curdir)
     timestamp = datetime.fromtimestamp(time()).strftime('%y%m%d%H%M')
     output_file = os.path.abspath(os.path.join(output_dir, "dataset-{}.csv".format(timestamp)))
+    limit = args.limit
 
-    print("Input file: {}\nOutput file: {}\nOverride: {}\n".format(input_file, output_file, args.force))
+    print("Input file: {}\nOutput file: {}\nExecution: {} subjects"
+          .format(input_file, output_file, limit if limit else "All"))
 
-    if not os.path.exists(SUBJECTS_HOME):
+    if not os.path.exists(subjects_home):
         print("Subjects' home created")
-        os.mkdir(SUBJECTS_HOME)
-    with open(output_file, "w") as f:
-        f.write(RESULT_FIELDS)
-        f.write("\n")
+        os.mkdir(subjects_home)
 
     with open(input_file, newline="") as f:
         reader = csv.DictReader(f)
+        counter = 1
         for subject_row in reader:
-            git.clone(url=subject_row["url"], clone_home=SUBJECTS_HOME)
+            if limit and counter > limit:
+                print("\nLimit reached ({} subjects)".format(limit))
+                break
+            print("\nsubject #{}".format(counter))
+            try:
+                git.clone(url=subject_row["url"], directory=subjects_home)
+                subject_path = os.path.join(subjects_home, subject_row["name"])
+                experiment.run(subject_path, clean=args.force)
+            except Exception as err:
+                print(err)
+                with open(error_log, "a") as log:
+                    log.write(",".join([datetime.now().isoformat(), subject_row["name"],
+                                        subject_row["url"], err.__str__()]))
+                    log.write("\n")
 
-            # TODO process this subject right now!
+            counter += 1
 
-            # for subject in subjects:
-            #     subject_path = os.path.join(SUBJECTS_HOME, subject)
-            #     results = experiment(subject_path, override=args.force)
-            #     if results:
-            #         for r in results:
-            #             print(" -", r)
-            #             with open(output_file, "a") as f:
-            #                 f.write(",".join([str(getattr(r, attr)) for attr in Result._fields]))
-            #                 f.write("\n")
+
+if __name__ == "__main__":
+    main()

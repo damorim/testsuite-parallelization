@@ -3,6 +3,7 @@
 samples/
 subjects/
 outputs/
+experiment-errors.csv
 
 # RStudio files
 .RData

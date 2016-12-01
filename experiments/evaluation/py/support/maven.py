@@ -3,6 +3,10 @@ from collections import Counter, namedtuple
 from subprocess import check_output
 
 from lxml import etree
+from lxml.etree import ParseError
+
+TestCaseInfo = namedtuple("TestCase", "name, time")
+ReportData = namedtuple("Data", "statistics, items")
 
 
 def build_task(*additional_args):
@@ -30,7 +34,7 @@ def resolve_dependencies_task(*additional_args):
     return args
 
 
-def is_valid_project(subject_path):
+def is_valid_project(subject_path=os.curdir):
     """
     Checks if the informed path is a valid Maven project
     :param subject_path: the path to verify
@@ -39,26 +43,21 @@ def is_valid_project(subject_path):
     return os.path.exists(os.path.join(subject_path, "pom.xml"))
 
 
-def has_compiled(subject_path):
-    return os.path.exists(os.path.join(subject_path, "target", "classes")) and os.path.exists(
-        os.path.join(subject_path, "target", "test-classes"))
+def has_compiled(subject_path=os.curdir):
+    output = check_output(["find", subject_path, "-path", os.path.join("*target", "classes")])
+    classes = output.decode().splitlines()
+    output = check_output(["find", subject_path, "-path", os.path.join("*target", "test-classes")])
+    test_classes = output.decode().splitlines()
+    return len(classes) > 0 and len(test_classes) > 0
 
 
-def has_surefire_dir():
-    return os.path.exists(os.path.abspath(os.path.join("target", "surefire-reports")))
-
-
-TestCaseInfo = namedtuple("TestCase", "name, time")
-ReportData = namedtuple("Data", "statistics, items")
-
-
-def collect_surefire_data():
+def collect_surefire_data(reports_dir):
     """
-    Collect data from surefire reports.
-    Returns a Data tuple with statistics counter and a list of test cases data.
+    Collect data from surefire reports from the given directory.
+    :param reports_dir: surefire reports directory
+    :return: data tuple with statistics counter and a list of test cases data.
     """
-    output = check_output(["find", ".", "-name", "TEST-*.xml"]).decode()
-    surefire_files = output.splitlines()
+    surefire_files = surefire_files_from(reports_dir)
     if not len(surefire_files):
         raise Exception("Couldn't find *ANY* surefire report")
 
@@ -84,6 +83,90 @@ def collect_surefire_data():
     return ReportData(items=test_cases, statistics=total_counter)
 
 
+def surefire_files_from(reports_dir):
+    try:
+        output = check_output(["find", ".", "-path", os.path.join("*target", "{}*TEST-*.xml".format(reports_dir))])
+        surefire_files = output.decode().splitlines()
+    except:
+        surefire_files = []
+    return surefire_files
+
+
+def collect_parallel_settings_prevalence(subject_path=os.curdir, recursive=False):
+    os.chdir(subject_path)
+
+    find_command = ["find", "."]
+    if not recursive:
+        find_command.extend(["-maxdepth", "1"])
+    find_command.extend(["-name", "pom.xml"])
+
+    # get all pom.xml paths
+    output = check_output(find_command)
+
+    # for each pom file, inspect it!
+    settings_frequency = Counter()
+    files = 0
+    for xml_path in output.decode().splitlines():
+        files += 1
+        frequency = _inspect_pom_file(xml_path)
+        settings_frequency.update(frequency)
+
+    ParallelPrevalenceData = namedtuple("ParallelPrevalenceData", "frequency, files")
+    return ParallelPrevalenceData(frequency=settings_frequency, files=files)
+
+
+def _inspect_pom_file(xml_path):
+    namespace = {"ns": "http://maven.apache.org/POM/4.0.0"}
+    frequency = Counter()
+    try:
+        root = etree.parse(xml_path).getroot()
+    except ParseError as err:
+        print(xml_path, err)
+        return frequency
+
+    surefire_nodes = [c for c in root.iter('{%s}plugin' % namespace['ns']) if _is_surefire_node(c)]
+
+    # If there aren't surefire nodes, default behavior is L0
+    if not len(surefire_nodes):
+        frequency.update(["L0"])
+        return frequency
+
+    for node in surefire_nodes:
+        config_node = node.find("{%s}configuration" % namespace['ns'])
+        if config_node is None:
+            frequency.update(["L0"])
+
+        else:
+            parallel_setting_node = config_node.find("{%s}parallel" % namespace['ns'])
+            fork_setting_node = config_node.find("{%s}forkCount" % namespace['ns'])
+            if fork_setting_node is None:
+                fork_setting_node = config_node.find("{%s}forkMode" % namespace['ns'])
+
+            if fork_setting_node is not None:
+                if parallel_setting_node is not None:
+                    frequency.update(["FL1"])
+                else:
+                    frequency.update(['FL0'])
+
+            elif parallel_setting_node is not None:
+                if parallel_setting_node.text == "classes":
+                    frequency.update(["L2"])
+                elif parallel_setting_node.text == "none":
+                    frequency.update(["L0"])
+                elif parallel_setting_node.text == "methods":
+                    frequency.update(["L1"])
+                elif parallel_setting_node.text in ["classesAndMethods", "both", "all"]:
+                    frequency.update(["L3"])
+                else:
+                    frequency.update(["UNKNOWN"])
+
+    return frequency
+
+
+def _is_surefire_node(node):
+    return len([n for n in node if n.text == "maven-surefire-plugin"])
+
+
 def _get_value_from(xml_node, attribute, default_value, cast_type):
     """ Auxiliary function from collect_surefire_data """
     return default_value if not xml_node.get(attribute) else cast_type(xml_node.get(attribute).replace(",", ""))
@@ -91,19 +174,20 @@ def _get_value_from(xml_node, attribute, default_value, cast_type):
 
 PROFILE_L0_RAW = """
 <profile>
-    <id>L0</id>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <parallel>none</parallel>
-                    <forkCount>1</forkCount>
-                    <reuseFork>true</reuseFork>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <id>L0</id>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <parallel>none</parallel>
+          <forkCount>1</forkCount>
+          <reuseFork>true</reuseFork>
+          <reportsDirectory>${project.build.directory}/surefire-L0-reports</reportsDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </profile>
 """
