@@ -1,4 +1,4 @@
-SUBJECT,URL,REV,BUILDER,COMPILED
+name,url,REV,BUILDER,COMPILED
 distributedlog,https://github.com/twitter/distributedlog,876bec03abbbdf7a440a166d6129d731be95ad56,Maven,true
 guava,https://github.com/google/guava,d67899df652c8a889c578a53a639d4c399925e2c,Maven,true
 hive,https://github.com/apache/hive,527f21b1750f54b69519e63088755463550e301c,Maven,true

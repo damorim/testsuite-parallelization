@@ -56,12 +56,12 @@ def prepare_subject():
     if not maven.is_valid_project():
         raise Exception("Subject is not a Maven project")
     _add_parallel_profiles()
-    check_call(maven.resolve_dependencies_task("-f", EXPERIMENT_POM), stdout=DEVNULL, stderr=DEVNULL)
-    print(" - Dependencies solved")
     if not maven.has_compiled():
-        check_call(maven.build_task("-o", "-DskipTests", "-Dmaven.javadoc.skip=true", "-f", EXPERIMENT_POM),
+        check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true", "-f", EXPERIMENT_POM),
                    timeout=30 * 60, stdout=DEVNULL, stderr=DEVNULL)
     print(" - Sources compiled")
+    check_call(maven.resolve_dependencies_task("-f", EXPERIMENT_POM), stdout=DEVNULL, stderr=DEVNULL)
+    print(" - Dependencies solved")
 
 
 def run_tests(profile=MODES.ST, clean=False):
