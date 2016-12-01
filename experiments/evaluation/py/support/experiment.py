@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 from collections import namedtuple
 from subprocess import check_call, DEVNULL, call, check_output, Popen, PIPE
 
@@ -13,15 +14,13 @@ ExecutionParams = namedtuple("ExecutionParams", "log_file, args, name, reports_d
 ExecutionModes = namedtuple("ExecutionModes", "ST, L0")
 
 MODES = ExecutionModes(ST=ExecutionParams(log_file="test-log-default.txt", args=None, name="Standard",
-                                          reports_dir="surefire-reports"),
+                                          reports_dir="surefire-ST-reports"),
                        L0=ExecutionParams(log_file="test-log-sequential.txt", args=["-P", "L0"], name="L0",
                                           reports_dir="surefire-L0-reports"))
 
 
 def run(subject_path, clean=False):
     os.chdir(subject_path)
-    if clean:
-        call(["mvn", "clean"], stderr=DEVNULL, stdout=DEVNULL)
 
     prepare_subject()
     for settings in [MODES.ST, MODES.L0]:
@@ -65,10 +64,15 @@ def prepare_subject():
 
 
 def run_tests(profile=MODES.ST, clean=False):
-    if clean and os.path.exists(profile.log_file):
-        os.remove(profile.log_file)
-    if len(maven.surefire_files_from(profile.reports_dir)) > 0 and os.path.exists(profile.log_file):
-        print("Skipped test execution on {} mode (test reports found)".format(profile.name))
+    print("Testing in {} mode".format(profile.name))
+    if clean:
+        _cleanup(profile)
+
+    if not os.path.exists(profile.reports_dir):
+        os.mkdir(profile.reports_dir)
+
+    if os.listdir(profile.reports_dir) and os.path.exists(profile.log_file):
+        print(" - Skipping execution (test reports and log file found)")
         return
 
     with open(profile.log_file, "w") as log_file:
@@ -78,8 +82,19 @@ def run_tests(profile=MODES.ST, clean=False):
         time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(profile.log_file)]
         time_args.extend(maven_args)
         exit_status = call(time_args, stdout=log_file, stderr=DEVNULL, timeout=60 * 60 * 3)  # timeout = 3 hours
-
         print("{} on {} mode".format("Tests executed" if exit_status == 0 else "Tests failed", profile.name))
+
+        collect_test_reports(destiny=profile.reports_dir)
+        print(" - Test reports collected")
+
+
+def collect_test_reports(destiny):
+    paths = maven.surefire_reports()
+    if len(paths) == 0:
+        raise Exception("Couldn't find *ANY* surefire report")
+    for p in paths:
+        file_name = os.path.basename(p)
+        shutil.move(p, os.path.join(destiny, file_name))
 
 
 def collect_process_execution_data(log_file):
@@ -131,6 +146,13 @@ def _add_parallel_profiles():
         pom.write(etree.tostring(root, pretty_print=True).decode())
 
     print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
+
+
+def _cleanup(profile):
+    if os.path.exists(profile.log_file):
+        os.remove(profile.log_file)
+    if os.path.exists(profile.reports_dir):
+        shutil.rmtree(profile.reports_dir)
 
 
 def _performance_log_from(test_log):

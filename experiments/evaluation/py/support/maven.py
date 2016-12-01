@@ -5,9 +5,6 @@ from subprocess import check_output
 from lxml import etree
 from lxml.etree import ParseError
 
-TestCaseInfo = namedtuple("TestCase", "name, time")
-ReportData = namedtuple("Data", "statistics, items")
-
 
 def build_task(*additional_args):
     args = ["mvn", "clean", "install"]
@@ -51,20 +48,22 @@ def has_compiled(subject_path=os.curdir):
     return len(classes) > 0 and len(test_classes) > 0
 
 
+# Used to assist collect_surefire_data
+TestCaseInfo = namedtuple("TestCase", "name, time")
+ReportData = namedtuple("Data", "statistics, items")
+
+
 def collect_surefire_data(reports_dir):
     """
     Collect data from surefire reports from the given directory.
     :param reports_dir: surefire reports directory
     :return: data tuple with statistics counter and a list of test cases data.
     """
-    surefire_files = surefire_files_from(reports_dir)
-    if not len(surefire_files):
-        raise Exception("Couldn't find *ANY* surefire report")
-
+    surefire_files = os.listdir(reports_dir)
     total_counter = Counter(tests=0, skipped=0, failure=0, time=0.0)
     test_cases = []
-    for xml_path in surefire_files:
-        test_suite = etree.parse(xml_path).getroot()
+    for file_name in surefire_files:
+        test_suite = etree.parse(os.path.join(reports_dir, file_name)).getroot()
 
         time_cnt = 0
         for test_case in test_suite.iter("testcase"):
@@ -83,13 +82,9 @@ def collect_surefire_data(reports_dir):
     return ReportData(items=test_cases, statistics=total_counter)
 
 
-def surefire_files_from(reports_dir):
-    try:
-        output = check_output(["find", ".", "-path", os.path.join("*target", "{}*TEST-*.xml".format(reports_dir))])
-        surefire_files = output.decode().splitlines()
-    except:
-        surefire_files = []
-    return surefire_files
+def surefire_reports():
+    output = check_output(["find", ".", "-path", os.path.join("*target", "surefire-reports", "TEST-*.xml")])
+    return output.decode().splitlines()
 
 
 def collect_parallel_settings_prevalence(subject_path=os.curdir, recursive=False):
@@ -184,7 +179,6 @@ PROFILE_L0_RAW = """
           <parallel>none</parallel>
           <forkCount>1</forkCount>
           <reuseFork>true</reuseFork>
-          <reportsDirectory>${project.build.directory}/surefire-L0-reports</reportsDirectory>
         </configuration>
       </plugin>
     </plugins>
