@@ -1,9 +1,9 @@
 import os
-from collections import namedtuple
-
 import re
-from lxml import etree
+from collections import namedtuple
 from subprocess import check_call, DEVNULL, call, check_output, Popen, PIPE
+
+from lxml import etree
 
 from support import git
 from support import maven
@@ -22,9 +22,10 @@ def run(subject_path, clean=False):
     os.chdir(subject_path)
     if clean:
         call(["mvn", "clean"], stderr=DEVNULL, stdout=DEVNULL)
+
     prepare_subject()
     for settings in [MODES.ST, MODES.L0]:
-        run_tests(profile=settings)
+        run_tests(profile=settings, clean=clean)
 
         # collect data from execution
         elapsed_time = collect_time_cost_data(settings.log_file)
@@ -64,8 +65,10 @@ def prepare_subject():
     print(" - Sources compiled")
 
 
-def run_tests(profile=MODES.ST):
-    if len(maven.surefire_files_from(profile.reports_dir)) > 0:
+def run_tests(profile=MODES.ST, clean=False):
+    if clean and os.path.exists(profile.log_file):
+        os.remove(profile.log_file)
+    if len(maven.surefire_files_from(profile.reports_dir)) > 0 and os.path.exists(profile.log_file):
         print("Skipped test execution on {} mode (test reports found)".format(profile.name))
         return
 
