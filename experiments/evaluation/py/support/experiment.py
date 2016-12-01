@@ -44,7 +44,6 @@ def run(subject_path, clean=False):
         #                 f.write(",".join([str(getattr(r, attr)) for attr in Result._fields]))
         #                 f.write("\n")
     print(maven.collect_parallel_settings_prevalence())
-    print(git.which_revision())
 
 
 def prepare_subject():
@@ -53,7 +52,7 @@ def prepare_subject():
     :return: None
     """
     subject_name = os.path.basename(os.path.abspath(os.curdir))
-    print("Preparing \"{}\"".format(subject_name))
+    print("Preparing \"{}\" rev {}".format(subject_name, git.which_revision()))
     if not maven.is_valid_project():
         raise Exception("Subject is not a Maven project")
     _add_parallel_profiles()
