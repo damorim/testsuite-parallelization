@@ -34,10 +34,20 @@ def main():
         print("Subjects' home created")
         os.mkdir(subjects_home)
 
+    # Load subjects with errors to ignore them
+    ignored = set({})
+    if os.path.exists(error_log):
+        with open(error_log, newline="") as f:
+            reader = csv.DictReader(f, fieldnames=["timestamp", "name", "url", "reason"])
+            for r in reader:
+                ignored.add(r["name"])
+
     with open(input_file, newline="") as f:
         reader = csv.DictReader(f)
         counter = 1
         for subject_row in reader:
+            if subject_row["name"] in ignored:
+                continue
             if limit and counter > limit:
                 print("\nLimit reached ({} subjects)".format(limit))
                 break
