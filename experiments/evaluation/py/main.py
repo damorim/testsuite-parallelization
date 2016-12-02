@@ -34,6 +34,7 @@ def main():
 
             # special cases
             if ignored and subject_row["name"] in ignored:
+                counter += 1
                 continue
             if limit and counter > limit:
                 print("\nLimit reached ({} subjects)".format(limit))
