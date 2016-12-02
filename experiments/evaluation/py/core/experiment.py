@@ -35,9 +35,10 @@ def run(subject_path, clean=False):
                                                   reports=surefire_statistics,
                                                   elapsed_time=time_cost)
 
-    print(maven.collect_parallel_settings_prevalence())
     verify_collected_data()
+
     # TODO define output format
+    print(maven.collect_parallel_settings_prevalence())
 
 
 def verify_collected_data():

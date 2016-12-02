@@ -87,7 +87,7 @@ def surefire_reports():
     return output.decode().splitlines()
 
 
-def collect_parallel_settings_prevalence(subject_path=os.curdir, recursive=False):
+def collect_parallel_settings_prevalence(subject_path=os.curdir, recursive=True):
     os.chdir(subject_path)
 
     find_command = ["find", "."]
