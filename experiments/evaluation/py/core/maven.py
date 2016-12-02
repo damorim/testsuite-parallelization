@@ -87,30 +87,7 @@ def surefire_reports():
     return output.decode().splitlines()
 
 
-def collect_parallel_settings_prevalence(subject_path=os.curdir, recursive=True):
-    os.chdir(subject_path)
-
-    find_command = ["find", "."]
-    if not recursive:
-        find_command.extend(["-maxdepth", "1"])
-    find_command.extend(["-name", "pom.xml"])
-
-    # get all pom.xml paths
-    output = check_output(find_command)
-
-    # for each pom file, inspect it!
-    settings_frequency = Counter()
-    files = 0
-    for xml_path in output.decode().splitlines():
-        files += 1
-        frequency = _inspect_pom_file(xml_path)
-        settings_frequency.update(frequency)
-
-    ParallelPrevalenceData = namedtuple("ParallelPrevalenceData", "frequency, files")
-    return ParallelPrevalenceData(frequency=settings_frequency, files=files)
-
-
-def _inspect_pom_file(xml_path):
+def inspect_parallel_settings(xml_path):
     namespace = {"ns": "http://maven.apache.org/POM/4.0.0"}
     frequency = Counter()
     try:

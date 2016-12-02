@@ -1,12 +1,13 @@
 import os
 import re
 import shutil
+from collections import Counter
 from subprocess import check_call, DEVNULL, call, check_output, Popen, PIPE
 
 from lxml import etree
 
 from core import maven
-from core.model import ExecutionResults, StandardParams, L0Params
+from core import model
 
 EXPERIMENT_POM = "experiment-pom.xml"
 
@@ -17,7 +18,7 @@ def run(subject_path=os.curdir, clean=False):
 
     results = {}
 
-    for settings in [StandardParams, L0Params]:
+    for settings in [model.StandardParams, model.L0Params]:
         print("Testing in {} mode".format(settings.name))
         _run_tests(profile=settings, clean=clean)
 
@@ -27,21 +28,21 @@ def run(subject_path=os.curdir, clean=False):
         time_cost = _collect_time_cost_data(settings.log_file)
 
         # aggregating results
-        results[settings.name] = ExecutionResults(process_execution=execution_data,
-                                                  reports=surefire_statistics,
-                                                  elapsed_time=time_cost)
+        results[settings.name] = model.ExecutionResults(process_execution=execution_data,
+                                                        reports=surefire_statistics,
+                                                        elapsed_time=time_cost)
 
-    verify_collected_data()
+    parallel_settings_data = _collect_parallel_settings_data()
+    _verify_collected_data()
 
-    # TODO define output format
-    print(maven.collect_parallel_settings_prevalence())
+    return model.ExperimentResults(execution_data=results, parallel_data=parallel_settings_data)
 
 
-def verify_collected_data():
+def _verify_collected_data():
     # ensure all report folders are equals for the executed modes in results
-    ref_mode = StandardParams
+    ref_mode = model.StandardParams
     ref_reports = os.listdir(ref_mode.reports_dir)
-    for curr_mode in [L0Params]:
+    for curr_mode in [model.L0Params]:
         if not (ref_reports == os.listdir(curr_mode.reports_dir)):
             raise Exception(" - Reports from {} and {} modes diverge".format(ref_mode.name, curr_mode.name))
             # TODO ensure tests field are the same as well...
@@ -155,3 +156,23 @@ def _cleanup(profile):
 
 def _performance_log_from(test_log):
     return test_log.replace("test", "performance")
+
+
+def _collect_parallel_settings_data(recursive=True):
+    find_command = ["find", "."]
+    if not recursive:
+        find_command.extend(["-maxdepth", "1"])
+    find_command.extend(["-name", "pom.xml"])
+
+    # get all pom.xml paths
+    output = check_output(find_command)
+
+    # for each pom file, inspect it!
+    settings_frequency = Counter()
+    files = 0
+    for xml_path in output.decode().splitlines():
+        files += 1
+        frequency = maven.inspect_parallel_settings(xml_path)
+        settings_frequency.update(frequency)
+
+    return model.ParallelPrevalenceData(frequency=settings_frequency, files=files)
