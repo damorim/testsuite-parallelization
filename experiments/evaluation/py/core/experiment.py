@@ -69,7 +69,7 @@ def _prepare_subject():
     print(" - Dependencies solved")
 
 
-def _run_tests(profile=MODES.ST, clean=False):
+def _run_tests(profile, clean=False):
     if clean:
         _cleanup(profile)
 
