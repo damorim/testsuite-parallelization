@@ -5,7 +5,7 @@ from subprocess import check_call, DEVNULL, call, check_output, Popen, PIPE
 
 from lxml import etree
 
-from core import git, maven
+from core import maven
 from core.model import ExecutionResults, StandardParams, L0Params
 
 EXPERIMENT_POM = "experiment-pom.xml"
@@ -13,10 +13,6 @@ EXPERIMENT_POM = "experiment-pom.xml"
 
 def run(subject_path, clean=False):
     os.chdir(subject_path)
-
-    subject_name = os.path.basename(os.path.abspath(os.curdir))
-    revision = git.which_revision()
-    print("Preparing \"{}\" rev {}".format(subject_name, revision))
     _prepare_subject()
 
     results = {}
@@ -48,7 +44,6 @@ def verify_collected_data():
     for curr_mode in [L0Params]:
         if not (ref_reports == os.listdir(curr_mode.reports_dir)):
             raise Exception(" - Reports from {} and {} mode diverge", ref_mode, curr_mode)
-
             # TODO ensure tests field are the same as well...
 
 

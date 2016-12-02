@@ -4,10 +4,17 @@ from subprocess import call, check_output, DEVNULL
 
 def clone(url, directory):
     base_dir = os.path.abspath(os.curdir)
-    if not os.path.exists(os.path.join(directory, os.path.basename(url))):
+
+    subject_dir = os.path.join(directory, os.path.basename(url))
+    if not os.path.exists(subject_dir):
         os.chdir(directory)
         call(["git", "clone", url], stdout=DEVNULL)
+
+    os.chdir(subject_dir)
+    rev = which_revision()
     os.chdir(base_dir)
+
+    return rev
 
 
 def which_revision():

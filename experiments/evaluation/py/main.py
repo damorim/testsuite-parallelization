@@ -43,6 +43,7 @@ def main():
             for r in reader:
                 ignored.add(r["name"])
 
+    subjects_executed = []
     with open(input_file, newline="") as f:
         reader = csv.DictReader(f)
         counter = 1
@@ -54,9 +55,14 @@ def main():
                 break
             print("\nsubject #{}".format(counter))
             try:
-                git.clone(url=subject_row["url"], directory=subjects_home)
+                rev = git.clone(url=subject_row["url"], directory=subjects_home)
                 subject_path = os.path.join(subjects_home, subject_row["name"])
+                print("Preparing \"{}\" rev {}".format(subject_row["name"], rev))
+
                 experiment.run(subject_path, clean=args.force)
+
+                subjects_executed.append((subject_row["name"], subject_row["url"], rev))
+
             except Exception as err:
                 print(err)
                 with open(error_log, "a") as log:
@@ -66,6 +72,13 @@ def main():
 
             counter += 1
 
+    output_subjects = os.path.join(output_dir, "verified-subjects-{}.csv".format(timestamp))
+    print("Saving subjects executed in \"{}\"".format(output_subjects))
+    with open(output_subjects, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["name", "url", "rev"])
+        writer.writeheader()
+        for s in subjects_executed:
+            writer.writerow({"name": s[0], "url": s[1], "rev": s[2]})
 
 if __name__ == "__main__":
     main()
