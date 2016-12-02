@@ -14,7 +14,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="csv file with subjects to analyze")
-    parser.add_argument("subjects-home", help="subjects home")
+    parser.add_argument("subjects", help="subjects home")
     parser.add_argument("-f", "--force", help="force to cleanup test reports", action="store_true")
     parser.add_argument("-d", "--output-dir", help="changes the default output directory")
     parser.add_argument("-n", "--limit", help="execute only the first n subjects from the input file", type=int)
@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     input_file = os.path.abspath(args.input)
-    subjects_home = os.path.abspath(args.subjects_home)
+    subjects_home = os.path.abspath(args.subjects)
     output_dir = os.path.abspath(args.output_dir if args.output_dir else os.curdir)
     timestamp = datetime.fromtimestamp(time()).strftime('%y%m%d%H%M')
     output_file = os.path.abspath(os.path.join(output_dir, "dataset-{}.csv".format(timestamp)))
