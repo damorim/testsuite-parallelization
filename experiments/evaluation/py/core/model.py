@@ -26,7 +26,7 @@ L0Params = ExecutionParams(reports_dir="surefire-L0-reports",
 
 class OutputRegister(object):
     ERROR_CSV_LOG = os.path.abspath("experiment-errors.csv")
-    ERROR_LOG_HEADER = ("when", "name", "url", "cause")
+    ERROR_LOG_HEADER = ("when", "name", "url", "rev", "cause")
 
     def __init__(self, output_dir=os.curdir):
         # Timestamp used across all output files
@@ -57,7 +57,7 @@ class OutputRegister(object):
             writer.writerow({"name": name, "url": url, "rev": revision})
 
     @classmethod
-    def error(cls, when, name, url, cause):
+    def error(cls, when, name, url, rev, cause):
         with open(cls.ERROR_CSV_LOG, "a", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=cls.ERROR_LOG_HEADER)
-            writer.writerow({"name": name, "url": url, "when": when, "cause": cause})
+            writer.writerow({"name": name, "url": url, "when": when, "cause": cause, "rev": rev})

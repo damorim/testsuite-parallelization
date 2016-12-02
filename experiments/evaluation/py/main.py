@@ -61,7 +61,7 @@ def main():
             except Exception as err:
                 print(err)
                 register.error(when=datetime.now().isoformat(), name=subject_row["name"],
-                               url=subject_row["url"], cause=err.__str__())
+                               url=subject_row["url"], revision=rev, cause=err.__str__())
             counter += 1
 
     print("\nALL SUBJECTS PROCESSED\nCheck directory \"{}\" for output files".format(output_dir))
