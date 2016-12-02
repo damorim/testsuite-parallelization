@@ -26,4 +26,4 @@ name <- args[1]
 df <- read.csv(name)
 print(paste("Total subjects:", length(unique(df$name))))
 check_aborts(df)
-compare_tcost_modes(df, ref="L0", other="ST", threshold=60)
+compare_tcost_modes(df, ref="L0", other="Standard", threshold=60)

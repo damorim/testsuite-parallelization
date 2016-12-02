@@ -32,7 +32,7 @@ rq1_timecost <- function(rawdata, plot_path) {
     # outer margin
     xpd = T
   )
-  modes <- c("L0", "ST")
+  modes <- c("L0", "Standard")
   main_pies <- c("Sequential", "Standard")
   for (i in 1:2) {
     mode <- modes[i]
@@ -45,11 +45,10 @@ rq1_timecost <- function(rawdata, plot_path) {
     print(paste("DEBUG: mode=", mode, " total=", sum_freq, sep = ""))
     print(groups_distribution)
 
-    perct_values <- round(frequencies / sum_freq * 100)
     pie(
       frequencies,
       radius = 0.8,
-      labels = paste(perct_values, "%", sep = ""),
+      labels = frequencies,
       col = c("gray30", "gray50", "gray90")
     )
 
@@ -62,7 +61,7 @@ rq1_timecost <- function(rawdata, plot_path) {
   legend(
     "topleft",
     inset = c(0, 0.35),
-    c("short", "regular", "long"),
+    c("short", "medium", "long"),
     fill = c("gray30", "gray50", "gray90")
   )
 }
@@ -73,7 +72,7 @@ rq1_tests_time <- function(rawdata, plot_path) {
   df <- rawdata[rawdata$mode == mode, column_filter]
 
   # eliminates some unnecessary points
-  df <- df[df$r_tests <= 10000, ]
+  # df <- df[df$r_tests <= 10000, ]
 
   # Convert seconds to minutes
   minutes <- double()
