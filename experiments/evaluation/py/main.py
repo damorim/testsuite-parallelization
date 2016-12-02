@@ -40,7 +40,7 @@ def main():
                 break
 
             print("\nsubject #{}".format(counter))
-
+            rev = "unknown"
             try:
                 # Subject setup
                 git.clone(url=subject_row["url"], directory=subjects_home)
@@ -51,6 +51,7 @@ def main():
                     git.reset("--hard", rev)
                 except KeyError:
                     pass
+
                 rev = git.which_revision()
 
                 print("Running experiment on \"{}\" rev \"{}\"".format(subject_row["name"], rev))
