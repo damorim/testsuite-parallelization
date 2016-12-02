@@ -3,58 +3,46 @@ import argparse
 import csv
 import os
 from datetime import datetime
-from time import time
 
-from core import git
 from core import experiment
+from core import git
+from core import model
 
 
 def main():
-    error_log = os.path.abspath("experiment-errors.csv")
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input", help="csv file with subjects to analyze")
-    parser.add_argument("subjects", help="subjects home")
-    parser.add_argument("-f", "--force", help="force to cleanup test reports", action="store_true")
-    parser.add_argument("-d", "--output-dir", help="changes the default output directory")
-    parser.add_argument("-n", "--limit", help="execute only the first n subjects from the input file", type=int)
-
-    args = parser.parse_args()
+    args = setup_arguments().parse_args()
 
     input_file = os.path.abspath(args.input)
     subjects_home = os.path.abspath(args.subjects)
     output_dir = os.path.abspath(args.output_dir if args.output_dir else os.curdir)
-    timestamp = datetime.fromtimestamp(time()).strftime('%y%m%d%H%M')
-    output_file = os.path.abspath(os.path.join(output_dir, "dataset-{}.csv".format(timestamp)))
     limit = args.limit
-
-    print("Input file: {}\nOutput file: {}\nExecution: {} subjects"
-          .format(input_file, output_file, limit if limit else "All"))
+    print("Input file: {}\nExecution: {} subjects".format(input_file, limit if limit else "All"))
 
     if not os.path.exists(subjects_home):
         print("Subjects' home created")
         os.mkdir(subjects_home)
 
-    # Load subjects with errors to ignore them
-    ignored = set({})
-    if os.path.exists(error_log):
-        with open(error_log, newline="") as f:
-            reader = csv.DictReader(f, fieldnames=["timestamp", "name", "url", "reason"])
-            for r in reader:
-                ignored.add(r["name"])
+    ignored = load_ignored_subjects()
+    register = model.OutputRegister(output_dir)
 
-    subjects_executed = []
     with open(input_file, newline="") as f:
         reader = csv.DictReader(f)
         counter = 1
+
+        # Main loop
         for subject_row in reader:
-            if subject_row["name"] in ignored:
+
+            # special cases
+            if ignored and subject_row["name"] in ignored:
                 continue
             if limit and counter > limit:
                 print("\nLimit reached ({} subjects)".format(limit))
                 break
+
             print("\nsubject #{}".format(counter))
+
             try:
+                # Subject setup
                 git.clone(url=subject_row["url"], directory=subjects_home)
                 subject_path = os.path.join(subjects_home, subject_row["name"])
                 os.chdir(subject_path)
@@ -63,29 +51,44 @@ def main():
                     git.reset("--hard", rev)
                 except KeyError:
                     pass
-
                 rev = git.which_revision()
-                print("Preparing \"{}\" rev {}".format(subject_row["name"], rev))
 
-                experiment.run(clean=args.force)
-                subjects_executed.append((subject_row["name"], subject_row["url"], rev))
+                print("Running experiment on \"{}\" rev \"{}\"".format(subject_row["name"], rev))
+                results = experiment.run(clean=args.force)
+                register.results(name=subject_row["name"], data=results)
+                register.subject(name=subject_row["name"], url=subject_row["url"], revision=rev)
 
             except Exception as err:
                 print(err)
-                with open(error_log, "a") as log:
-                    log.write(",".join([datetime.now().isoformat(), subject_row["name"],
-                                        subject_row["url"], err.__str__()]))
-                    log.write("\n")
-
+                register.error(when=datetime.now().isoformat(), name=subject_row["name"],
+                               url=subject_row["url"], cause=err.__str__())
             counter += 1
 
-    output_subjects = os.path.join(output_dir, "verified-subjects-{}.csv".format(timestamp))
-    print("Saving subjects executed in \"{}\"".format(output_subjects))
-    with open(output_subjects, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["name", "url", "rev"])
-        writer.writeheader()
-        for s in subjects_executed:
-            writer.writerow({"name": s[0], "url": s[1], "rev": s[2]})
+    print("\nALL SUBJECTS PROCESSED\nCheck directory \"{}\" for output files".format(output_dir))
+
+
+def setup_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input", help="csv file with subjects to analyze")
+    parser.add_argument("subjects", help="subjects home")
+    parser.add_argument("-f", "--force", help="force to cleanup test reports", action="store_true")
+    parser.add_argument("-d", "--output-dir", help="changes the default output directory")
+    parser.add_argument("-n", "--limit", help="execute only the first n subjects from the input file", type=int)
+    return parser
+
+
+def load_ignored_subjects():
+    """
+    Populates a set with subject names from the error log.
+    :return: None if the error log is empty or a set of subject names
+    """
+    ignored = None
+    if os.path.exists(model.OutputRegister.ERROR_CSV_LOG):
+        with open(model.OutputRegister.ERROR_CSV_LOG, newline="") as f:
+            reader = csv.DictReader(f, fieldnames=model.OutputRegister.ERROR_LOG_HEADER)
+            ignored = {r["name"] for r in reader}
+    return ignored
+
 
 if __name__ == "__main__":
     main()

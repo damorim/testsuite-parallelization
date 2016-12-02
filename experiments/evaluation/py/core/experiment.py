@@ -168,7 +168,7 @@ def _collect_parallel_settings_data(recursive=True):
     output = check_output(find_command)
 
     # for each pom file, inspect it!
-    settings_frequency = Counter()
+    settings_frequency = Counter(L0=0, L1=0, L2=0, L3=0, FL0=0, FL1=0, Unknown=0)
     files = 0
     for xml_path in output.decode().splitlines():
         files += 1
