@@ -6,7 +6,7 @@ from subprocess import check_call, DEVNULL, call, check_output, Popen, PIPE
 from lxml import etree
 
 from core import git, maven
-from core.model import ExecutionResults, MODES
+from core.model import ExecutionResults, StandardParams, L0Params
 
 EXPERIMENT_POM = "experiment-pom.xml"
 
@@ -21,31 +21,30 @@ def run(subject_path, clean=False):
 
     results = {}
 
-    for settings in MODES:
+    for settings in [StandardParams, L0Params]:
         print("Testing in {} mode".format(settings.name))
         _run_tests(profile=settings, clean=clean)
 
         # collect data from execution
         surefire_statistics = maven.collect_surefire_data(settings.reports_dir).statistics
         execution_data = _collect_process_execution_data(settings.log_file)
-        elapsed_time = _collect_time_cost_data(settings.log_file)
+        time_cost = _collect_time_cost_data(settings.log_file)
 
         # aggregating results
-        results[settings] = ExecutionResults(process_execution=execution_data,
-                                             reports=surefire_statistics,
-                                             elapsed_time=elapsed_time)
+        results[settings.name] = ExecutionResults(process_execution=execution_data,
+                                                  reports=surefire_statistics,
+                                                  elapsed_time=time_cost)
 
     print(maven.collect_parallel_settings_prevalence())
-    verify_collected_data(results)
+    verify_collected_data()
     # TODO define output format
 
 
-def verify_collected_data(results):
+def verify_collected_data():
     # ensure all report folders are equals for the executed modes in results
-    it = iter(results.keys())
-    ref_mode = next(it)
+    ref_mode = StandardParams
     ref_reports = os.listdir(ref_mode.reports_dir)
-    for curr_mode in it:
+    for curr_mode in [L0Params]:
         if not (ref_reports == os.listdir(curr_mode.reports_dir)):
             raise Exception(" - Reports from {} and {} mode diverge", ref_mode, curr_mode)
 

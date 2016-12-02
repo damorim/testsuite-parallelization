@@ -10,5 +10,3 @@ StandardParams = ExecutionParams(reports_dir="surefire-ST-reports",
 L0Params = ExecutionParams(reports_dir="surefire-L0-reports",
                            log_file="test-log-sequential.txt",
                            args=["-P", "L0"], name="L0")
-
-MODES = (StandardParams, L0Params)
