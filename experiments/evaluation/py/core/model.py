@@ -70,10 +70,10 @@ class OutputRegister(object):
                 row["t_wall"] = exec_result.process_execution[2]
 
                 # reports data
-                row["r_time"] = 0
-                row["r_skipped"] = 0
-                row["r_tests"] = 0
-                row["r_failures"] = 0
+                row["r_time"] = exec_result.reports['time']
+                row["r_skipped"] = exec_result.reports['skipped']
+                row["r_tests"] = exec_result.reports['tests']
+                row["r_failures"] = exec_result.reports['failures']
 
                 writer.writerow(row)
 
