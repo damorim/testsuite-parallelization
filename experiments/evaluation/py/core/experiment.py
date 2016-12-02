@@ -14,16 +14,21 @@ EXPERIMENT_POM = "experiment-pom.xml"
 def run(subject_path, clean=False):
     os.chdir(subject_path)
 
+    subject_name = os.path.basename(os.path.abspath(os.curdir))
+    revision = git.which_revision()
+    print("Preparing \"{}\" rev {}".format(subject_name, revision))
+    _prepare_subject()
+
     results = {}
 
-    prepare_subject()
-    for settings in [MODES.ST, MODES.L0]:
-        run_tests(profile=settings, clean=clean)
+    for settings in MODES:
+        print("Testing in {} mode".format(settings.name))
+        _run_tests(profile=settings, clean=clean)
 
         # collect data from execution
         surefire_statistics = maven.collect_surefire_data(settings.reports_dir).statistics
-        execution_data = collect_process_execution_data(settings.log_file)
-        elapsed_time = collect_time_cost_data(settings.log_file)
+        execution_data = _collect_process_execution_data(settings.log_file)
+        elapsed_time = _collect_time_cost_data(settings.log_file)
 
         # aggregating results
         results[settings] = ExecutionResults(process_execution=execution_data,
@@ -32,32 +37,30 @@ def run(subject_path, clean=False):
 
     print(maven.collect_parallel_settings_prevalence())
     verify_collected_data(results)
-
     # TODO define output format
-
-    # results = experiment(name=subject_row["name"], path=subject_path, override=args.force)
-    # if results:
-    #     all_results.append(results)
-
-    #             with open(output_file, "a") as f:
-    #                 f.write(",".join([str(getattr(r, attr)) for attr in Result._fields]))
-    #                 f.write("\n")
 
 
 def verify_collected_data(results):
-    pass
+    # ensure all report folders are equals for the executed modes in results
+    it = iter(results.keys())
+    ref_mode = next(it)
+    ref_reports = os.listdir(ref_mode.reports_dir)
+    for curr_mode in it:
+        if not (ref_reports == os.listdir(curr_mode.reports_dir)):
+            raise Exception(" - Reports from {} and {} mode diverge", ref_mode, curr_mode)
+
+            # TODO ensure tests field are the same as well...
 
 
-def prepare_subject():
+def _prepare_subject():
     """
     Resolves project dependencies, compile source files, and create a modified pom file
     :return: None
     """
-    subject_name = os.path.basename(os.path.abspath(os.curdir))
-    print("Preparing \"{}\" rev {}".format(subject_name, git.which_revision()))
     if not maven.is_valid_project():
-        raise Exception("Subject is not a Maven project")
+        raise Exception(" - Subject is not a Maven project")
     _add_parallel_profiles()
+    print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
     if not maven.has_compiled():
         check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true", "-f", EXPERIMENT_POM),
                    timeout=30 * 60, stdout=DEVNULL, stderr=DEVNULL)
@@ -66,8 +69,7 @@ def prepare_subject():
     print(" - Dependencies solved")
 
 
-def run_tests(profile=MODES.ST, clean=False):
-    print("Testing in {} mode".format(profile.name))
+def _run_tests(profile=MODES.ST, clean=False):
     if clean:
         _cleanup(profile)
 
@@ -85,29 +87,29 @@ def run_tests(profile=MODES.ST, clean=False):
         time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(profile.log_file)]
         time_args.extend(maven_args)
         exit_status = call(time_args, stdout=log_file, stderr=DEVNULL, timeout=60 * 60 * 3)  # timeout = 3 hours
-        print("{} on {} mode".format("Tests executed" if exit_status == 0 else "Tests failed", profile.name))
+        print(" - {} on {} mode".format("Tests executed" if exit_status == 0 else "Tests failed", profile.name))
 
-        collect_test_reports(destiny=profile.reports_dir)
+        _collect_test_reports(destiny=profile.reports_dir)
         print(" - Test reports collected")
 
 
-def collect_test_reports(destiny):
+def _collect_test_reports(destiny):
     paths = maven.surefire_reports()
     if len(paths) == 0:
-        raise Exception("Couldn't find *ANY* surefire report")
+        raise Exception(" - Couldn't find *ANY* surefire report")
     for p in paths:
         file_name = os.path.basename(p)
         shutil.move(p, os.path.join(destiny, file_name))
 
 
-def collect_process_execution_data(log_file):
+def _collect_process_execution_data(log_file):
     log_file = _performance_log_from(log_file)
     tail = check_output(["tail", "-n", "1", log_file])
     values = [float(v) for v in tail.decode().split(",")]
     return values[0], values[1], values[2]
 
 
-def collect_time_cost_data(log_file):
+def _collect_time_cost_data(log_file):
     cat = Popen(["cat", log_file], stdout=PIPE)
     grep = Popen(["grep", "\[INFO\] Total time:"], stdin=cat.stdout, stdout=PIPE)
     cat.stdout.close()
@@ -147,8 +149,6 @@ def _add_parallel_profiles():
 
     with open(EXPERIMENT_POM, "w") as pom:
         pom.write(etree.tostring(root, pretty_print=True).decode())
-
-    print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
 
 
 def _cleanup(profile):
