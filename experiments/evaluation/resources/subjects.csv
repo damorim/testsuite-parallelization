@@ -1,4 +1,4 @@
-SUBJECT,URL,REV,BUILDER,COMPILED
+name,url,REV,BUILDER,COMPILED
 500px-android-blur,https://github.com/500px/500px-android-blur,c8bc82cea7858534523a2d73e839726c1f85fe18,Gradle,false
 99-problems,https://github.com/shekhargulati/99-problems,ed027c5f7f5ff87e2653e5b33227f79cd9a34bf6,unknown,n/a
 9GAG,https://github.com/stormzhang/9GAG,90bedc9fcc74d9e9744760c1266211635654fe1a,Gradle,false
