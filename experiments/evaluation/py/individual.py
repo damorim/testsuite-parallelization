@@ -9,4 +9,5 @@ parser.add_argument("-f", "--force", help="force to cleanup test reports", actio
 
 args = parser.parse_args()
 
-experiment.run(args.path, clean=args.force)
+# Print experiment results
+print(experiment.run(args.path, clean=args.force))
