@@ -65,9 +65,9 @@ class OutputRegister(object):
                 row["elapsed_time"] = exec_result.elapsed_time
 
                 # as defined in "time" when executing _run_tests
-                row["t_user"] = "TODO"
-                row["t_sys"] = "TODO"
-                row["t_wall"] = "TODO"
+                row["t_user"] = exec_result.process_execution[0]
+                row["t_sys"] = exec_result.process_execution[1]
+                row["t_wall"] = exec_result.process_execution[2]
 
                 # reports data
                 row["r_time"] = 0
