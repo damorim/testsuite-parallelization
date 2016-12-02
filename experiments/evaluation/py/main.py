@@ -5,8 +5,8 @@ import os
 from datetime import datetime
 from time import time
 
-from support import git
-from support import experiment
+from core import git
+from core import experiment
 
 
 def main():
