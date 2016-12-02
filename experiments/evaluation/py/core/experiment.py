@@ -5,8 +5,8 @@ from subprocess import check_call, DEVNULL, call, check_output, Popen, PIPE
 
 from lxml import etree
 
-from support import git, maven
-from support.model import ExecutionResults, MODES
+from core import git, maven
+from core.model import ExecutionResults, MODES
 
 EXPERIMENT_POM = "experiment-pom.xml"
 
