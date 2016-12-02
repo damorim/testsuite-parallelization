@@ -10,12 +10,12 @@ def clone(url, directory):
         os.chdir(directory)
         call(["git", "clone", url], stdout=DEVNULL)
 
-    os.chdir(subject_dir)
-    rev = which_revision()
     os.chdir(base_dir)
-
-    return rev
 
 
 def which_revision():
     return check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+
+
+def reset(type, rev):
+    call(["git", "reset", type, rev], stdout=DEVNULL)

@@ -11,7 +11,7 @@ from core.model import ExecutionResults, StandardParams, L0Params
 EXPERIMENT_POM = "experiment-pom.xml"
 
 
-def run(subject_path, clean=False):
+def run(subject_path=os.curdir, clean=False):
     os.chdir(subject_path)
     _prepare_subject()
 

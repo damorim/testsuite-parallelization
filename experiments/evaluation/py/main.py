@@ -55,12 +55,19 @@ def main():
                 break
             print("\nsubject #{}".format(counter))
             try:
-                rev = git.clone(url=subject_row["url"], directory=subjects_home)
+                git.clone(url=subject_row["url"], directory=subjects_home)
                 subject_path = os.path.join(subjects_home, subject_row["name"])
+                os.chdir(subject_path)
+                try:
+                    rev = subject_row["rev"]
+                    git.reset("--hard", rev)
+                except KeyError:
+                    pass
+
+                rev = git.which_revision()
                 print("Preparing \"{}\" rev {}".format(subject_row["name"], rev))
 
-                experiment.run(subject_path, clean=args.force)
-
+                experiment.run(clean=args.force)
                 subjects_executed.append((subject_row["name"], subject_row["url"], rev))
 
             except Exception as err:
