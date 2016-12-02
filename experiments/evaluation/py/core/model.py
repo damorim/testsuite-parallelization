@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 # Results from the execution of a subject with a specific ExecutionParam
-ExecutionResults = namedtuple("ResultsResults", "reports, process_execution, elapsed_time")
+ExecutionResults = namedtuple("ExecutionResults", "reports, process_execution, elapsed_time")
 
 # Experiment results consist in all results from each ExecutionParam and ParallelPrevalenceData
 ExperimentResults = namedtuple("ExperimentResults", "parallel_data, execution_data")
