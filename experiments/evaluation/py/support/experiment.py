@@ -1,48 +1,51 @@
 import os
 import re
 import shutil
-from collections import namedtuple
 from subprocess import check_call, DEVNULL, call, check_output, Popen, PIPE
 
 from lxml import etree
 
-from support import git
-from support import maven
+from support import git, maven
+from support.model import ExecutionResults, MODES
 
 EXPERIMENT_POM = "experiment-pom.xml"
-ExecutionParams = namedtuple("ExecutionParams", "log_file, args, name, reports_dir")
-ExecutionModes = namedtuple("ExecutionModes", "ST, L0")
-
-MODES = ExecutionModes(ST=ExecutionParams(log_file="test-log-default.txt", args=None, name="Standard",
-                                          reports_dir="surefire-ST-reports"),
-                       L0=ExecutionParams(log_file="test-log-sequential.txt", args=["-P", "L0"], name="L0",
-                                          reports_dir="surefire-L0-reports"))
 
 
 def run(subject_path, clean=False):
     os.chdir(subject_path)
+
+    results = {}
 
     prepare_subject()
     for settings in [MODES.ST, MODES.L0]:
         run_tests(profile=settings, clean=clean)
 
         # collect data from execution
-        elapsed_time = collect_time_cost_data(settings.log_file)
-        execution_data = collect_process_execution_data(settings.log_file)
         surefire_statistics = maven.collect_surefire_data(settings.reports_dir).statistics
+        execution_data = collect_process_execution_data(settings.log_file)
+        elapsed_time = collect_time_cost_data(settings.log_file)
 
-        # TODO define output format
-        # TODO Inspect surefire collected data to detect inconsistencies
-        print(elapsed_time, execution_data, surefire_statistics)
+        # aggregating results
+        results[settings] = ExecutionResults(process_execution=execution_data,
+                                             reports=surefire_statistics,
+                                             elapsed_time=elapsed_time)
 
-        # results = experiment(name=subject_row["name"], path=subject_path, override=args.force)
-        # if results:
-        #     all_results.append(results)
-
-        #             with open(output_file, "a") as f:
-        #                 f.write(",".join([str(getattr(r, attr)) for attr in Result._fields]))
-        #                 f.write("\n")
     print(maven.collect_parallel_settings_prevalence())
+    verify_collected_data(results)
+
+    # TODO define output format
+
+    # results = experiment(name=subject_row["name"], path=subject_path, override=args.force)
+    # if results:
+    #     all_results.append(results)
+
+    #             with open(output_file, "a") as f:
+    #                 f.write(",".join([str(getattr(r, attr)) for attr in Result._fields]))
+    #                 f.write("\n")
+
+
+def verify_collected_data(results):
+    pass
 
 
 def prepare_subject():
