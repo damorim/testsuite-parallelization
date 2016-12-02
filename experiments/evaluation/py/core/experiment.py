@@ -43,7 +43,7 @@ def verify_collected_data():
     ref_reports = os.listdir(ref_mode.reports_dir)
     for curr_mode in [L0Params]:
         if not (ref_reports == os.listdir(curr_mode.reports_dir)):
-            raise Exception(" - Reports from {} and {} mode diverge", ref_mode, curr_mode)
+            raise Exception(" - Reports from {} and {} modes diverge".format(ref_mode.name, curr_mode.name))
             # TODO ensure tests field are the same as well...
 
 
