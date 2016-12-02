@@ -60,9 +60,9 @@ class OutputRegister(object):
 
             row = {}
             for mode, exec_result in data.execution_data.items():
-                row["name"] = "TODO"
-                row["mode"] = "TODO"
-                row["elapsed_time"] = "TODO"
+                row["name"] = name
+                row["mode"] = mode
+                row["elapsed_time"] = exec_result.elapsed_time
 
                 # as defined in "time" when executing _run_tests
                 row["t_user"] = "TODO"
