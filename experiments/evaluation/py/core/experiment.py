@@ -150,6 +150,8 @@ def _add_parallel_profiles():
 def _cleanup(profile):
     if os.path.exists(profile.log_file):
         os.remove(profile.log_file)
+    if os.path.exists(_performance_log_from(profile.log_file)):
+        os.remove(_performance_log_from(profile.log_file))
     if os.path.exists(profile.reports_dir):
         shutil.rmtree(profile.reports_dir)
 
