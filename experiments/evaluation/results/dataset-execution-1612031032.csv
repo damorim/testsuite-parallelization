@@ -425,5 +425,3 @@ Standard,p2-maven-plugin,6.801,0.48000000000000004,0,32,0,26.43,0.41,7.69
 L0,p2-maven-plugin,6.573,0.43700000000000006,0,32,0,24.6,0.58,7.4
 Standard,elasticsearch-opennlp-plugin,62,61.535000000000004,0,6,0,11.73,0.39,63.32
 L0,elasticsearch-opennlp-plugin,62,10.293,0,6,0,11.96,0.35,63.02
-Standard,spring-security-oauth,12.640,6.947000000000001,0,716,0,41.7,0.94,13.26
-L0,spring-security-oauth,12.535,7.557999999999999,0,716,0,41.09,1.15,13.17
