@@ -73,16 +73,20 @@ rq1_tests_time <- function(rawdata, plot_path) {
 }
 
 rq2_prevalence <- function(df, output) {
-  print(df)
+  pdf(output)
+  df <- df[with(df, order(df$groups)), c(-1,-2, -9)]
+  summary <- aggregate(x=df[,-7], by=list(df$groups), FUN=sum)
+  print(summary)
+  barplot(data.matrix(summary), legend=rownames(summary))
 }
 
-args <- commandArgs(trailingOnly = TRUE)
-rawdata <- read.csv(args[1])
-parprev <- read.csv(args[2])
-output <- args[3]
-# rawdata <- read.csv("../results/dataset-execution-1612031032.csv")
-# parprev <- read.csv("../results/dataset-parprev-1612031032.csv")
-# output <- "plots"
+# args <- commandArgs(trailingOnly = TRUE)
+# rawdata <- read.csv(args[1])
+# parprev <- read.csv(args[2])
+# output <- args[3]
+rawdata <- read.csv("../results/dataset-execution-1612031032.csv")
+parprev <- read.csv("../results/dataset-parprev-1612031032.csv")
+output <- "plots"
 
 rawdata$minutes <- sapply(rawdata$elapsed_time, function(v) {
   return(v / 60)
