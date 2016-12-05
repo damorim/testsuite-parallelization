@@ -56,7 +56,8 @@ rq1_timecost <- function(rawdata, plot_path) {
 rq1_tests_time <- function(rawdata, plot_path) {
   pdf(plot_path)
   par(mfrow = c(2, 1))
-  df <- rawdata[rawdata$mode == "Standard" & rawdata$r_tests < 10000, ]
+  df <-
+    rawdata[rawdata$mode == "Standard" & rawdata$r_tests < 10000, ]
   types <- c("Medium", "Long")
   for (i in 1:2) {
     plot(
@@ -70,19 +71,31 @@ rq1_tests_time <- function(rawdata, plot_path) {
   }
 }
 
+rq2_prevalence <- function(df, output) {
+
+}
+
 args <- commandArgs(trailingOnly = TRUE)
-name <- args[1]
-output <- args[2]
-rawdata <- read.csv(name)
+rawdata <- read.csv(args[1])
+parprev <- read.csv(args[2])
+output <- args[3]
 
 rawdata$minutes <- sapply(rawdata$elapsed_time, function(v) {
   return(v / 60)
 })
 rawdata$groups <- sapply(rawdata$elapsed_time, FUN = compute_group)
+parprev$groups <-
+  sapply(
+    parprev$name,
+    FUN = function(v) {
+      return(rawdata[rawdata$mode == "Standard" &
+                       rawdata$name == v, c("groups")])
+    }
+  )
 
 rq1_timecost(rawdata, paste(output, "piechart-timecost.pdf", sep = "/"))
 rq1_tests_time(rawdata, paste(output, "scatter-tests-time.pdf", sep = "/"))
-#
+rq2_prevalence(parprev, paste(output, "barplot-parprev.pdf", sep = "/"))
 # print(paste("Experiment cost:",
 #             round(sum(
 #               rawdata$elapsed_time
