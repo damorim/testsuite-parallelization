@@ -2,6 +2,7 @@
 import argparse
 import csv
 import os
+import shutil
 from datetime import datetime
 
 from core import experiment
@@ -42,10 +43,10 @@ def main():
 
             print("\nsubject #{}".format(counter))
             rev = "unknown"
+            subject_path = os.path.join(subjects_home, subject_row["name"])
             try:
                 # Subject setup
                 git.clone(url=subject_row["url"], directory=subjects_home)
-                subject_path = os.path.join(subjects_home, subject_row["name"])
                 os.chdir(subject_path)
                 try:
                     rev = subject_row["rev"]
@@ -59,6 +60,13 @@ def main():
                 results = experiment.run(clean=args.force)
                 register.results(name=subject_row["name"], data=results)
                 register.subject(name=subject_row["name"], url=subject_row["url"], revision=rev)
+
+            except model.NotMavenProjectException as err:
+                print(err)
+                register.error(when=datetime.now().isoformat(), name=subject_row["name"],
+                               url=subject_row["url"], revision=rev, cause=err.__str__())
+                os.chdir(subjects_home)
+                shutil.rmtree(subject_path)
 
             except Exception as err:
                 print(err)

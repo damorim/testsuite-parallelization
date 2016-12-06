@@ -18,7 +18,7 @@ def run(subject_path=os.curdir, clean=False):
 
     results = {}
 
-    for settings in [model.StandardParams, model.L0Params]:
+    for settings in [model.StandardParams]:
         print("Testing in {} mode".format(settings.name))
         _run_tests(profile=settings, clean=clean)
 
@@ -32,10 +32,7 @@ def run(subject_path=os.curdir, clean=False):
                                                         reports=surefire_statistics,
                                                         elapsed_time=time_cost)
 
-    parallel_settings_data = _collect_parallel_settings_data()
-    _verify_collected_data()
-
-    return model.ExperimentResults(execution_data=results, parallel_data=parallel_settings_data)
+    return model.ExperimentResults(execution_data=results)
 
 
 def _verify_collected_data():
@@ -54,9 +51,9 @@ def _prepare_subject():
     :return: None
     """
     if not maven.is_valid_project():
-        raise Exception(" - Subject is not a Maven project")
-    _add_parallel_profiles()
-    print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
+        raise model.NotMavenProjectException()
+    # _add_parallel_profiles()
+    # print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
     if not maven.has_compiled():
         check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true", "-f", EXPERIMENT_POM),
                    timeout=30 * 60, stdout=DEVNULL, stderr=DEVNULL)
@@ -160,6 +157,7 @@ def _performance_log_from(test_log):
     return test_log.replace("test", "performance")
 
 
+# FIXME: not used
 def _collect_parallel_settings_data(recursive=True):
     find_command = ["find", "."]
     if not recursive:

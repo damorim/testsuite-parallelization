@@ -7,8 +7,8 @@ from time import time
 # Results from the execution of a subject with a specific ExecutionParam
 ExecutionResults = namedtuple("ExecutionResults", "reports, process_execution, elapsed_time")
 
-# Experiment results consist in all results from each ExecutionParam and ParallelPrevalenceData
-ExperimentResults = namedtuple("ExperimentResults", "parallel_data, execution_data")
+# Experiment results consist in all results from each ExecutionParam
+ExperimentResults = namedtuple("ExperimentResults", "execution_data")
 
 # Parameters of experiment execution for a subject
 ExecutionParams = namedtuple("ExecutionParams", "log_file, args, name, reports_dir")
@@ -24,6 +24,11 @@ L0Params = ExecutionParams(reports_dir="surefire-L0-reports",
                            args=["-P", "L0"], name="L0")
 
 
+class NotMavenProjectException(Exception):
+    def __init__(self):
+        super("Subject is not a Maven project")
+
+
 class OutputRegister(object):
     ERROR_CSV_LOG = os.path.abspath("experiment-errors.csv")
     ERROR_LOG_HEADER = ("when", "name", "url", "rev", "cause")
@@ -31,9 +36,6 @@ class OutputRegister(object):
     LogFileParams = namedtuple("LogFileParams", "name_template, cols")
     SUBJECTS_CSV = LogFileParams(name_template="verified-subjects-{}.csv",
                                  cols=["name", "url", "rev"])
-
-    PARALLEL_CSV = LogFileParams(name_template="dataset-parprev-{}.csv",
-                                 cols=["name", "files", "L0", "L1", "L2", "L3", "FL0", "FL1", "Unknown"])
 
     EXECUTION_CSV = LogFileParams(name_template="dataset-execution-{}.csv",
                                   cols=["mode", "name", "elapsed_time", "r_time", "r_skipped", "r_tests", "r_failures",
@@ -44,7 +46,6 @@ class OutputRegister(object):
         self.__ts = datetime.fromtimestamp(time()).strftime('%y%m%d%H%M')
         self.__output_dir = output_dir
         self.__subjects_csv = self.__f(OutputRegister.SUBJECTS_CSV)
-        self.__parallel_csv = self.__f(OutputRegister.PARALLEL_CSV)
         self.__exec_csv = self.__f(OutputRegister.EXECUTION_CSV)
 
     def __f(self, params):
@@ -76,12 +77,6 @@ class OutputRegister(object):
                 row["r_failures"] = exec_result.reports['failures']
 
                 writer.writerow(row)
-
-        with open(self.__parallel_csv, "a", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=OutputRegister.PARALLEL_CSV.cols)
-            row = {"name": name, "files": data.parallel_data.files}
-            row.update(data.parallel_data.frequency)
-            writer.writerow(row)
 
     def subject(self, name, url, revision):
         with open(self.__subjects_csv, "a", newline="") as f:
