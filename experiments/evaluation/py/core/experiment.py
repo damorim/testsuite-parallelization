@@ -54,9 +54,8 @@ def _prepare_subject():
         raise model.NotMavenProjectException()
     # _add_parallel_profiles()
     # print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
-    if not maven.has_compiled():
-        check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
-                   timeout=30 * 60, stdout=DEVNULL, stderr=DEVNULL)
+    check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
+               timeout=30 * 60, stdout=DEVNULL, stderr=DEVNULL)
     print(" - Sources compiled")
     check_call(maven.resolve_dependencies_task(), stdout=DEVNULL, stderr=DEVNULL)
     print(" - Dependencies solved")
