@@ -55,10 +55,10 @@ def _prepare_subject():
     # _add_parallel_profiles()
     # print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
     if not maven.has_compiled():
-        check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true", "-f", EXPERIMENT_POM),
+        check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
                    timeout=30 * 60, stdout=DEVNULL, stderr=DEVNULL)
     print(" - Sources compiled")
-    check_call(maven.resolve_dependencies_task("-f", EXPERIMENT_POM), stdout=DEVNULL, stderr=DEVNULL)
+    check_call(maven.resolve_dependencies_task(), stdout=DEVNULL, stderr=DEVNULL)
     print(" - Dependencies solved")
 
 
@@ -74,7 +74,7 @@ def _run_tests(profile, clean=False):
         return
 
     with open(profile.log_file, "w") as log_file:
-        maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-f", EXPERIMENT_POM)
+        maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true")
         if profile.args:
             maven_args.extend(profile.args)
         time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(profile.log_file)]
