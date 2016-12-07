@@ -7,15 +7,17 @@ which_group <- function(time) {
   }
   return("long")
 }
-file_input <- "../results/dataset-execution-1612051140.csv"
+file_input <- "../results/dataset-execution-1612061818.csv"
 
 ds <- read.csv(file_input)
 ds <- ds[ds$mode == "Standard",]
 
-# Total cost for Standard execution
-cost_secs <- sum(ds[, "elapsed_time"])
-print(paste("Total cost in std mode (hours):", cost_secs / 3600))
-
 # Classify subjects according elapsed time
 ds$group <- sapply(ds$elapsed_time, FUN = which_group)
 table(ds$group)
+
+# Total cost for Standard execution
+print(paste("[ALL]    Total cost in std mode (hours):", round(sum(ds[, "elapsed_time"]) / 3600, 2)))
+print(paste("[LONG]   Total cost in std mode (hours):", round(sum(ds[ds$group == "long", "elapsed_time"]) / 3600, 2)))
+print(paste("[MEDIUM] Total cost in std mode (hours):", round(sum(ds[ds$group == "medium", "elapsed_time"]) / 3600, 2)))
+print(paste("[SHORT]  Total cost in std mode (hours):", round(sum(ds[ds$group == "short", "elapsed_time"]) / 3600, 2)))
