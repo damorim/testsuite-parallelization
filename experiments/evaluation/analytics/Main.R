@@ -9,19 +9,19 @@ compute_group <- function(time) {
 }
 
 rq1_timecost <- function(rawdata, plot_path) {
-  pdf(plot_path, height = 3.5, width = 5)
+  pdf(plot_path, height = 3.5)
   
   # plot layout
   par(
-    mfrow = c(1, 3),
+    mfrow = c(1, 2),
     mar = c(1, 1, 1, 1),
     oma = c(0, 0, 0, 0),
     xpd = T
   )
-  modes <- c("L0", "Standard")
-  main_pies <- c("Sequential", "Standard")
+  modes <- c("Standard")
+  main_pies <- c("Standard")
   cols <- c("gray30", "gray50", "gray90")
-  for (i in 1:2) {
+  for (i in c(1)) {
     mode <- modes[i]
     df <- rawdata[rawdata$mode == mode, ]
     groups_distribution <- as.data.frame(table(df$groups))
@@ -42,7 +42,7 @@ rq1_timecost <- function(rawdata, plot_path) {
       col = cols
     )
     # bring pie title down
-    title(main_pies[i], line = -6)
+    # title(main_pies[i], line = -6)
   }
   # plot legend
   plot.new()
@@ -80,30 +80,27 @@ rq2_prevalence <- function(df, output) {
   barplot(data.matrix(summary), legend=rownames(summary))
 }
 
-# args <- commandArgs(trailingOnly = TRUE)
-# rawdata <- read.csv(args[1])
+args <- commandArgs(trailingOnly = TRUE)
+rawdata <- read.csv(args[1])
 # parprev <- read.csv(args[2])
-# output <- args[3]
-rawdata <- read.csv("../results/dataset-execution-1612031032.csv")
-parprev <- read.csv("../results/dataset-parprev-1612031032.csv")
-output <- "plots"
+output <- args[2]
 
 rawdata$minutes <- sapply(rawdata$elapsed_time, function(v) {
   return(v / 60)
 })
 rawdata$groups <- sapply(rawdata$elapsed_time, FUN = compute_group)
-parprev$groups <-
-  sapply(
-    parprev$name,
-    FUN = function(v) {
-      return(rawdata[rawdata$mode == "Standard" &
-                       rawdata$name == v, c("groups")])
-    }
-  )
+# parprev$groups <-
+#   sapply(
+#     parprev$name,
+#     FUN = function(v) {
+#       return(rawdata[rawdata$mode == "Standard" &
+#                        rawdata$name == v, c("groups")])
+#     }
+#   )
 
 rq1_timecost(rawdata, paste(output, "piechart-timecost.pdf", sep = "/"))
-rq1_tests_time(rawdata, paste(output, "scatter-tests-time.pdf", sep = "/"))
-rq2_prevalence(parprev, paste(output, "barplot-parprev.pdf", sep = "/"))
+# rq1_tests_time(rawdata, paste(output, "scatter-tests-time.pdf", sep = "/"))
+# rq2_prevalence(parprev, paste(output, "barplot-parprev.pdf", sep = "/"))
 # print(paste("Experiment cost:",
 #             round(sum(
 #               rawdata$elapsed_time
