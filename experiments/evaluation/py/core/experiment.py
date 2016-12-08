@@ -103,7 +103,7 @@ def _collect_process_execution_data(log_file):
 
 def _collect_time_cost_data(log_file):
     cat = Popen(["cat", log_file], stdout=PIPE)
-    grep = Popen(["grep", "\[INFO\] Total time:"], stdin=cat.stdout, stdout=PIPE)
+    grep = Popen(["grep", "--text", "\[INFO\] Total time:"], stdin=cat.stdout, stdout=PIPE)
     cat.stdout.close()
     out, err = grep.communicate()
 
