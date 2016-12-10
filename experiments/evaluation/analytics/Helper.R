@@ -25,10 +25,10 @@ piechart_timecost <- function(df) {
     })
   )
   # bring pie title down
-  title(main = "Distribution of Subject Groups", line = -3)
+  # title(main = "Distribution of Subject Groups", line = -3)
   legend(
     "topright",
-    inset = c(0, 0.2),
+    inset = c(0, 0.3),
     c("Long", "Medium", "Short"),
     fill = cols
   )
@@ -50,7 +50,7 @@ table(ds$group)
 
 # BOX PLOTS - TIMECOST
 output_name <- paste(output_dir, "boxplots-timecost.pdf", sep="/")
-pdf(output_name, height = 3.5, width = 4)
+pdf(output_name, height = 3, width = 4)
 par(mfrow = c(1, 3),
     mar = c(5, 5, 0, 0),
     las = 1)
