@@ -11,12 +11,11 @@
   parallelization, and how to address those issues.}
 
 We evaluated the characteristics of regression tests in open-source
-development from a sample set of Java projects from
-Github\Jbc{Remember to update the previous sentence after updating the
-subject section}. We are interested in understanding the prevalence
-of long test runs, the main sources of cost, and how do developers
-explore parallelism to improve execution performance. More
-specifically, we pose the following research questions:
+development from a sample set of Java projects from Github. We are
+interested in understanding the prevalence of long test runs, the main
+sources of cost, and how do developers explore parallelism to improve
+execution performance. More specifically, we pose the following
+research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
@@ -205,40 +204,38 @@ mvn -o test -Dmaven.javadoc.skip=true
 We grouped the subjects according to the execution time: tests that
 ran in less than one minute (\emph{short execution}), one to five
 minutes (\emph{medium execution}), and more than five minutes
-(\emph{long execution}).  Figure~\ref{fig:piechart-time} shows the
-proportion of subjects per group: on the left side, the pie chart
-reports the results enforcing sequential execution; on the right side,
-the results for the default execution.  Results indicate that a
-relatively high number of projects from the sample set (\ie, 17\%)
-requires at least five minutes to execute. The longest execution takes
-\Fix{x} to finish. It is important to mention that
-Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
-time: some tests may finish early due to a failure since the subjects
-were tested in a potentially unstable revision.
+(\emph{long execution}). Figure~\ref{fig:piechart-time} shows the
+proportion of subjects per group and Figure~\ref{fig:boxplots-time}
+shows the distribution of elapsed time for each group (boxplots). 
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.48\textwidth]{plots/piechart-timecost.pdf}
+    \begin{minipage}{2in}%
+    \includegraphics[width=\textwidth]{plots/piechart-timecost.pdf}
+    \end{minipage}%
     \caption{\label{fig:piechart-time} Subjects grouped by elapsed time on test
     execution ($t$): short execution ($t < 1m$), medium execution ($1m \leq t <
-    5m$), and long execution ($5m \leq t$).  \Fix{On the left side, results from
-    sequential execution}; on the right side, results from default execution.}
+    5m$), and long execution ($5m \leq t$).}
 \end{figure}
 
-Considering the groups \emph{medium} and \emph{long} (\Fix{X} subjects), we
-investigated the relationship between the number of tests cases and the time
-cost from subjects. \Fix{Explain what is correlation and how it is computed.}
-\Fix{elaborate: As expected, Figure~\ref{fig:scatters} reveals that the number
-of tests cases are not related to the elapsed time.  \Fix{explain briefly what
-dominates a test execution/types of tests}.Results indicate that
-\Fix{...conclusion...}.}
-
-\begin{figure}[h!]%
+\begin{figure}[h!]
     \centering
-    \Comment{scatter top, scatter bottom, legend r-value regression}
-    \caption{\Fix{...use minutes instead of secs...}}%
-    \label{fig:scatters}%
+    \begin{minipage}{2.5in}%
+    \includegraphics[width=\textwidth]{plots/boxplots-timecost.pdf}
+    \end{minipage}%
+    \caption{\label{fig:boxplots-time} Distribution of time execution
+    per group. Outliers from \emph{Long} are ignored for better
+    readability.}
 \end{figure}
+
+Results indicate that a relatively high number of projects from the
+sample set (\ie, 29,2\%) requires at least five minutes to execute.
+The boxplot for the \emph{long} group reveals \Fix{dissect the
+boxplot: skewness, median, IQR}. \Fix{Discuss outliers from Long
+group}.  It is important to mention that
+Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
+time: some tests may finish early due to a failure since the subjects
+were tested in a potentially unstable revision.
 
 \subsection{Answering research question RQ2}
 \label{sec:rqTwo}
@@ -247,17 +244,12 @@ dominates a test execution/types of tests}.Results indicate that
     \item \emph{\RQB}
 \end{itemize}
 
-To evaluate how often developers use low-level parallelism, we
+\Fix{To evaluate how often developers use low-level parallelism, we
 considered 216 Maven projects and analyzed \Fix{x} configurations
-files. \Fix{For each subject, we parsed all \emph{pom.xml} files from the
+files. For each subject, we parsed all \emph{pom.xml} files from the
 project (including submodules) and searched for all \emph{surefire}
 settings on each XML file. Figure \Fix{...} illustrates how a
 developer can explore parallelism via Surefire settings.}
-
-\begin{figure}[h!]
-   \centering
-   \caption{\Fix{...}}
-\end{figure}
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the
