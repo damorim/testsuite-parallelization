@@ -244,12 +244,24 @@ were tested in a potentially unstable revision.
     \item \emph{\RQB}
 \end{itemize}
 
-\Fix{To evaluate how often developers use low-level parallelism, we
-considered 216 Maven projects and analyzed \Fix{x} configurations
-files. For each subject, we parsed all \emph{pom.xml} files from the
-project (including submodules) and searched for all \emph{surefire}
-settings on each XML file. Figure \Fix{...} illustrates how a
-developer can explore parallelism via Surefire settings.}
+To evaluate the  use of low-level parallelism, we considered the
+subjects from the groups \emph{long} and \emph{medium} identified in
+Section~\ref{sec:rqone}. In an initial exploration, we searched for
+evidences of low-level parallelism settings on configuration files
+(\ie, \emph{pom.xml}) from each subject (\emph{long} and \emph{medium}
+groups). Initially, our script finds recursively all \emph{pom.xml}
+files from the project directory. For each file, we use the
+command-line tool \emph{grep} to highlight the presence of the
+keywords \emph{forkMode}, \emph{forkCount}, and \emph{parallel}. Any
+of these keywords are present in all possible parallel settings (see
+Section~\ref{sec:modes}).  We discovered that \Fix{X}\% and \Fix{y}\%
+of subjects (\emph{long} and \emph{medium}, respectively) did not have
+any evidence of low-level parallelism. It is important to mention that
+this result an upper bound limit since the keyword highlighted could
+not be part of a real configuration (\eg, part of a comment). To
+investigate further the projects reported by our script, we manually
+inspected \Fix{X} configuration files to eliminate false-positives.
+\Fix{...elaborate...}
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the
