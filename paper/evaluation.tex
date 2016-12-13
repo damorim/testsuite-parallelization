@@ -251,25 +251,45 @@ evidences of low-level parallelism settings on configuration files
 (\ie, \emph{pom.xml}) from each subject using a semi-automated
 approach: we use a script to find all subjects with evidences of
 parallel settings and then we manually inspect each configuration file
-to eliminate false-positives. Given a list of subjects, our script
-searches recursively all \emph{pom.xml} files from the project
-directory and uses the command-line tool \emph{grep} to highlight the
-presence of the keywords \emph{forkMode}, \emph{forkCount}, and
-\emph{parallel}. Any of these keywords exist in any possible
-combination of parallel settings (see Section~\ref{sec:modes}). Before
-the manual inspection, we found that 37.14\% (13 out of 35) and 62.5\%
-(35 out of 56) of subjects from the \emph{long} and \emph{medium}
-groups did not have any of the keywords. After the manual inspection
-\Fix{...elaborate...}
+to eliminate false-positives. In addition, we are interested in
+understanding how these parallel settings are used. Given a list of
+subjects, our script searches recursively all \emph{pom.xml} files
+from the project directory and uses the command-line tool \emph{grep}
+to highlight the presence of the keywords \emph{forkMode},
+\emph{forkCount}, and \emph{parallel}.  Any of these keywords exist in
+any possible combination of parallel settings (see
+Section~\ref{sec:modes}). From the 91 subjects, our script detected 43
+subjects with evidence of parallel settings. After the inspection of
+130 configuration files, we confirmed that \Fix{X} settings are real
+parallel configurations.  These settings are related to \Fix{Y}
+subjects. It is important to notice that, \Fix{X}\% of the subjects
+(\emph{medium} and \emph{long} aggregated) did not explore low-level
+parallelism according to our criteria of matching keywords. After the
+inspection, this rate raises to \Fix{Y}\%. \Fix{elaborate: some
+projects doesn't use parallel features, so what?}
+Table~\ref{tab:inspection-table} summarizes our initial findings.
 
-\Fix{We discovered that \Fix{X}\% and \Fix{y}\%
-of subjects (\emph{long} and \emph{medium}, respectively) did not have
-any evidence of low-level parallelism. It is important to mention that
-this result an upper bound limit since the keyword highlighted could
-not be part of a real configuration (\eg, part of a comment). To
-investigate further the projects reported by our script, we manually
-inspected \Fix{X} configuration files to eliminate false-positives.}
-\Fix{...elaborate...}
+\begin{table}[h!]\footnotesize
+    \centering
+    \begin{tabular*}{0.5\textwidth}{cccc}
+        \toprule
+        Group  & Subjects with Evidence & Config. Files & Config. Confirmed\\
+        \midrule
+        Long   & 22 / 35    & 77 / 1981       & \Fix{X} / 77\\%
+        Medium & 21 / 56    & 53 / 491        & \Fix{X} / 53\\%
+        \midrule 
+        Total  & 43 / 91    & 130 / 2472      & \Fix{X} / 130\\
+        \bottomrule
+    \end{tabular*}
+    \caption{\Fix{to-be-defined}}
+    \label{tab:inspection-table} 
+\end{table}
+
+
+
+\Fix{elaborate: write about the subjects that use parallelism - How do
+they use them? Would it be possible to measure the benefits? How the
+configs from Section~\ref{sec:modes} are distributed?}
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the
