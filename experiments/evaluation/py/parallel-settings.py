@@ -17,28 +17,37 @@ min_limit = 0 if not args.min else args.min
 max_limit = args.max
 
 
-def inspect(paths):
+def filter_relevant_paths(paths):
+    keywords = ["forkCount", "forkMode", "parallel"]
+    relevant_paths = set()
     for file in paths:
-        for t in ["forkCount", "forkMode", "parallel"]:
-            if subprocess.call(["grep", t, file], stdout=subprocess.DEVNULL) == 0:
-                return row["name"]
+        if subprocess.call(["grep", "\|".join(keywords), file], stdout=subprocess.DEVNULL) == 0:
+            relevant_paths.add(file)
+    return relevant_paths
 
-counter = 0
-found = 0
-with open(args.input, newline="") as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        if float(row["elapsed_time"]) >= min_limit:
-            if not max_limit or float(row["elapsed_time"]) < max_limit:
-                os.chdir(os.path.join(subjects_home, row["name"]))
-                xml_paths = subprocess.check_output(["find", ".", "-path", "*/pom.xml"]).decode().splitlines()
-                subj = inspect(xml_paths)
-                if subj:
-                    print(subj)
-                    found += 1
-                counter += 1
 
-print("--------------------")
-print("{} subjects verified".format(counter))
-print("{} subjects found".format(found))
-print("%.2f%%" % (found / counter * 100))
+def main():
+    counter = 0
+    found = 0
+    files_counter = 0
+    with open(args.input, newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if float(row["elapsed_time"]) >= min_limit:
+                if not max_limit or float(row["elapsed_time"]) < max_limit:
+                    os.chdir(os.path.join(subjects_home, row["name"]))
+                    xml_paths = subprocess.check_output(["find", ".", "-path", "*/pom.xml"]).decode().splitlines()
+                    paths = filter_relevant_paths(xml_paths)
+                    if paths:
+                        print("{} ({}/{} relevant files)".format(row["name"], len(paths), len(xml_paths)))
+                        files_counter += len(paths)
+                        found += 1
+                    counter += 1
+    print("--------------------")
+    print("{} subjects verified".format(counter))
+    print("{} subjects found".format(found))
+    print("{} files to inspect".format(files_counter))
+    print("%.2f%%" % (found / counter * 100))
+
+if __name__ == "__main__":
+    main()
