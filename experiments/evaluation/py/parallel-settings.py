@@ -14,6 +14,7 @@ args = parser.parse_args()
 subjects_home = os.path.abspath(args.subjects)
 base_dir = os.path.abspath(os.curdir)
 min_limit = 0 if not args.min else args.min
+max_limit = args.max
 
 
 def inspect(paths):
@@ -28,13 +29,14 @@ with open(args.input, newline="") as f:
     reader = csv.DictReader(f)
     for row in reader:
         if float(row["elapsed_time"]) >= min_limit:
-            os.chdir(os.path.join(subjects_home, row["name"]))
-            xml_paths = subprocess.check_output(["find", ".", "-path", "*/pom.xml"]).decode().splitlines()
-            subj = inspect(xml_paths)
-            if subj:
-                print(subj)
-                found += 1
-            counter += 1
+            if not max_limit or float(row["elapsed_time"]) < max_limit:
+                os.chdir(os.path.join(subjects_home, row["name"]))
+                xml_paths = subprocess.check_output(["find", ".", "-path", "*/pom.xml"]).decode().splitlines()
+                subj = inspect(xml_paths)
+                if subj:
+                    print(subj)
+                    found += 1
+                counter += 1
 
 print("--------------------")
 print("{} subjects verified".format(counter))
