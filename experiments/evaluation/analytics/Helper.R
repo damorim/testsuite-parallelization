@@ -1,8 +1,8 @@
 which_group <- function(time) {
-  if (time <= 60) {
+  if (time < 60) {
     return("short")
   }
-  else if (time <= (5 * 60)) {
+  else if (time < (5 * 60)) {
     return("medium")
   }
   return("long")
@@ -38,6 +38,7 @@ args <- commandArgs(trailingOnly = TRUE)
 file_input <- args[1] 
 output_dir <- args[2]
 
+# "../results/dataset-execution-1612072044.csv"
 ds <- read.csv(file_input)
 ds <- ds[ds$mode == "Standard",]
 ds$minutes <- sapply(ds$elapsed_time, function(v) {
