@@ -29,6 +29,7 @@ def filter_relevant_paths(paths):
 def main():
     counter = 0
     found = 0
+    relevant_files_counter = 0
     files_counter = 0
     with open(args.input, newline="") as f:
         reader = csv.DictReader(f)
@@ -40,14 +41,20 @@ def main():
                     paths = filter_relevant_paths(xml_paths)
                     if paths:
                         print("{} ({}/{} relevant files)".format(row["name"], len(paths), len(xml_paths)))
-                        files_counter += len(paths)
+                        relevant_files_counter += len(paths)
+                        files_counter += len(xml_paths)
                         found += 1
                     counter += 1
+
     print("--------------------")
     print("{} subjects verified".format(counter))
     print("{} subjects found".format(found))
-    print("{} files to inspect".format(files_counter))
     print("%.2f%%" % (found / counter * 100))
+
+    print("{} files to found".format(files_counter))
+    print("{} files to inspect".format(relevant_files_counter))
+    print("%.2f%%" % (relevant_files_counter/ files_counter* 100))
+
 
 if __name__ == "__main__":
     main()
