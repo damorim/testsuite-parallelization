@@ -41,6 +41,9 @@ def main():
                     paths = filter_relevant_paths(xml_paths)
                     if paths:
                         print("{} ({}/{} relevant files)".format(row["name"], len(paths), len(xml_paths)))
+                        for p in paths:
+                            print(" - {}".format(p))
+
                         relevant_files_counter += len(paths)
                         files_counter += len(xml_paths)
                         found += 1
@@ -53,7 +56,7 @@ def main():
 
     print("{} files to found".format(files_counter))
     print("{} files to inspect".format(relevant_files_counter))
-    print("%.2f%%" % (relevant_files_counter/ files_counter* 100))
+    print("%.2f%%" % (relevant_files_counter / files_counter * 100))
 
 
 if __name__ == "__main__":
