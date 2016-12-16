@@ -8,34 +8,40 @@ As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both components can add up to the
 aggregate cost of running a test suite, which can lead to late reports
 of test failures.  Dealing with high testing costs is critical at
-large IT organizations, with massive code and test bases.  The Google
-TAP system~\cite{google-tap,google-ci} and the Microsoft CloudBuild
-system~\cite{prasad-shulte-ieee-microsoft-ci} provide evidence on the
-criticality of the build and the testing processes at these
-organizations.  Note, however, that the regression testing problem is
-not specific to giants from the IT sector.  For example, a recent
-paper from the automotive industry reported that test suites can take
-days to run~\cite{artl-etal-icst2015}.
+large IT organizations, with massive code and test bases.  Evidence on
+the criticality of running the build and testing processes efficiently
+include the Google's TAP system~\cite{google-tap,google-ci} and
+Microsoft's CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci}.
+Note, however, that the regression testing problem is not specific to
+giants from the IT sector.  For example, a recent paper from the
+automotive industry reported that test suites can take days to
+run~\cite{artl-etal-icst2015}.
 
 Several approaches have been proposed in the literature to address the
 regression testing problem.  Research has focused mostly on test suite
 minimization, prioritization, reduction, and
-selection~\cite{yoo-harman-stvr2012}.  It is important to note,
-however, that balancing the test workload, either within or across
-machines, is a popular, sound, and practical approach to address
-testing cost and can't be neglected.  Furthermore, this approach is
-complementary to those proposed in the literature. For example, as of
-August 2013, the Groupon PWA system, which powers the
-\url{groupon.com} website, included over 19K tests.  To run all those
-tests under 10m, Groupon used a cluster of 4 computers with 24 cores
-each~\cite{kim-etal-fse2013}.  As additional examples, Google's TAP
-and Microsoft's CloudBuild distribute task workloads in the cloud.
+selection~\cite{yoo-harman-stvr2012}.  These approaches reduce cost by
+reducing the amount of tests that require execution.  It is important
+to bring to light, however, that the complementary approach of
+balancing the test workload, either within or across machines, is
+sound (as selection techniques such as
+Ekstazi~\cite{gligoric-etal-issta2015}) and very popular in industry.
+For example, as of August 2013, the Groupon PWA system, which powers
+the \url{groupon.com} website, included over 19K tests.  To run all
+those tests under 10m, Groupon used a cluster of 4 computers with 24
+cores each~\cite{kim-etal-fse2013}.
+
+%% As additional examples, Google's
+%% TAP and Microsoft's CloudBuild distribute task workloads in the cloud.
+
 The alternative of renting a cloud
 service\footnote{\url{https://clutch.co/cloud}} or even building a
-server farm (for increased security) is a legitimate approach to
-mitigate the regression testing problem at large organizations.  This
-paper assumes, however, that this solution is not economically viable
-for smaller projects with heavy testing loads.
+private server farm for increased security is a legitimate approach to
+mitigate the regression testing problem at large organizations.
+However, for projects with low budgets yet moderate or heavy testing
+workloads, this solution may not be economically viable.\Mar{can you
+  please estimate cost?  what about free services?  what about
+  jenkins?}
 
 %% papers also indicate the important of speeding up the testing process
 %% in other industrial domain, e.g., in 
@@ -44,11 +50,13 @@ for smaller projects with heavy testing loads.
 %%   tests, and how prevalent is parallelization (in contrast to
 %%   regression testing).}
 
-This paper focuses on optimizing regression testing of open-source
-projects using commodity hardware.  This is an important problem
-assuming that it is not rare for open-source projects to face high
-testing costs.  \Fix{mention similar but different work} To the best
-of our knowledge no prior work investigated this problem.
+The amount of serious open-source project under development today is
+impressive.\Mar{give example, provide stats.}  This paper focuses on
+optimizing regression testing of open-source projects using commodity
+hardware.  This is an important problem assuming that it is not rare
+for open-source projects to face high testing costs.  \Fix{mention
+  similar but different work} To the best of our knowledge no prior
+work investigated this problem.
 
 ---- aqui
 
@@ -99,3 +107,8 @@ Summary of the contributions of this paper} .
 %%  LocalWords:  parallelization multicore JUnit TestNG NUnit XXm YYm
 %%  LocalWords:  Groupon parallelizing multi JVMs CPUs JVM Milos TODO
 %%  LocalWords:  Ekstazi github CloudBuild PWA groupon criticality
+
+ 	
+%%% Local Variables:
+%%% TeX-master: "main"
+%%% End:
