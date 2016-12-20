@@ -13,7 +13,7 @@ final: pdf
 	pdffonts $(NAME).pdf; fi
 
 clean:
-	-rm -f *aux *bbl *blg *log *.dvi main.pdf
+	-rm -f *aux *bbl *blg *log *.dvi main.pdf *.fls *.fdb_latexmk *~
 
 tags: TAGS
 TAGS: ${TEX_FILES}
