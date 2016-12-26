@@ -73,7 +73,10 @@ def _run_tests(profile, clean=False):
         return
 
     with open(profile.log_file, "w") as log_file:
-        maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true")
+        # Ignore Javadoc + Findbugs + Apache RAT + Checkstyle
+        maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-Dfindbugs.skip=true",
+                                     "-Drat.skip=true", "-Dcheckstyle.skip=true")
+
         if profile.args:
             maven_args.extend(profile.args)
         time_args = ["/usr/bin/time", "-f", "%U,%S,%e", "-o", _performance_log_from(profile.log_file)]
