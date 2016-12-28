@@ -54,7 +54,11 @@ def _prepare_subject():
         raise model.NotMavenProjectException()
     # _add_parallel_profiles()
     # print(" - Created \"{}\" file with parallel profiles".format(EXPERIMENT_POM))
-    check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true"),
+
+    # Ignores:
+    #   1. Javadoc - saves time since it's completely non-related
+    #   2. Release Audit Tool (RAT) - some projects can't compile because of this plugin
+    check_call(maven.build_task("-DskipTests", "-Dmaven.javadoc.skip=true", "-Drat.skip=true"),
                timeout=30 * 60, stdout=DEVNULL, stderr=DEVNULL)
     print(" - Sources compiled")
     check_call(maven.resolve_dependencies_task(), stdout=DEVNULL, stderr=DEVNULL)
@@ -74,8 +78,8 @@ def _run_tests(profile, clean=False):
 
     with open(profile.log_file, "w") as log_file:
         # Ignore Javadoc + Findbugs + Apache RAT + Checkstyle
-        maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-Dfindbugs.skip=true",
-                                     "-Drat.skip=true", "-Dcheckstyle.skip=true")
+        maven_args = maven.test_task("-o", "-Dmaven.javadoc.skip=true", "-Drat.skip=true", "-Dfindbugs.skip=true",
+                                     "-Dcheckstyle.skip=true", "-Djacoco.skip=true", "-Dcoberture.skip=true")
 
         if profile.args:
             maven_args.extend(profile.args)
