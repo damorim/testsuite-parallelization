@@ -45,7 +45,10 @@ class OutputRegister(object):
         # Timestamp used across all output files
         self.__ts = datetime.fromtimestamp(time()).strftime('%y%m%d%H%M')
         self.__output_dir = output_dir
-        self.__subjects_csv = self.__f(OutputRegister.SUBJECTS_CSV)
+
+        # FIXME: Commented to skip this output
+        # self.__subjects_csv = self.__f(OutputRegister.SUBJECTS_CSV)
+
         self.__exec_csv = self.__f(OutputRegister.EXECUTION_CSV)
 
     def __f(self, params):
@@ -79,9 +82,11 @@ class OutputRegister(object):
                 writer.writerow(row)
 
     def subject(self, name, url, revision):
-        with open(self.__subjects_csv, "a", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=OutputRegister.SUBJECTS_CSV.cols)
-            writer.writerow({"name": name, "url": url, "rev": revision})
+        # FIXME: Comment to skip this output
+        # with open(self.__subjects_csv, "a", newline="") as f:
+        #     writer = csv.DictWriter(f, fieldnames=OutputRegister.SUBJECTS_CSV.cols)
+        #     writer.writerow({"name": name, "url": url, "rev": revision})
+        pass
 
     @classmethod
     def error(cls, when, name, url, revision, cause):
