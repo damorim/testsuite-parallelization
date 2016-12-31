@@ -142,12 +142,13 @@ https://api.github.com/search/repositories?q=
     paginated in descending order of stars.}
 \end{figure}
 
-As of December 30th 2016, our search criteria returned 615 subjects.
-From the 615 downloaded projects, \Fix{we considered 312 projects that we
-were able to compile and test. The others 277 could not be considered
-because 39 were not Maven projects, 26 could not fetch all required
-dependencies, 125 could not be compiled, and 87 could not execute the
-tests.}
+A Maven project may contain several submodules with multiple
+\emph{pom.xml} files. We considered only projects with a
+\emph{pom.xml} file located in the root directory.  As of December
+30th 2016, our search criteria returned 615 subjects. From the 615
+downloaded projects, 46 were not Maven projects, 25 were unable to fetch
+all dependencies (\eg, due to the usage of a private library), and 128
+were in an unstable revision. Our final set consists in 416 subjects.
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -173,17 +174,20 @@ dependencies.
 \end{itemize}
 
 To evaluate the frequency of time-consuming regression tests, we
-considered the 312 subjects from Section~\ref{sec:subjects} and
+considered the 416 subjects from Section~\ref{sec:subjects} and
 compared the elapsed time to run their tests.
-Figure~\ref{fig:mvn-execution} illustrates the commands used in our
-scripts to test each subject.  To avoid inflating the measured time,
-we first compile the sources files (line 1) and later, we ran the
-tests ignoring non-related tasks (line 3).  In addition, when we run a
-subject's test suite, we operate Maven in offline mode to limit the
-network access, avoiding any unnecessary package update as all
-required \emph{jars} are available locally (line 2).  After the test
-execution, we use a simple regular expression over the builder output
-to extract the elapsed time.
+Figure~\ref{fig:mvn-execution} shows the commands used in our scripts
+to test each subject. The main loop (line 12) iterates over the list
+of subjects and invokes the wrapper function \emph{run} to execute
+Maven in separated steps (lines 14-16). To avoid inflating the
+measured time, we first fetch all dependencies (line 14), compile the
+source and test files (line 15) and later, we invoke Maven in offline
+mode (line 16) to avoid package updates. In addition we randomly
+selected 100 Maven logs to inspect and identify non-related tasks
+(\eg, \emph{javadoc} generation and static analysis). We created a
+list of plugins (lines 1-5) to ignore them during the test execution.
+After the test execution, we use a simple regular expression over
+the builder output to extract the elapsed time.
 
 \begin{figure}[h!]
 \centering
@@ -192,20 +196,29 @@ to extract the elapsed time.
     escapeinside={@}{@},
     numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
     basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    morekeywords={o, DskipTests, Dmaven, javadoc, skip, go, offline, P},
-    deletekeywords={true}
 }
-\begin{lstlisting}
-mvn clean install -DskipTests -Dmaven.javadoc.skip=true
-mvn dependency:go-offline
-mvn -o test -Dmaven.javadoc.skip=true
+\begin{lstlisting}[language=Python]
+MAVEN_IGNORES = [
+   "-Drat.skip=true", "-Dmaven.javadoc.skip=true",
+   "-Djacoco.skip=true", "-Dcheckstyle.skip=true",
+   "-Dfindbugs=true", "-Dcobertura.skip=true"
+]
+
+def run(cmds, opts=None):
+   if opts not None:
+      cmds.extend(opts)
+   subprocess.call(cmds)
+
+for subject in SUBJECTS:
+   os.chdir(subject)
+   run(["mvn", "dependency:go-offline"])
+   run(["mvn", "clean", "install", "-DskipTests"])
+   run(["mvn", "-o", "test"], MAVEN_IGNORES)
 \end{lstlisting}
-\caption{\label{fig:mvn-execution} Maven commands to test a subject:
-    line 1 compiles all subject's source artifacts and make them
-    available in a local repository (\ie, directory \emph{.m2} in the
-    user's home directory); line 2 ensures all dependencies are
-    resolved; line 3 runs the tests in offline mode ignoring javadoc
-    generation.}
+\caption{\label{fig:mvn-execution} Python script to evaluate the
+    time cost of test suites. For each subject, we fetch all
+    dependencies, compile the source and test files, and execute the
+    tests in offline mode ignoring non-related tasks.}
 \end{figure}
 
 We grouped the subjects according to the execution time: tests that
