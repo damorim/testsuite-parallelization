@@ -142,13 +142,16 @@ https://api.github.com/search/repositories?q=
     paginated in descending order of stars.}
 \end{figure}
 
+\newcommand{\SubjCnt}{412}
+
 A Maven project may contain several submodules with multiple
 \emph{pom.xml} files. We considered only projects with a
 \emph{pom.xml} file located in the root directory.  As of December
 30th 2016, our search criteria returned 615 subjects. From the 615
-downloaded projects, 46 were not Maven projects, 25 were unable to fetch
-all dependencies (\eg, due to the usage of a private library), and 128
-were in an unstable revision. Our final set consists in 416 subjects.
+downloaded projects, 46 were not Maven projects, 26 were unable to
+fetch all dependencies (\eg, due to the usage of a private library),
+and 131 were in an unstable revision. Our final set consists in
+\SubjCnt{} subjects.
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -174,7 +177,7 @@ dependencies.
 \end{itemize}
 
 To evaluate the frequency of time-consuming regression tests, we
-considered the 416 subjects from Section~\ref{sec:subjects} and
+considered the \SubjCnt{} subjects from Section~\ref{sec:subjects} and
 compared the elapsed time to run their tests.
 Figure~\ref{fig:mvn-execution} shows the commands used in our scripts
 to test each subject. The main loop (line 12) iterates over the list
@@ -186,8 +189,8 @@ mode (line 16) to avoid package updates. In addition we randomly
 selected 100 Maven logs to inspect and identify non-related tasks
 (\eg, \emph{javadoc} generation and static analysis). We created a
 list of plugins (lines 1-5) to ignore them during the test execution.
-After the test execution, we use a simple regular expression over
-the builder output to extract the elapsed time.
+After the test execution, we use a simple regular expression over the
+builder output to extract the elapsed time.
 
 \begin{figure}[h!]
 \centering
