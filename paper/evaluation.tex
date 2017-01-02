@@ -179,18 +179,17 @@ dependencies.}
 To evaluate the frequency of time-consuming regression tests, we
 considered the \SubjCnt{} subjects from Section~\ref{sec:subjects} and
 compared the elapsed time to run their tests.
-Figure~\ref{fig:mvn-execution} shows the commands used in our scripts
-to test each subject. The main loop (line 12) iterates over the list
-of subjects and invokes the wrapper function \emph{run} to execute
-Maven in separated steps (lines 14-16). To avoid inflating the
-measured time, we first compile the source and test files (line 14),
-fetch all dependencies (line 15) and later, we run the tests in offline
-mode (line 16) to avoid package updates. In addition we randomly
-selected 100 Maven logs to inspect and identify non-related tasks
-(\eg, \emph{javadoc} generation and static analysis). We created a
-list of plugins (lines 1-5) to ignore them during the test execution.
-Finally, we use a simple regular expression over the test output to
-extract the elapsed time.
+Figure~\ref{fig:mvn-execution} shows the commands used in our script
+to test each subject. The main loop (lines 6-12) iterates over the
+list of subjects and invokes Maven in separated steps (lines 8-10). To
+avoid inflating the measured time, we first compile the source and
+test files (line 8), fetch all dependencies (line 9) and later, we
+run the tests in offline mode (line 10) to avoid package updates. In
+addition we randomly selected 100 Maven logs to inspect and identify
+non-related tasks (\eg, \emph{javadoc} generation and static
+analysis). We created a list of plugins (lines 1-4) to ignore them
+during the test execution.  Finally, we use a simple regular
+expression over the test output to extract the elapsed time (line 13).
 
 \begin{figure}[h!]
 \centering
@@ -199,29 +198,26 @@ extract the elapsed time.
     escapeinside={@}{@},
     numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
     basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    showstringspaces=false
 }
-\begin{lstlisting}[language=Python]
-MAVEN_IGNORES = [
-   "-Drat.skip=true", "-Dmaven.javadoc.skip=true",
-   "-Djacoco.skip=true", "-Dcheckstyle.skip=true",
-   "-Dfindbugs=true", "-Dcobertura.skip=true"
-]
+\begin{lstlisting}[language=Bash]
+MAVEN_IGNORES="-Dmaven.javadoc.skip=true \
+    -Drat.skip=true -Djacoco.skip=true \
+    -Dcheckstyle.skip=true -Dfindbugs=true \
+    -Dcobertura.skip=true"
 
-def run(cmds, opts=None):
-   if opts not None:
-      cmds.extend(opts)
-   subprocess.call(cmds)
-
-for subject in SUBJECTS:
-   os.chdir(subject)
-   run(["mvn", "clean", "install", "-DskipTests"])
-   run(["mvn", "dependency:go-offline"])
-   run(["mvn", "-o", "test"], MAVEN_IGNORES)
+for subj in ${SUBJECTS}; do
+    cd ${SUBJECTS_HOME}/${subj}
+    mvn clean install -DskipTests ${MAVEN_IGNORES}
+    mvn dependency:go-offline
+    mvn -o test ${MAVEN_IGNORES} &> ${LOG}
+    cat ${LOG} | grep "\[INFO\] Total time:"
+done
 \end{lstlisting}
-\caption{\label{fig:mvn-execution} Python script to evaluate the time cost of
+\caption{\label{fig:mvn-execution} Bash script to evaluate the time cost of
     test suites. For each subject, we compile the source and test files, fetch
     all dependencies, and execute the tests in offline mode ignoring
-    non-related tasks.}
+    non-related tasks. Unnecessary commands are omitted for simplicity.}
 \end{figure}
 
 We grouped the subjects according to the execution time: tests that
