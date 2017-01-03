@@ -273,9 +273,32 @@ because they represent costly test suites and are more likely that the
 developers may have used strategies to reduce the execution cost (\eg,
 running parts of the tests in different threads). We computed the
 frequence of the parallelism modes (see Section \ref{sec:modes}) using
-a partially manual approach: we first discover automatically the
-relevant configuration files and then we manually inspect to eliminate
-false-positves (\eg, commented configuration).
+a semi-automatic approach: we first discover automatically the
+relevant configuration files and then we manually inspect them to
+eliminate false-positves (\eg, commented configuration).  Figure
+\Fix{N} describes the discovery step. We first list the paths of all
+build file and then we filter only the build files that contain any of
+the keywords, \CodeIn{forkMode}, \CodeIn{forkCount}, or
+\CodeIn{parallel}.
+
+\begin{figure}[h!]
+\centering
+\scriptsize
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    showstringspaces=false
+}
+\begin{lstlisting}[language=Bash]
+for subj in ${SUBJECTS}; do
+    subject_path=${SUBJECTS_HOME}/${subj}
+    build_files=`find $subject_path -name pom.xml`
+done
+\end{lstlisting}
+\caption{\label{fig:discovery-step} Bash script \Fix{to do
+         something...}. Unnecessary commands are omitted for simplicity.}
+\end{figure}
 
 \Fix{---------------------}
 
