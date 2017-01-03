@@ -139,8 +139,6 @@ https://api.github.com/search/repositories?q=
     paginated in descending order of stars.}
 \end{figure}
 
-\newcommand{\SubjCnt}{411}
-
 A Maven project may contain several submodules with multiple
 \emph{pom.xml} files. We considered only projects with a
 \emph{pom.xml} file located in the root directory.  As of December
@@ -148,7 +146,7 @@ A Maven project may contain several submodules with multiple
 downloaded projects, 46 were not Maven projects, 27 were unable to
 fetch all dependencies (\eg, due to the usage of a private library),
 and 131 were in an unstable revision. Our final set consists in
-\SubjCnt{} subjects.
+\numSubjs{} subjects.
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -174,7 +172,7 @@ dependencies.}
 \end{itemize}
 
 To evaluate the frequency of time-consuming regression tests, we
-considered the \SubjCnt{} subjects from Section~\ref{sec:subjects} and
+considered the \numSubjs{} subjects from Section~\ref{sec:subjects} and
 compared the elapsed time to run their tests.
 Figure~\ref{fig:mvn-execution} shows the commands used in our script
 to test each subject. The main loop (lines 6-12) iterates over the
