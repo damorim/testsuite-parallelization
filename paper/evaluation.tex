@@ -1,21 +1,15 @@
 \section{Evaluation}
 \label{sec:eval}
 
-\Mar{I think the high-level goal should be something along the lines
-  of understanding prevalence of long test runs and main sources of
-  cost in open-source Java projects.  Intuitively, the problem should
-  come before the solution :).  Based on that, we study
-  parallelization of testing frameworks.  More precisely, we
-  investigage how prevalent test parallelization is, the potential for
-  improving execution cost, issues of flakiness that hinders use of
-  parallelization, and how to address those issues.}
-
-We evaluated the characteristics of regression tests in open-source
-development from a sample set of Java projects from \github{}. We are
-interested in understanding the prevalence of long test runs, the main
-sources of cost, and how do developers explore parallelism to improve
-execution performance. More specifically, we pose the following
-research questions:
+We are interested in understanding the prevalence of time-consuming
+test suites and main sources of cost. We want to understand how the
+execution cost is distributed on test cases withing a test suite and
+how developers approach test execution. Based on that, we study
+parallelization of testing frameworks.  More precisely, we investigate
+how prevalent test parallelization is, the potential for improving
+execution cost, issues of flakiness that hinders use of
+parallelization, and how to address those issues.  More specifically,
+we pose the following research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
@@ -94,14 +88,16 @@ the pitfalls of parallelization.
 \subsection{Subjects}
 \label{sec:subjects}
 
-We are interested to evaluate non-trivial test suites on popular
-projects that are in activity. We used the \github{}'s search
+We evaluated the characteristics of regression tests in open-source
+development from a sample set of Java projects from \github{}.  We are
+interested to evaluate non-trivial test suites on popular projects
+that are in activity. We used the \github{}'s search
 API~\cite{githubsearch} to fetch Java projects according to the
 following criteria: (1) the primary language must be Java\footnote{In
-case of projects in multiple languages, the \github{} API considers the
-predominant language as the primary language.}; (2) the project has at
-least 100 stars; (3) latest update on (or after) January 1st, 2016;
-(4) the \emph{readme} file contains the string \emph{mvn}.
+case of projects in multiple languages, the \github{} API considers
+the predominant language as the primary language.}; (2) the project
+has at least 100 stars; (3) latest update on (or after) January 1st,
+2016; (4) the \emph{readme} file contains the string \emph{mvn}.
 
 On \github{}, when a user adds a star to a project, s/he demonstrated
 appreciation and bookmarked it for later
