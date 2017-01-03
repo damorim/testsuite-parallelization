@@ -11,7 +11,7 @@
   parallelization, and how to address those issues.}
 
 We evaluated the characteristics of regression tests in open-source
-development from a sample set of Java projects from Github. We are
+development from a sample set of Java projects from \github{}. We are
 interested in understanding the prevalence of long test runs, the main
 sources of cost, and how do developers explore parallelism to improve
 execution performance. More specifically, we pose the following
@@ -94,19 +94,19 @@ the pitfalls of parallelization.
 \label{sec:subjects}
 
 We are interested to evaluate non-trivial test suites on popular
-projects that are in activity. We used the Github's Search
+projects that are in activity. We used the \github{}'s search
 API~\cite{githubsearch} to fetch Java projects according to the
 following criteria: (1) the primary language must be Java\footnote{In
-case of projects in multiple languages, the Github API considers the
+case of projects in multiple languages, the \github{} API considers the
 predominant language as the primary language.}; (2) the project has at
 least 100 stars; (3) latest update on (or after) January 1st, 2016;
 (4) the \emph{readme} file contains the string \emph{mvn}.
 
-On Github, when a user adds a star to a project, s/he demonstrated
+On \github{}, when a user adds a star to a project, s/he demonstrated
 appreciation and bookmarked it for later
 reference~\cite{github-stars}.  Although there is not a specific range
 for the number of stars, our criteria is an estimation to avoid
-trivial subjects: we assumed that Github users are likely to
+trivial subjects: we assumed that \github{} users are likely to
 demonstrate interest on well-tested projects. The third criteria is a
 constraint to skip projects without recent activity. The fourth
 criteria is an approximation to find projects with Maven support. We
@@ -132,7 +132,7 @@ https://api.github.com/search/repositories?q=
     pushed:>=2016-01-01+sort:stars
 
 \end{lstlisting}
-\caption{\label{fig:subject-query} Query to the Github API for
+    \caption{\label{fig:subject-query} Query to the \github{} API for
     projects with the following criteria: (1) Java, (2) at least 100
     stars, (3) updated on January 1st, 2016 (or later), (4) contains
     the string \emph{mvn} in the \emph{readme} file. Output is
@@ -274,12 +274,12 @@ We computed the frequence of the parallelism modes (see Section
 \ref{sec:modes}) using a semi-automatic approach: we first discover
 automatically the relevant configuration files and then we manually
 inspect them to eliminate false-positves (\eg, commented
-configuration).  Figure \Fix{N} describes the discovery step. We first
-list the paths of all build file and then we filter only the build
-files that contain any of the keywords, \CodeIn{forkMode},
-\CodeIn{forkCount}, or \CodeIn{parallel}. Notice that, for Maven
-projects, these any keywords exist in any possible parallelism
-configuration \Fix{cite surefire doc}.
+configuration).  Figure~\ref{fig:discovery-step} describes the
+discovery step. We first list the paths of all build file and then we
+filter only the build files that contain any of the keywords,
+\CodeIn{forkMode}, \CodeIn{forkCount}, or \CodeIn{parallel}. Notice
+that, for Maven projects, these any keywords exist in any possible
+parallelism configuration \Fix{cite surefire doc}.
 
 \begin{figure}[h!]
 \centering
