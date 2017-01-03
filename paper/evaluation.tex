@@ -13,6 +13,8 @@ we pose the following research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
+\newcommand{\RQF}{How the time cost from a test suite is distributed
+among the test cases?}
 \newcommand{\RQB}{How often are parallelization features in
 build files?}
 \newcommand{\RQC}{What is the impact of parallalelization?}
@@ -28,9 +30,11 @@ works and when it does not so great?"}}
 \newcommand{\rqThree}{\textbf{RQ3.} \RQC}
 \newcommand{\rqFour}{\textbf{RQ4.} \RQD}
 \newcommand{\rqFive}{\textbf{RQ5.} \RQE}
+\newcommand{\rqF}{\textbf{RQF.} \RQF}
 
 \begin{itemize}
     \item \rqOne
+    \item \rqF
     \item \rqTwo
     \item \rqThree
     \item \rqFour
@@ -48,24 +52,26 @@ works and when it does not so great?"}}
 
 The first research question addresses the prevalence of long-running
 test suites. We are interested to know if costly test suites are
-common in open-source projects.  The second research question
-addresses our interest in understanding if developers are aware of
-parallelization features from testing frameworks available
-out-of-the-box through build systems (\eg, run JUnit test cases in
-parallel using Maven Surefire) and what setting are more often used.
-The third research question addresses the impact of parallelism on the
-regression tests from our sample set. For subjects that use
-parallelization settings, we are interested in compare the execution
-performance when these settings are activated and deactivated (\ie,
-sequential execution). The fourth research question addresses the
-characteristics of regression tests from the previous experiment.
-More specifically, we want to investigate if there is a relation
-between the balance of test execution (\ie, how uniformly distributed
-is the execution time across tests cases) and the usage of
-computational resources (\ie, if tests are mostly CPU or IO intense)
-that impacts the effectiveness of parallelization. Finally, the fifth
-research question discusses the limitations and insights to overcome
-the pitfalls of parallelization.
+common in open-source projects. The \Fix{X} research question
+addresses the balance of regression tests. We want to investigate how
+the time cost of a test suite is distributed among test cases. The
+second research question addresses our interest in understanding if
+developers are aware of parallelization features from testing
+frameworks available out-of-the-box through build systems (\eg, run
+JUnit test cases in parallel using Maven Surefire) and what setting
+are more often used.  The third research question addresses the impact
+of parallelism on the regression tests from our sample set. For
+subjects that use parallelization settings, we are interested in
+compare the execution performance when these settings are activated
+and deactivated (\ie, sequential execution). The fourth research
+question addresses the characteristics of regression tests from the
+previous experiment.  More specifically, we want to investigate if
+there is a relation between the balance of test execution (\ie, how
+uniformly distributed is the execution time across tests cases) and
+the usage of computational resources (\ie, if tests are mostly CPU or
+IO intense) that impacts the effectiveness of parallelization.
+Finally, the fifth research question discusses the limitations and
+insights to overcome the pitfalls of parallelization.
 
 \Comment{
     \Fix{distribution of execution time per test case. For each subject
@@ -226,6 +232,15 @@ group}.  It is important to mention that
 Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
 time: some tests may finish early due to a failure since the subjects
 were tested in a potentially unstable revision.
+
+\subsection{Answering research question RQF}
+\label{sec:rqF}
+
+\begin{itemize}
+    \item \emph{\RQF}
+\end{itemize}
+
+\Fix{to appear}
 
 \subsection{Answering research question RQ2}
 \label{sec:rqTwo}
