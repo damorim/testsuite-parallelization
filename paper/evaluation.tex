@@ -19,8 +19,8 @@ research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
-\newcommand{\RQB}{How often are parallelization features in build
-files?}
+\newcommand{\RQB}{How often are parallelization features present in
+build files?}
 \newcommand{\RQC}{What is the impact of parallalelization?}
 
 \newcommand{\RQD}{What factors contribute to improve performance
@@ -266,9 +266,21 @@ were tested in a potentially unstable revision.
     \item \emph{\RQB}
 \end{itemize}
 
-To evaluate the  use of low-level parallelism, we considered the 91
-subjects from the groups \emph{long} and \emph{medium} identified in
-Section~\ref{sec:rqone}. In an initial exploration, we searched for
+To evaluate the presence of parallelization settings, we considered
+the \Fix{91} subjects from the groups \emph{long} and \emph{medium}
+identified in Section~\ref{sec:rqone}. We focused in these two groups
+because they represent costly test suites and are more likely that the
+developers may have used strategies to reduce the execution cost (\eg,
+running parts of the tests in different threads). We computed the
+frequence of the parallelism modes (see Section \ref{sec:modes}) using
+a partially manual approach: we first discover automatically the
+relevant configuration files and then we manually inspect to eliminate
+false-positves (\eg, commented configuration).
+
+\Fix{---------------------}
+
+
+In an initial exploration, we searched for
 evidences of low-level parallelism settings on configuration files
 (\ie, \emph{pom.xml}) from each subject using a semi-automated
 approach: we use a script to find all subjects with evidences of
