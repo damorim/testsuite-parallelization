@@ -13,32 +13,30 @@ we pose the following research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
-\newcommand{\RQF}{How the time cost from a test suite is distributed
+\newcommand{\RQB}{How the time cost from a test suite is distributed
 among the test cases?}
-\newcommand{\RQB}{How often are parallelization features in
+\newcommand{\RQC}{How often are parallelization features in
 build files?}
-\newcommand{\RQC}{What is the impact of parallalelization?}
-
-\newcommand{\RQD}{What factors contribute to improve performance
+\newcommand{\RQD}{What is the impact of parallalelization?}
+\newcommand{\RQE}{What factors contribute to improve performance
 through parallelization?\Jbc{Previously as "When does parallelization
 works and when it does not so great?"}}
+\newcommand{\RQF}{What are the limitations of parallelization?}
 
-\newcommand{\RQE}{What are the limitations of parallelization?}
-
-\newcommand{\rqOne}{\textbf{RQ1.} \RQA}
-\newcommand{\rqTwo}{\textbf{RQ2.} \RQB}
-\newcommand{\rqThree}{\textbf{RQ3.} \RQC}
-\newcommand{\rqFour}{\textbf{RQ4.} \RQD}
-\newcommand{\rqFive}{\textbf{RQ5.} \RQE}
-\newcommand{\rqF}{\textbf{RQF.} \RQF}
+\newcommand{\rqA}{\textbf{RQ1.} \RQA}
+\newcommand{\rqB}{\textbf{RQ2.} \RQB}
+\newcommand{\rqC}{\textbf{RQ3.} \RQC}
+\newcommand{\rqD}{\textbf{RQ4.} \RQD}
+\newcommand{\rqE}{\textbf{RQ5.} \RQE}
+\newcommand{\rqF}{\textbf{RQ6.} \RQF}
 
 \begin{itemize}
-    \item \rqOne
+    \item \rqA
+    \item \rqB
+    \item \rqC
+    \item \rqD
+    \item \rqE
     \item \rqF
-    \item \rqTwo
-    \item \rqThree
-    \item \rqFour
-    \item \rqFive
 \end{itemize}
 
 %%\newcommand{\RQB}{What is the distribution of CPU and IO bound
@@ -52,25 +50,25 @@ works and when it does not so great?"}}
 
 The first research question addresses the prevalence of long-running
 test suites. We are interested to know if costly test suites are
-common in open-source projects. The \Fix{X} research question
-addresses the balance of regression tests. We want to investigate how
-the time cost of a test suite is distributed among test cases. The
-second research question addresses our interest in understanding if
+common in open-source projects. The second research question addresses
+the balance of regression tests. We want to investigate how the time
+cost of a test suite is distributed among test cases. The third
+research question addresses our interest in understanding if
 developers are aware of parallelization features from testing
 frameworks available out-of-the-box through build systems (\eg, run
 JUnit test cases in parallel using Maven Surefire) and what setting
-are more often used.  The third research question addresses the impact
-of parallelism on the regression tests from our sample set. For
+are more often used.  The fourth research question addresses the
+impact of parallelism on the regression tests from our sample set. For
 subjects that use parallelization settings, we are interested in
 compare the execution performance when these settings are activated
-and deactivated (\ie, sequential execution). The fourth research
+and deactivated (\ie, sequential execution). The fifth research
 question addresses the characteristics of regression tests from the
 previous experiment.  More specifically, we want to investigate if
 there is a relation between the balance of test execution (\ie, how
 uniformly distributed is the execution time across tests cases) and
 the usage of computational resources (\ie, if tests are mostly CPU or
 IO intense) that impacts the effectiveness of parallelization.
-Finally, the fifth research question discusses the limitations and
+Finally, the sixth research question discusses the limitations and
 insights to overcome the pitfalls of parallelization.
 
 \Comment{
@@ -233,25 +231,25 @@ Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
 time: some tests may finish early due to a failure since the subjects
 were tested in a potentially unstable revision.
 
-\subsection{Answering research question RQF}
-\label{sec:rqF}
-
-\begin{itemize}
-    \item \emph{\RQF}
-\end{itemize}
-
-\Fix{to appear}
-
 \subsection{Answering research question RQ2}
-\label{sec:rqTwo}
+\label{sec:rqB}
 
 \begin{itemize}
     \item \emph{\RQB}
 \end{itemize}
 
+\Fix{to appear}
+
+\subsection{Answering research question RQ3}
+\label{sec:rqC}
+
+\begin{itemize}
+    \item \emph{\RQC}
+\end{itemize}
+
 To evaluate the presence of parallelization settings, we considered
 the \numSubjsRqTwo{} subjects from the groups \emph{long} and
-\emph{medium} identified in Section~\ref{sec:rqone}. We focused on
+\emph{medium} identified in Section~\ref{sec:rqA}. We focused on
 these two groups because given that costly test suites exist, we
 wanted to analyze if their maintainers are aware of parallelization
 settings and how they use these settings.  We computed the
@@ -274,11 +272,11 @@ subjects). \Jbc{How many were valid configurations? Show a contingency
 table summarizing results for Medium/Long when we have the results}
 \Jbc{Show a histogram with the distribution of parallel modes}.
 
-\subsection{Answering research question RQ3}
-\label{sec:rqThree}
+\subsection{Answering research question RQ4}
+\label{sec:rqD}
 
 \begin{itemize}
-    \item \emph{\RQC}
+    \item \emph{\RQD}
 \end{itemize}
 
 \Jbc{describe}.\Jbc{relevance}. \Jbc{methodology}.
