@@ -189,34 +189,7 @@ We executed this experiment \Fix{X} times in our dedicated server
 remotely via SSH with the operating system running only essential
 services (\eg, the SSH server). \Fix{Describe CPU isolation}
 
-\begin{figure}[h!]
-\centering
-\scriptsize
-\lstset{
-    escapeinside={@}{@},
-    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
-    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    showstringspaces=false
-}
-\begin{lstlisting}[language=Bash]
-MAVEN_IGNORES="-Dmaven.javadoc.skip=true \
-    -Drat.skip=true -Djacoco.skip=true \
-    -Dcheckstyle.skip=true -Dfindbugs=true \
-    -Dcobertura.skip=true"
-
-for subj in $SUBJECTS; do
-    cd $SUBJECTS_HOME/$subj
-    mvn clean install -DskipTests $MAVEN_IGNORES
-    mvn dependency:go-offline
-    mvn -o test $MAVEN_IGNORES &> $LOG
-    cat $LOG | grep "\[INFO\] Total time:"
-done
-\end{lstlisting}
-\caption{\label{fig:mvn-execution} Bash script to evaluate the time cost of
-    test suites. For each subject, we compile the source and test files, fetch
-    all dependencies, and execute the tests in offline mode ignoring
-    non-related tasks. Unnecessary commands are omitted for simplicity.}
-\end{figure}
+\input{codes/evaluation}
 
 We grouped the subjects according to the execution time: tests that
 ran in less than one minute (\emph{short execution}), one to five
@@ -266,90 +239,39 @@ were tested in a potentially unstable revision.
 
 To evaluate the presence of parallelization settings, we considered
 the \numSubjsRqTwo{} subjects from the groups \emph{long} and
-\emph{medium} identified in Section~\ref{sec:rqone}. We focused in
-these two groups because they represent costly test suites and are
-more likely that the developers may have used strategies to reduce the
-execution cost (\eg, running parts of the tests in different threads).
-We computed the frequence of the parallelism modes (see Section
-\ref{sec:modes}) using a semi-automatic approach: we first discover
-automatically the relevant configuration files and then we manually
+\emph{medium} identified in Section~\ref{sec:rqone}. We focused on
+these two groups because given that costly test suites exist, we
+wanted to analyze if their maintainers are aware of parallelization
+settings and how they use these settings.  We computed the
+frequency of the parallelism modes (see Section \ref{sec:modes}) using
+a semi-automatic approach: we first discover automatically the
+relevant build files (\ie, \emph{pom.xml} files) and then we manually
 inspect them to eliminate false-positves (\eg, commented
 configuration).  Figure~\ref{fig:discovery-step} describes the
-discovery step. We first list the paths of all build file and then we
+discovery step: first, we list the paths of all build file and then we
 filter only the build files that contain any of the keywords,
 \CodeIn{forkMode}, \CodeIn{forkCount}, or \CodeIn{parallel}. Notice
-that, for Maven projects, these any keywords exist in any possible
+that, for Maven projects, any of these keywords exist in any possible
 parallelism configuration \Fix{cite surefire doc}.
 
-\begin{figure}[h!]
-\centering
-\scriptsize
-\lstset{
-    escapeinside={@}{@},
-    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
-    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    showstringspaces=false
-}
-\begin{lstlisting}[language=Bash]
-for subj in $SUBJECTS; do
-    subject_path="$SUBJECTS_HOME/$subj"
-    build_files=`find $subject_path -name pom.xml`
-    for build_file in $build_files; do
-        output=`cat $build_file | grep "parallel\
-                \|forkMode\|forkCount"`
-        if [ -z $output ]; then
-            echo $build_file
-        fi
-done
-\end{lstlisting}
-    \caption{\label{fig:discovery-step} Bash script to filter
-    build files (\ie, \emph{pom.xml}) with potentially parallelization
-    settings. We first list all build files from a subject (line 3).
-    Then, we list the content of the file (\CodeIn{cat} command) and
-    redirect the output to filter only the lines that contains any of
-    the keywords \CodeIn{parallel}, \CodeIn{forkMode}, or
-    \CodeIn{forkCount} (\CodeIn{grep} command). If output is not empty
-    (line 7), we print the path from the current \emph{pom.xml} file.}
-\end{figure}
+\input{codes/discovery}
 
-From the \numSubjsRqTwo{} subjects, there was a total of \Fix{X} build
-files and \Fix{Y} to inspect.
+From the \numSubjsRqTwo{} subjects, the discovery step checked \Fix{X}
+files and yielded \Fix{Y} files to inspect (distributed in \Fix{A}
+subjects). \Jbc{How many were valid configurations? Show a contingency
+table summarizing results for Medium/Long when we have the results}
+\Jbc{Show a histogram with the distribution of parallel modes}.
+
+\subsection{Answering research question RQ3}
+\label{sec:rqThree}
+
+\begin{itemize}
+    \item \emph{\RQC}
+\end{itemize}
+
+\Jbc{describe}.\Jbc{relevance}. \Jbc{methodology}.
 
 \Fix{---------------------}
-
-
-From the 91 subjects, our script detected 43 subjects with evidence of
-parallel settings. After the inspection of 130 configuration files, we
-confirmed that \Fix{X} settings are real parallel configurations.
-These settings are related to \Fix{Y} subjects. It is important to
-notice that, \Fix{X}\% of the subjects (\emph{medium} and \emph{long}
-aggregated) did not explore low-level parallelism according to our
-criteria of matching keywords. After the inspection, this rate raises
-to \Fix{Y}\%. \Fix{elaborate: some projects doesn't use parallel
-features, so what?} Table~\ref{tab:inspection-table} summarizes our
-initial findings.
-
-\begin{table}[h!]\footnotesize
-    \centering
-    \begin{tabular*}{0.5\textwidth}{cccc}
-        \toprule
-        Group  & Subjects with Evidence & Config. Files & Config. Confirmed\\
-        \midrule
-        Long   & 22 / 35    & 77 / 1981       & \Fix{X} / 77\\%
-        Medium & 21 / 56    & 53 / 491        & \Fix{X} / 53\\%
-        \midrule 
-        Total  & 43 / 91    & 130 / 2472      & \Fix{X} / 130\\
-        \bottomrule
-    \end{tabular*}
-    \caption{\Fix{to-be-defined}}
-    \label{tab:inspection-table} 
-\end{table}
-
-
-
-\Fix{elaborate: write about the subjects that use parallelism - How do
-they use them? Would it be possible to measure the benefits? How the
-configs from Section~\ref{sec:modes} are distributed?}
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the

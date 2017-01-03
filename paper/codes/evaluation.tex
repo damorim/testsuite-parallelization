@@ -1,0 +1,28 @@
+\begin{figure}[h!]
+\centering
+\scriptsize
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    showstringspaces=false
+}
+\begin{lstlisting}[language=Bash]
+MAVEN_IGNORES="-Dmaven.javadoc.skip=true \
+    -Drat.skip=true -Djacoco.skip=true \
+    -Dcheckstyle.skip=true -Dfindbugs=true \
+    -Dcobertura.skip=true"
+
+for subj in $SUBJECTS; do
+    cd $SUBJECTS_HOME/$subj
+    mvn clean install -DskipTests $MAVEN_IGNORES
+    mvn dependency:go-offline
+    mvn -o test $MAVEN_IGNORES &> $LOG
+    cat $LOG | grep "\[INFO\] Total time:"
+done
+\end{lstlisting}
+\caption{\label{fig:mvn-execution} Bash script to evaluate the time cost of
+    test suites. For each subject, we compile the source and test files, fetch
+    all dependencies, and execute the tests in offline mode ignoring
+    non-related tasks. Unnecessary commands are omitted for simplicity.}
+\end{figure}

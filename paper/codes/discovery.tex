@@ -1,0 +1,31 @@
+\begin{figure}[h!]
+\centering
+\scriptsize
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    showstringspaces=false
+}
+\begin{lstlisting}[language=Bash]
+for subj in $SUBJECTS; do
+    subject_path="$SUBJECTS_HOME/$subj"
+    build_files=`find $subject_path -name pom.xml`
+    for build_file in $build_files; do
+        output=`cat $build_file | grep "parallel\
+                \|forkMode\|forkCount"`
+        if [ -z $output ]; then
+            echo $build_file
+        fi
+done
+\end{lstlisting}
+    \caption{\label{fig:discovery-step} Bash script to filter
+    build files (\ie, \emph{pom.xml}) with potentially parallelization
+    settings. We first find all build files from a subject (line 3).
+    Then, we iterate over each path (line 4), list the file content
+    (\CodeIn{cat} command), and redirect the output to filter only the
+    lines that contain any of the keywords \CodeIn{parallel},
+    \CodeIn{forkMode}, or \CodeIn{forkCount} (\CodeIn{grep} command).
+    If the output is not empty (line 7), we print the path from the
+    current \emph{pom.xml} file to inspect it later.}
+\end{figure}
