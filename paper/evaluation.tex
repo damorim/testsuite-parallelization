@@ -204,12 +204,12 @@ MAVEN_IGNORES="-Dmaven.javadoc.skip=true \
     -Dcheckstyle.skip=true -Dfindbugs=true \
     -Dcobertura.skip=true"
 
-for subj in ${SUBJECTS}; do
-    cd ${SUBJECTS_HOME}/${subj}
-    mvn clean install -DskipTests ${MAVEN_IGNORES}
+for subj in $SUBJECTS; do
+    cd $SUBJECTS_HOME/$subj
+    mvn clean install -DskipTests $MAVEN_IGNORES
     mvn dependency:go-offline
-    mvn -o test ${MAVEN_IGNORES} &> ${LOG}
-    cat ${LOG} | grep "\[INFO\] Total time:"
+    mvn -o test $MAVEN_IGNORES &> $LOG
+    cat $LOG | grep "\[INFO\] Total time:"
 done
 \end{lstlisting}
 \caption{\label{fig:mvn-execution} Bash script to evaluate the time cost of
@@ -265,19 +265,21 @@ were tested in a potentially unstable revision.
 \end{itemize}
 
 To evaluate the presence of parallelization settings, we considered
-the \Fix{91} subjects from the groups \emph{long} and \emph{medium}
-identified in Section~\ref{sec:rqone}. We focused in these two groups
-because they represent costly test suites and are more likely that the
-developers may have used strategies to reduce the execution cost (\eg,
-running parts of the tests in different threads). We computed the
-frequence of the parallelism modes (see Section \ref{sec:modes}) using
-a semi-automatic approach: we first discover automatically the
-relevant configuration files and then we manually inspect them to
-eliminate false-positves (\eg, commented configuration).  Figure
-\Fix{N} describes the discovery step. We first list the paths of all
-build file and then we filter only the build files that contain any of
-the keywords, \CodeIn{forkMode}, \CodeIn{forkCount}, or
-\CodeIn{parallel}.
+the \numSubjsRqTwo{} subjects from the groups \emph{long} and
+\emph{medium} identified in Section~\ref{sec:rqone}. We focused in
+these two groups because they represent costly test suites and are
+more likely that the developers may have used strategies to reduce the
+execution cost (\eg, running parts of the tests in different threads).
+We computed the frequence of the parallelism modes (see Section
+\ref{sec:modes}) using a semi-automatic approach: we first discover
+automatically the relevant configuration files and then we manually
+inspect them to eliminate false-positves (\eg, commented
+configuration).  Figure \Fix{N} describes the discovery step. We first
+list the paths of all build file and then we filter only the build
+files that contain any of the keywords, \CodeIn{forkMode},
+\CodeIn{forkCount}, or \CodeIn{parallel}. Notice that, for Maven
+projects, these any keywords exist in any possible parallelism
+configuration \Fix{cite surefire doc}.
 
 \begin{figure}[h!]
 \centering
@@ -289,40 +291,43 @@ the keywords, \CodeIn{forkMode}, \CodeIn{forkCount}, or
     showstringspaces=false
 }
 \begin{lstlisting}[language=Bash]
-for subj in ${SUBJECTS}; do
-    subject_path=${SUBJECTS_HOME}/${subj}
+for subj in $SUBJECTS; do
+    subject_path="$SUBJECTS_HOME/$subj"
     build_files=`find $subject_path -name pom.xml`
+    for build_file in $build_files; do
+        output=`cat $build_file | grep "parallel\
+                \|forkMode\|forkCount"`
+        if [ -z $output ]; then
+            echo $build_file
+        fi
 done
 \end{lstlisting}
-\caption{\label{fig:discovery-step} Bash script \Fix{to do
-         something...}. Unnecessary commands are omitted for simplicity.}
+    \caption{\label{fig:discovery-step} Bash script to filter
+    build files (\ie, \emph{pom.xml}) with potentially parallelization
+    settings. We first list all build files from a subject (line 3).
+    Then, we list the content of the file (\CodeIn{cat} command) and
+    redirect the output to filter only the lines that contains any of
+    the keywords \CodeIn{parallel}, \CodeIn{forkMode}, or
+    \CodeIn{forkCount} (\CodeIn{grep} command). If output is not empty
+    (line 7), we print the path from the current \emph{pom.xml} file.}
 \end{figure}
+
+From the \numSubjsRqTwo{} subjects, there was a total of \Fix{X} build
+files and \Fix{Y} to inspect.
 
 \Fix{---------------------}
 
 
-In an initial exploration, we searched for
-evidences of low-level parallelism settings on configuration files
-(\ie, \emph{pom.xml}) from each subject using a semi-automated
-approach: we use a script to find all subjects with evidences of
-parallel settings and then we manually inspect each configuration file
-to eliminate false-positives. In addition, we are interested in
-understanding how these parallel settings are used. Given a list of
-subjects, our script searches recursively all \emph{pom.xml} files
-from the project directory and uses the command-line tool \emph{grep}
-to highlight the presence of the keywords \emph{forkMode},
-\emph{forkCount}, and \emph{parallel}.  Any of these keywords exist in
-any possible combination of parallel settings (see
-Section~\ref{sec:modes}). From the 91 subjects, our script detected 43
-subjects with evidence of parallel settings. After the inspection of
-130 configuration files, we confirmed that \Fix{X} settings are real
-parallel configurations.  These settings are related to \Fix{Y}
-subjects. It is important to notice that, \Fix{X}\% of the subjects
-(\emph{medium} and \emph{long} aggregated) did not explore low-level
-parallelism according to our criteria of matching keywords. After the
-inspection, this rate raises to \Fix{Y}\%. \Fix{elaborate: some
-projects doesn't use parallel features, so what?}
-Table~\ref{tab:inspection-table} summarizes our initial findings.
+From the 91 subjects, our script detected 43 subjects with evidence of
+parallel settings. After the inspection of 130 configuration files, we
+confirmed that \Fix{X} settings are real parallel configurations.
+These settings are related to \Fix{Y} subjects. It is important to
+notice that, \Fix{X}\% of the subjects (\emph{medium} and \emph{long}
+aggregated) did not explore low-level parallelism according to our
+criteria of matching keywords. After the inspection, this rate raises
+to \Fix{Y}\%. \Fix{elaborate: some projects doesn't use parallel
+features, so what?} Table~\ref{tab:inspection-table} summarizes our
+initial findings.
 
 \begin{table}[h!]\footnotesize
     \centering
