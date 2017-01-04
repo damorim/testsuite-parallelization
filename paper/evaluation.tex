@@ -241,21 +241,21 @@ were tested in a potentially unstable revision.
 
 We analyzed the distribution of time execution to investigate if most
 of the cost is dominated by a small subset of test cases or if the
-cost is nearly equally distributed. Regression tests that are well
-distributed may benefit from parallelism since more tests executes at
-the same time while the opposite scenario may require a different
-approach. In the later scenario, executing tests in parallel may have
-insignificant impact since a small subset of test cases dominates the
-execution.
+cost is nearly equally distributed. \Jbc{I shouldn't introduce
+parallelization arguments here... May I just proceed to the
+methodology?} \Fix{Regression tests that are well distributed may
+benefit from parallelism since more tests executes at the same time
+while the opposite scenario may require a different approach. In the
+later scenario, executing tests in parallel may have insignificant
+impact since a small subset of test cases dominates the execution.}
 
-To evaluate the distribution of execution cost among test cases, we
-proposed the \emph{balance} statistic to indicate how equally
-distributed is the test execution. \Fix{show formula}.  \Fix{explain
-formula}
+To evaluate how uniformly distribution the execution cost is among
+test cases, we \Fix{...elaborate methodology...} 
 
-Results indicated that \Fix{...elaborate...}. Figure~\Fix{N}
-summarizes the results. \Fix{show a histogram with the frequency of
-balance for the subjects analyzed}
+Results indicated that \Fix{...elaborate...}. \Jbc{We may identify
+different groups of subjects (\eg, test suites that are more equally
+distributed than others) I think the results from this RQ should be
+towards this direction}
 
 \subsection{Answering research question RQ3}
 \label{sec:rqC}
