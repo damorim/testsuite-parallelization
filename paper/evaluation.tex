@@ -193,6 +193,13 @@ services (\eg, the SSH server). \Fix{Describe CPU isolation}
 
 \input{codes/evaluation}
 
+\Jbc{Ensure to describe that: I re-executed the experiment 3 times (1
+remaining!), subjects that could not run the tests due to incompatible
+testing environment were removed (likely to happen for subjects that
+rely on database systems and other external factors), the exit status
+for all executions are consistent and removed the unstable subjects
+(flakiness)}
+
 We grouped the subjects according to the execution time: tests that
 ran in less than one minute (\emph{short execution}), one to five
 minutes (\emph{medium execution}), and more than five minutes
@@ -202,6 +209,8 @@ added a new group because \Fix{justify or use the same
 classification}.  Figure~\ref{fig:piechart-time} shows the proportion
 of subjects per group and Figure~\ref{fig:boxplots-time} shows the
 distribution of elapsed time for each group (boxplots).
+
+\Jbc{I will rework the results and plots}
 
 \begin{figure}[h!]
     \centering
