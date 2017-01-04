@@ -239,7 +239,23 @@ were tested in a potentially unstable revision.
     \item \emph{\RQB}
 \end{itemize}
 
-\Fix{to appear}
+We analyzed the distribution of time execution to investigate if most
+of the cost is dominated by a small subset of test cases or if the
+cost is nearly equally distributed. Regression tests that are well
+distributed may benefit from parallelism since more tests executes at
+the same time while the opposite scenario may require a different
+approach. In the later scenario, executing tests in parallel may have
+insignificant impact since a small subset of test cases dominates the
+execution.
+
+To evaluate the distribution of execution cost among test cases, we
+proposed the \emph{balance} statistic to indicate how equally
+distributed is the test execution. \Fix{show formula}.  \Fix{explain
+formula}
+
+Results indicated that \Fix{...elaborate...}. Figure~\Fix{N}
+summarizes the results. \Fix{show a histogram with the frequency of
+balance for the subjects analyzed}
 
 \subsection{Answering research question RQ3}
 \label{sec:rqC}
@@ -338,13 +354,4 @@ table summarizing results for Medium/Long when we have the results}
 %% measured the \emph{cpuness} of each regression test \Fix{...elaborate
 %% the meaning of cpuness} \Fix{Describe how I measured user, system and
 %% "wall" time}.  \Fix{Explain results}.  \Fix{show plots}}
-%% 
-%% \subsection{Answering research question RQ4}
-%% \label{sec:rqfour}
-%% 
-%% \begin{itemize}
-%%     \item \RQD
-%% \end{itemize}
-%% 
-%% \Fix{to appear...}
 %% 
