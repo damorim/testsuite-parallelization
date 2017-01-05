@@ -3,10 +3,17 @@
 \setlength{\emergencystretch}{2pt}
 
 %%%%%%%%%%% packages
-\usepackage[small]{caption}
-\usepackage{cite}
-\usepackage{subfigure}
+\usepackage{caption}
+\captionsetup{font={small}}
+
+%\usepackage{cite}
+%\usepackage{subfigure}
+
+\usepackage{float}
 \usepackage{listings}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{colortbl}
 \usepackage{amsmath} 
 \usepackage{mathpartir}
@@ -16,8 +23,9 @@
 \usepackage{balance}
 \usepackage{wrapfig}
 \usepackage{multirow}
-%\usepackage{amsfonts}
 \usepackage{pifont}
+
+%\usepackage{amsfonts}
 %%%%%%%%%%%%%%%%%%% this can reduce space quite a lot
 %\usepackage{soul}
 %\usepackage{pslatex}
@@ -25,6 +33,7 @@
 %\usepackage[T1]{fontenc}
 %\usepackage{dsfont}
 %%%%%%%%%%%%%%%%%%% this can reduce space quite a lot
+
 \usepackage{relsize}
 \usepackage{tikz}
 \usepackage{longtable}
@@ -34,27 +43,29 @@
 \usepackage{mdwlist}
 \usepackage{tabularx}
 \usepackage{wrapfig}
-\usetikzlibrary{matrix,fit,shapes,calc,positioning,shadows,arrows,shapes,backgrounds,decorations.markings,fadings}
-\tikzset{
-    %Define standard arrow tip
-    >=stealth',
-    %Define style for boxes
-    punkt/.style={
-           rectangle,
-           rounded corners,
-           draw=black, very thick,
-           text width=6.5em,
-           minimum height=2em,
-           text centered},
-    % Define arrow style
-    pil/.style={
-           ->,
-           thick,
-           shorten <=2pt,
-           shorten >=2pt,},
-    % call out
-    notice/.style  = { draw, rectangle callout, callout relative pointer={#1} }
-}
+
+%% \usetikzlibrary{matrix,fit,shapes,calc,positioning,shadows,arrows,shapes,backgrounds,decorations.markings,fadings}
+%% \tikzset{
+%%     %Define standard arrow tip
+%%     >=stealth',
+%%     %Define style for boxes
+%%     punkt/.style={
+%%            rectangle,
+%%            rounded corners,
+%%            draw=black, very thick,
+%%            text width=6.5em,
+%%            minimum height=2em,
+%%            text centered},
+%%     % Define arrow style
+%%     pil/.style={
+%%            ->,
+%%            thick,
+%%            shorten <=2pt,
+%%            shorten >=2pt,},
+%%     % call out
+%%     notice/.style  = { draw, rectangle callout, callout relative pointer={#1} }
+%% }
+
 \usepackage{array}
 \usepackage{mathtools}
 \usepackage{url}
@@ -68,14 +79,13 @@
 \definecolor{darkred}{rgb}{0.5,0,0}
 \definecolor{darkgreen}{rgb}{0,0.5,0}
 \definecolor{darkblue}{rgb}{0,0,0.5}
-\usepackage[bookmarks=false]{hyperref}
-\hypersetup{ colorlinks,
-  linkcolor=darkblue,
-  filecolor=darkgreen,
-  urlcolor=darkred,
-  citecolor=darkblue }
 
-
+%\usepackage[bookmarks=false]{hyperref}
+%% \hypersetup{colorlinks,
+%%   linkcolor=darkblue,
+%%   filecolor=darkgreen,
+%%   urlcolor=darkred,
+%%   citecolor=darkblue }
 
 %%%%%%%%%%%%% code listing
 \renewcommand{\ttdefault}{pcr}
