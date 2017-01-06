@@ -190,9 +190,10 @@ non-related tasks (\eg, \emph{javadoc} generation and static
 analysis). We created a list of plugins (lines 1-4) to ignore
 during the test execution.  Finally, we use a simple regular
 expression over the test output to extract the elapsed time (line 13).
-We executed this experiment \Fix{X} times in our dedicated server
-remotely via SSH with the operating system running only essential
-services (\eg, the SSH server). \Fix{Describe CPU isolation}
+To avoid noise from OS events, we executed this experiment in our
+dedicated server remotely via SSH with the operating system running
+only essential services (\eg, the SSH server). \Fix{Describe CPU
+isolation}.
 
 \input{codes/evaluation}
 
@@ -203,26 +204,22 @@ rely on database systems and other external factors), the exit status
 for all executions are consistent and removed the unstable subjects
 (flakiness)}
 
-We grouped the subjects according to the execution time: tests that
-ran in less than one minute (\emph{short execution}), one to five
-minutes (\emph{medium execution}), and more than five minutes
-(\emph{long execution}). A previous work used a similar categorization
-except for the \emph{medium} group \cite{gligoric-etal-issta2015}.  We
-added a new group because \Fix{justify or use the same
-classification}.  Figure~\ref{fig:piechart-time} shows the proportion
-of subjects per group and Figure~\ref{fig:boxplots-time} shows the
-distribution of elapsed time for each group (boxplots).
-
-\Jbc{I will rework the results and plots}
+We grouped the subjects according the execution time (in average)
+using the same criteria of a previous work
+\cite{gligoric-etal-issta2015}: subjects that run in less than one
+minute were classified as \emph{short execution} and \emph{long
+execution} otherwise. Figure~\ref{fig:piechart-time} shows the
+proportion of subjects per group and figure~\ref{fig:boxplots-time}
+shows the distribution of elapsed time for each group (boxplots).
 
 \begin{figure}[h!]
     \centering
     \begin{minipage}{2in}%
     \includegraphics[width=\textwidth]{plots/piechart-timecost.pdf}
     \end{minipage}%
-    \caption{\label{fig:piechart-time} Subjects grouped by elapsed time on test
-    execution ($t$): short execution ($t < 1m$), medium execution ($1m \leq t <
-    5m$), and long execution ($5m \leq t$).}
+    \caption{\label{fig:piechart-time} Subjects grouped by elapsed
+    time on test execution ($t$): short execution ($t < 1m$) and long
+    execution ($1m \leq t$).}
 \end{figure}
 
 \begin{figure}[h!]
