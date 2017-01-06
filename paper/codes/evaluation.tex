@@ -8,10 +8,9 @@
     showstringspaces=false
 }
 \begin{lstlisting}[language=Bash]
-MAVEN_IGNORES="-Dmaven.javadoc.skip=true \
-    -Drat.skip=true -Djacoco.skip=true \
-    -Dcheckstyle.skip=true -Dfindbugs=true \
-    -Dcobertura.skip=true"
+MAVEN_IGNORES="-Dmaven.javadoc.skip=true -Drat.skip=true \
+    -Djacoco.skip=true -Dcheckstyle.skip=true \
+    -Dfindbugs=true -Dcobertura.skip=true"
 
 for subj in $SUBJECTS; do
     cd $SUBJECTS_HOME/$subj

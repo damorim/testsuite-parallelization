@@ -12,11 +12,8 @@ for subj in $SUBJECTS; do
     subject_path="$SUBJECTS_HOME/$subj"
     build_files=`find $subject_path -name pom.xml`
     for build_file in $build_files; do
-        output=`cat $build_file | grep "parallel\
-                \|forkMode\|forkCount"`
-        if [ -z $output ]; then
-            echo $build_file
-        fi
+        output=`cat $build_file | grep "parallel\|forkMode\|forkCount"`
+        if [ -z $output ]; then echo $build_file; fi
 done
 \end{lstlisting}
     \caption{\label{fig:discovery-step} Bash script to filter
