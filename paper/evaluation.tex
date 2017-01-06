@@ -111,11 +111,11 @@ for the number of stars, our criteria is an estimation to avoid
 trivial subjects: we assumed that \github{} users are likely to
 demonstrate interest on well-tested projects. The third criteria is a
 constraint to skip projects without recent activity. The fourth
-criteria is an approximation to find projects with Maven support. We
-used Maven as a reference due to its popularity on Java projects and
-to automate our evaluation scripts. The rationale is that if the
-string \emph{mvn} exists in the \emph{readme} file, it may represent a
-Maven call (\eg, to compile or test the project).
+criteria is an approximation to find projects with Maven support. The
+rationale is that if the string \emph{mvn} exists in the \emph{readme}
+file, it may represent a Maven call (\eg, to compile or test the
+project). We used Maven as a reference due to its popularity on Java
+projects and to automate our evaluation scripts.
 Figure~\ref{fig:subject-query} illustrates the query as an HTTP
 request.
 
@@ -145,10 +145,12 @@ A Maven project may contain several submodules with multiple
 \emph{pom.xml} files. We considered only projects with a
 \emph{pom.xml} file located in the root directory.  As of December
 30th 2016, our search criteria returned 615 subjects. From the 615
-downloaded projects, 46 were not Maven projects, 27 were unable to
-fetch all dependencies (\eg, due to the usage of a private library),
-and 131 were in an unstable revision. Our final set consists in
-\numSubjs{} subjects.
+downloaded projects, 46 were not Maven projects and 159 were in a
+unstable revision. From these 159 unstable subjects, \Jbc{elaborate
+what is unstable (eg, (1) how many could not resolve dependencies? (2)
+how many could not compile sources and tests? (3) could not run tests
+due to incompatible testing environment?}. Our final set consists in
+\numSubjs{} testable subjects.
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -158,11 +160,12 @@ processor machine with 8 virtual CPUs (4 cores with 2 native threads
 each) and 16GB of memory, running \emph{Ubuntu 14.04 LTS Trusty Tahr}
 (64-bit version). Software settings include \Comment{the Linux
 \emph{sysstat} package to measure performance, }\emph{git} to fetch
-subjects, \emph{Java 8} and \emph{Maven 3.3.9} to build and test subjects,
-and \emph{Python 3.4} to run our evaluation scripts. For replication,
-all source artifacts are publicly available at \Fix{create gh-pages},
-including supporting scripts (\eg, the script that test subjects and
-generates the raw data), and the full list of projects. \Comment{, and a
+subjects, \emph{Java 8} and \emph{Maven 3.3.9} to build and test
+subjects. Our evaluation scripts depends on \emph{Python 3.4} and
+\emph{Bash} to execute.  For replication, all source artifacts are
+publicly available at \Fix{create gh-pages}, including supporting
+scripts (\eg, the script that test subjects and generates the raw
+data), and the full list of projects. \Comment{, and a
 \emph{Vagrantfile} to emulate our hardware and all software
 dependencies.}
 
@@ -184,7 +187,7 @@ test files (line 8), fetch all dependencies (line 9) and later, we run
 the tests in offline mode (line 10) to avoid package updates. In
 addition we randomly selected 100 Maven logs to inspect and identify
 non-related tasks (\eg, \emph{javadoc} generation and static
-analysis). We created a list of plugins (lines 1-4) to ignore them
+analysis). We created a list of plugins (lines 1-4) to ignore
 during the test execution.  Finally, we use a simple regular
 expression over the test output to extract the elapsed time (line 13).
 We executed this experiment \Fix{X} times in our dedicated server
