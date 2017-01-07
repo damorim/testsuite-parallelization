@@ -22,6 +22,7 @@ data.Rproj
 *.fdb_latexmk
 *.fls
 *main.pdf
+*.out
 
 # Temporary text files
 *.swp
