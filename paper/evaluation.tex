@@ -180,20 +180,21 @@ To evaluate the frequency of time-consuming regression tests, we
 considered the \numSubjs{} subjects from Section~\ref{sec:subjects} and
 compared the elapsed time to run their tests.
 Figure~\ref{fig:mvn-execution} shows the commands used in our script
-to test each subject. The main loop (lines 6-12) iterates over the
-list of subjects and invokes Maven in separated steps (lines 8-10). To
-avoid inflating the measured time, we first compile the source and
-test files (line 8), fetch all dependencies (line 9) and later, we run
-the tests in offline mode (line 10) to avoid package updates. In
-addition we randomly selected 100 Maven logs to inspect and identify
-non-related tasks (\eg, \emph{javadoc} generation and static
-analysis). We created a list of plugins (lines 1-4) to ignore
-during the test execution.  Finally, we use a simple regular
-expression over the test output to extract the elapsed time (line 13).
-To avoid noise from OS events, we executed this experiment in our
-dedicated server remotely via SSH with the operating system running
-only essential services (\eg, the SSH server). \Fix{Describe CPU
-isolation}.
+to test each subject. The main loop (lines 5-11) iterates over the
+list of subjects and invokes Maven in separated steps (lines 7-9). To
+avoid inflating the measured time we executed Maven in different
+steps: we first compiled the source and test files (line 7), made all
+dependencies available locally (line 8) and later, we ran the tests in
+offline mode (line 9) to bypass package updates. After the execution,
+we used a regular expression on the output log to extract the elapsed
+time (line 10). Before collecting the time cost, we executed all
+subjects and randomly selected 100 logs to inspect and identify
+non-related tasks (\eg, \emph{javadoc} generation and static analysis)
+to ignore during the experiment (lines 1-3).  To avoid noise from
+operating system events, we used a dedicated server remotely via SSH
+with the operating system running only essential services (\eg, the
+SSH server). In addition, we \Fix{describe CPU isolation with Kernel
+settings}.
 
 \input{codes/evaluation}
 
@@ -204,42 +205,41 @@ rely on database systems and other external factors), the exit status
 for all executions are consistent and removed the unstable subjects
 (flakiness)}
 
-We grouped the subjects according the execution time (in average)
-using the same criteria of a previous work
-\cite{gligoric-etal-issta2015}: subjects that run in less than one
-minute were classified as \emph{short execution} and \emph{long
-execution} otherwise. Figure~\ref{fig:piechart-time} shows the
-proportion of subjects per group and figure~\ref{fig:boxplots-time}
-shows the distribution of elapsed time for each group (boxplots).
+%% We grouped the subjects according the execution time (in average)
+%% using the same criteria of a previous work
+%% \cite{gligoric-etal-issta2015}: subjects that run in less than one
+%% minute were classified as \emph{short execution} and \emph{long
+%% execution} otherwise. Figure~\ref{fig:piechart-time} shows the
+%% proportion of subjects per group and figure~\ref{fig:boxplots-time}
+%% shows the distribution of elapsed time for each group (boxplots).
+%% 
 
-\begin{figure}[h!]
+\begin{figure}[ht]
     \centering
-    \begin{minipage}{2in}%
-    \includegraphics[width=\textwidth]{plots/piechart-timecost.pdf}
-    \end{minipage}%
-    \caption{\label{fig:piechart-time} Subjects grouped by elapsed
-    time on test execution ($t$): short execution ($t < 1m$) and long
-    execution ($1m \leq t$).}
+    \begin{subfigure}{0.21\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{plots/barplot-timecost.pdf}
+        \caption{\label{fig:rq1-barplot}}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}{0.25\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{plots/boxplot-timecost.pdf}
+        \caption{\label{fig:rq1-boxplot}}
+        
+    \end{subfigure}
+    \caption{Caption place holder}
 \end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \begin{minipage}{2.5in}%
-    \includegraphics[width=\textwidth]{plots/boxplots-timecost.pdf}
-    \end{minipage}%
-    \caption{\label{fig:boxplots-time} Distribution of time execution
-    per group. Outliers from \emph{Long} are ignored for better
-    readability.}
-\end{figure}
-
-Results indicate that a relatively high number of projects from the
-sample set (\ie, 29,2\%) requires at least five minutes to execute.
-The boxplot for the \emph{long} group reveals \Fix{dissect the
-boxplot: skewness, median, IQR}. \Fix{Discuss outliers from Long
-group}.  It is important to mention that
-Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
-time: some tests may finish early due to a failure since the subjects
-were tested in a potentially unstable revision.
+ 
+%% Results indicate that a relatively high number of projects from the
+%% sample set (\ie, 29,2\%) requires at least five minutes to execute.
+%% The boxplot for the \emph{long} group reveals \Fix{dissect the
+%% boxplot: skewness, median, IQR}. \Fix{Discuss outliers from Long
+%% group}.  It is important to mention that
+%% Figure~\ref{fig:piechart-time} represents a lower bound for elapsed
+%% time: some tests may finish early due to a failure since the subjects
+%% were tested in a potentially unstable revision.
 
 \subsection{Answering research question RQ2}
 \label{sec:rqB}
