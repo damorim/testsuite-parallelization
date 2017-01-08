@@ -156,11 +156,11 @@ due to incompatible testing environment?}. Our final set consists in
 \label{sec:setup}
 
 To run our experiments, we used a \emph{Core i7-4790} (3.60 GHz) Intel
-processor machine with 8 virtual CPUs (4 cores with 2 native threads
-each) and 16GB of memory, running \emph{Ubuntu 14.04 LTS Trusty Tahr}
-(64-bit version). Software settings include \Comment{the Linux
-\emph{sysstat} package to measure performance, }\emph{git} to fetch
-subjects, \emph{Java 8} and \emph{Maven 3.3.9} to build and test
+processor machine with eight virtual CPUs (four cores with two native
+threads each) and 16GB of memory, running \emph{Ubuntu 14.04 LTS
+Trusty Tahr} (64-bit version). Software settings include \Comment{the
+Linux \emph{sysstat} package to measure performance, }\emph{git} to
+fetch subjects, \emph{Java 8} and \emph{Maven 3.3.9} to build and test
 subjects. Our evaluation scripts depends on \emph{Python 3.4} and
 \emph{Bash} to execute.  For replication, all source artifacts are
 publicly available at \Fix{create gh-pages}, including supporting
@@ -193,8 +193,12 @@ non-related tasks (\eg, \emph{javadoc} generation and static analysis)
 to ignore during the experiment (lines 1-3).  To avoid noise from
 operating system events, we used a dedicated server remotely via SSH
 with the operating system running only essential services (\eg, the
-SSH server). In addition, we \Fix{describe CPU isolation with Kernel
-settings}.
+SSH server). In addition, we configured the \CodeIn{isolcpus} option
+from the Linux Kernel \cite{linux-kernel} to isolate six virtual CPUs
+to execute our experiment and the remaining CPUs to run the operating
+system. By isolating a set of virtual CPUs, we prevent
+context-switching from the experiment processes and OS-related
+process.
 
 \input{codes/evaluation}
 
