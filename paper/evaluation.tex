@@ -13,7 +13,7 @@ we pose the following research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
 regression test suites in open-source projects?}
-\newcommand{\RQB}{How the time cost from a test suite is distributed
+\newcommand{\RQB}{How the time cost from a regression-test is distributed
 among the test cases?}
 \newcommand{\RQC}{How often parallelization features appear in
 build files?}
@@ -144,30 +144,29 @@ https://api.github.com/search/repositories?q=
 A Maven project may contain several submodules with multiple
 \emph{pom.xml} files. We considered only projects with a
 \emph{pom.xml} file located in the root directory.  As of December
-30th 2016, our search criteria returned 615 subjects. From the 615
-downloaded projects, 46 were not Maven projects and 159 were in a
-unstable revision. From these 159 unstable subjects, \Jbc{elaborate
-what is unstable (eg, (1) how many could not resolve dependencies? (2)
-how many could not compile sources and tests? (3) could not run tests
-due to incompatible testing environment?}. Our final set consists in
-\numSubjs{} testable subjects.
+30th 2016, our search criteria returned 615 subjects. From the
+\numSubjsTotal{} downloaded projects, 46 were not Maven projects and
+159 were in a unstable revision. From these 159 unstable subjects,
+\Jbc{elaborate what is unstable (eg, (1) how many could not resolve
+dependencies? (2) how many could not compile sources and tests? (3)
+could not run tests due to incompatible testing environment?}. Our
+final set consists in \numSubjs{} testable subjects.
 
 \subsection{Setup and Replication}
 \label{sec:setup}
 
-To run our experiments, we used a \emph{Core i7-4790} (3.60 GHz) Intel
+To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
 processor machine with eight virtual CPUs (four cores with two native
-threads each) and 16GB of memory, running \emph{Ubuntu 14.04 LTS
-Trusty Tahr} (64-bit version). Software settings include \Comment{the
-Linux \emph{sysstat} package to measure performance, }\emph{git} to
-fetch subjects, \emph{Java 8} and \emph{Maven 3.3.9} to build and test
-subjects. Our evaluation scripts depends on \emph{Python 3.4} and
-\emph{Bash} to execute.  For replication, all source artifacts are
-publicly available at \Fix{create gh-pages}, including supporting
-scripts (\eg, the script that test subjects and generates the raw
-data), and the full list of projects. \Comment{, and a
-\emph{Vagrantfile} to emulate our hardware and all software
-dependencies.}
+threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
+(64-bit version). Software settings include \Comment{the Linux
+\emph{sysstat} package to measure performance, }git to fetch subjects,
+Java 8 and Maven 3.3.9 to build and test subjects. Our evaluation
+scripts depends on Python 3.4 and Bash to execute and R to analyze the
+data. For replication, all source artifacts are publicly available at
+\Fix{create gh-pages}, including supporting scripts (\eg, the script
+that test subjects and generates the raw data), and the full list of
+projects. \Comment{, and a \emph{Vagrantfile} to emulate our hardware
+and all software dependencies.}
 
 \subsection{Answering research question RQ1}
 \label{sec:rqA}
@@ -197,33 +196,32 @@ SSH server). In addition, we configured the \CodeIn{isolcpus} option
 from the Linux Kernel \cite{linux-kernel} to isolate six virtual CPUs
 to execute our experiment and the remaining CPUs to run the operating
 system. By isolating a set of virtual CPUs, we prevent
-context-switching from the experiment processes and OS-related
-process.
+context-switching from experiment processes and OS-related processes.
 
 \input{codes/evaluation}
 
-\Jbc{Ensure to describe that: subjects that could not run the tests
+\Comment{\Jbc{Ensure to describe that: subjects that could not run the tests
 due to incompatible testing environment were removed (likely to happen
 for subjects that rely on database systems and other external
 factors), the exit status for all executions are consistent and I
-removed flaky projs}
+removed flaky projs}}
 
 We ran each subject's tests three times and grouped them according to
 the time cost (in average): tests that run in less than a minute
-(\emph{short} group), tests than run in one minute and less than five
-minutes (\emph{medium} group), and tests that run in five (or more)
-minutes (\emph{long} group). We based our classification from a
-previous work \cite{gligoric-etal-issta2015} and added the
-\emph{medium} group due to the variability of the time cost from
-subjects out of the \emph{short} group. Figure~\ref{fig:rq1-boxplot}
-shows the time cost distribution of each group: the \emph{short} group
-is the most right skewed distribution with outliers closed to the
-\emph{medium} group and 50\% of the subjects run in less than 15
-seconds; the median from the \emph{medium} group is nearly two minutes
-and most of the subjects run in less than four minutes; most of the
-\emph{long} group runs in less than 25 minutes but has outliers that
-require more than 50 minutes to execute. Figure~\ref{fig:rq1-barplot}
-summarizes the proportion of subjects from each group.
+(\shortg{} group), tests than run in one minute and less than five
+minutes (\medg{} group), and tests that run in five (or more) minutes
+(\longg{} group). We based our classification from a previous work
+\cite{gligoric-etal-issta2015} and added the \medg{} group due to the
+variability of the time cost from subjects out of the \shortg{} group.
+Figure~\ref{fig:rq1-boxplot} shows the time cost distribution of each
+group: the \shortg{} group is the most right skewed distribution with
+outliers closed to the \medg{} group and 50\% of the subjects run in
+less than 15 seconds; the median from the \medg{} group is nearly two
+minutes and most of the subjects run in less than four minutes; most
+of the \longg{} group runs in less than 25 minutes but has outliers
+that require more than 50 minutes to execute.
+Figure~\ref{fig:rq1-barplot} summarizes the proportion of subjects
+from each group.
 
 \begin{figure}[ht]
     \centering
@@ -243,13 +241,15 @@ summarizes the proportion of subjects from each group.
     Distribution of time cost by group.}
 \end{figure}
 
-Given that 19.3\% of the projects (\ie, 82 projects) are costly,
-we concluded that time-consuming regression test suites are relatively
-frequent in open-source projects.  It is important to mention that
+Given that \percentMedLongRunning{} of the projects are costly (\ie,
+\numMedLong{} projects from \medg{} and \longg{}), we concluded that
+time-consuming regression test suites are relatively frequent in
+open-source projects.  It is important to mention that
 Figure~\ref{fig:rq1-barplot} represents a lower bound for time cost:
 some tests may finish early due to a failure since a subject may be
 tested in a potentially unstable revision. From the \numSubjs{}
-projects, 286 passed all tests and 118 had failures.
+projects, 286 passed all tests and 118 had failures. \Jbc{elaborate
+failed subjects: how much \% of the tests failed?}
 
 \subsection{Answering research question RQ2}
 \label{sec:rqB}
@@ -258,23 +258,27 @@ projects, 286 passed all tests and 118 had failures.
     \item \emph{\RQB}
 \end{itemize}
 
-We analyzed the distribution of time execution to investigate if most
-of the cost is dominated by a small subset of test cases or if the
-cost is nearly equally distributed. \Jbc{I shouldn't introduce
-parallelization arguments here... May I just proceed to the
-methodology?} \Fix{Regression tests that are well distributed may
-benefit from parallelism since more tests executes at the same time
-while the opposite scenario may require a different approach. In the
-later scenario, executing tests in parallel may have insignificant
-impact since a small subset of test cases dominates the execution.}
-
-To evaluate how uniformly distribution the execution cost is among
-test cases, we \Fix{...elaborate methodology...} 
+To evaluate the distribution of time cost, we analyzed the execution
+time of each test case from the \numMedLong{} subjects from the
+\longg{} and \medg{} groups identified in Section~\ref{sec:rqA}. We
+are interested to know whether most of the execution cost of a subject
+is dominated by a small subset of test cases or if the cost is nearly
+equally distributed. For each subject we calculated the relative
+standard deviation of the test cases: we collected the elapsed time of
+each individual test, calculated the standard deviation, and divided
+by the mean. \Jbc{I need to clarify the relationship
+"well/bad-balanced" regression test and relative standard deviation}
 
 Results indicated that \Fix{...elaborate...}. \Jbc{We may identify
-different groups of subjects (\eg, test suites that are more equally
-distributed than others) I think the results from this RQ should be
-towards this direction}
+different groups of subjects} 
+
+\Jbc{I shouldn't introduce parallelization arguments here but we have
+to address this at some point:
+Regression tests that are well distributed may benefit from
+parallelism since more tests executes at the same time while the
+opposite scenario may require a different approach. In the later
+scenario, executing tests in parallel may have insignificant impact
+since a small subset of test cases dominates the execution.}
 
 \subsection{Answering research question RQ3}
 \label{sec:rqC}
@@ -284,25 +288,25 @@ towards this direction}
 \end{itemize}
 
 To evaluate the presence of parallelization settings, we considered
-the \numSubjsRqTwo{} subjects from the groups \emph{long} and
-\emph{medium} identified in Section~\ref{sec:rqA}. We focused on
-these two groups because given that costly test suites exist, we
-wanted to analyze if their maintainers are aware of parallelization
-settings and how they use these settings.  We computed the
-frequency of the parallelism modes (see Section \ref{sec:modes}) using
-a semi-automatic approach: we first discover automatically the
-relevant build files (\ie, \emph{pom.xml} files) and then we manually
-inspect them to eliminate false-positives (\eg, commented
-configuration).  Figure~\ref{fig:discovery-step} describes the
-discovery step: first, we list the paths of all build file and then we
-filter only the build files that contain any of the keywords,
-\CodeIn{forkMode}, \CodeIn{forkCount}, or \CodeIn{parallel}. Notice
-that, for Maven projects, any of these keywords exist in any possible
-parallelism configuration \Fix{cite surefire doc}.
+the \numMedLong{} subjects from the \longg{} and \medg{} groups
+identified in Section~\ref{sec:rqA}. We focused on these two groups
+because given that costly test suites exist, we wanted to analyze if
+their maintainers are aware of parallelization settings and how they
+use these settings.  We computed the frequency of the parallelism
+modes (see Section \ref{sec:modes}) using a semi-automatic approach:
+we first discover automatically the relevant build files (\ie,
+\emph{pom.xml} files) and then we manually inspect the files to
+eliminate false-positives (\eg, a false-positive may occur if the file
+contains a commented configuration).  Figure~\ref{fig:discovery-step}
+describes the discovery step: first, we list the paths of all build
+file and then we filter only the build files that contain any of the
+keywords, \CodeIn{forkMode}, \CodeIn{forkCount}, or \CodeIn{parallel}.
+Notice that, for Maven projects, any of these keywords exist in any
+possible parallelism configuration \Fix{cite surefire doc}.
 
 \input{codes/discovery}
 
-From the \numSubjsRqTwo{} subjects, the discovery step checked \Fix{X}
+From the \numMedLong{} subjects, the discovery step checked \Fix{X}
 files and yielded \Fix{Y} files to inspect (distributed in \Fix{A}
 subjects). \Jbc{How many were valid configurations? Show a contingency
 table summarizing results for Medium/Long when we have the results}

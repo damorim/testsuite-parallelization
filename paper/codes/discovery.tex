@@ -16,13 +16,11 @@ for subj in $SUBJECTS; do
         if [ -z $output ]; then echo $build_file; fi
 done
 \end{lstlisting}
-    \caption{\label{fig:discovery-step} Bash script to filter
-    build files (\ie, \emph{pom.xml}) with potentially parallelization
-    settings. We first find all build files from a subject (line 3).
-    Then, we iterate over each path (line 4), list the file content
-    (\CodeIn{cat} command), and redirect the output to filter only the
-    lines that contain any of the keywords \CodeIn{parallel},
-    \CodeIn{forkMode}, or \CodeIn{forkCount} (\CodeIn{grep} command).
-    If the output is not empty (line 7), we print the path from the
-    current \emph{pom.xml} file to inspect it later.}
+    \caption{\label{fig:discovery-step} Bash script to filter build
+    files for inspeciton: line 3 lists all \emph{pom.xml} files from a
+    subject; for each path, the  \CodeIn{cat} command lists the file
+    content and uses \CodeIn{grep} to filter only the matching lines
+    with the keywords \CodeIn{parallel}, \CodeIn{forkMode}, or
+    \CodeIn{forkCount} (lines 5-6); if the output is not empty (line
+    7), we print the current path.}
 \end{figure}
