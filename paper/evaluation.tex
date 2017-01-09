@@ -270,7 +270,8 @@ by the mean. \Jbc{I need to clarify the relationship
 "well/bad-balanced" regression test and relative standard deviation}
 
 Results indicated that \Fix{...elaborate...}. \Jbc{We may identify
-different groups of subjects} 
+different groups of subjects}\Fix{TODO: collect data + compute the
+statistic, create a scatter plot to identify groups of subjects}
 
 \Jbc{I shouldn't introduce parallelization arguments here but we have
 to address this at some point:
@@ -307,13 +308,13 @@ keywords exist in any possible parallel setting \Fix{cite surefire
 doc}. Our first step is complete but is not sound since the line that
 matches one of keywords may not represent part of a real setting (\eg,
 comments).  We eliminate false-positives in the confirmation step.
+
 From the \numMedLong{} subjects, the discovery step found 2853 files
 and filtered 109 relevant files. Later, from the 109 relevant files,
 we confirmed \Fix{M} valid settings from \Fix{X} subjects.
-\Jbc{Elaborate results}
-Table~\ref{tab:inspection-table} summarizes the results from the file
-inspection and Figure~\ref{fig:freqmodes} shows the distribution of
-parallelism modes from the \Fix{M} settings.
+\Jbc{Elaborate results} Table~\ref{tab:inspection-table} summarizes
+the results from the file inspection and Figure~\ref{fig:freqmodes}
+shows the distribution of parallelism modes from the \Fix{M} settings.
 
 \input{codes/discovery}
 
@@ -337,7 +338,7 @@ parallelism modes from the \Fix{M} settings.
     \centering
     \includegraphics[width=0.32\textwidth]{plots/barplot-modes.pdf}
     \caption{\label{fig:freqmodes}Distribution of parallelism modes
-    identified in \Fix{M} \Jbc{Currently mocked data}}
+    identified in \Fix{M} projects\Jbc{Currently mocked data}}
 \end{figure}
 
 \Jbc{Conclusion and relate the results to the
