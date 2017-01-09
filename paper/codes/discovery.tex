@@ -8,19 +8,20 @@
     showstringspaces=false
 }
 \begin{lstlisting}[language=Bash]
+KEYWORDS_REGEX="parallel\|forkMode\|forkCount"
 for subj in $SUBJECTS; do
     subject_path="$SUBJECTS_HOME/$subj"
     build_files=`find $subject_path -name pom.xml`
     for build_file in $build_files; do
-        output=`cat $build_file | grep "parallel\|forkMode\|forkCount"`
-        if [ -z $output ]; then echo $build_file; fi
+        output=`cat $build_file | grep $KEYWORDS_REGEX`
+        if [[ -n "$output" ]]; then echo $build_file; fi
 done
 \end{lstlisting}
     \caption{\label{fig:discovery-step} Bash script to filter build
-    files for inspeciton: line 3 lists all \emph{pom.xml} files from a
+    files for inspeciton: line 4 lists all \pomf{} files from a
     subject; for each path, the  \CodeIn{cat} command lists the file
     content and uses \CodeIn{grep} to filter only the matching lines
     with the keywords \CodeIn{parallel}, \CodeIn{forkMode}, or
-    \CodeIn{forkCount} (lines 5-6); if the output is not empty (line
+    \CodeIn{forkCount} (line 6); if the output is not empty (line
     7), we print the current path.}
 \end{figure}
