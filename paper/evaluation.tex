@@ -287,17 +287,15 @@ since a small subset of test cases dominates the execution.}
     \item \emph{\RQC}
 \end{itemize}
 
-\Jbc{I'm currently considering only the long group but as soon as I
-have the remaining results, I will update the plots} To evaluate the
-presence of parallelization settings, we considered the \numMedLong{}
-subjects from the \longg{} and \medg{} groups identified in
-Section~\ref{sec:rqA}. We focused on these two groups because given
-that costly test suites exist, we wanted to investigate if their
-maintainers are aware of parallelization settings and how they use
-these settings (see Section \ref{sec:modes}).  We computed the
-frequency of the parallelism modes using a two-steps approach: the
-first step (discovery) automatically finds relevant build files
-(\ie, \pomf{} files with parallelization settings); the second step
+To evaluate the presence of parallelization settings, we considered
+the \numMedLong{} subjects from the \longg{} and \medg{} groups
+identified in Section~\ref{sec:rqA}. We focused on these two groups
+because given that costly test suites exist, we wanted to investigate
+if their maintainers are aware of parallelization settings and how
+they use these settings (see Section \ref{sec:modes}).  We computed
+the frequency of the parallelism modes using a two-steps approach: the
+first step (discovery) automatically finds relevant build files (\ie,
+\pomf{} files with parallelization settings); the second step
 (inspection) consists in a manual inspection to confirm the presence
 of parallelism settings in the build file and classify them according
 to the parallelism level (see Section \ref{sec:modes}).
@@ -312,13 +310,14 @@ comments).  We eliminate false-positives in the confirmation step.
 From the \numMedLong{} subjects, the discovery step found 2853 files
 and filtered 109 relevant files. Later, from the 109 relevant files,
 we confirmed \Fix{M} valid settings from \Fix{X} subjects.
+\Jbc{Elaborate results}
 Table~\ref{tab:inspection-table} summarizes the results from the file
 inspection and Figure~\ref{fig:freqmodes} shows the distribution of
 parallelism modes from the \Fix{M} settings.
 
 \input{codes/discovery}
 
-\begin{table}[h!]
+\begin{table}[ht!]
     \centering
     \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}ccccc}
         \toprule%
@@ -334,13 +333,15 @@ parallelism modes from the \Fix{M} settings.
     \label{tab:inspection-table} 
 \end{table}
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
-    \Fix{to appear}
+    \includegraphics[width=0.32\textwidth]{plots/barplot-modes.pdf}
     \caption{\label{fig:freqmodes}Distribution of parallelism modes
-    identified in \Fix{M} }
+    identified in \Fix{M} \Jbc{Currently mocked data}}
 \end{figure}
 
+\Jbc{Conclusion and relate the results to the
+RQ...........................................}
 
 \subsection{Answering research question RQ4}
 \label{sec:rqD}
