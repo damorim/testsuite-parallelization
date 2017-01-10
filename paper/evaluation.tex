@@ -288,33 +288,43 @@ since a small subset of test cases dominates the execution.}
     \item \emph{\RQC}
 \end{itemize}
 
-To evaluate the presence of parallelization settings, we considered
-the \numMedLong{} subjects from the \longg{} and \medg{} groups
-identified in Section~\ref{sec:rqA}. We focused on these two groups
-because given that costly test suites exist, we wanted to investigate
-if their maintainers are aware of parallelization settings and how
-they use these settings (see Section \ref{sec:modes}).  We computed
-the frequency of the parallelism modes using a two-steps approach: the
-first step (discovery) automatically finds relevant build files (\ie,
-\pomf{} files with parallelization settings); the second step
-(inspection) consists in a manual inspection to confirm the presence
-of parallelism settings in the build file and classify them according
-to the parallelism level (see Section \ref{sec:modes}).
-Figure \Fix{removed} describes the discovery step: we list
-the paths of all build files and filter only the files that contain
-any of the keywords \CodeIn{forkMode}, \CodeIn{forkCount}, or
-\CodeIn{parallel}.  Notice that, for Maven projects, any of these
-keywords exist in any possible parallel setting \Fix{cite surefire
-doc}. Our first step is complete but is not sound since the line that
-matches one of keywords may not represent part of a real setting (\eg,
-comments).  We eliminate false-positives in the confirmation step.
+To evaluate the presence of parallelization settings (see Section
+\ref{sec:modes}), we considered the \numMedLong{} subjects from the
+\longg{} and \medg{} groups identified in Section~\ref{sec:rqA}. We
+focused in these two groups because given that costly test suites
+exist, we investigated if the maintainers are aware of parallelization
+settings.
 
-From the \numMedLong{} subjects, the discovery step found 2853 files
-and filtered 109 relevant files. Later, from the 109 relevant files,
-we confirmed \Fix{M} valid settings from \Fix{X} subjects.
-\Jbc{Elaborate results} Table~\ref{tab:inspection-table} summarizes
-the results from the file inspection and Figure~\ref{fig:freqmodes}
-shows the distribution of parallelism modes from the \Fix{M} settings.
+\Jbc{methodology is poorly described...}
+\Fix{
+We computed the frequency of the
+parallelism modes using a two-steps approach: the first step
+(discovery) automatically finds relevant build files (\ie, \pomf{}
+files with parallelization settings); the second step (inspection)
+consists in a manual inspection to confirm the presence of parallelism
+settings in the build file and classify them according to the
+parallelism level.  Figure \Fix{removed}
+describes the discovery step: we list the paths of all build files and
+filter only the files that contain any of the keywords
+\CodeIn{forkMode}, \CodeIn{forkCount}, or \CodeIn{parallel}.  Notice
+that, for Maven projects, any of these keywords exist in any possible
+parallel setting \Fix{cite surefire doc}. Our first step is complete
+but is not sound since the line that matches one of keywords may not
+represent part of a real setting (\eg, comments).  We eliminate
+false-positives in the confirmation step.
+}
+
+\newcommand{\pomMedLong}{2851}
+
+\Jbc{results from table}From the \numMedLong{} subjects, we found
+\pomMedLong{} \pomf{} files and selected the 109 files that matched
+with any of the configuration keywords (\ie, \CodeIn{forkCount},
+\CodeIn{forkMode}, and \CodeIn{parallel}).  From these 109 build
+files, we eliminated six false-positives: two were names of project
+modules (\eg, \emph{camel-cookbook-parallel-processing}); one was part
+of a comment; three were commented configurations. The 106 build files
+with valid configurations are distributed in 41 projects from our
+sample.  Table~\ref{tab:inspection-table} summarizes our results.
 
 \begin{table}[ht!]
     \centering
@@ -326,10 +336,11 @@ shows the distribution of parallelism modes from the \Fix{M} settings.
         Long   & 1613 & 79 (1) & 19/\numLong{}\\%
         Medium & 1238 & 30 (5) & 22/\numMed{}\\%
         \midrule%
-        Total  & 2851 & 109 (6) & 41/\numMedLong{}\\%
+        Total  & \pomMedLong{} & 109 (6) & 41/\numMedLong{}\\%
         \bottomrule%
     \end{tabular*}
-    \caption{\Fix{to-be-defined}}
+    \caption{Presence of parallel configurations in build files from
+    projects with time-consuming tests. \Fix{explain columns}}
     \label{tab:inspection-table} 
 \end{table}
 
