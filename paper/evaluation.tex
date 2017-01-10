@@ -300,7 +300,7 @@ first step (discovery) automatically finds relevant build files (\ie,
 (inspection) consists in a manual inspection to confirm the presence
 of parallelism settings in the build file and classify them according
 to the parallelism level (see Section \ref{sec:modes}).
-Figure~\ref{fig:discovery-step} describes the discovery step: we list
+Figure \Fix{removed} describes the discovery step: we list
 the paths of all build files and filter only the files that contain
 any of the keywords \CodeIn{forkMode}, \CodeIn{forkCount}, or
 \CodeIn{parallel}.  Notice that, for Maven projects, any of these
@@ -316,18 +316,17 @@ we confirmed \Fix{M} valid settings from \Fix{X} subjects.
 the results from the file inspection and Figure~\ref{fig:freqmodes}
 shows the distribution of parallelism modes from the \Fix{M} settings.
 
-\input{codes/discovery}
-
 \begin{table}[ht!]
     \centering
-    \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}ccccc}
-        \toprule%
-        Group  & Build Files & Filtered files & Settings & Subjects \\%
+    \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}cccc}
+        \toprule
+        \multirow{2}{*}{Group} & \multirow{2}{*}{\# \pomf{}} & \# \pomf{} matched & \# projects matched\\%
+                               &                             &  / false-positives &       / total\\%
         \midrule%
-        Long   & 1613 & 79 & \Fix{X} & \Fix{X}\\%
-        Medium & 1240 & 30 & 33 & 22\\%
+        Long   & 1613 & 79/\Fix{z} & \Fix{X}/\numLong{}\\%
+        Medium & 1240 & 30/\Fix{y} & 22/\numMed{}\\%
         \midrule%
-        Total  & 2853 & 109 & \Fix{33+X} & \Fix{22+X}\\%
+        Total  & 2853 & 109/\Fix{z+y} & \Fix{w}/\numMedLong{}\\%
         \bottomrule%
     \end{tabular*}
     \caption{\Fix{to-be-defined}}
