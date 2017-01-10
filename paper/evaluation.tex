@@ -289,44 +289,56 @@ since a small subset of test cases dominates the execution.}
 \end{itemize}
 
 To evaluate the presence of parallelization settings (see Section
-\ref{sec:modes}), we considered the \numMedLong{} subjects from the
-\longg{} and \medg{} groups identified in Section~\ref{sec:rqA}. We
-focused in these two groups because given that costly test suites
-exist, we investigated if the maintainers are aware of parallelization
-settings.
+\ref{sec:modes}), we considered all projects classified as \medg{} and
+\longg{}-running, a total of \numMedLong{} subjects (see
+Figure~\ref{fig:rq1-barplot}). To reduce noise we did not consider
+projects with \shortg{}-running test suites as we observed\Mar{please,
+  confirm} that those projects often\Mar{adjust} do not use
+parallelism; including them would favor sequential execution in our
+analysis.
 
-\Jbc{methodology is poorly described...}
-\Fix{
-We computed the frequency of the
-parallelism modes using a two-steps approach: the first step
-(discovery) automatically finds relevant build files (\ie, \pomf{}
-files with parallelization settings); the second step (inspection)
-consists in a manual inspection to confirm the presence of parallelism
-settings in the build file and classify them according to the
-parallelism level.  Figure \Fix{removed}
-describes the discovery step: we list the paths of all build files and
-filter only the files that contain any of the keywords
-\CodeIn{forkMode}, \CodeIn{forkCount}, or \CodeIn{parallel}.  Notice
-that, for Maven projects, any of these keywords exist in any possible
-parallel setting \Fix{cite surefire doc}. Our first step is complete
-but is not sound since the line that matches one of keywords may not
-represent part of a real setting (\eg, comments).  We eliminate
-false-positives in the confirmation step.
-}
+%% We
+%% focused in these two groups because given that costly test suites
+%% exist, we investigated if the maintainers are aware of parallelization
+%% settings.
 
-\newcommand{\pomMedLong}{2851}
+To answer RQ3\Mar{use macro} we initially mined build files (\ie,
+\pomf{}) that contain parallelization keywords, namely
+\CodeIn{forkMode}, \CodeIn{forkCount}, and \CodeIn{parallel}.
+According to the Maven surefire documentation\Fix{cite surefire doc},
+any configuration to run tests in parallel must contain one of these
+keywords. This mining step, however, is not sound as a matching
+project may not indicate a project with a valid configuration for
+running tests in parallel.  False positive can happen because of
+comments, for instance.  To eliminate the cases of false positives and
+also to categorize true positive cases, we complemented the initial
+mining step with a manual inspection of files.
 
-\Jbc{results from table}From the \numMedLong{} subjects, we found
-\pomMedLong{} \pomf{} files and selected the 109 files that matched
-with any of the configuration keywords (\ie, \CodeIn{forkCount},
-\CodeIn{forkMode}, and \CodeIn{parallel}).  From these 109 build
-files, we eliminated six false-positives: two were names of project
-modules (\eg, \emph{camel-cookbook-parallel-processing}); one was part
-of a comment; three were commented configurations. The 106 build files
-with valid configurations are distributed in 41 projects from our
-sample.  Table~\ref{tab:inspection-table} summarizes our results.
+%% settings); the second step (inspection) consists in a manual
+%% inspection to confirm the presence of parallelism settings in the
+%% build file and classify them according to the parallelism level.
+%% Figure \Fix{removed} describes the discovery step: we list the paths
+%% of all build files and filter only the files that contain any of the
 
-\begin{table}[ht!]
+Figure~\ref{tab:inspection-table} summarizes our results.  Column
+``Group'' indicates the group of projects according to their time
+cost.\Mar{quickly explain other columns}
+
+%% summarize observations...
+From the \numMedLong{} subjects, we found \pomMedLong{} \pomf{} files
+where 109\Mar{use macro} of those files match one of the keywords
+mentioned above.  From these 109\Mar{use macro} build files, we
+eliminated six false-positives: two were names of project modules
+(\eg, \emph{camel-cookbook-parallel-processing}), one was part of a
+comment, and three were commented configurations. The 106\Fix{fix
+  this} build files with valid configurations are distributed across
+41\Mar{use macro} projects from our sample.  \emph{From these results
+  we found that $\sim$51\% of medium and long-running projects do not
+  use parallel features to run test suites.}\Mar{please make it
+  consistent with research question}\Mar{explain this is
+  over(under)-estimated...}
+
+\begin{figure}[ht!]
     \centering
     \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}cccc}
         \toprule
@@ -342,9 +354,14 @@ sample.  Table~\ref{tab:inspection-table} summarizes our results.
     \caption{Presence of parallel configurations in build files from
     projects with time-consuming tests. \Fix{explain columns}}
     \label{tab:inspection-table} 
-\end{table}
+\end{figure}
 
-\begin{figure}[ht!]
+\subsubsection{Distribution of parallel modes}
+
+\Jbc{Conclusion and relate the results to the
+  RQ...........................................}
+
+\begin{figure}[h!]
     \centering
     \includegraphics[width=0.32\textwidth]{plots/barplot-modes.pdf}
     \caption{\label{fig:freqmodes}Distribution of parallelism modes
@@ -352,8 +369,7 @@ sample.  Table~\ref{tab:inspection-table} summarizes our results.
     the long group...}}
 \end{figure}
 
-\Jbc{Conclusion and relate the results to the
-RQ...........................................}
+
 
 \subsection{Answering research question RQ4}
 \label{sec:rqD}
