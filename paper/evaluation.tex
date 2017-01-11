@@ -12,15 +12,13 @@ parallelization, and how to address those issues.  More specifically,
 we pose the following research questions:
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
-regression test suites in open-source projects?}
-\newcommand{\RQB}{How the time cost from a regression-test is distributed
-among the test cases?}
-\newcommand{\RQC}{How often parallelization settings appear in
-build files?}
-\newcommand{\RQD}{What is the impact of parallelization?}
+  regression test suites in open-source projects?}
+\newcommand{\RQB}{How time is distributed across test cases?}
+\newcommand{\RQC}{How often parallelization settings appear in build
+  files?}  \newcommand{\RQD}{What is the impact of parallelization?}
 \newcommand{\RQE}{What factors contribute to improve performance
-through parallelization?\Jbc{Previously as "When does parallelization
-works and when it does not so great?"}}
+  through parallelization?\Jbc{Previously as "When does
+    parallelization works and when it does not so great?"}}
 \newcommand{\RQF}{What are the limitations of parallelization?}
 
 \newcommand{\rqA}{\textbf{RQ1.} \RQA}
@@ -260,42 +258,68 @@ how much \% of the tests failed?}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon; they account to nearly \percentMedLongRunning{} of the
-\numSubjsTotal{} projects we analyzed.  A key factor to determine if
-low-level parallelism will be effective to speedup test execution is
-to identify whether or not a small fraction of tests dominate test
-suite execution time.  If that is the case, it is unlikely that test
-suite parallelization will help as a test artifact is the smallest
-working unit in test frameworks (see Section~\ref{sec:frameworks}).
-Ideally, one would hope that time is distributed uniformly across
-tests in the suite.
+\numSubjsTotal{} projects we analyzed.  However, use of parallelism
+does not assure speedups on those projects.  We analyzed one sensible
+factor that is critical to the effectiveness of parallelism: the
+amount of tests that dominate execution time.  In the limit, if cost
+is dominated by a single test, it is unlikely that parallelization
+will be beneficial as a test method is the smallest working unit in
+test frameworks (see Section~\ref{sec:frameworks}).
 
 %% We are interested to know whether
 %% most of the execution cost of a subject is dominated by a small subset
 %% of test cases or if the cost is nearly equally distributed. 
 
-To evaluate the distribution of time, we analyzed the execution time
-for the \numMedLong{} projects from the \longg{} and \medg{} groups
-(see Section~\ref{sec:rqA}).
+We evaluated the dispersion of time distributions (one distribution
+per project) to aswer research question RQ2.  To measure dispersion
+\emph{across} projects we used Relative Standard Deviation
+(RSD)~\cite{everitt-book-stats-2010}.  Note that, if we were to
+analyze each project in isolation, the standard deviation of a
+distribution ($\sigma$) would suffice to quantify how dispersed the
+(time) distribution is.  However, in our case, we would like to be
+able to compare and summarize dispersion across projects.  The RSD,
+which is obtained dividing the standard deviation by the mean ($\mu$)
+of a distribution, provides such normalization effect.  This metric
+provides a lower bound (zero) but not an upper bound (somewhere close
+to 1).  The smaller (larger) the value of RSD the more (less) uniform
+the distribution is.  Consequently, ignoring other factors that affect
+performance of parallelization (e.g., CPU/IO ratio), the lower the
+value of RSD the more parallelizable a test suite should be.
 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{R/relativeSD.pdf}  
+  \caption{\label{fig:relativesd}Distribution of RSD ($\sigma/\mu$)
+    across projects.\Fix{update (mocked) data}}
+\end{figure}
 
-For each subject we calculated the
-relative standard deviation of the test cases: we collected the
-elapsed time of each individual test, calculated the standard
-deviation, and divided by the mean. \Jbc{I need to clarify the
-  relationship "well/bad-balanced" regression test and relative
-  standard deviation}
+Figure~\ref{fig:relativesd} shows the distribution of RSD across
+medium and long-running projects.  Results show that the distribution
+is skewed to the right indicating that test costs are relatively well
+distributed in most costly projects we analyzed \Fix{$\leftarrow$
+  confirm}.
 
-Results indicated that \Fix{...elaborate...}. \Jbc{We may identify
-different groups of subjects}\Fix{TODO: collect data + compute the
-statistic, create a scatter plot to identify groups of subjects}
+%% analyzed the execution time
+%% for the \numMedLong{} projects from the \longg{} and \medg{} groups
+%% (see Section~\ref{sec:rqA}).
+%% For each subject we calculated the
+%% relative standard deviation of the test cases: we collected the
+%% elapsed time of each individual test, calculated the standard
+%% deviation, and divided by the mean. \Jbc{I need to clarify the
+%%   relationship "well/bad-balanced" regression test and relative
+%%   standard deviation}
 
-\Jbc{I shouldn't introduce parallelization arguments here but we have
-to address this at some point:
-Regression tests that are well distributed may benefit from
-parallelism since more tests executes at the same time while the
-opposite scenario may require a different approach. In the later
-scenario, executing tests in parallel may have insignificant impact
-since a small subset of test cases dominates the execution.}
+%% Results indicated that \Fix{...elaborate...}. \Jbc{We may identify
+%% different groups of subjects}\Fix{TODO: collect data + compute the
+%% statistic, create a scatter plot to identify groups of subjects}
+
+%% \Jbc{I shouldn't introduce parallelization arguments here but we have
+%% to address this at some point:
+%% Regression tests that are well distributed may benefit from
+%% parallelism since more tests executes at the same time while the
+%% opposite scenario may require a different approach. In the later
+%% scenario, executing tests in parallel may have insignificant impact
+%% since a small subset of test cases dominates the execution.}
 
 \subsection{Answering research question RQ3}
 \label{sec:rqC}
