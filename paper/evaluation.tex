@@ -258,16 +258,32 @@ how much \% of the tests failed?}
     \item \emph{\RQB}
 \end{itemize}
 
-To evaluate the distribution of time cost, we analyzed the execution
-time of each test case from the \numMedLong{} subjects from the
-\longg{} and \medg{} groups identified in Section~\ref{sec:rqA}. We
-are interested to know whether most of the execution cost of a subject
-is dominated by a small subset of test cases or if the cost is nearly
-equally distributed. For each subject we calculated the relative
-standard deviation of the test cases: we collected the elapsed time of
-each individual test, calculated the standard deviation, and divided
-by the mean. \Jbc{I need to clarify the relationship
-"well/bad-balanced" regression test and relative standard deviation}
+Section~\ref{sec:rqA} showed that medium and long-running projects are
+not uncommon; they account to nearly \percentMedLongRunning{} of the
+\numSubjsTotal{} projects we analyzed.  A key factor to determine if
+low-level parallelism will be effective to speedup test execution is
+to identify whether or not a small fraction of tests dominate test
+suite execution time.  If that is the case, it is unlikely that test
+suite parallelization will help as a test artifact is the smallest
+working unit in test frameworks (see Section~\ref{sec:frameworks}).
+Ideally, one would hope that time is distributed uniformly across
+tests in the suite.
+
+%% We are interested to know whether
+%% most of the execution cost of a subject is dominated by a small subset
+%% of test cases or if the cost is nearly equally distributed. 
+
+To evaluate the distribution of time, we analyzed the execution time
+for the \numMedLong{} projects from the \longg{} and \medg{} groups
+(see Section~\ref{sec:rqA}).
+
+
+For each subject we calculated the
+relative standard deviation of the test cases: we collected the
+elapsed time of each individual test, calculated the standard
+deviation, and divided by the mean. \Jbc{I need to clarify the
+  relationship "well/bad-balanced" regression test and relative
+  standard deviation}
 
 Results indicated that \Fix{...elaborate...}. \Jbc{We may identify
 different groups of subjects}\Fix{TODO: collect data + compute the
