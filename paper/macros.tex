@@ -3,6 +3,7 @@
 \newcommand{\ie}{\emph{i.e.}}
 \newcommand{\eg}{\emph{e.g.}}
 \newcommand{\Comment}[1]{}
+\newcommand{\CodeIn}[1]{{\small\texttt{#1}}}
 \newcommand{\Jbc}[1]{\textbf{[[Jean: }{\color{orange} #1}\textbf{]]}}
 \newcommand{\Mar}[1]{\textbf{[[Marcelo: }{\color{darkgreen} #1}\textbf{]]}}
 
@@ -11,23 +12,23 @@
 \newcommand{\pomf}{\emph{pom.xml}} %% change consistently
 
 %% Evaluation macros
-\newcommand{\numSubjsTotal}{615}
 
-%% Remove the \Fix below when the values get stable
-\newcommand{\numSubjs}{\textcolor{red}{404}}
-\newcommand{\numMed}{\textcolor{red}{51}}
-\newcommand{\numLong}{\textcolor{red}{32}}
-\newcommand{\numMedLong}{\textcolor{red}{83}}
-\newcommand{\percentMedLongRunning}{20.5\%}
-\newcommand{\pomMedLong}{2,851}
-
-
+%% RQ1
 \newcommand{\medg}{medium}
 \newcommand{\longg}{long}
 \newcommand{\shortg}{short}
+\newcommand{\numSubjsTotal}{615}
+\newcommand{\numSubjs}{404}
+\newcommand{\numMed}{51}
+\newcommand{\numLong}{32}
+\newcommand{\numMedLong}{83}
+\newcommand{\percentMedLongRunning}{20.5\%}
+
+%% RQ3
+\newcommand{\pomMedLong}{2,851}
+\newcommand{\numPomMatched}{109}
+\newcommand{\numPomMatchedValid}{103}
+\newcommand{\numProjectsPar}{41}
 
 \newcommand{\averageMedLongRunning}{8m36s}
 \newcommand{\percentParallelForLongRunning}{\Fix{80\%}}
-\newcommand{\CodeIn}[1]{{\small\texttt{#1}}}
-
-

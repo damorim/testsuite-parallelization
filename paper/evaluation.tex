@@ -11,30 +11,31 @@ execution cost, issues of flakiness that hinders the use of
 parallelization, and how to address those issues.  More specifically,
 we pose the following research questions:
 
+\newcommand{\numRQA}{RQ1}
+\newcommand{\numRQB}{RQ2}
+\newcommand{\numRQC}{RQ3}
+\newcommand{\numRQD}{RQ4}
+\newcommand{\numRQE}{RQ5}
+\newcommand{\numRQF}{RQ6}
+
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
   regression test suites in open-source projects?}
 \newcommand{\RQB}{How time is distributed across test cases?}
 \newcommand{\RQC}{How often parallelization settings appear in build
-  files?}  \newcommand{\RQD}{What is the impact of parallelization?}
+  files?}
+\newcommand{\RQD}{What is the impact of parallelization?}
 \newcommand{\RQE}{What factors contribute to improve performance
   through parallelization?\Jbc{Previously as "When does
     parallelization works and when it does not so great?"}}
 \newcommand{\RQF}{What are the limitations of parallelization?}
 
-\newcommand{\rqA}{\textbf{RQ1.} \RQA}
-\newcommand{\rqB}{\textbf{RQ2.} \RQB}
-\newcommand{\rqC}{\textbf{RQ3.} \RQC}
-\newcommand{\rqD}{\textbf{RQ4.} \RQD}
-\newcommand{\rqE}{\textbf{RQ5.} \RQE}
-\newcommand{\rqF}{\textbf{RQ6.} \RQF}
-
 \begin{itemize}
-    \item \rqA
-    \item \rqB
-    \item \rqC
-    \item \rqD
-    \item \rqE
-    \item \rqF
+    \item \textbf{\numRQA.} \RQA
+    \item \textbf{\numRQB.} \RQB
+    \item \textbf{\numRQC.} \RQC
+    \item \textbf{\numRQD.} \RQD
+    \item \textbf{\numRQE.} \RQE
+    \item \textbf{\numRQF.} \RQF
 \end{itemize}
 
 %%\newcommand{\RQB}{What is the distribution of CPU and IO bound
@@ -166,7 +167,7 @@ that test subjects and generates the raw data), and the full list of
 projects. \Comment{, and a \emph{Vagrantfile} to emulate our hardware
 and all software dependencies.}
 
-\subsection{Answering research question RQ1}
+\subsection{Answering research question \numRQA{}}
 \label{sec:rqA}
 
 \begin{itemize}
@@ -249,7 +250,7 @@ tested in a failing revision. From the \numSubjs{} projects, 286
 passed all tests and 118 had failures. \Jbc{elaborate failed subjects:
 how much \% of the tests failed?}
 
-\subsection{Answering research question RQ2}
+\subsection{Answering research question \numRQB{}}
 \label{sec:rqB}
 
 \begin{itemize}
@@ -321,7 +322,7 @@ distributed in most costly projects we analyzed \Fix{$\leftarrow$
 %% scenario, executing tests in parallel may have insignificant impact
 %% since a small subset of test cases dominates the execution.}
 
-\subsection{Answering research question RQ3}
+\subsection{Answering research question \numRQC{}}
 \label{sec:rqC}
 
 \begin{itemize}
@@ -333,26 +334,20 @@ To evaluate the presence of parallelization settings (see Section
 \longg{}-running, a total of \numMedLong{} subjects (see
 Figure~\ref{fig:rq1-barplot}). To reduce noise we did not consider
 projects with \shortg{}-running test suites as we observed\Mar{please,
-  confirm} that those projects often\Mar{adjust} do not use
-parallelism; including them would favor sequential execution in our
-analysis.
+confirm} that those projects often\Mar{adjust} do not use parallelism;
+including them would favor sequential execution in our analysis.
 
-%% We
-%% focused in these two groups because given that costly test suites
-%% exist, we investigated if the maintainers are aware of parallelization
-%% settings.
-
-To answer RQ3\Mar{use macro} we initially mined build files (\ie,
-\pomf{}) that contain parallelization keywords, namely
-\CodeIn{forkMode}, \CodeIn{forkCount}, and \CodeIn{parallel}.
-According to the Maven surefire documentation\Fix{cite surefire doc},
-any configuration to run tests in parallel must contain one of these
-keywords. This mining step, however, is not sound as a matching
-project may not indicate a project with a valid configuration for
-running tests in parallel.  False positive can happen because of
-comments, for instance.  To eliminate the cases of false positives and
-also to categorize true positive cases, we complemented the initial
-mining step with a manual inspection of files.
+To answer \numRQC{} we initially mined build files (\ie, \pomf{}) that
+contain parallelization keywords, namely \CodeIn{forkMode},
+\CodeIn{forkCount}, and \CodeIn{parallel}.  According to the Maven
+surefire documentation\Fix{cite surefire doc}, any configuration to
+run tests in parallel must contain one of these keywords. This mining
+step, however, is not sound as a matching project may not indicate a
+project with a valid configuration for running tests in parallel.
+False positive can happen because of comments, for instance.  To
+eliminate the cases of false positives and also to categorize true
+positive cases, we complemented the initial mining step with a manual
+inspection of files.
 
 %% settings); the second step (inspection) consists in a manual
 %% inspection to confirm the presence of parallelism settings in the
@@ -360,58 +355,81 @@ mining step with a manual inspection of files.
 %% Figure \Fix{removed} describes the discovery step: we list the paths
 %% of all build files and filter only the files that contain any of the
 
-Figure~\ref{tab:inspection-table} summarizes our results.  Column
-``Group'' indicates the group of projects according to their time
-cost.\Mar{quickly explain other columns}
+Figure~\ref{tab:inspection-table} summarizes our results. The first
+column indicates the group of projects according to their time cost.
+The second column indicates the number of build files per group.  The
+third column is a subset from the previous column and represents the
+number of build files found in the mining step (including
+false-positives highlighted in parentheses). The last column indicates
+the ratio of projects with parallelization settings.
 
-%% summarize observations...
 From the \numMedLong{} subjects, we found \pomMedLong{} \pomf{} files
-where 109\Mar{use macro} of those files match one of the keywords
-mentioned above.  From these 109\Mar{use macro} build files, we
+where \numPomMatched{} of those files match one of the keywords
+mentioned above.  From these \numPomMatched{} build files, we
 eliminated six false-positives: two were names of project modules
 (\eg, \emph{camel-cookbook-parallel-processing}), one was part of a
-comment, and three were commented configurations. The 106\Fix{fix
-  this} build files with valid configurations are distributed across
-41\Mar{use macro} projects from our sample.  \emph{From these results
-  we found that $\sim$51\% of medium and long-running projects do not
-  use parallel features to run test suites.}\Mar{please make it
-  consistent with research question}\Mar{explain this is
-  over(under)-estimated...}
+comment, and three were commented configurations. The
+\numPomMatchedValid{} build files with valid configurations are
+distributed across \numProjectsPar{} projects from our sample.
+\emph{From these results we found that $\sim$51\% of medium and
+long-running projects do not use parallel features to run test
+suites.}\Mar{please make it consistent with research
+question}\Mar{explain this is over(under)-estimated...}
 
 \begin{figure}[ht!]
     \centering
     \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}cccc}
         \toprule
-        \multirow{2}{*}{Group} & \multirow{2}{*}{\# \pomf{}} & \# \pomf{} matched & \# projects matched\\%
-                               &                             &  (false-positives) &       / total\\%
+        \multirow{2}{*}{Group}
+            & \multirow{2}{*}{\# \pomf{}}
+            & \# \pomf{} matched
+            & \# projects matched\\%
+        % 2nd row - empty cell
+            & % empty cell
+            & (false-positives)
+            & / total\\%
         \midrule%
-        Long   & 1613 & 79 (1) & 19/\numLong{}\\%
-        Medium & 1238 & 30 (5) & 22/\numMed{}\\%
+        Long   & 1613 & 79 (1) & 19 / \numLong{}\\%
+        Medium & 1238 & 30 (5) & 22 / \numMed{}\\%
         \midrule%
-        Total  & \pomMedLong{} & 109 (6) & 41/\numMedLong{}\\%
+        Total & \pomMedLong{} & \numPomMatched{} (6) & \numProjectsPar{} / \numMedLong{}\\%
         \bottomrule%
     \end{tabular*}
-    \caption{Presence of parallel configurations in build files from
-    projects with time-consuming tests. \Fix{explain columns}}
+    \caption{Presence of parallelization settings in build files: the
+    first column indicates the group of projects according to their
+    time cost; the second column indicates the number of build files;
+    the third column is the subset of files with parallelization
+    keywords; the last column indicates the ratio of projects with
+    parallelism support.}
     \label{tab:inspection-table} 
 \end{figure}
 
 \subsubsection{Distribution of parallel modes}
 
-\Jbc{Conclusion and relate the results to the
-  RQ...........................................}
+From the \numProjectsPar{} projects identified above, we investigated
+further the \numPomMatchedValid{} build files with parallel settings.
+We analyzed the support and distribution of parallel modes from this
+subset of projects. To calculate the distribution of parallel modes,
+we considered only the presence of the mode in at least one of the
+project settings.  Recall that a build file may contain more than one
+parallel setting and a project may contain several sub-modules with
+build files.  In case the value of a parallel option is resolved
+dynamically (\eg, via command-line argument or system variable) we
+compute all modes related to the option. For instance, depending on
+the value, the \CodeIn{parallel} option can be \Seq{} (\CodeIn{none}),
+\ParClassSeqMeth{} (\CodeIn{classes}), \SeqClassParMeth{},
+(\CodeIn{methods}), and \ParClassParMeth{} (\CodeIn{all}).
+Figure~\ref{fig:freqmodes} summarizes our findings.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.32\textwidth]{plots/barplot-modes.pdf}
-    \caption{\label{fig:freqmodes}Distribution of parallelism modes
-    identified in \Fix{M} projects\Jbc{Currently medium and partially
-    the long group...}}
+    \caption{\label{fig:freqmodes}Distribution of parallel modes
+    identified in a subset of \numProjectsPar{} projects. A single
+    project may have support to more than one parallel mode.}
 \end{figure}
 
-
-
-\subsection{Answering research question RQ4}
+\subsection{Answering research question \numRQD{}}
 \label{sec:rqD}
 
 \begin{itemize}
