@@ -142,14 +142,13 @@ https://api.github.com/search/repositories?q=language:java
 A Maven project may contain several sub-modules with multiple \pomf{}
 files. We considered only projects with a \pomf{} file located in the
 root directory.  As of December 30th 2016, our search criteria
-returned \numSubjsTotal{} subjects. From the \numSubjsTotal{}
-downloaded projects, 46 were not Maven projects (or did not have a
-\pomf{} in the root directory) and 159 were in a unstable revision.
-From these 159 unstable subjects, \Jbc{elaborate what is unstable (eg,
-(1) how many could not resolve dependencies? (2) how many could not
-compile sources and tests? (3) could not run tests due to incompatible
-testing environment?}. Our final set consists in \numSubjs{} testable
-subjects.
+returned 615 subjects. From the 615 downloaded projects, 46 were not
+Maven projects (or did not have a \pomf{} in the root directory) and
+159 were in a unstable revision.  From these 159 unstable subjects,
+\Jbc{elaborate what is unstable (\eg, (1) how many could not resolve
+dependencies? (2) how many could not compile sources and tests? (3)
+could not run tests due to incompatible testing environment?}. Our
+final set consists in \numSubjs{} testable subjects.
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -175,27 +174,28 @@ and all software dependencies.}
 \end{itemize}
 
 To evaluate the frequency of time-consuming regression tests, we
-considered the \numSubjs{} subjects from Section~\ref{sec:subjects} and
-compared the elapsed time to run their tests.
-Figure~\ref{fig:mvn-execution} shows the commands used in our script
-to test each subject. The main loop (lines 5-11) iterates over the
-list of subjects and invokes Maven in separated steps (lines 7-9). To
-avoid inflating the measured time we executed Maven in different
-steps: we first compiled the source and test files (line 7), made all
-dependencies available locally (line 8) and later, we ran the tests in
-offline mode (line 9) to bypass package updates. After the execution,
-we used a regular expression on the output log to extract the elapsed
-time (line 10). Before collecting the time cost, we executed all
-subjects and randomly selected 100 logs to inspect and identify
-non-related tasks (\eg, \emph{javadoc} generation and static analysis)
-to ignore during the experiment (lines 1-3).  To avoid noise from
-operating system events, we used a dedicated server remotely via SSH
-with the operating system running only essential services (\eg, the
-SSH server). In addition, we configured the \CodeIn{isolcpus} option
-from the Linux Kernel \cite{linux-kernel} to isolate six virtual CPUs
-to execute our experiment and the remaining CPUs to run the operating
-system. By isolating a set of virtual CPUs, we prevent
-context-switching from experiment processes and OS-related processes.
+considered the \numSubjs{} subjects from Section~\ref{sec:subjects}
+and compared the elapsed time to run their tests. \Jbc{Be clear about
+checking the elapsed time }.  Figure~\ref{fig:mvn-execution} shows the
+commands used in our script to test each subject. The main loop (lines
+5-11) iterates over the list of subjects and invokes Maven in
+separated steps (lines 7-9). To avoid inflating the measured time we
+executed Maven in different steps: we first compiled the source and
+test files (line 7), made all dependencies available locally (line 8)
+and later, we ran the tests in offline mode (line 9) to bypass package
+updates. After the execution, we used a regular expression on the
+output log to extract the elapsed time (line 10). Before collecting
+the time cost, we executed all subjects and randomly selected 100 logs
+to inspect and identify non-related tasks (\eg, \emph{javadoc}
+generation and static analysis) to ignore during the experiment (lines
+1-3).  To avoid noise from operating system events, we used a
+dedicated server remotely via SSH with the operating system running
+only essential services (\eg, the SSH server). In addition, we
+configured the \CodeIn{isolcpus} option from the Linux Kernel
+\cite{linux-kernel} to isolate six virtual CPUs to execute our
+experiment and the remaining CPUs to run the operating system. By
+isolating a set of virtual CPUs, we prevent context-switching from
+experiment processes and OS-related processes.
 
 \input{codes/evaluation}
 
@@ -259,7 +259,7 @@ how much \% of the tests failed?}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon; they account to nearly \percentMedLongRunning{} of the
-\numSubjsTotal{} projects we analyzed.  However, use of parallelism
+\numSubjs{} projects we analyzed.  However, use of parallelism
 does not assure speedups on those projects.  We analyzed one sensible
 factor that is critical to the effectiveness of parallelism: the
 amount of tests that dominate execution time.  In the limit, if cost
@@ -272,8 +272,8 @@ test frameworks (see Section~\ref{sec:frameworks}).
 %% of test cases or if the cost is nearly equally distributed. 
 
 We evaluated the dispersion of time distributions (one distribution
-per project) to aswer research question RQ2.  To measure dispersion
-\emph{across} projects we used Relative Standard Deviation
+per project) to answer research question \numRQB{}.  To measure
+dispersion \emph{across} projects we used Relative Standard Deviation
 (RSD)~\cite{everitt-book-stats-2010}.  Note that, if we were to
 analyze each project in isolation, the standard deviation of a
 distribution ($\sigma$) would suffice to quantify how dispersed the
@@ -380,7 +380,7 @@ question}\Mar{explain this is over(under)-estimated...}
     \centering
     \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}cccc}
         \toprule
-        \multirow{2}{*}{Group}
+        \multirow{2}{*}{Group} %1st row, 1st cell
             & \multirow{2}{*}{\# \pomf{}}
             & \# \pomf{} matched
             & \# projects matched\\%
@@ -392,7 +392,10 @@ question}\Mar{explain this is over(under)-estimated...}
         Long   & 1613 & 79 (1) & 19 / \numLong{}\\%
         Medium & 1238 & 30 (5) & 22 / \numMed{}\\%
         \midrule%
-        Total & \pomMedLong{} & \numPomMatched{} (6) & \numProjectsPar{} / \numMedLong{}\\%
+        Total % last row, first cell
+            & \pomMedLong{}
+            & \numPomMatched{} (6)
+            & \numProjectsPar{} / \numMedLong{}\\%
         \bottomrule%
     \end{tabular*}
     \caption{Presence of parallelization settings in build files: the
@@ -419,14 +422,17 @@ compute all modes related to the option. For instance, depending on
 the value, the \CodeIn{parallel} option can be \Seq{} (\CodeIn{none}),
 \ParClassSeqMeth{} (\CodeIn{classes}), \SeqClassParMeth{},
 (\CodeIn{methods}), and \ParClassParMeth{} (\CodeIn{all}).
-Figure~\ref{fig:freqmodes} summarizes our findings.
+Figure~\ref{fig:freqmodes} summarizes our findings. \Jbc{Given that we
+checked each configuration, we could elaborate how these settings are
+used.} \Fix{Missing conclusion: Fork the most used configuration}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.32\textwidth]{plots/barplot-modes.pdf}
     \caption{\label{fig:freqmodes}Distribution of parallel modes
-    identified in a subset of \numProjectsPar{} projects. A single
-    project may have support to more than one parallel mode.}
+    identified in a subset of \numProjectsPar{} projects (unused modes
+    omitted). A single project may have support to more than one
+    parallel mode.}
 \end{figure}
 
 \subsection{Answering research question \numRQD{}}
