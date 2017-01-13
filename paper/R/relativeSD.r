@@ -2,9 +2,9 @@ library(ggplot2)
 
 pdf(file = "relativeSD.pdf", width = 5, height = 1.5)
 
-dat <- read.table("relativeSD.data", sep = "", header = TRUE) 
+dat <- read.csv("RSD.csv", header = F) 
 
-p <- ggplot(dat, aes(factor(dummy), RSD))
+p <- ggplot(dat, aes(x="", y=dat$V2))
 
 p +
 geom_boxplot() +
@@ -12,6 +12,7 @@ coord_flip() +
 theme(axis.title.y=element_blank(),
       axis.text.y=element_blank(),
       axis.ticks.y=element_blank()
-)
+) +
+labs(y="Relative Standard Deviation (RSD)")
 
 aux <- dev.off()
