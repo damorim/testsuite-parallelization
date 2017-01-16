@@ -6,15 +6,16 @@
 
 As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both components can add up to the
-aggregate cost of running a test suite, which can lead to late reports
-of test failures.  Dealing with high testing costs is important.
+aggregate cost of running a test suite.  Dealing with high testing
+costs is an important problem in software engineering research and
+practice (as to reduce late test failure reports).
 
-Several approaches have been proposed in the literature to address the
-regression testing problem, with the focus mainly on test suite
-minimization, prioritization, reduction, and
+Several approaches have been proposed in the research literature to
+address the regression testing problem, with the focus mainly on test
+suite minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012}.  In industry, the focus has been
-mainly on distributing testing workloads.  Evidence of this are the
-Google TAP system~\cite{google-tap,google-ci} and Microsoft's
+mainly on distributing the testing workloads.  Evidence of this are
+the Google TAP system~\cite{google-tap,google-ci} and Microsoft's
 CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci}, which
 provide distributed infrastructures to efficienctly build massive
 amounts of code and run tests.  Building server clusters is also a
@@ -24,16 +25,24 @@ August 2013, the Groupon PWA system, which powers the
 tests under 10m, Groupon used a cluster of 4 computers with 24 cores
 each~\cite{kim-etal-fse2013}.
 
-At large organizations, the alternative of renting a cloud
-service\footnote{\url{https://clutch.co/cloud}} or even building
-proprietary infrastructures for running tests is a legitimate approach
-to mitigate the regression testing problem.  However, for projects
-with low budgets and yet relatively heavy testing workloads, this
-solution may not be economically viable.  This paper focuses on the
-problem of understanding how critical the regression testing problem
-is in open-source projects.  To the best of our knowledge no prior
-work investigated this problem, which is becoming more important given
-the tremendous popularity of open-source development.
+At large organizations, the alternative of renting cloud
+services\footnote{List of popular cloud services:
+  \url{https://clutch.co/cloud}} or even building proprietary
+infrastructures for running tests is a legitimate approach to mitigate
+the regression testing problem.  However, for projects with low
+budgets and yet relatively heavy testing workloads, this solution may
+not be economically viable.  This paper reports on a study we
+conducted analyzing three orthogonal dimensions of regression testing
+in open-source projects.  We argue that this an important problem
+given the tremendous popularity of open-source development and
+regression testing research.  The dimensions of analysis are as
+follows.
+
+\begin{itemize}
+\item \textbf{Prevalence of long-running test suites.}
+\item \textbf{Usage of test suite parallelization.}  
+\item \textbf{Impact (and issues) of parallelization.}  
+\end{itemize}  
 
 %% papers also indicate the important of speeding up the testing process
 %% in other industrial domain, e.g., in 
@@ -47,35 +56,36 @@ the tremendous popularity of open-source development.
 %% in this setting, how frequently parallelization features are used, if
 %% not used why, and what are the associated drawbacks.
 
-\Fix{---------------- parei aqui...}
+%% RQ1 + RQ2
+To assess how prevalent long-running test suites are in open-source
+projects, we selected \numSubjs{} popular Java projects from \github{}
+containing Maven build files~\cite{maven}.  (Section~\ref{sec:eval}
+details our selection methodology.)  To run each test suite, we used a
+16GB memory Intel i7 machine\Comment{ i7-4790 Intel processor} with
+eight virtual CPUs (four cores with two native threads each) and the
+default Maven configuration of each project.  Our results indicate
+that \percentMedLongRunning{} of the test suites take at least 1m to
+run and nearly 8\% of the test suites take more than 5m to run.
+Including medium and long-running test suites ($>$1m), a test suite
+takes \averageMedLongRunning{} to run, on average.  These results
+indicate that open-source projects often contain long running test
+suites.  Furthermore, we found that although \Fix{...time
+  distribution...}
 
-More precisely, we studied (1) how prevalent long-running test suites
-are in open-source software projects.  To that end, we selected from
-\github{} \numSubjs{} highly-popular Java projects containing Maven
-build files.  (Section~\ref{sec:eval} details our selection
-methodology.)  To run this experiment we used the default Maven
-configuration to run a project's test suite and a 16GB memory i7-4790
-Intel processor machine, which we carefully isolated.  Our results
-indicate that the test suite of nearly one in every five projects from
-our set (\percentMedLongRunning) takes at least 5m to run.  On
-average, one of those test suites take \averageMedLongRunning{} to
-run.  These results suggest that open-source projects often contain
-long running test suites.
-
-\Mar{missing connection. why
-  parallelism?}  From this result we investigated (2) how frequently
-the projects we considered use parallelization to speedup test runs.
-Our results indicate that \percentParallelForLongRunning{} of
-long-running test suites do use parallelism to speedup execution.
-Given the popularity of this solution, we further studied: (3) what
-are the causes of high execution cost in individual tests (CPU vs. IO)
-and (4) how uniformly cost is distributed across tests.  These
-questions help to assess the impact of parallelization in test suite
-execution.  Intuitively, IO-intensive test suites and test suites with
-uneven distribution of cost per test are factors that limit the
-benefits of parallelization.  Results indicate that \Fix{...}
-Finally, we investigated (5) what are the limitations related to
-parallelization that could justify adoption resistance.
+\Mar{missing connection. why parallelism?}  From these results we
+investigated (2) how frequently the projects we considered use
+parallelization to speedup test runs.  Our results indicate that
+\percentParallelForLongRunning{} of long-running test suites do use
+parallelism to speedup execution.  Given the popularity of this
+solution, we further studied: (3) what are the causes of high
+execution cost in individual tests (CPU vs. IO) and (4) how uniformly
+cost is distributed across tests.  These questions help to assess the
+impact of parallelization in test suite execution.  Intuitively,
+IO-intensive test suites and test suites with uneven distribution of
+cost per test are factors that limit the benefits of parallelization.
+Results indicate that \Fix{...}  Finally, we investigated (5) what are
+the limitations related to parallelization that could justify adoption
+resistance.
 
 \Fix{--------------}
 
