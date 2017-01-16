@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# R --vanilla < effort.r --args  effort2.data
-# mv Rplots.pdf effort2.pdf
-
-NAME="relativeSD"
+NAME="testcost"
 R --vanilla < ${NAME}.r
 

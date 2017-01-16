@@ -1,10 +1,10 @@
 library(ggplot2)
 
-pdf(file = "relativeSD.pdf", width = 5, height = 1.5)
+pdf(file = "relativeSD.pdf", width = 5, height = 2.5)
 
-dat <- read.csv("RSD.csv", header = F) 
+dat <- read.csv("testcost.csv", header = T) 
 
-p <- ggplot(dat, aes(x="", y=dat$V2))
+p <- ggplot(dat, aes(x=", y=dat$V2))
 
 p +
 geom_boxplot() +
