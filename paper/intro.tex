@@ -7,44 +7,33 @@
 As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both components can add up to the
 aggregate cost of running a test suite, which can lead to late reports
-of test failures.  Dealing with high testing costs is critical at
-large IT organizations, with massive code and test bases.
+of test failures.  Dealing with high testing costs is important.
 
 Several approaches have been proposed in the literature to address the
-regression testing problem.  Research has focused mostly on test suite
+regression testing problem, with the focus mainly on test suite
 minimization, prioritization, reduction, and
-selection~\cite{yoo-harman-stvr2012}.  These approaches reduce testing
-cost by reducing the amount of tests for execution.  It is important
-to bring to light that the \emph{complementary alternative} of
-balancing the test workload across work units is sound (\ie{}, it
-cannot miss fault-revealing tests) and very popular in industry.
-Evidence of this are the Google TAP system~\cite{google-tap,google-ci}
-and Microsoft's CloudBuild
-system~\cite{prasad-shulte-ieee-microsoft-ci}, which provide
-distributed infrastructures to efficienctly build massive amounts of
-code and run tests.  Note, however, that the regression testing
-problem is not specific to giants from the IT sector.  For example, as
-of August 2013, the Groupon PWA system, which powers the
+selection~\cite{yoo-harman-stvr2012}.  In industry, the focus has been
+mainly on distributing testing workloads.  Evidence of this are the
+Google TAP system~\cite{google-tap,google-ci} and Microsoft's
+CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci}, which
+provide distributed infrastructures to efficienctly build massive
+amounts of code and run tests.  Building server clusters is also a
+popular mechanism to distribute testing workloads.  For example, as of
+August 2013, the Groupon PWA system, which powers the
 \url{groupon.com} website, included over 19K tests.  To run all those
 tests under 10m, Groupon used a cluster of 4 computers with 24 cores
 each~\cite{kim-etal-fse2013}.
-
-
-
-%% As additional examples, Google's
-%% TAP and Microsoft's CloudBuild distribute task workloads in the cloud.
 
 At large organizations, the alternative of renting a cloud
 service\footnote{\url{https://clutch.co/cloud}} or even building
 proprietary infrastructures for running tests is a legitimate approach
 to mitigate the regression testing problem.  However, for projects
-with low budgets and yet moderate or heavy testing workloads, this
-solution may not be economically viable.  The amount of serious
-open-source project under development today is impressive.\Mar{give
-  examples, provide stats.}  Optimizing existing computational
-resources in this context saves money or time.  \Mar{what about free
-  services (jenkins)?  how much can you scale execution and how
-  expensive would that be?}
+with low budgets and yet relatively heavy testing workloads, this
+solution may not be economically viable.  This paper focuses on the
+problem of understanding how critical the regression testing problem
+is in open-source projects.  To the best of our knowledge no prior
+work investigated this problem, which is becoming more important given
+the tremendous popularity of open-source development.
 
 %% papers also indicate the important of speeding up the testing process
 %% in other industrial domain, e.g., in 
@@ -53,17 +42,12 @@ resources in this context saves money or time.  \Mar{what about free
 %%   tests, and how prevalent is parallelization (in contrast to
 %%   regression testing).}
 
-\sloppy This paper focuses on the problem of understanding how
-critical the regression testing problem is in open-source projects.
-To the best of our knowledge no prior work investigated this problem,
-which is important given the tremendous popularity of open-source
-development and the wide impact of regression testing optimization
-techniques in this setting.
-
 %Motivated by this potential gap in regression testing,
 %% More specifically, we studied how often long-running test suites occur
 %% in this setting, how frequently parallelization features are used, if
 %% not used why, and what are the associated drawbacks.
+
+\Fix{---------------- parei aqui...}
 
 More precisely, we studied (1) how prevalent long-running test suites
 are in open-source software projects.  To that end, we selected from
@@ -94,6 +78,9 @@ Finally, we investigated (5) what are the limitations related to
 parallelization that could justify adoption resistance.
 
 \Fix{--------------}
+
+\Mar{what about free services (jenkins)?  how much can you scale
+  execution and how expensive would that be?}
 
 To illustrate the importance of parallel test execution, \Jbc{TODO -
 Write a paragraph motivating this paper.}
