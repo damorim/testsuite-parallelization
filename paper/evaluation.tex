@@ -287,12 +287,28 @@ the distribution is.  Consequently, ignoring other factors that affect
 performance of parallelization (e.g., CPU/IO ratio), the lower the
 value of RSD the more parallelizable a test suite should be.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.5\textwidth]{R/testcost.pdf}  
-  \caption{\label{fig:relativesd}Distribution of RSD ($\sigma/\mu$)
-    across projects.}
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{R/testcost-med.pdf}
+        \caption{\label{fig:medtcost}}
+    \end{subfigure}\\
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{R/testcost-long.pdf}
+        \caption{\label{fig:longtcost}}
+    \end{subfigure}%
+    \caption{\label{fig:relativesd}Distribution of RSD ($\sigma/\mu$)
+        across projects.}
 \end{figure}
+
+%% \begin{figure}[h!]
+%%   \centering
+%%   \includegraphics[width=0.5\textwidth]{R/testcost.pdf}  
+%%   \caption{\label{fig:relativesd}Distribution of RSD ($\sigma/\mu$)
+%%     across projects.}
+%% \end{figure}
 
 Figure~\ref{fig:relativesd} shows the distribution of RSD across
 medium and long-running projects.  Results show that the distribution
