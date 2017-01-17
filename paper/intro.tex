@@ -17,7 +17,7 @@ selection~\cite{yoo-harman-stvr2012}.  In industry, the focus has been
 mainly on distributing the testing workloads.  Evidence of this are
 the Google TAP system~\cite{google-tap,google-ci} and Microsoft's
 CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci}, which
-provide distributed infrastructures to efficienctly build massive
+provide distributed infrastructures to efficiently build massive
 amounts of code and run tests.  Building server clusters is also a
 popular mechanism to distribute testing workloads.  For example, as of
 August 2013, the Groupon PWA system, which powers the
@@ -31,12 +31,18 @@ services\footnote{List of popular cloud services:
 infrastructures for running tests is a legitimate approach to mitigate
 the regression testing problem.  However, for projects with low
 budgets and yet relatively heavy testing workloads, this solution may
-not be economically viable.  This paper reports on a study we
-conducted analyzing three orthogonal dimensions of regression testing
-in open-source projects.  We argue that this an important problem
-given the tremendous popularity of open-source development and
-regression testing research.  The dimensions of analysis are as
-follows.
+not be economically viable.  The relatively-recent proliferation of
+multi-core machines and testing frameworks with a rich support for
+parallelization enabled test suites to increase CPU usage (and execute
+faster) while using existing resources available in commodity hardware
+(see Section~\ref{sec:modes}).  This paper reports on an empirical
+study we conducted to analyze importance of test suite parallelization
+to speedup testing of open-source projects.  We argue that this a
+relevant problem given the tremendous popularity of open-source
+development and regression testing research.  The dimensions of
+analysis in this study are as follows.
+
+
 
 \begin{itemize}
 \item \textbf{Prevalence of long-running test suites.}
@@ -107,3 +113,4 @@ Summary of the contributions of this paper} .
 %%% Local Variables:
 %%% TeX-master: "main"
 %%% End:
+%%  LocalWords:  jenkins
