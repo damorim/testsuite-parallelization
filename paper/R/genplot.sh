@@ -1,5 +1,6 @@
 #!/bin/bash
 
 NAME="testcost"
-R --vanilla < ${NAME}.r
+Rscript --vanilla ${NAME}.r "testcost-med"
+Rscript --vanilla ${NAME}.r "testcost-long"
 

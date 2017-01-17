@@ -259,33 +259,34 @@ how much \% of the tests failed?}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon; they account to nearly \percentMedLongRunning{} of the
-\numSubjs{} projects we analyzed.  However, use of parallelism
-does not assure speedups on those projects.  We analyzed one sensible
-factor that is critical to the effectiveness of parallelism: the
-amount of tests that dominate execution time.  In the limit, if cost
-is dominated by a single test, it is unlikely that parallelization
-will be beneficial as a test method is the smallest working unit in
-test frameworks (see Section~\ref{sec:frameworks}).
+\numSubjs{} projects we analyzed.  However, parallelism by itself does
+not assure speedups on those projects.  One sensible factor that is
+critical to the effectiveness of parallelism is the distribution of
+test costs in the test suite.  In the limit, if cost is dominated by a
+single test, it is unlikely that parallelization will be beneficial as
+a test method is the smallest working unit in test frameworks (see
+Section~\ref{sec:frameworks}).
+
+\Fix{...elaborate...}
 
 %% We are interested to know whether
 %% most of the execution cost of a subject is dominated by a small subset
 %% of test cases or if the cost is nearly equally distributed. 
 
-We evaluated the dispersion of time distributions (one distribution
-per project) to answer research question \numRQB{}.  To measure
-dispersion \emph{across} projects we used Relative Standard Deviation
-(RSD)~\cite{everitt-book-stats-2010}.  Note that, if we were to
-analyze each project in isolation, the standard deviation of a
-distribution ($\sigma$) would suffice to quantify how dispersed the
-(time) distribution is.  However, in our case, we would like to be
-able to compare and summarize dispersion across projects.  The RSD,
-which is obtained dividing the standard deviation by the mean ($\mu$)
-of a distribution, provides such normalization effect.  This metric
-provides a lower bound (zero) but not an upper bound (somewhere close
-to 1).  The smaller (larger) the value of RSD the more (less) uniform
-the distribution is.  Consequently, ignoring other factors that affect
-performance of parallelization (e.g., CPU/IO ratio), the lower the
-value of RSD the more parallelizable a test suite should be.
+%% We also evaluated the dispersion of time distributions (one
+%% distribution per project) to answer research question \numRQB{}.  To
+%% measure dispersion \emph{across} projects we used Relative Standard
+%% Deviation (RSD)~\cite{everitt-book-stats-2010}.  Note that, if we were
+%% to analyze each project in isolation, the standard deviation of a
+%% distribution ($\sigma$) would suffice to quantify how dispersed the
+%% (time) distribution is.  However, in our case, we would like to be
+%% able to compare and summarize dispersion across projects.  The RSD,
+%% which is obtained dividing the standard deviation by the mean ($\mu$)
+%% of a distribution, provides such normalization effect.  This metric
+%% provides a lower bound (zero) but not an upper bound (somewhere close
+%% to 1).  The smaller (larger) the value of RSD the more (less) uniform
+%% the distribution is.  Consequently, the lower the value of RSD the
+%% more parallelizable a test suite should be.
 
 \begin{figure}[ht]
     \centering
@@ -310,11 +311,11 @@ value of RSD the more parallelizable a test suite should be.
 %%     across projects.}
 %% \end{figure}
 
-Figure~\ref{fig:relativesd} shows the distribution of RSD across
-medium and long-running projects.  Results show that the distribution
-is skewed to the right indicating that test costs are relatively well
-distributed in most costly projects we analyzed \Fix{$\leftarrow$
-  confirm}.
+%% Figure~\ref{fig:relativesd} shows the distribution of RSD across
+%% medium and long-running projects.  Results show that the distribution
+%% is skewed to the right indicating that test costs are relatively well
+%% distributed in most costly projects we analyzed \Fix{$\leftarrow$
+%%   confirm}.
 
 %% analyzed the execution time
 %% for the \numMedLong{} projects from the \longg{} and \medg{} groups
