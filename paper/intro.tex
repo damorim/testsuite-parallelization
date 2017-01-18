@@ -31,18 +31,17 @@ services\footnote{List of popular cloud services:
 infrastructures for running tests is a legitimate approach to mitigate
 the regression testing problem.  However, for projects with low
 budgets and yet relatively heavy testing workloads, this solution may
-not be economically viable.  The relatively-recent proliferation of
-multi-core machines and testing frameworks with a rich support for
-parallelization enabled test suites to increase CPU usage (and execute
-faster) while using existing resources available in commodity hardware
-(see Section~\ref{sec:modes}).  This paper reports on an empirical
-study we conducted to analyze importance of test suite parallelization
-to speedup testing of open-source projects.  We argue that this a
-relevant problem given the tremendous popularity of open-source
-development and regression testing research.  The dimensions of
-analysis in this study are as follows.
+not be economically viable.  The proliferation of multi-core CPUs in
+commodity hardware and the popularization of testing frameworks with a
+rich support for parallelization (see Section~\ref{sec:modes}) enables
+test suites to increase CPU usage.  This paper reports on an empirical
+study we conducted to analyze importance of low-level parallelization
+(\ie{}, parallel features available within each machine) to speedup
+testing of open-source projects.  This is a relevant problem given the
+tremendous popularity of open-source development and regression
+testing research.
 
-
+The dimensions of analysis in this study are as follows.
 
 \begin{itemize}
 \item \textbf{Prevalence of long-running test suites.}
@@ -62,21 +61,28 @@ analysis in this study are as follows.
 %% in this setting, how frequently parallelization features are used, if
 %% not used why, and what are the associated drawbacks.
 
+%% To run each test suite, we used a
+%% 16GB memory Intel i7 machine\Comment{ i7-4790 Intel processor} with
+%% eight virtual CPUs (four cores with two native threads each) and the
+%% default Maven configuration of each project.
+
 %% RQ1 + RQ2
-To assess how prevalent long-running test suites are in open-source
-projects, we selected \numSubjs{} popular Java projects from \github{}
-containing Maven build files~\cite{maven}.  (Section~\ref{sec:eval}
-details our selection methodology.)  To run each test suite, we used a
-16GB memory Intel i7 machine\Comment{ i7-4790 Intel processor} with
-eight virtual CPUs (four cores with two native threads each) and the
-default Maven configuration of each project.  Our results indicate
-that \percentMedLongRunning{} of the test suites take at least 1m to
-run and nearly 8\% of the test suites take more than 5m to run.
-Including medium and long-running test suites ($>$1m), a test suite
-takes \averageMedLongRunning{} to run, on average.  These results
-indicate that open-source projects often contain long running test
-suites.  Furthermore, we found that although \Fix{...time
-  distribution...}
+We selected \numSubjs{} popular Java projects from \github{}
+containing Maven build files~\cite{maven} to assess how prevalent
+long-running test suites are.  Section~\ref{sec:eval} details our
+methodology to select subjects and to isolate our experiments from
+environmental noise.  In summary, results indicate that $\sim$21\% of
+the test suites take at least 1m to run and $\sim$8\% of the test
+suites take at least 5m to run.  Considering all the \numMedLong{}
+projects (\percentMedLongRunning{} of
+\numSubjs{})\Fix{$\leftarrow$this is not right. check macros.} in the
+$>$1m group, the average execution time is \averageMedLongRunning{}.
+Results also show that individual tests are typically short-running,
+taking often less than half a second to run.  Furthermore, we found
+that only in rare cases few test cases monopolize execution cost
+associated with each test suite.  Overall, these results suggest that
+test suite parallelization has the potential to optimize these test
+suites.
 
 \Mar{missing connection. why parallelism?}  From these results we
 investigated (2) how frequently the projects we considered use
