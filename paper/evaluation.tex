@@ -3,7 +3,7 @@
 
 We are interested in understanding the prevalence of time-consuming
 test suites and main sources of cost. We want to understand how the
-execution cost is distributed on test cases withing a test suite and
+execution cost is distributed on test cases within a test suite and
 how developers approach test execution. Based on that, we study
 parallelization of testing frameworks.  More precisely, we investigate
 how prevalent test parallelization is, the potential for improving
@@ -261,13 +261,78 @@ Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon; they account to nearly \percentMedLongRunning{} of the
 \numSubjs{} projects we analyzed.  However, parallelism by itself does
 not assure speedups on those projects.  One sensible factor that is
-critical to the effectiveness of parallelism is the distribution of
-test costs in the test suite.  In the limit, if cost is dominated by a
-single test, it is unlikely that parallelization will be beneficial as
-a test method is the smallest working unit in test frameworks (see
-Section~\ref{sec:frameworks}).
+important to the effectiveness of low-level parallelism is the
+distribution of test costs in the test suite.  In the limit, if cost
+is dominated by a single test, it is unlikely that parallelization
+will be beneficial as a test method is the smallest working unit in
+test frameworks (see Section~\ref{sec:frameworks}).
 
-\Fix{...elaborate...}
+\begin{figure}[ht]
+    \centering
+
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{R/testcost-med.pdf}
+      \caption{\label{fig:medtcost}Medium}
+    \end{subfigure}\\
+    
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{R/testcost-long.pdf}
+      \caption{\label{fig:longtcost}Long}
+    \end{subfigure}%
+    
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \begin{tabular}{rrrr}
+        \toprule
+        & $\sigma\leq1$ & $1<\sigma\leq5$ & $\sigma\ge5$ \\
+        \midrule    
+        Medium & 17 & 20 & 7 \\
+        Long   &  9 & 14 & 5 \\
+        \bottomrule
+      \end{tabular}
+      \caption{\label{fig:sd}...\Fix{Looks like there are missing
+        projects...}}    
+    \end{subfigure}%
+
+    \caption{\label{fig:time-distributions}Distribution of time cost per project.}    
+\end{figure}
+
+\sloppy Figures~\ref{fig:medtcost} and~\ref{fig:longtcost} show the
+time distribution of tests per project.  We observed that the average
+median value of execution cost for a test was relatively small (dashed
+horizontal red lines), namely 0.41s for \medg{} projects and 0.23s for
+\longg{} projects.  Note that correlation between cost of test suites
+and cost of their individual tests is not to be expected.  The
+standard deviation ($\sigma$) associated with each ditribution was
+relatively low.  Figure~\ref{fig:sd} shows the number of projects
+within specific ranges of $\sigma$ values.  We also observed that
+projects with very high standard deviations may or may not be
+indicative of monopolization of execution by a small number of tests.
+For example, the highest value of $\sigma$ ocurred in project
+\CodeIn{wildfly-swarm}, whose test suite was classified as
+long-running.  This project contains only 65 tests, 62 of which take
+less than 0.5s to run, 1 of which takes nearly 3s to run, and 2 of
+which take 40m to run.  This is an example where test suite
+parallelization may not be very beneficial as $>$99\% execution cost
+is dominated by only 3\% of the tests.  Without these two tests this
+project would have been classified as short-running.  A closer
+inspection in the data indicates that the project
+\CodeIn{wildfly-swarm} was an extreme case; we did not find projects
+with similar characteristics of time monopolization.  Project
+\CodeIn{jenkinsci.gerrit-trigger-plugin} is also classified as
+long-running and has the second highest value of $\sigma$.  For this
+project, however, cost is distributed more smoothly across 529 tests,
+of which 119 take more than 1s to run.  
+
+Overall, results indicate that projects with a very small number of
+tests monopolizing the CPU were not predominant.
+
+\begin{table}[h!]
+
+\end{table}  
+
 
 %% We are interested to know whether
 %% most of the execution cost of a subject is dominated by a small subset
@@ -288,21 +353,7 @@ Section~\ref{sec:frameworks}).
 %% the distribution is.  Consequently, the lower the value of RSD the
 %% more parallelizable a test suite should be.
 
-\begin{figure}[ht]
-    \centering
-    \begin{subfigure}{0.5\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{R/testcost-med.pdf}
-        \caption{\label{fig:medtcost}}
-    \end{subfigure}\\
-    \begin{subfigure}{0.5\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{R/testcost-long.pdf}
-        \caption{\label{fig:longtcost}}
-    \end{subfigure}%
-    \caption{\label{fig:relativesd}Distribution of RSD ($\sigma/\mu$)
-        across projects.}
-\end{figure}
+
 
 %% \begin{figure}[h!]
 %%   \centering
