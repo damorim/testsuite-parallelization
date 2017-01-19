@@ -74,42 +74,62 @@ methodology to select subjects and to isolate our experiments from
 environmental noise.  In summary, results indicate that $\sim$21\% of
 the test suites take at least 1m to run and $\sim$8\% of the test
 suites take at least 5m to run.  Considering all the \numMedLong{}
-projects (\percentMedLongRunning{} of
-\numSubjs{})\Fix{$\leftarrow$this is not right. check macros.} in the
-$>$1m group, the average execution time is \averageMedLongRunning{}.
-Results also show that individual tests are typically short-running,
-taking often less than half a second to run.  Furthermore, we found
-that only in rare cases few test cases monopolize execution cost
-associated with each test suite.  Overall, these results suggest that
-test suite parallelization has the potential to optimize these test
-suites.
+projects in the $>$1m group (\percentMedLongRunning{} of
+\numSubjs{})\Fix{$\leftarrow$this is not right. check macros.}, the
+average execution time is \averageMedLongRunning{}.  Results also show
+that individual tests are typically short-running, taking often less
+than half a second to run.  Furthermore, we found that only in rare
+cases few test cases monopolize execution cost associated with each
+test suite.  Overall, these results suggest that test suite
+parallelization has the potential to optimize these test suites.
 
-\Mar{missing connection. why parallelism?}  From these results we
-investigated (2) how frequently the projects we considered use
-parallelization to speedup test runs.  Our results indicate that
-\percentParallelForLongRunning{} of long-running test suites do use
-parallelism to speedup execution.  Given the popularity of this
-solution, we further studied: (3) what are the causes of high
-execution cost in individual tests (CPU vs. IO) and (4) how uniformly
-cost is distributed across tests.  These questions help to assess the
-impact of parallelization in test suite execution.  Intuitively,
-IO-intensive test suites and test suites with uneven distribution of
-cost per test are factors that limit the benefits of parallelization.
-Results indicate that \Fix{...}  Finally, we investigated (5) what are
-the limitations related to parallelization that could justify adoption
-resistance.
+%%RQ3
+Given the high execution cost associated with a significant number of
+\github{} projects, we decided to investigate practical usage of test
+suite parallelization.  It is important to note that modern build
+systems (\eg{}, Maven~\cite{maven}) offer parallelization options to
+accelerate test execution (see Section~\ref{sec:modes}).  To find how
+popular are these features in practice, we first analyzed build files
+\emph{statically}.  Considering the +1m group of projects
+(\numMedLong{} in total), we found that 49\% (41/\numMedLong{}) of
+them use some parallelization option.  Considering those projects that
+take more than 5m to run (\numLong{} in total), usage of parallelism
+increases to 59\% (19/\numLong{}).  Furthermore, we found that
+``forking'' virtual machines was the most prevalent parallel mode used
+in practice.  It appeared twice as much as any other mode.  This
+result suggests that datarace flakiness~\cite{luo-etal-fse2014} may be
+a concern to users as ``forking'' creates different independent
+processes (\ie{}, Java VM instances) to speedup test execution.  It
+does not exploit thread-level concurrency within each VM, which can be
+an important source of
+contention~\cite{bell-kaiser-icse2014,bell-etal-esecfse2015}.
+\Mar{why 32-19 did not use parallelization?} \Mar{what about free
+  services (jenkins)?  how much can you scale execution and how
+  expensive would that be?}
 
-\Fix{--------------}
+\Fix{...Discuss impact...}
 
-\Mar{what about free services (jenkins)?  how much can you scale
-  execution and how expensive would that be?}
+%% \Mar{missing connection. why parallelism?}  From these results we
+%% investigated (2) how frequently the projects we considered use
+%% parallelization to speedup test runs.  Our results indicate that
+%% \percentParallelForLongRunning{} of long-running test suites do use
+%% parallelism to speedup execution.  Given the popularity of this
+%% solution, we further studied: (3) what are the causes of high
+%% execution cost in individual tests (CPU vs. IO) and (4) how uniformly
+%% cost is distributed across tests.  These questions help to assess the
+%% impact of parallelization in test suite execution.  Intuitively,
+%% IO-intensive test suites and test suites with uneven distribution of
+%% cost per test are factors that limit the benefits of parallelization.
+%% Results indicate that \Fix{...}  Finally, we investigated (5) what are
+%% the limitations related to parallelization that could justify adoption
+%% resistance.
 
-To illustrate the importance of parallel test execution, \Jbc{TODO -
-Write a paragraph motivating this paper.}
+%% To illustrate the importance of parallel test execution, \Jbc{TODO -
+%% Write a paragraph motivating this paper.}
 
-This paper reports an empirical study to evaluate the impact of
-parallelization options on test execution speedup \Fix{...}\Jbc{TODO -
-Summary of the contributions of this paper} .
+%% This paper reports an empirical study to evaluate the impact of
+%% parallelization options on test execution speedup \Fix{...}\Jbc{TODO -
+%% Summary of the contributions of this paper} .
 
 %%  LocalWords:  parallelization multicore JUnit TestNG NUnit XXm YYm
 %%  LocalWords:  Groupon parallelizing multi JVMs CPUs JVM Milos TODO
