@@ -1,30 +1,47 @@
 \section{Parallel Execution of Test Suites}
 \label{sec:modes}
 
-\Mar{add a sentence to introduce this section at a higher abstraction
-  level.}  Parallelism in test execution can be obtained at different
-levels.  Figure~\ref{fig:levels} illustrates some of these levels.
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=0.35\textwidth]{figs/parallel-levels.pdf}
+  \vspace{-1ex}
+  \caption{\label{fig:levels}Levels of parallelism.}
+\end{figure}
 
-This paper focuses at lower-level parallelism, obtained with parallel
-computation at CPUs and threads in a given machine.  This kind of
-parallelism is enabled through build systems and testing frameworks.
-Given the proliferation of multicore machines it is not surprising
-that testing frameworks provide today support for parallel test
-execution with the goal of running tests more
-efficiently~\cite{junit-org,testng,nunit}.  Build systems wrap
-parallel features offered by testing frameworks to facilitate the use
-of such technology\cite{maven-surefire-plugin}.  In the following we
-elaborate relevant features of these components focusing on Java,
-Maven, and JUnit but the discussion can be generalized to other
-languages, build systems, and testing frameworks.
+%\Mar{add a sentence to introduce this section at a higher abstraction
+%  level.}
 
-Note that lower-level parallelism is a complement to higher-level
-parallelism that could be enabled through server farms.  For the
-scenario of large IT organizations, lower-level parallelization
-schemes could leverage the computing power of server nodes in addition
-to the aggregate processing power of the farm.  Lower-level
-parallelism fits particularly well smaller organizations (/projects)
-with relatively high testing costs but lower budgets.
+This section provides some background on parallel test execution.
+
+Parallelism in test execution can be obtained at different levels.
+Figure~\ref{fig:levels} illustrates relevant levels for this paper.
+The highest level indicates parallelism that can be obtained through
+different machines on the network.  For examples, using machines from
+a cloud service.  The machine space sits under the ``network space'',
+and is responsible to provide low-level parallelism.  In that case,
+computation can be offloaded on different CPUs within a machine and on
+different threads within each CPU.  Note that all these levels are
+complementary.  For the scenario of large IT organizations, for
+example, lower-level parallelization schemes could leverage the
+computing power of server nodes in addition to the aggregate
+processing power of the farm.
+
+%% Lower-level parallelism fits
+%% particularly well smaller organizations (/projects) with relatively
+%% high testing costs but lower budgets.
+
+This paper focuses at lower-level parallelism, which can be enabled
+through build systems and testing frameworks.  Given the proliferation
+of multi-core machines it is not surprising that testing frameworks
+provide today support for parallel test
+execution~\cite{junit-org,testng,nunit}.  Build systems wrap parallel
+features offered by testing frameworks to facilitate the use of such
+technology~\cite{maven-surefire-plugin}.  In the following we elaborate
+relevant features of these components focusing on Java, Maven, and
+JUnit but the discussion can be generalized to other languages, build
+systems, and testing frameworks.
+
+
 \Comment{
     Unfortunately, these solutions can't be used out-of-the-box:
     unrestricted parallel execution of tests can produce
@@ -63,17 +80,13 @@ with relatively high testing costs but lower budgets.
     \Fix{gap between pars?? What gap?}
 }
 
+\Mar{----------------------- estou aqui.}
+
 \subsection{Testing Framework}
 \label{sec:frameworks}
 
 The list below shortly describes the choices to control parallelism
 within a JVM.
-
-\begin{figure}[t!]
-  \centering
-  \includegraphics[width=0.4\textwidth]{figs/parallel-levels.pdf}
-  \caption{\label{fig:levels}Levels of parallelism.}
-\end{figure}
 
 \newcommand{\Seq}{L0}
 \newcommand{\ParClassSeqMeth}{L1}
