@@ -8,14 +8,14 @@ As software evolves it is expected that the number of tests and the
 length of test runs increase.  Both components can add up to the
 aggregate cost of running a test suite.  Dealing with high testing
 costs is an important problem in software engineering research and
-practice (as to reduce late test failure reports).
+industrial practice.
 
 Several approaches have been proposed in the research literature to
 address the regression testing problem, with the focus mainly on test
 suite minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012}.  In industry, the focus has been
-mainly on distributing the testing workloads.  Evidence of this are
-the Google TAP system~\cite{google-tap,google-ci} and Microsoft's
+mainly on distributing the testing workload.  Evidence of this are the
+Google TAP system~\cite{google-tap,google-ci} and the Microsoft
 CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci}, which
 provide distributed infrastructures to efficiently build massive
 amounts of code and run tests.  Building server clusters is also a
@@ -31,22 +31,24 @@ services\footnote{List of popular cloud services:
 infrastructures for running tests is a legitimate approach to mitigate
 the regression testing problem.  However, for projects with low
 budgets and yet relatively heavy testing workloads, this solution may
-not be economically viable.  The proliferation of multi-core CPUs in
-commodity hardware and the popularization of testing frameworks with a
-rich support for parallelization (see Section~\ref{sec:modes}) enables
-test suites to increase CPU usage.  This paper reports on an empirical
-study we conducted to analyze importance of low-level parallelization
-(\ie{}, parallel features available within each machine) to speedup
-testing of open-source projects.  This is a relevant problem given the
-tremendous popularity of open-source development and regression
-testing research.
+not be economically viable.  For these cases, the use of commodity
+hardware, perhaps existing hardware, emerges as an attractive solution
+for running tests.  The proliferation of multi-core CPUs and the
+increasing popularization of testing frameworks with a rich support
+for parallelization enables test suite speedups through increased CPU
+usage~(see Section~\ref{sec:modes}).  This paper reports on an
+empirical study we conducted to analyze importance of low-level
+parallelization to speedup testing of open-source projects.  This is a
+relevant problem given the tremendous popularity of open-source
+development and regression testing research.
 
 The dimensions of analysis in this study are as follows.
 
 \begin{itemize}
 \item \textbf{Prevalence of long-running test suites.}
 \item \textbf{Usage of test suite parallelization.}  
-\item \textbf{Impact (and issues) of parallelization.}  
+\item \textbf{Impact of parallelization.}
+\item \textbf{Issues with parallelization.}    
 \end{itemize}  
 
 %% papers also indicate the important of speeding up the testing process
