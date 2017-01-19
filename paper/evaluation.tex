@@ -244,11 +244,15 @@ Given that \percentMedLongRunning{} of the projects are costly (\ie,
 \numMedLong{} projects from \medg{} and \longg{}), we concluded that
 time-consuming regression test suites are relatively frequent in
 open-source projects.  It is important to mention that
-Figure~\ref{fig:rq1-barplot} represents a lower bound for time cost:
-some tests may finish early due to a failure since a subject may be
-tested in a failing revision. From the \numSubjs{} projects, 286
-passed all tests and 118 had failures. \Jbc{elaborate failed subjects:
-how much \% of the tests failed?}
+Figure~\ref{fig:rq1-barplot} represents a lower bound estimation for
+time cost because some projects omit long-running tests on their
+default execution. For instance, it is necessary to invoke Maven with
+additional parameters to run integration tests from project
+\CodeIn{apache.maven-surefire} (nearly 30 min in our environment).
+Also, some tests may finish earlier than expected due to existing bugs
+on the ongoing revision.  From the \numSubjs{} compiled projects, 286
+successfully executed all tests and 118 reported test failures.
+\Jbc{elaborate failed subjects: how much \% of the tests failed?}
 
 \subsection{Answering research question \numRQB{}}
 \label{sec:rqB}
