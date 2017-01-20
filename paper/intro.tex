@@ -98,16 +98,18 @@ them use some parallelization option.  Considering those projects that
 take more than 5m to run (\numLong{} in total), usage of parallelism
 increases to 59\% (19/\numLong{}).  Furthermore, we found that
 ``forking'' virtual machines was the most prevalent parallel mode used
-in practice.  It appeared twice as much as any other mode.  This
-result suggests that datarace flakiness~\cite{luo-etal-fse2014} may be
-a concern to users as ``forking'' creates different independent
-processes (\ie{}, Java VM instances) to speedup test execution.  It
-does not exploit thread-level concurrency within each VM, which can be
-an important source of
-contention~\cite{bell-kaiser-icse2014,bell-etal-esecfse2015}.
-\Mar{why 32-19 did not use parallelization?} \Mar{what about free
-  services (jenkins)?  how much can you scale execution and how
-  expensive would that be?}
+in practice.  This mode is used twice as much as any other mode used.
+Important to note that ``forking VMs'' is perhaps the simplest of the
+parallelization modes~--~it is provided by the build system as opposed
+to the testing framework.  This result suggests that datarace
+flakiness~\cite{luo-etal-fse2014} may be a concern to users as
+``forking'' does not exploit thread-level concurrency within each VM,
+which can create contention on data reachable from the static
+area~\cite{bell-kaiser-icse2014,bell-etal-esecfse2015}.  Instead, it
+creates independent processes (\ie{}, Java VM instances) and executes
+tests sequentially within each process. \Mar{why 32-19 did not use
+  parallelization?} \Mar{what about free services (jenkins)?  how much
+  can you scale execution and how expensive would that be?}
 
 \Fix{...Discuss impact...}
 
