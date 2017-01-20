@@ -29,16 +29,14 @@ aggregate processing power of the farm.
 %% particularly well smaller organizations (/projects) with relatively
 %% high testing costs but lower budgets.
 
-This paper focuses at lower-level parallelism, which can be enabled 
+This paper focuses at lower-level parallelism, which can be enabled
 through build systems and testing frameworks.  Given the proliferation
 of multi-core machines it is not surprising that testing frameworks
 provide today support for parallel test execution (e.g.,
 JUnit~\cite{junit-org}, TestNG~\cite{testng}, and NUnit~\cite{nunit}).
-Build systems wrap parallel features offered by testing frameworks to
-facilitate the use of such technology~\cite{maven-surefire-plugin}.
-In the following we elaborate relevant features of these components
-focusing on Java, Maven, and JUnit but the discussion can be
-generalized to other languages, build systems, and testing frameworks.
+In the following we elaborate relevant features of testing frameworks
+and builds systems.  We focused on Java, Maven, and JUnit but the
+discussion can be generalized to other language and tools.
 
 
 \Comment{
@@ -114,16 +112,14 @@ within a JVM.
     class.
 \end{itemize}
 
-\Seq{} is the default configuration.  In constrast to the other modes,
-it does not use parallelism.  Considering use of parallelism,
-\ParClassParMeth{} is the most agressive mode, with \ParClassSeqMeth{}
-and \SeqClassParMeth{} lying between \Seq{} and \ParClassParMeth{}.
+\Seq{} is the default configuration for JUnit.  It does not use
+parallelism, in constrast to the other execution modes.  Considering
+use of parallelism, \ParClassParMeth{} is the most agressive mode.
 \ParClassSeqMeth{} and \SeqClassParMeth{} run sequentially either
 classes or methods.  Intuititvely, fixing one of these dimensions
 enables developers to better organize their test suites as to avoid
 dataraces~\Fix{cite}.  JUnit implements these modes through a set of
-customized classes (e.g., \CodeIn{ParalllelComputer} and
-\CodeIn{ExecutorService}).
+customized classes (e.g., \CodeIn{ParallelComputer}).
 
 %% \Fix{-----}
 %% In JUnit, \emph{ParallelComputer} provides support to parallel
@@ -150,18 +146,19 @@ customized classes (e.g., \CodeIn{ParalllelComputer} and
 
 \subsection{Build Systems}
 
-\Fix{--------------------- estou aqui}
+Build systems delegate functionalities to the testing framework they
+use~\cite{maven-surefire-plugin}.  Figure~\ref{fig:surefire}
+illustrates how to configure Maven for mode
+\ParClassSeqMeth{}~--~classes sequentially (default) and test methods
+in parallel. Although this configuration is defined in the build file
+(\eg, \emph{pom.xml} on Maven), these settings are forwarded to the
+underlying testing framework (in this case, JUnit).
 
-\Jbc{I have to understand better how Surefire executes tests. I'm
-afraid it has its own wrapper classes and reuse JUnit core
-functionalities. I'm saying this because JUnit does not offer a finer
-control over thread numbers while this configuration is possible with
-Surefire} For example, Figure~\ref{fig:surefire} illustrates how to
-configure Maven to execute classes sequentially (default behavior) and
-test methods in parallel. Although this configuration is defined in
-the build file (\eg, \emph{pom.xml} on Maven), \Fix{these settings are
-forwarded to the underlying testing framework (\eg, JUnit). In case of
-JUnit,}
+%% \Jbc{I have to understand better how Surefire executes tests. I'm
+%% afraid it has its own wrapper classes and reuse JUnit core
+%% functionalities. I'm saying this because JUnit does not offer a finer
+%% control over thread numbers while this configuration is possible with
+%% Surefire} For example,
 
 \begin{figure}[h!]
 \centering
@@ -184,21 +181,21 @@ JUnit,}
     </configuration>
 </plugin>
 \end{lstlisting}
-\caption{\label{fig:surefire} Example of Maven Surefire configuration:
-    test methods in parallel (\emph{parallel} parameter) using two
-    threads (\emph{threadCount} parameter) per core (boolean flag
-    \emph{perCoreThreadCount}).}
+\caption{\label{fig:surefire} Example of Maven configuration: test
+  methods run in parallel (\CodeIn{parallel} parameter) using two
+  threads (\CodeIn{threadCount} parameter) per available core (flag
+  \CodeIn{perCoreThreadCount}).}
 \end{figure}
 
-\Fix{We need a par. providing rationale in to explain (points in
-  favor/against) these choices.}
+\subsubsection*{Forking JVMs}~
+Build systems often rovide the option to \emph{fork} JVM instances
+proportionally to available cores in the machine.  For Maven, the
+options \CodeIn{forkCount} and \CodeIn{reuseForks} control this
+feature~\cite{fork-and-parallel-execution-maven}.  Note that Maven
+allocates each test class to exactly one JVM and there is no guarantee
+to uniformly distribute load to each JVM given that the build system
+uses classes as the unit to specify test tasks.  Consequently, only
+combinations of fork with modes \Fix{??} are valid.
 
-Build systems, such as Maven\footnote{\url{maven.apache.org}},
-typically provide the option to \emph{fork} JVM instances
-proportionally to available cores in the machine.  If the option
-``fork JVM'' is enabled, Maven will allocate a user-provided number of
-JVM instances to each core in the machine and will allocate each test
-class to exactly one JVM.  Note that there is no guarantee to
-uniformly distribute load to each JVM given that the build system uses
-classes as the unit to specify test tasks.\Fix{we need to know how
-Maven allocates test classes to JVMs}
+%\Fix{we
+%  need to know how Maven allocates test classes to JVMs}
