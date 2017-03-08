@@ -87,12 +87,12 @@ parallelization has the potential to optimize these test suites.
 
 %%RQ3
 Given the high execution cost associated with a significant number of
-\github{} projects, we decided to investigate practical usage of test
-suite parallelization.  It is important to note that modern build
+\github{} projects, we decided to investigate usage of test
+suite parallelization in practice.  It is important to note that modern build
 systems (\eg{}, Maven~\cite{maven}) offer parallelization options to
 accelerate test execution (see Section~\ref{sec:modes}).  To find how
-popular are these features in practice, we first analyzed build files
-\emph{statically}.  Considering the +1m group of projects
+popular these features are in practice, we first analyzed build files
+\emph{statically}.  Considering the $>$1m group of projects
 (\numMedLong{} in total), we found that 49\% (41/\numMedLong{}) of
 them use some parallelization option.  Considering those projects that
 take more than 5m to run (\numLong{} in total), usage of parallelism
@@ -108,10 +108,10 @@ which can create contention on data reachable from the static
 area~\cite{bell-kaiser-icse2014,bell-etal-esecfse2015}.  Instead, it
 creates independent processes (\ie{}, Java VM instances) and executes
 tests sequentially within each process. \Mar{why 32-19 did not use
-  parallelization?} \Mar{what about free services (jenkins)?  how much
-  can you scale execution and how expensive would that be?}
+  parallelization?}
 
-\Fix{...Discuss impact...}
+\Fix{...Discuss impact...}\Mar{what about free services (jenkins)?
+  how much can you scale execution and how expensive would that be?}
 
 %% \Mar{missing connection. why parallelism?}  From these results we
 %% investigated (2) how frequently the projects we considered use
