@@ -16,14 +16,14 @@ This section provides some background on parallel test execution.
 Parallelism in test execution can be obtained at different levels.
 Figure~\ref{fig:levels} illustrates relevant levels.  The highest
 level indicates parallelism that can be obtained through different
-machines on the network.  For examples, using virtual machines from a
-cloud service.  The machine space sits under the ``network space'' and
-provides \emph{low-level parallelism}.  In that case, computation can
-be offloaded at different CPUs within a machine and at different
-threads within each CPU.  Note that all these levels are
-complementary.  For example, lower-level parallelization schemes could
-leverage the computing power of server nodes in addition to the
-aggregate processing power of the farm.
+machines on the network.  For instance, using virtual machines from a
+cloud service to perform a distributed execution.  The machine space
+sits under the ``network space'' and provides a \emph{lower-level}
+parallelism.  In this case, computation can be offloaded at different
+CPUs within a machine and at different threads within each CPU.  Note
+that all these levels are complementary:  lower-level parallelization
+schemes could leverage the computing power of server nodes in addition
+to the aggregate processing power of the farm.
 
 %% Lower-level parallelism fits
 %% particularly well smaller organizations (/projects) with relatively
@@ -34,10 +34,9 @@ through build systems and testing frameworks.  Given the proliferation
 of multi-core machines it is not surprising that testing frameworks
 provide today support for parallel test execution (e.g.,
 JUnit~\cite{junit-org}, TestNG~\cite{testng}, and NUnit~\cite{nunit}).
-In the following we elaborate relevant features of testing frameworks
-and builds systems.  We focused on Java, Maven, and JUnit but the
+In the following we elaborate relevant features of build systems and
+testing frameworks.  We focused on Java, Maven, and JUnit but the
 discussion can be generalized to other language and tools.
-
 
 \Comment{
     Unfortunately, these solutions can't be used out-of-the-box:
@@ -76,6 +75,38 @@ discussion can be generalized to other language and tools.
     efficiently without sacrificing reliability
     \Fix{gap between pars?? What gap?}
 }
+
+\subsection{Build Systems}
+\label{sec:builder}
+
+Several build systems support the execution of test suites in forked
+processes running a Java virtual machine (JVM).  Each spawned process
+runs an individual test suite and the builder outputs the aggregated
+reports. When the testing framework finishes the execution, the forked
+process can be reused for the next test suite in the queue. In this
+level, the number of forked processes must be proportional to the
+number of available CPUs otherwise, the high degree of concurrency
+may affect the execution performance.  For instance, if the underlying
+machine has four CPUs available, the builder could be configured to
+spawn one process on each core to favor parallelism (in contrast to
+several processes competing for a single core).
+
+%%Build systems delegate functionalities to the testing framework they
+%%use~\cite{maven-surefire-plugin}.  Figure~\ref{fig:surefire}
+%%illustrates how to configure Maven for mode
+%%\ParClassSeqMeth{}~--~classes sequentially (default) and test methods
+%%in parallel. Although this configuration is defined in the build file
+%%(\eg, \emph{pom.xml} on Maven), these settings are forwarded to the
+%%underlying testing framework (in this case, JUnit).
+
+%% \Jbc{I have to understand better how Surefire executes tests. I'm
+%% afraid it has its own wrapper classes and reuse JUnit core
+%% functionalities. I'm saying this because JUnit does not offer a finer
+%% control over thread numbers while this configuration is possible with
+%% Surefire} For example,
+
+%\Fix{we
+%  need to know how Maven allocates test classes to JVMs}
 
 \subsection{Testing Frameworks}
 \label{sec:frameworks}
@@ -121,44 +152,8 @@ enables developers to better organize their test suites as to avoid
 dataraces~\Fix{cite}.  JUnit implements these modes through a set of
 customized classes (e.g., \CodeIn{ParallelComputer}).
 
-%% \Fix{-----}
-%% In JUnit, \emph{ParallelComputer} provides support to parallel
-%% execution: it instantiates a test runner with an
-%% \emph{ExecutorService} from the Java Concurrent API. Each test method
-%% is executed in a separated thread as the thread pool creates new
-%% threads on-demand and reuse them if any thread is available.
-%% \Comment{http://junit.org/junit4/javadoc/latest/src-html/org/junit/experimental/ParallelComputer.html#line.14}
-
-%% As in \ParClassSeqMeth, the test runner has a cached thread poll but
-%% instead of executing test methods from a single test class, the test
-%% suite runner executes classes in separated threads and methods
-%% sequentially within each thread.
-
-%% \Jbc{I need to confirm this but AFAIK this is how it happens} As in
-%% \SeqClassParMeth, classes execute on separated threads but test
-%% methods are also executed in parallel. More precisely, there is a
-%% thread pool to execute classes in separated threads (\ie, like in
-%% \ParClassSeqMeth) and, within each class runner, there is an
-%% \emph{ExecutorService} to run test methods in parallel (\ie, like in
-%% \SeqClassParMeth).
-
-%% \Fix{-----}
-
-\subsection{Build Systems}
-
-Build systems delegate functionalities to the testing framework they
-use~\cite{maven-surefire-plugin}.  Figure~\ref{fig:surefire}
-illustrates how to configure Maven for mode
-\ParClassSeqMeth{}~--~classes sequentially (default) and test methods
-in parallel. Although this configuration is defined in the build file
-(\eg, \emph{pom.xml} on Maven), these settings are forwarded to the
-underlying testing framework (in this case, JUnit).
-
-%% \Jbc{I have to understand better how Surefire executes tests. I'm
-%% afraid it has its own wrapper classes and reuse JUnit core
-%% functionalities. I'm saying this because JUnit does not offer a finer
-%% control over thread numbers while this configuration is possible with
-%% Surefire} For example,
+\subsubsection*{Example}~ \Fix{The list below shortly describes
+the choices to control parallelism within a JVM.}
 
 \begin{figure}[h!]
 \centering
@@ -187,15 +182,26 @@ underlying testing framework (in this case, JUnit).
   \CodeIn{perCoreThreadCount}).}
 \end{figure}
 
-\subsubsection*{Forking JVMs}~
-Build systems often rovide the option to \emph{fork} JVM instances
-proportionally to available cores in the machine.  For Maven, the
-options \CodeIn{forkCount} and \CodeIn{reuseForks} control this
-feature~\cite{fork-and-parallel-execution-maven}.  Note that Maven
-allocates each test class to exactly one JVM and there is no guarantee
-to uniformly distribute load to each JVM given that the build system
-uses classes as the unit to specify test tasks.  Consequently, only
-combinations of fork with modes \Fix{??} are valid.
+%% \Fix{-----}
+%% In JUnit, \emph{ParallelComputer} provides support to parallel
+%% execution: it instantiates a test runner with an
+%% \emph{ExecutorService} from the Java Concurrent API. Each test method
+%% is executed in a separated thread as the thread pool creates new
+%% threads on-demand and reuse them if any thread is available.
+%% \Comment{http://junit.org/junit4/javadoc/latest/src-html/org/junit/experimental/ParallelComputer.html#line.14}
 
-%\Fix{we
-%  need to know how Maven allocates test classes to JVMs}
+%% As in \ParClassSeqMeth, the test runner has a cached thread poll but
+%% instead of executing test methods from a single test class, the test
+%% suite runner executes classes in separated threads and methods
+%% sequentially within each thread.
+
+%% \Jbc{I need to confirm this but AFAIK this is how it happens} As in
+%% \SeqClassParMeth, classes execute on separated threads but test
+%% methods are also executed in parallel. More precisely, there is a
+%% thread pool to execute classes in separated threads (\ie, like in
+%% \ParClassSeqMeth) and, within each class runner, there is an
+%% \emph{ExecutorService} to run test methods in parallel (\ie, like in
+%% \SeqClassParMeth).
+
+%% \Fix{-----}
+
