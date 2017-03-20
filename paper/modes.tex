@@ -1,3 +1,11 @@
+\newcommand{\Seq}{L0}
+\newcommand{\SeqClassParMeth}{L1}
+\newcommand{\ParClassSeqMeth}{L2}
+\newcommand{\ParClassParMeth}{L3}
+\newcommand{\Fork}{F}
+\newcommand{\ForkSeq}{\Fork{}\Seq{}}
+\newcommand{\ForkParMeth}{\Fork{}\SeqClassParMeth{}}
+
 \section{Parallel Execution of Test Suites}
 \label{sec:modes}
 
@@ -34,9 +42,9 @@ through build systems and testing frameworks.  Given the proliferation
 of multi-core machines it is not surprising that testing frameworks
 provide today support for parallel test execution (e.g.,
 JUnit~\cite{junit-org}, TestNG~\cite{testng}, and NUnit~\cite{nunit}).
-In the following we elaborate relevant features of build systems and
-testing frameworks.  We focused on Java, Maven, and JUnit but the
-discussion can be generalized to other language and tools.
+In the following we elaborate relevant features of and testing
+frameworks build systems.  We focused on Java, Maven, and JUnit but
+the discussion can be generalized to other language and tools.
 
 \Comment{
     Unfortunately, these solutions can't be used out-of-the-box:
@@ -76,21 +84,6 @@ discussion can be generalized to other language and tools.
     \Fix{gap between pars?? What gap?}
 }
 
-\subsection{Build Systems}
-\label{sec:builder}
-
-Several build systems support the execution of test suites in forked
-processes running a Java virtual machine (JVM).  Each spawned process
-runs an individual test suite and the builder outputs the aggregated
-reports. When the testing framework finishes the execution, the forked
-process can be reused for the next test suite in the queue. In this
-level, the number of forked processes must be proportional to the
-number of available CPUs otherwise, the high degree of concurrency
-may affect the execution performance.  For instance, if the underlying
-machine has four CPUs available, the builder could be configured to
-spawn one process on each core to favor parallelism (in contrast to
-several processes competing for a single core).
-
 %%Build systems delegate functionalities to the testing framework they
 %%use~\cite{maven-surefire-plugin}.  Figure~\ref{fig:surefire}
 %%illustrates how to configure Maven for mode
@@ -114,46 +107,74 @@ several processes competing for a single core).
 The list below shortly describes the choices to control parallelism
 within a JVM.
 
-\newcommand{\Seq}{L0}
-\newcommand{\ParClassSeqMeth}{L1}
-\newcommand{\SeqClassParMeth}{L2}
-\newcommand{\ParClassParMeth}{L3}
-
 \begin{itemize}
 \item
     \textbf{Sequential (\Seq).}~This configuration corresponds to the
-    sequential execution of test classes and, for each class,
-    sequential execution of their methods.  The execution order (of
-    classes and methods) is determined by the testing framework (\eg,
-    the order of methods returned by the Java Reflection
-    API)~\cite{junit-test-order}.
+        default behaviour in a test execution. No parallelism is
+        involved.
 \item
     \textbf{Sequential classes; parallel methods
-      (\ParClassSeqMeth{}).}~This configuration corresponds to the
-    sequential execution of the test classes assigned to the JVM.
-    However, within each class, test methods run in parallel.
+        (\SeqClassParMeth{}).}~At this level of parallelism, the
+        testing framework uses threads to run methods in parallel from
+        the assigned test class. Each test class runs sequentially.
 \item
     \textbf{Parallel classes; sequential methods
-      (\SeqClassParMeth{}).}~This configuration corresponds to the
-    parallel execution of test classes with sequential execution of
-    their test methods.
+        (\ParClassSeqMeth{}).}~~At this level of parallelism, the
+        testing framework uses threads to run classes in parallel and
+        each test method runs sequentially within each thread.
 \item
-    \textbf{Parallel methods (\ParClassParMeth).}~This configuration
-    corresponds to the parallel execution of any test method from any
-    class.
+    \textbf{Parallel classes; Parallel methods
+        (\ParClassParMeth).}~This configuration corresponds
+        conceptually to the union of \ParClassSeqMeth{} and
+        \SeqClassParMeth{}: the testing framework runs test methods
+        from several classes in parallel.
 \end{itemize}
 
-\Seq{} is the default configuration for JUnit.  It does not use
-parallelism, in constrast to the other execution modes.  Considering
-use of parallelism, \ParClassParMeth{} is the most agressive mode.
-\ParClassSeqMeth{} and \SeqClassParMeth{} run sequentially either
-classes or methods.  Intuititvely, fixing one of these dimensions
-enables developers to better organize their test suites as to avoid
-dataraces~\Fix{cite}.  JUnit implements these modes through a set of
-customized classes (e.g., \CodeIn{ParallelComputer}).
+Testing frameworks usually execute tests sequentially (\Seq{}) and may
+allow the developer to use an ordering criteria (\eg, test name).  For
+the \SeqClassParMeth{} setting, \Fix{elaborate and give example...}.
+For the \ParClassSeqMeth{} setting, \Fix{elaborate and give
+example...}. Finally, the \ParClassParMeth{} setting
+\Fix{...elaborate...}.
 
-\subsubsection*{Example}~ \Fix{The list below shortly describes
-the choices to control parallelism within a JVM.}
+\subsection{Build Systems}
+\label{sec:builder}
+
+Several build systems support the execution of test classes in forked
+processes running a Java virtual machine (JVM). Each spawned process
+runs a test class at time. In addition, the builder can reuse these
+processes to execute the next test classes in the queue according to
+the developer's preference. For instance, one might want the builder
+to spawn a new process for each test class to ensure maximum
+isolation.  To exploit parallelism at this level, the number of forked
+processes must be proportional to the number of available CPUs,
+otherwise, the high frequency of context-switching and concurrency
+(\ie, processes competing for a CPU time-slice) may affect the
+performance.  For instance, if the underlying machine has four CPUs
+available, the builder could be configured to spawn one process on
+each core in contrast to several processes competing for a single
+core.
+
+Builder-level parallelism can also complement some testing framework
+parallelism levels. For instance, \Fix{elaborate...}.  However, some
+settings may not take effect since only one test class can run in a
+forked process at time. For instance, \Fix{elaborate...}. To the best
+of our knowledge, we are unaware of any build system capable of
+running multiple classes at time within a forked process.
+
+In this paper, we use the prefix ``\Fork{}'' to indicate that a given
+testing configuration has the feature of spawning JVMs to run test
+classes enabled. The list below shortly describes the choices to
+control parallelism:
+
+\begin{itemize}
+\item
+    \textbf{Forked classes; sequential methods (\ForkSeq).}~\Fix{todo}
+\item
+    \textbf{Forked classes; parallel methods (\ForkParMeth).}~\Fix{todo}
+\end{itemize}
+
+\subsubsection*{Illustration}~\Fix{elaborate}
 
 \begin{figure}[h!]
 \centering
@@ -162,7 +183,8 @@ the choices to control parallelism within a JVM.}
     escapeinside={@}{@},
     numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
     basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    morekeywords={parallel, threadCount, perCoreThreadCount},
+    morekeywords={parallel, threadCount, perCoreThreadCount,
+    forkCount, reuseFork},
     deletekeywords={true}
 }
 \begin{lstlisting}
@@ -170,16 +192,19 @@ the choices to control parallelism within a JVM.}
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-surefire-plugin</artifactId>
     <configuration>
+        <forkCount>1C</forkCount>
+        <reuseFork>true</true>
         <parallel>methods</parallel>
-        <threadCount>2</threadCount>
+        <threadCount>1</threadCount>
         <perCoreThreadCount>true</perCoreThreadCount>
     </configuration>
 </plugin>
 \end{lstlisting}
-\caption{\label{fig:surefire} Example of Maven configuration: test
-  methods run in parallel (\CodeIn{parallel} parameter) using two
-  threads (\CodeIn{threadCount} parameter) per available core (flag
-  \CodeIn{perCoreThreadCount}).}
+    \caption{\label{fig:surefire} Maven configured with an
+    \Fork{}\SeqClassParMeth{} setting: test methods run in parallel
+    (\CodeIn{parallel} parameter) using two threads
+    (\CodeIn{threadCount} parameter) per available core (flag
+    \CodeIn{perCoreThreadCount}).}
 \end{figure}
 
 %% \Fix{-----}
