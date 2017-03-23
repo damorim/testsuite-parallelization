@@ -405,8 +405,8 @@ To evaluate the presence of parallelization settings (see Section
 \ref{sec:modes}), we considered all projects classified as \medg{} and
 \longg{}-running, a total of \numMedLong{} subjects (see
 Figure~\ref{fig:rq1-barplot}). To reduce noise we did not consider
-projects with \shortg{}-running test suites as we observed\Mar{please,
-confirm} that those projects often\Mar{adjust} do not use parallelism;
+projects with \shortg{}-running test suites as we observed that
+\percentShortSequential{} of those projects do not use parallelism;
 including them would favor sequential execution in our analysis.
 
 To answer \numRQC{} we initially mined build files (\ie, \pomf{}) that
@@ -416,10 +416,11 @@ surefire documentation\Fix{cite surefire doc}, any configuration to
 run tests in parallel must contain one of these keywords. This mining
 step, however, is not sound as a matching project may not indicate a
 project with a valid configuration for running tests in parallel.
-False positive can happen because of comments, for instance.  To
-eliminate the cases of false positives and also to categorize true
+False positive can happen because of comments, for instance.  
+To eliminate the cases of false positives and also to categorize true
 positive cases, we complemented the initial mining step with a manual
 inspection of files.
+
 
 %% settings); the second step (inspection) consists in a manual
 %% inspection to confirm the presence of parallelism settings in the
