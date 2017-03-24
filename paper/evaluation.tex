@@ -219,6 +219,7 @@ minutes (\medg{} group), and tests that run in five (or more) minutes
 (\longg{} group). We based our classification from a previous work
 \cite{gligoric-etal-issta2015} and added the \medg{} group due to the
 variability of the time cost from subjects out of the \shortg{} group.
+\Jbc{these results will be updated $\rightarrow$}
 Figure~\ref{fig:rq1-boxplot} shows the time cost distribution of each
 group: the \shortg{} group is the most right skewed distribution with
 outliers closed to the \medg{} group and 50\% of the subjects run in
@@ -231,13 +232,13 @@ from each group.
 
 \begin{figure}[ht]
     \centering
-    \begin{subfigure}{0.4\textwidth}
+    \begin{subfigure}{0.24\textwidth}
         \centering
         \includegraphics[width=\textwidth]{plots/barplot-timecost.pdf}
         \caption{\label{fig:rq1-barplot}}
     \end{subfigure}%
-    \qquad
-    \begin{subfigure}{0.4\textwidth}
+    ~
+    \begin{subfigure}{0.24\textwidth}
         \centering
         \includegraphics[width=\textwidth]{plots/boxplot-timecost.pdf}
         \caption{\label{fig:rq1-boxplot}}
@@ -247,19 +248,28 @@ from each group.
     Distribution of time cost by group.}
 \end{figure}
 
-Given that \percentMedLongRunning{} of the projects are costly (\ie,
-\numMedLong{} projects from \medg{} and \longg{}), we concluded that
-time-consuming regression test suites are relatively frequent in
-open-source projects.  It is important to mention that
-Figure~\ref{fig:rq1-barplot} represents a lower bound estimation for
-time cost because some projects omit long-running tests on their
-default execution. For instance, it is necessary to invoke Maven with
-additional parameters to run integration tests from project
-\CodeIn{apache.maven-surefire} (nearly 30 min in our environment).
-Also, some tests may finish earlier than expected due to existing bugs
-on the ongoing revision.  From the \numSubjs{} compiled projects, 286
-successfully executed all tests and 118 reported test failures.
-\Jbc{elaborate failed subjects: how much \% of the tests failed?}
+\Jbc{these results will be updated $\rightarrow$}
+It is important to mention that Figure~\ref{fig:rq1-barplot}
+represents a lower bound estimation for time cost because some
+projects omit long-running tests on their default execution. For
+instance, it is necessary to invoke Maven with additional parameters
+to run integration tests from project \CodeIn{apache.maven-surefire}
+(nearly 30 min in our environment).  Also, some tests may finish
+earlier than expected due to existing bugs on the ongoing revision.
+From the \numSubjs{} compiled projects, 286 successfully executed
+all tests and 118 reported test failures.
+
+\begin{center}
+\fbox{
+\begin{minipage}{8cm}
+    \textit{Answering \numRQA{}:}~\emph{Given that
+    \percentMedLongRunning{} of the projects are costly (\ie,
+    \numMedLong{} projects from \medg{} and \longg{}), we concluded
+    that time-consuming regression test suites are relatively frequent
+    in open-source projects.}
+\end{minipage}
+}
+\end{center}
 
 \subsection{Answering research question \numRQB{}}
 \label{sec:rqB}
@@ -268,6 +278,7 @@ successfully executed all tests and 118 reported test failures.
     \item \emph{\RQB}
 \end{itemize}
 
+\Jbc{pending updates! $\rightarrow$}
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon; they account to nearly \percentMedLongRunning{} of the
 \numSubjs{} projects we analyzed.  However, parallelism by itself does
@@ -337,13 +348,16 @@ long-running and has the second highest value of $\sigma$.  For this
 project, however, cost is distributed more smoothly across 529 tests,
 of which 119 take more than 1s to run.  
 
-Overall, results indicate that projects with a very small number of
-tests monopolizing end-to-end execution time were rare.
 
-\begin{table}[h!]
-
-\end{table}  
-
+\begin{center}
+\fbox{
+\begin{minipage}{8cm}
+    \textit{Answering \numRQB{}:}~\emph{Overall, results indicate that
+    projects with a very small number of tests monopolizing end-to-end
+    execution time were rare.}
+\end{minipage}
+}
+\end{center}
 
 %% We are interested to know whether
 %% most of the execution cost of a subject is dominated by a small subset
