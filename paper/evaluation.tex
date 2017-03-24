@@ -15,26 +15,26 @@ we pose the following research questions:
 \newcommand{\numRQB}{RQ2}
 \newcommand{\numRQC}{RQ3}
 \newcommand{\numRQD}{RQ4}
-\newcommand{\numRQE}{RQ5}
-\newcommand{\numRQF}{RQ6}
+%%\newcommand{\numRQE}{RQ5}
+\newcommand{\numRQF}{RQ5}
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
   regression test suites in open-source projects?}
-\newcommand{\RQB}{How time is distributed across test cases?}
+\newcommand{\RQB}{How the time cost is distributed across test cases?}
 \newcommand{\RQC}{How often parallelization settings appear in build
   files?}
 \newcommand{\RQD}{What is the impact of parallelization?}
-\newcommand{\RQE}{What factors contribute to improve performance
-  through parallelization?\Jbc{Previously as "When does
-    parallelization works and when it does not so great?"}}
-\newcommand{\RQF}{What are the limitations of parallelization?}
+%%\newcommand{\RQE}{What factors contribute to improve performance
+%%  through parallelization?\Jbc{Previously as "When does
+%%    parallelization works and when it does not so great?"}}
+\newcommand{\RQF}{What are the limitations of low-level parallelism?}
 
 \begin{itemize}
     \item \textbf{\numRQA.} \RQA
     \item \textbf{\numRQB.} \RQB
     \item \textbf{\numRQC.} \RQC
     \item \textbf{\numRQD.} \RQD
-    \item \textbf{\numRQE.} \RQE
+%%    \item \textbf{\numRQE.} \RQE
     \item \textbf{\numRQF.} \RQF
 \end{itemize}
 
@@ -49,27 +49,29 @@ we pose the following research questions:
 
 The first research question addresses the prevalence of long-running
 test suites. We are interested to know if costly test suites are
-common in open-source projects. The second research question addresses
-the balance of regression tests: we want to investigate how the time
-cost is distributed among test cases. The third
-research question addresses our interest in understanding if
-developers are aware of parallelization features from testing
-frameworks available out-of-the-box through build systems (\eg, run
-JUnit test cases in parallel using Maven Surefire) and what settings
-are more often used.  The fourth research question addresses the
-impact of parallelism on the regression tests from our sample set. For
-subjects that use parallelization settings, we are interested in
-compare the execution performance when these settings are activated
-and deactivated (\ie, sequential execution) to evaluate the benefits.
-\Jbc{This RQ has to be reworked:} \Fix{The fifth research question
-addresses the characteristics of regression tests from the previous
-experiment.  More specifically, we want to investigate if there is a
-relation between the balance of test execution (\ie, how uniformly
-distributed is the execution time across tests cases) and the usage of
-computational resources (\ie, if tests are mostly CPU or IO intense)
-that impacts the effectiveness of parallelization}.  Finally, the
-sixth research question discusses the limitations and insights to
-overcome the pitfalls of parallelization.
+common in open-source projects.  The second research question
+addresses the relationship of test cases and the overall execution
+cost: we are interested to investigate how the time cost is
+distributed among test cases.  In the third research question, we are
+in understanding if developers are aware of low-level parallelism
+features available out-of-the-box through build systems (\eg,
+configuring Maven to use JUnit with multiple threads to speedup test
+execution). In addition, we want to identify which configurations are
+often used and why they more popular (if any).  The fourth research
+question addresses the impact of low-level parallelism on the
+regression tests from our sample set. For subjects that use
+parallelization settings, we are interested to compare the execution
+performance when these settings are activated and deactivated (\ie,
+tests run sequentially).
+%%\Jbc{This RQ has to be reworked:} \Fix{The fifth research question
+%%addresses the characteristics of regression tests from the previous
+%%experiment.  More specifically, we want to investigate if there is a
+%%relation between the balance of test execution (\ie, how uniformly
+%%distributed is the execution time across tests cases) and the usage of
+%%computational resources (\ie, if tests are mostly CPU or IO intense)
+%%that impacts the effectiveness of parallelization}.
+Finally, the fifth research question discusses the limitations and
+insights to overcome the pitfalls of parallelization.
 
 \Comment{
     \Fix{distribution of execution time per test case. For each subject
@@ -100,8 +102,8 @@ API~\cite{githubsearch} to fetch Java projects according to the
 following criteria: (1) the primary language must be Java\footnote{In
 case of projects in multiple languages, the \github{} API considers
 the predominant language as the primary language.}; (2) the project
-has at least 100 stars; (3) latest update on (or after) January 1st,
-2016; (4) the \emph{readme} file contains the string \emph{mvn}.
+has at least 100 stars; (3) latest update on (or after) March 1st,
+2017; (4) the \emph{readme} file contains the string \emph{mvn}.
 
 On \github{}, when a user adds a star to a project, s/he demonstrated
 appreciation and bookmarked it for later
@@ -129,26 +131,27 @@ request.
 }
 \begin{lstlisting}
 https://api.github.com/search/repositories?q=language:java
-        +stars:>=100+pushed:>=2016-01-01
+        +stars:>=100+pushed:>=2017-03-01
         +mvn%20in:readme+sort:stars
 \end{lstlisting}
     \caption{\label{fig:subject-query} Query to the \github{} API for
     projects with the following criteria: (1) Java, (2) at least 100
-    stars, (3) updated on January 1st, 2016 (or later), (4) contains
+    stars, (3) updated on March 1st, 2017 (or later), (4) contains
     the string \emph{mvn} in the \emph{readme} file. Output is
     paginated in descending order of stars.}
 \end{figure}
 
 A Maven project may contain several sub-modules with multiple \pomf{}
 files. We considered only projects with a \pomf{} file located in the
-root directory.  As of December 30th 2016, our search criteria
-returned 615 subjects. From the 615 downloaded projects, 46 were not
-Maven projects (or did not have a \pomf{} in the root directory) and
-159 were in a unstable revision.  From these 159 unstable subjects,
-\Jbc{elaborate what is unstable (\eg, (1) how many could not resolve
-dependencies? (2) how many could not compile sources and tests? (3)
-could not run tests due to incompatible testing environment?}. Our
-final set consists in \numSubjs{} testable subjects.
+root directory.  As of March 24th 2017, our search criteria returned
+\Fix{615} subjects. From the \Fix{615} downloaded projects, \Fix{46}
+were not Maven projects (or did not have a \pomf{} in the root
+directory) and 159 were in a unstable revision.  From these 159
+unstable subjects, \Jbc{elaborate what is unstable (\eg, (1) how many
+could not resolve dependencies? (2) how many could not compile sources
+and tests? (3) could not run tests due to incompatible testing
+environment?}. Our final set consists in \numSubjs{} testable
+subjects.
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -175,27 +178,31 @@ and all software dependencies.}
 
 To evaluate the frequency of time-consuming regression tests, we
 considered the \numSubjs{} subjects from Section~\ref{sec:subjects}
-and compared the elapsed time to run their tests. \Jbc{Be clear about
-checking the elapsed time }.  Figure~\ref{fig:mvn-execution} shows the
-commands used in our script to test each subject. The main loop (lines
-5-11) iterates over the list of subjects and invokes Maven in
-separated steps (lines 7-9). To avoid inflating the measured time we
-executed Maven in different steps: we first compiled the source and
-test files (line 7), made all dependencies available locally (line 8)
-and later, we ran the tests in offline mode (line 9) to bypass package
-updates. After the execution, we used a regular expression on the
-output log to extract the elapsed time (line 10). Before collecting
-the time cost, we executed all subjects and randomly selected 100 logs
-to inspect and identify non-related tasks (\eg, \emph{javadoc}
-generation and static analysis) to ignore during the experiment (lines
-1-3).  To avoid noise from operating system events, we used a
-dedicated server remotely via SSH with the operating system running
-only essential services (\eg, the SSH server). In addition, we
-configured the \CodeIn{isolcpus} option from the Linux Kernel
-\cite{linux-kernel} to isolate six virtual CPUs to execute our
-experiment and the remaining CPUs to run the operating system. By
-isolating a set of virtual CPUs, we prevent context-switching from
-experiment processes and OS-related processes.
+and compared the elapsed time to run their tests.
+Figure~\ref{fig:mvn-execution} shows the commands used in our script
+to test each subject. The main loop (lines 5-11) iterates over the
+list of subjects and invokes Maven in separated steps (lines 7-9). To
+avoid inflating the measured time we executed Maven in different
+steps: we first compiled the source and test files (line 7), made all
+dependencies available locally (line 8) and later, we ran the tests in
+offline mode (line 9) to bypass package updates. After the execution,
+we used a regular expression on the output log to extract the elapsed
+time (line 10). Before collecting the time cost, we executed all
+subjects and randomly selected 100 logs to inspect and identify
+non-related tasks (\eg, \emph{javadoc} generation and static analysis)
+to ignore during the experiment (lines 1-3).  Also, measured the
+approximated overhead from the build system after skipping non-related
+tasks. We identified the generated test reports and compared the
+difference between the elapsed time reported from Maven and the sum of
+all test cases executed.
+To avoid noise from operating system events, we used a dedicated
+server remotely via SSH with the operating system running only
+essential services (\eg, the SSH server). In addition, we configured
+the \CodeIn{isolcpus} option from the Linux Kernel \cite{linux-kernel}
+to isolate six virtual CPUs to execute our experiment and the
+remaining CPUs to run the operating system. By isolating a set of
+virtual CPUs, we prevent context-switching from experiment processes
+and OS-related processes.
 
 \input{codes/evaluation}
 
