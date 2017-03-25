@@ -12,6 +12,9 @@ final: pdf
 	@echo '******** Did you spell-check the paper? ********'
 	pdffonts $(NAME).pdf; fi
 
+read: pdf
+	evince main.pdf &
+
 clean:
 	-rm -f *aux *bbl *blg *log *.dvi main.pdf *.fls *.fdb_latexmk *~
 
