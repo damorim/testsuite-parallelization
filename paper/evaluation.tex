@@ -156,14 +156,17 @@ final set consists in \numSubjs{} testable subjects.
 \subsection{Setup and Replication}
 \label{sec:setup}
 
-To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
-processor machine with eight virtual CPUs (four cores with two native
-threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
-(64-bit version). Software settings include \Comment{the Linux
-\emph{sysstat} package to measure performance, }git to fetch subjects,
-Java 8 and Maven 3.3.9 to build and test subjects. Our evaluation
-scripts depends on Python 3.4 and Bash to execute and R to analyze the
-data. For replication, all source artifacts are publicly available at
+%To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
+%processor machine with eight virtual CPUs (four cores with two native
+%threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
+
+To run our experiments, we used a Virtual Machine with four cores and
+4 GB of memory, running Ubuntu 14.04 LTS Trusty Tahr (64-bit version).
+Software settings include \Comment{the Linux \emph{sysstat} package
+to measure performance, }git to fetch subjects, Java 8 and Maven
+3.3.9 to build and test subjects. Our evaluation scripts depends on
+Python 3.4 and Bash to execute and R to analyze the data.
+For replication, all source artifacts are publicly available at
 \Fix{create gh-pages}, including supporting scripts (\eg, the script
 that test subjects and generates the raw data), and the full list of
 projects. \Comment{, and a \emph{Vagrantfile} to emulate our hardware
