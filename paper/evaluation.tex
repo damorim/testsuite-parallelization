@@ -21,8 +21,8 @@ we pose the following research questions:
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
   regression test suites in open-source projects?}
 \newcommand{\RQB}{How the time cost is distributed across test cases?}
-\newcommand{\RQC}{How often parallelization settings appear in build
-  files?}
+\newcommand{\RQC}{How often developers add support to parallel
+execution of test suites?}
 \newcommand{\RQD}{What is the impact of parallelization?}
 %%\newcommand{\RQE}{What factors contribute to improve performance
 %%  through parallelization?\Jbc{Previously as "When does
@@ -351,7 +351,6 @@ long-running and has the second highest value of $\sigma$.  For this
 project, however, cost is distributed more smoothly across 529 tests,
 of which 119 take more than 1s to run.  
 
-
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -425,26 +424,64 @@ of which 119 take more than 1s to run.
     \item \emph{\RQC}
 \end{itemize}
 
-To evaluate the presence of parallelization settings (see Section
-\ref{sec:modes}), we considered all projects classified as \medg{} and
-\longg{}-running, a total of \numMedLong{} subjects (see
-Figure~\ref{fig:rq1-barplot}). To reduce noise we did not consider
-projects with \shortg{}-running test suites as we observed that
-\percentShortSequential{} of those projects do not use parallelism;
-including them would favor sequential execution in our analysis.
+To evaluate the support of parallelization in test suites, we
+considered all projects classified as \medg{} and \longg{}-running, a
+total of \numMedLong{} subjects (see Figure~\ref{fig:rq1-barplot}). To
+reduce noise we did not consider projects with \shortg{}-running test
+suites as we observed that \percentShortSequential{} of those projects
+do not use parallelism; including them would favor sequential
+execution in our analysis.
 
-To answer \numRQC{} we initially mined build files (\ie, \pomf{}) that
-contain parallelization keywords, namely \CodeIn{forkMode},
-\CodeIn{forkCount}, and \CodeIn{parallel}.  According to the Maven
-surefire documentation\Fix{cite surefire doc}, any configuration to
-run tests in parallel must contain one of these keywords. This mining
-step, however, is not sound as a matching project may not indicate a
-project with a valid configuration for running tests in parallel.
-False positive can happen because of comments, for instance.  
-To eliminate the cases of false positives and also to categorize true
-positive cases, we complemented the initial mining step with a manual
-inspection of files.
+To answer \numRQC{} we initially configured Maven to output
+configuration settings and re-executed the tests to collect and
+classify the test suites according to its level of parallelization
+(see Section \ref{sec:modes}).  The rationale is that if a test suite
+is configured to run in parallel, Maven is going to display the
+configuration and we can classify it according to its parallelization
+level.  We are interested to know how frequent are parallel executions
+and what configurations are more popular.  According to Maven's
+documentation\Fix{cite surefire doc}, the set of parameters to run
+tests in parallel is described as follows: \CodeIn{parallel} defines
+the parallelism granularity within a JVM (\eg, methods or classes);
+\CodeIn{threadCounter} defines the size of the thread pool; and
+\CodeIn{forkCount} defines the number of forked JVMs. Additional
+options exists and depends on theses parameters to take effect. To
+avoid waiting all tests to terminate, we just run the bootstrap phase
+and we skip the actual test execution. \Jbc{Missing: explain how we
+mapped the configurations to parallel level.}
+Figure~\ref{fig:freqmodes-dynamic} summarizes our findings.
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.32\textwidth]{plots/barplot-modes-dynamic.pdf}
+    \caption{\label{fig:freqmodes-dynamic}Distribution of parallel modes 
+    identified dynamically in a subset of \numProjectsPar{} projects.
+    A project may have support to more than one parallel mode. Also,
+    a project may run only a subset tests in parallel by default.}
+\end{figure}
+
+\Fix{Elaborate findings....}
+
+\subsubsection{Support of parallelization configuration in build files}
+
+We complemented our previous investigation with a static analysis of
+several \pomf{} files from the \numMedLong{} subjects. The rationale
+is that some projects might not enable parallelism in the default
+execution. \Jbc{Remember to explain that we need the previous analysis
+because some configurations are unreachable statically when inherited
+from some external module}.
+
+%% To answer \numRQC{} we initially mined build files (\ie, \pomf{}) .
+%% must contain one of these keywords that
+%% contain parallelization keywords, namely \CodeIn{forkMode},
+%% \CodeIn{forkCount}, and \CodeIn{parallel}.
+
+This mining step, however, is not sound as a matching project may not
+indicate a project with a valid configuration for running tests in
+parallel.  False positive can happen because of comments, for
+instance.  To eliminate the cases of false positives and also to
+categorize true positive cases, we complemented the initial mining
+step with a manual inspection of files.
 
 %% settings); the second step (inspection) consists in a manual
 %% inspection to confirm the presence of parallelism settings in the
@@ -504,9 +541,6 @@ question}\Mar{explain this is over(under)-estimated...}
     \label{tab:inspection-table} 
 \end{figure}
 
-\subsubsection{ \Luis{Static $\rightarrow$} Distribution of parallel
-modes}
-
 From the \numProjectsPar{} projects identified above, we investigated
 further the \numPomMatchedValid{} build files with parallel settings.
 We analyzed the support and distribution of parallel modes from this
@@ -520,23 +554,27 @@ compute all modes related to the option. For instance, depending on
 the value, the \CodeIn{parallel} option can be \Seq{} (\CodeIn{none}),
 \ParClassSeqMeth{} (\CodeIn{classes}), \SeqClassParMeth{},
 (\CodeIn{methods}), and \ParClassParMeth{} (\CodeIn{all}).
-Figure~\ref{fig:freqmodes} summarizes our findings. \Jbc{Given that we
+Figure~\ref{fig:freqmodes-static} summarizes our findings. \Jbc{Given that we
 checked each configuration, we could elaborate how these settings are
-used.} \Fix{Missing conclusion: Fork with class parallelism is the 
-most used configuration}
-
-\subsubsection{Dynamic distribution of parallel modes}
-
-\Luis{placeholder}
+used.} \Fix{Missing conclusion: Fork the most used configuration}
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.32\textwidth]{plots/parallel-modes.pdf}
-    \caption{\label{fig:freqmodes}Distribution of parallel modes
-    identified in a subset of \numProjectsPar{} projects (unused modes
-    omitted). A single project may have support to more than one
-    parallel mode.}
+    \includegraphics[width=0.32\textwidth]{plots/barplot-modes-static.pdf}
+    \caption{\label{fig:freqmodes-static}Distribution of parallel modes 
+    identified statically in a subset of \numProjectsPar{} projects.
+    A project may have support to more than one parallel mode.}
 \end{figure}
+
+\begin{center}
+\fbox{
+  \begin{minipage}{8cm}
+      \textit{Answering \numRQC{}:}~\emph{Overall, results indicate
+      that \Jbc{summarize results from both parts (static and
+      dynamic)}.} 
+  \end{minipage}
+}
+\end{center}
 
 \subsection{Answering research question \numRQD{}}
 \label{sec:rqD}
@@ -551,7 +589,14 @@ time cost with sequential execution. \Jbc{should have a sentence to
 motivate this RQ} 
 \Jbc{explain methodology}.
 
-\Fix{---------------------}
+\begin{center}
+\fbox{
+  \begin{minipage}{8cm}
+      \textit{Answering \numRQD{}:}~\emph{\Jbc{summarize
+      findings.....}}
+  \end{minipage}
+}
+\end{center}
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the
