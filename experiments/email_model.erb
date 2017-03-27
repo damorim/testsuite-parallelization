@@ -1,26 +1,40 @@
-Subject: Survey of parallel testing 
+Subject: Question on parallel testing : <%= projectName %>
 To: <%= email %>
 
-I am writing to you to request your participation in a brief survey. 
-We downloaded your java open-source project from GitHub (<%= link %>) and noticed that your project in 01/01/2016 had a Maven Surefire enabled test environment. We would like to get more information about these tests you wrote. Your responses to this survey will help us evaluate the effectiveness of the parallel automatic testing so that we can understand better which situation is better to use the parallel testing in Maven projects.
+Dear <%= personName %>,
 
-The survey is very brief and will only take about 5 minutes to complete. 
+I am part of a research group that is highly interested in
+understanding how software engineers accelerate test execution.  We
+analyzed a large set of projects on github (using its public API) and
+noticed that the project <%= projectName %> (which you appear as a
+member) uses Maven Surefire test environment.  Additionally, we noticed
+that, although tests take a fair amount of time to execute (>3m in our
+environment), we could not find evidence in your pom.xml of usage of
+parallelization in test execution (e.g. fork jvm).  We would
+appreciate tremendously if you could kindly take 2-3 minutes
+(estimated time) to answer this very short survey.
 
-1) Does your project really do not use parallel testing?
+1) How long does it take (average) for tests to run in your
+environment?  Can you briefly define your setup?
 
-2) Why do you not use parallel testing with Maven?
+2) Do you confirm that you project does *not* run tests in parallel?
 
-a) I did not know it was possible
-b) Concurrency problems
-c) I have a powerfull computer
-d) I only run the tests sometimes
+3) Select a reason for no not using parallelization
 
-3) If you do not use parallelism, what do you do instead?
+ a) I did not know it was possible
+ b) I was concerned with concurrency issues (e.g., interference caused by dependent tests)
+ c) I have a powerful computer
+ d) I only run tests sometimes
+ e) I use a continuous integration server (e.g., Travis)
+ f) Some other reason.  Please elaborate.
 
-Please reply this e-mail with the answers. 
-Your participation in the survey is completely voluntary and all of your responses will be kept confidential. No personally identifiable information will be associated with your responses to any reports of these data. 
+Your participation in the survey is voluntary and all of your
+responses will be kept confidential. No personally identifiable
+information will be associated with your responses to any reports of
+these data.
 
 Sincerely, 
 <%= name %>
 <%= desc %>
 UFPE
+
