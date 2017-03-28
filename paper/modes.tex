@@ -106,7 +106,7 @@ language and tools.
 \label{sec:frameworks}
 
 The list below shortly describes the choices to control parallelism
-within a JVM.
+within a Java virtual machine (JVM).
 
 \begin{itemize}
 \item
@@ -140,41 +140,49 @@ For the \ParClassSeqMeth{} setting, \Fix{elaborate...}. Finally, the
 \subsection{Build Systems}
 \label{sec:builder}
 
-Several build systems support the execution of test classes in forked
-processes running a Java virtual machine (JVM). Each spawned process
-runs a test class at time. In addition, the builder can reuse these
-processes to execute the next test classes in the queue according to
-the developer's preference. For instance, one might want the builder
-to spawn a new process for each test class to ensure maximum
-isolation.  To exploit parallelism at this level, the number of forked
-processes must be proportional to the number of available CPUs,
-otherwise, the high frequency of context-switching and concurrency
-(\ie, processes competing for a CPU time-slice) may affect the
-performance.  For instance, if the underlying machine has four CPUs
-available, the builder could be configured to spawn one process on
-each core in contrast to several processes competing for a single
-core.
-
-Builder-level parallelism can also complement some testing framework
-parallelism levels. For instance, \Fix{elaborate...}.  However, some
-settings may not take effect since only one test class can run in a
-forked process at time. For instance, \Fix{elaborate...}. To the best
-of our knowledge, we are unaware of any build system capable of
-running multiple classes at time within a forked process.
-
-In this paper, we use the prefix ``\Fork{}'' to indicate that a given
-testing configuration has the feature of spawning JVMs to run test
-classes enabled. The list below shortly describes the choices to
-control parallelism:
+The list below shortly describes the choices to control parallelism
+through build systems:
 
 \begin{itemize}
 \item
-    \textbf{Forked classes; sequential methods (\ForkSeq).}~\Fix{todo}
+    \textbf{Forked classes; sequential methods (\ForkSeq).}~This
+        configuration corresponds to the parallel execution of test
+        classes on different JVMs and test methods run sequentially
+        within each JVM.
 \item
-    \textbf{Forked classes; parallel methods (\ForkParMeth).}~\Fix{todo}
+    \textbf{Forked classes; parallel methods (\ForkParMeth).}~This
+        configuration corresponds to the parallel execution of test
+        classes on different JVMs and test methods run on multiple
+        threads within each JVM.
 \end{itemize}
 
-\subsubsection*{Illustration}~\Fix{elaborate}
+Several build systems support the execution of test classes in forked
+processes running a JVM. In the \ForkSeq{} configuration, each spawned
+process runs a different test class at time and the builder merges the
+results from each execution. In the \ForkParMeth{} configuration, the
+build system forwards settings to the underlying testing framework to
+enable parallel execution within each process in addition to running
+test classes on different processes.  However, some configurations
+(\eg, \ParClassSeqMeth) may not take effect since only one test class
+can run in a forked process at time.  To the best of our knowledge, we
+are unaware of any build system capable of running multiple classes at
+time within a forked process.  \Comment{In addition, the builder can
+reuse these processes to execute the next test classes in the queue
+according to the developer's preference. For instance, one might want
+the builder to spawn a new process for each test class to ensure
+maximum isolation. Notice that to exploit parallelism at build system
+level, the number of forked processes must be proportional to the
+number of available CPUs, otherwise, the high frequency of
+context-switching and processes competing for a CPU may degrade the
+execution performance  \Jbc{$\leftarrow$ I'm not sure if we should
+keep this. We can remove it if necessary}.}
+
+%% In this paper, we use the prefix ``\Fork{}'' to indicate that a given
+%% testing configuration has the feature of spawning JVMs to run test
+%% classes enabled.
+
+\subsubsection*{Illustration}~\Fix{elaborate the following example to
+conclude this section}
 
 \begin{figure}[h!]
 \centering
@@ -193,7 +201,6 @@ control parallelism:
     <artifactId>maven-surefire-plugin</artifactId>
     <configuration>
         <forkCount>1C</forkCount>
-        <reuseFork>true</true>
         <parallel>methods</parallel>
         <threadCount>5</threadCount>
     </configuration>
@@ -203,7 +210,7 @@ control parallelism:
     configuration. Maven forks one JVM per core (\CodeIn{forkCount}
     parameter) and \Jbc{check this $\rightarrow$} uses five threads
     (\CodeIn{threadCount} parameter) to run methods (\CodeIn{parallel}
-    parameter) within each test class.}
+    parameter) within each JVM.}
     
 %%    test methods run in parallel (\CodeIn{parallel}
 %%    parameter) using two threads (\CodeIn{threadCount} parameter) per
