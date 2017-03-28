@@ -2,14 +2,14 @@
 \label{sec:eval}
 
 We are interested in understanding the prevalence of time-consuming
-test suites and main sources of cost. We want to understand how the
-execution cost is distributed on test cases within a test suite and
-how developers approach test execution. Based on that, we study
-parallelization of testing frameworks.  More precisely, we investigate
-how prevalent test parallelization is, the potential for improving
-execution cost, issues of flakiness that hinders the use of
-parallelization, and how to address those issues.  More specifically,
-we pose the following research questions:
+test suites and main sources of execution cost. We want to understand
+how the execution cost is distributed on test cases within a test
+suite and how developers approach test execution. Based on that, we
+study parallelization of testing frameworks and build systems.  More
+precisely, we investigate how prevalent test parallelization is, the
+potential for improving execution cost, issues of flakiness that
+hinders the use of parallelization, and how to address those issues.
+More specifically, we pose the following research questions:
 
 \newcommand{\numRQA}{RQ1}
 \newcommand{\numRQB}{RQ2}
@@ -21,8 +21,8 @@ we pose the following research questions:
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
   regression test suites in open-source projects?}
 \newcommand{\RQB}{How the time cost is distributed across test cases?}
-\newcommand{\RQC}{How often developers add support to parallel
-execution of test suites?}
+\newcommand{\RQC}{How often developers provides support to parallel
+execution to amortize the execution cost?}
 \newcommand{\RQD}{What is the impact of parallelization?}
 %%\newcommand{\RQE}{What factors contribute to improve performance
 %%  through parallelization?\Jbc{Previously as "When does
@@ -51,18 +51,18 @@ The first research question addresses the prevalence of long-running
 test suites. We are interested to know if costly test suites are
 common in open-source projects.  The second research question
 addresses the relationship of test cases and the overall execution
-cost: we are interested to investigate how the time cost is
-distributed among test cases.  In the third research question, we are
-in understanding if developers are aware of low-level parallelism
-features available out-of-the-box through build systems (\eg,
-configuring Maven to use JUnit with multiple threads to speedup test
-execution). In addition, we want to identify which configurations are
-often used and why they more popular (if any).  The fourth research
-question addresses the impact of low-level parallelism on the
-regression tests from our sample set. For subjects that use
-parallelization settings, we are interested to compare the execution
-performance when these settings are activated and deactivated (\ie,
-tests run sequentially).
+cost: we are interested to investigate how the execution time is
+distributed among test cases.  In the third research question, we
+investigate if developers consider low-level parallelism features
+available out-of-the-box (see Section~\ref{sec:modes}). In addition,
+we want to identify what configurations are often used and why they
+are more popular (if any).  The fourth research question addresses the
+impact of low-level parallelism on test execution from projects in our
+sample set. We want to identify subjects that already use test
+parallelization and compare their performance in contrast to
+sequential execution. In addition, we are interested in evaluating the
+performance of sequential test suites with different parallelization
+settings.
 %%\Jbc{This RQ has to be reworked:} \Fix{The fifth research question
 %%addresses the characteristics of regression tests from the previous
 %%experiment.  More specifically, we want to investigate if there is a
