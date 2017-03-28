@@ -1,15 +1,16 @@
-Subject: Question on parallel testing : <%= projectName %>
-To: <%= email %>
+Subject: Question on parallel testing : <%= person.project.name %>
+To: <%= person.email %>
 
-Dear <%= personName %>,
+Dear <%= person.name %>,
 
 I am part of a research group that is highly interested in
 understanding how software engineers accelerate test execution.  We
 analyzed a large set of projects on github (using its public API) and
-noticed that the project <%= projectName %> -- which you appear as a
-member -- uses the Maven Surefire plugin for testing.  Additionally,
-we noticed that, although tests take a fair amount of time to execute
-(>3m in our environment), we could not find evidence in your pom.xml
+noticed that the project <a href="<%= person.project.url">
+<%= person.project.name %></a> -- which you appear as a member -- uses
+the Maven Surefire plugin for testing.  Additionally, we noticed that, 
+although tests take a fair amount of time to execute (>3m in our 
+environment), we could not find evidence in your pom.xml
 of usage of parallelization in test execution (e.g. fork jvm).
 
 I would tremendously appreciate if you could take 2-3 minutes
@@ -38,6 +39,6 @@ responses will be kept confidential. No personally identifiable
 information will be associated with your responses in reported data.
 
 Sincerely, 
-<%= name %>
-<%= desc %>
+<%= me.name %>
+<%= me.description %>
 UFPE
