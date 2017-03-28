@@ -16,7 +16,7 @@ read: pdf
 	evince main.pdf &
 
 clean:
-	-rm -f *aux *bbl *blg *log *.dvi main.pdf *.fls *.fdb_latexmk *~
+	-rm -f *aux *bbl *blg *log *.dvi main.pdf *.fls *.fdb_latexmk *~ *.out
 
 tags: TAGS
 TAGS: ${TEX_FILES}
