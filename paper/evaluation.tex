@@ -116,9 +116,11 @@ criteria is an approximation to find projects with Maven support. The
 rationale is that if the string \emph{mvn} exists in the \emph{readme}
 file, it may represent a Maven call (\eg, to compile or test the
 project). We used Maven as a reference due to its popularity on Java
-projects and to automate our evaluation scripts.
-Figure~\ref{fig:subject-query} illustrates the query as an HTTP
-request.
+projects and to automate our evaluation scripts. A Maven project may
+contain several sub-modules with multiple \pomf{} files. We considered
+only projects with a \pomf{} file located in the root directory.
+Figure~\ref{fig:subject-query} illustrates the query to the \github{}
+API as an HTTP request.
 
 \begin{figure}[h!]
 \centering
@@ -141,17 +143,25 @@ https://api.github.com/search/repositories?q=language:java
     paginated in descending order of stars.}
 \end{figure}
 
-A Maven project may contain several sub-modules with multiple \pomf{}
-files. We considered only projects with a \pomf{} file located in the
-root directory.  As of March 25th 2017, our search criteria returned
-\SubjectsGithub{} subjects.  From the \SubjectsGithub{} downloaded
-projects, \SubjectsGithubNotMaven{} were not Maven projects (or did
-not have a \pomf{} in the root directory) and
-\SubjectsGithubNotTestable{} were in an untestable revision (\eg,
-missing dependencies or incompatible testing environment). To ensure
-that our sample set is stable, we retested the remaining subjects to
-eliminate flaky tests (total of \SubjectsGithubFlaky{} subjects). Our
-final set consists in \numSubjs{} testable subjects.
+
+As of March 25th 2017, our search criteria returned \SubjectsGithub{}
+subjects. Figure~\ref{fig:subjects} summarizes our sample set. From
+the \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
+were not Maven projects (or did not have a \pomf{} in the root
+directory) and \SubjectsGithubNotTestable{} were in an untestable
+revision (\eg, missing dependencies or incompatible testing
+environment). To ensure that our sample set is stable, we retested the
+remaining subjects to eliminate flaky tests (total of
+\SubjectsGithubFlaky{} subjects). Our final set consists in
+\numSubjs{} testable subjects.
+
+\vspace{-3ex}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.25\textwidth]{plots/subjects/subjects.pdf}
+    \caption{\label{fig:subjects}\Fix{this is mocked data!}}
+\end{figure}
+\vspace{-2ex}
 
 \subsection{Setup and Replication}
 \label{sec:setup}
@@ -160,13 +170,13 @@ final set consists in \numSubjs{} testable subjects.
 %processor machine with eight virtual CPUs (four cores with two native
 %threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
 
-To run our experiments, we used a Virtual Machine with four cores and
-4 GB of memory, running Ubuntu 14.04 LTS Trusty Tahr (64-bit version).
-Software settings include \Comment{the Linux \emph{sysstat} package
-to measure performance, }git to fetch subjects, Java 8 and Maven
-3.3.9 to build and test subjects. Our evaluation scripts depends on
-Python 3.4 and Bash to execute and R to analyze the data.
-For replication, all source artifacts are publicly available at
+To run our experiments, we used a dedicated server with eight cores
+and 16 GB of memory, running Ubuntu 14.04 LTS Trusty Tahr (64-bit
+version).  Software settings include \Comment{the Linux \emph{sysstat}
+package to measure performance, }git to fetch subjects, Java 8 and
+Maven 3.3.9 to build and test subjects. Our evaluation scripts depends
+on Python 3.4 and Bash to execute and R to analyze the data.  For
+replication, all source artifacts are publicly available at
 \Fix{create gh-pages}, including supporting scripts (\eg, the script
 that test subjects and generates the raw data), and the full list of
 projects. \Comment{, and a \emph{Vagrantfile} to emulate our hardware
