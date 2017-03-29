@@ -143,7 +143,6 @@ https://api.github.com/search/repositories?q=language:java
     paginated in descending order of stars.}
 \end{figure}
 
-
 As of March 25th 2017, our search criteria returned \SubjectsGithub{}
 subjects. Figure~\ref{fig:subjects} summarizes our sample set. From
 the \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
@@ -254,16 +253,16 @@ from each group.
     Distribution of time cost by group.}
 \end{figure}
 
-\Jbc{these results will be updated $\rightarrow$}
-It is important to mention that Figure~\ref{fig:rq1-barplot}
-represents a lower bound estimation for time cost because some
+\Jbc{these results will be updated $\rightarrow$} It is important to
+mention that Figure~\ref{fig:rq1-barplot} represents a lower bound
+estimation for time cost because some tests may finish earlier than
+expected due to existing bugs on the ongoing revision.  From the
+\numSubjs{} compiled projects, \numSubjsPass{} successfully executed
+all tests and \numSubjsFail{} reported test failures.  Also, some
 projects omit long-running tests on their default execution. For
 instance, it is necessary to invoke Maven with additional parameters
 to run integration tests from project \CodeIn{apache.maven-surefire}
-(nearly 30 min in our environment).  Also, some tests may finish
-earlier than expected due to existing bugs on the ongoing revision.
-From the \numSubjs{} compiled projects, 286 successfully executed
-all tests and 118 reported test failures.
+(nearly 30 min in our environment).
 
 \begin{center}
 \fbox{
@@ -427,64 +426,65 @@ of which 119 take more than 1s to run.
     \item \emph{\RQC}
 \end{itemize}
 
-To evaluate the support of parallelization in test suites, we
-considered all projects classified as \medg{} and \longg{}-running, a
-total of \numMedLong{} subjects (see Figure~\ref{fig:rq1-barplot}). To
-reduce noise we did not consider projects with \shortg{}-running test
-suites as we observed that \percentShortSequential{} of those projects
-do not use parallelism; including them would favor sequential
-execution in our analysis.
+To evaluate the support of parallelization to run tests, we
+investigate if there are projects with parallel execution enabled by
+default and what configurations are more popular. In addition, we
+complement our investigation by analyzing several build files (\ie,
+\pomf{}) to identify projects that supports parallel execution but
+require additional execution parameters to enable this feature.  We
+describe our approach as follows:
 
-To answer \numRQC{} we initially configured Maven to output
-configuration settings and re-executed the tests to collect and
-classify the test suites according to its level of parallelization
-(see Section \ref{sec:modes}).  The rationale is that if a test suite
-is configured to run in parallel, Maven is going to display the
-configuration and we can classify it according to its parallelization
-level.  We are interested to know how frequent are parallel executions
-and what configurations are more popular.  According to Maven's
-documentation\Fix{cite surefire doc}, the set of parameters to run
-tests in parallel is described as follows: \CodeIn{parallel} defines
-the parallelism granularity within a JVM (\eg, methods or classes);
-\CodeIn{threadCounter} defines the size of the thread pool; and
-\CodeIn{forkCount} defines the number of forked JVMs. Additional
-options exists and depends on theses parameters to take effect. To
-avoid waiting all tests to terminate, we just run the bootstrap phase
-and we skip the actual test execution. \Jbc{Missing: explain how we
-mapped the configurations to parallel level.}
-Figure~\ref{fig:freqmodes-dynamic} summarizes our findings.
+\subsubsection{Test execution with parallelism enabled by default}
+\label{sec:rqC-1}
+
+Initially, we configured Maven to output all configuration variables.
+The rationale is that, for each project's module, we can capture
+relevant configurations and classify their parallelization level (see
+Section \ref{sec:modes}) based on their values. To avoid waiting all
+tests to terminate, we just run the bootstrap phase and we skip the
+actual test execution.
+
+According to Maven's documentation \Fix{cite surefire doc}, any
+parallelization setting depends either on (1) \CodeIn{parallel} to
+define the parallelism level within a JVM followed by
+\CodeIn{threadCounter} or (2) \CodeIn{forkCount} (or \CodeIn{forkMode}
+in older versions) to define the number of forked JVMs. For each test
+execution, we look for theses parameters and their values to classify
+them.  \Jbc{Missing: explain how we mapped the configurations to
+parallel level.} Figure~\ref{fig:freqmodes-dynamic} summarizes our
+findings.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.32\textwidth]{plots/barplot-modes-dynamic.pdf}
-    \caption{\label{fig:freqmodes-dynamic}Distribution of parallel modes 
-    identified dynamically in a subset of \numProjectsPar{} projects.
-    A project may have support to more than one parallel mode. Also,
-    a project may run only a subset tests in parallel by default.}
+    \caption{\label{fig:freqmodes-dynamic}\Fix{fix
+    caption}Distribution of parallel modes identified dynamically in a
+    subset of \numProjectsPar{} projects.  A project may have support
+    to more than one parallel mode. Also, a project may run only a
+    subset tests in parallel by default.}
 \end{figure}
 
 \Fix{Elaborate findings....}
 
 \subsubsection{Support of parallelization configuration in build files}
+\label{sec:rqC-2}
 
-We complemented our previous investigation with a static analysis of
-several \pomf{} files from the \numMedLong{} subjects. The rationale
-is that some projects might not enable parallelism in the default
-execution. \Jbc{Remember to explain that we need the previous analysis
-because some configurations are unreachable statically when inherited
-from some external module}.
+% considered all projects classified as \medg{} and \longg{}-running, a
+% total of \numMedLong{} subjects (see Figure~\ref{fig:rq1-barplot}). To
+% reduce noise we did not consider projects with \shortg{}-running test
+% suites as we observed that \percentShortSequential{} of those projects
+% do not use parallelism; including them would favor sequential
+% execution in our analysis.
 
-%% To answer \numRQC{} we initially mined build files (\ie, \pomf{}) .
-%% must contain one of these keywords that
-%% contain parallelization keywords, namely \CodeIn{forkMode},
-%% \CodeIn{forkCount}, and \CodeIn{parallel}.
-
-This mining step, however, is not sound as a matching project may not
-indicate a project with a valid configuration for running tests in
-parallel.  False positive can happen because of comments, for
-instance.  To eliminate the cases of false positives and also to
-categorize true positive cases, we complemented the initial mining
-step with a manual inspection of files.
+To extend our initial investigation, we mined several \pomf{} files
+must contain one of these keywords that contain parallelization
+keywords, namely \CodeIn{forkMode}, \CodeIn{forkCount}, and
+\CodeIn{parallel}.  This mining step, however, is not sound as a
+matching project may not indicate a project with a valid configuration
+for running tests in parallel.  False positive can happen because of
+comments, for instance.  To eliminate the cases of false positives and
+also to categorize true positive cases, we complemented the initial
+mining step with a manual inspection of files.
 
 %% settings); the second step (inspection) consists in a manual
 %% inspection to confirm the presence of parallelism settings in the
@@ -508,10 +508,11 @@ eliminated six false-positives: two were names of project modules
 comment, and three were commented configurations. The
 \numPomMatchedValid{} build files with valid configurations are
 distributed across \numProjectsPar{} projects from our sample.
-\emph{From these results we found that $\sim$51\% of medium and
-long-running projects do not use parallel features to run test
-suites.}\Mar{please make it consistent with research
-question}\Mar{explain this is over(under)-estimated...}
+% 
+% \emph{From these results we found that $\sim$51\% of medium and
+% long-running projects do not use parallel features to run test
+% suites.}\Mar{please make it consistent with research
+% question}\Mar{explain this is over(under)-estimated...}
 
 \begin{figure}[ht!]
     \centering
@@ -587,11 +588,16 @@ used.} \Fix{Missing conclusion: Fork the most used configuration}
 \end{itemize}
 
 To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
-parallelization settings identified in \numRQC{} and compared their
-time cost with sequential execution. We are interested in measuring the
-execution speedup (if any) when the parallelization settings are
-activated.
-\Jbc{explain methodology}.
+parallelization settings enabled by default identified in \numRQC{}
+and compared their time cost with sequential execution. We are
+interested in measuring the execution speedup (if any) when the
+parallelization settings are activated. It is important to mention
+that we ignored the remaining \Fix{??} subjects identified in
+Section~\ref{sec:rqC-2} because it would be impractical to execute
+each subject on specific conditions to measure the impact of
+parallelization.
+
+To enforce sequential execution, \Jbc{explain methodology}.
 
 \begin{center}
 \fbox{
