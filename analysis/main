@@ -4,4 +4,4 @@ if [[ ! -d "out" ]]; then
 fi
 
 # Subject selection
-./classify.py && R --vanilla --quite < classify.r --args "gen/selection.csv"
+./selection.py && R --vanilla --quite < selection.r --args "gen/selection.csv"
