@@ -598,6 +598,17 @@ each subject on specific conditions to measure the impact of
 parallelization.
 
 To enforce sequential execution, \Jbc{explain methodology}.
+\Luis{
+Primeiro nos avaliamos os \pomf{} de alguns projetos long que 
+rodavam em paralelo.
+Constatamos que a maioria dos projetos possuiam um no configurando o 
+plugin do maven surefire, e alguns projetos ``herdavam'' as configurações
+de outros projetos.
+
+Nossa primeira acao foi forcar a execucao sequencial de forma manual
+colocando os parametros de configuracao sequencial em todos os \pomf{}
+dos projetos. 
+}
 
 \begin{center}
 \fbox{
