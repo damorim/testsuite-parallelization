@@ -1,0 +1,28 @@
+
+\begin{figure}[h!]
+\centering
+\scriptsize
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    morekeywords={parallel, threadCount, perCoreThreadCount,
+    forkCount, reuseFork, useUnlimitedThreads},
+    deletekeywords={true, false}
+}
+\begin{lstlisting}
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+        <forkCount>1</forkCount>
+        <parallel>none</parallel>
+        <threadCount>1</threadCount>
+        <useUnlimitedThreads>false</useUnlimitedThreads>
+        <perCoreThreadCount>false</perCoreThreadCount>
+    </configuration>
+</plugin>
+\end{lstlisting}
+    \caption{\label{fig:surefire-configuration} \Fix{Fix this $\rightarrow$} Maven with a sequential
+    configuration.}
+\end{figure}

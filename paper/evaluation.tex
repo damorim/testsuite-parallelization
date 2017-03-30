@@ -598,18 +598,15 @@ Section~\ref{sec:rqC-2} because it would be impractical to execute
 each subject on specific conditions to measure the impact of
 parallelization.
 
-To enforce sequential execution, \Jbc{explain methodology}.
-\Luis{
-Primeiro nos avaliamos os \pomf{} de alguns projetos long que 
-rodavam em paralelo.
-Constatamos que a maioria dos projetos possuiam um no configurando o 
-plugin do maven surefire, e alguns projetos ``herdavam'' as configurações
-de outros projetos.
+To enforce sequential execution, \Luis{rework this $\rightarrow$} we 
+analyzed the \numProjectsPar{} subjects looking for the parallelism 
+configuration inside the \pomf{} of each module. To run the subjects
+sequentially, we manually modified the Maven Surefire configuration
+from the \numPomMatchedValid{} identified before to not run in parallel.
+The Figure~\ref{fig:surefire-configuration} show the injected configuration
+in each \pomf{}.
 
-Nossa primeira acao foi forcar a execucao sequencial de forma manual
-colocando os parametros de configuracao sequencial em todos os \pomf{}
-dos projetos. 
-}
+\input{codes/surefire}
 
 \begin{center}
 \fbox{
