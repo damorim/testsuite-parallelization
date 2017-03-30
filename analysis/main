@@ -2,4 +2,6 @@
 if [[ ! -d "out" ]]; then
     mkdir out
 fi
-./classify.py && R --vanilla --quite < classify.r
+
+# Subject selection
+./classify.py && R --vanilla --quite < classify.r --args "gen/selection.csv"
