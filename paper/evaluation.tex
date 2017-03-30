@@ -94,9 +94,9 @@ insights to overcome the pitfalls of parallelization.
 \subsection{Subjects}
 \label{sec:subjects}
 
-We evaluated the characteristics of regression tests in open-source
+We evaluated the characteristics of test suites in open-source
 development from a sample set of Java projects from \github{}.  We are
-interested to evaluate non-trivial test suites on popular projects
+interested to evaluate non-trivial test suites from popular projects
 that are in activity. We used the \github{}'s search
 API~\cite{githubsearch} to fetch Java projects according to the
 following criteria: (1) the primary language must be Java\footnote{In
@@ -147,18 +147,23 @@ As of March 25th 2017, our search criteria returned \SubjectsGithub{}
 subjects. Figure~\ref{fig:subjects} summarizes our sample set. From
 the \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
 were not Maven projects (or did not have a \pomf{} in the root
-directory) and \SubjectsGithubNotTestable{} were in an untestable
-revision (\eg, missing dependencies or incompatible testing
-environment). To ensure that our sample set is stable, we retested the
-remaining subjects to eliminate flaky tests (total of
-\SubjectsGithubFlaky{} subjects). Our final set consists in
+directory) and we were unable to execute the tests from
+\SubjectsGithubNotTestable{} tests (\eg, missing dependencies or
+incompatible testing environment). To ensure that our sample set is
+stable, we retested the remaining subjects to eliminate flaky tests
+(total of \SubjectsGithubFlaky{} subjects). Our final set consists in
 \numSubjs{} testable subjects.
 
 \vspace{-1ex}
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{plots/subjs.pdf}
-    \caption{\label{fig:subjects}\Fix{this is mocked data!}}
+    \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular
+    projects hosted on \github{}. From this initial sample, we ignored
+    \SubjectsGithubNotMaven{} projects without Maven support,
+    \SubjectsGithubNotTestable{} untestable projects, and
+    \SubjectsGithubFlaky{} projects with flaky tests. We considered
+    \numSubjs{} projects to conduct our study.}
 \end{figure}
 \vspace{-2ex}
 
