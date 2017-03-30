@@ -5,3 +5,7 @@ fi
 
 # Subject selection
 ./selection.py && R --vanilla --quite < selection.r --args "gen/selection.csv"
+
+# FIXME consider the other executions as well...
+# RQ 1
+R --vanilla --quite < timecost.r --args "data/execution-1.csv"

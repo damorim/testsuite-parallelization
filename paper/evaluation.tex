@@ -252,16 +252,21 @@ from each group.
     Distribution of time cost by group.}
 \end{figure}
 
-\Jbc{these results will be updated $\rightarrow$} It is important to
-mention that Figure~\ref{fig:rq1-barplot} represents a lower bound
-estimation for time cost because some tests may finish earlier than
-expected due to existing bugs on the ongoing revision.  From the
-\numSubjs{} compiled projects, \numSubjsPass{} successfully executed
-all tests and \numSubjsFail{} reported test failures.  Also, some
-projects omit long-running tests on their default execution. For
-instance, it is necessary to invoke Maven with additional parameters
-to run integration tests from project \CodeIn{apache.maven-surefire}
-(nearly 30 min in our environment).
+It is important to mention that Figure~\ref{fig:rq1-barplot}
+represents a lower bound estimation for time cost because some tests
+may finish earlier than expected due to existing bugs on the ongoing
+revision.  From the \numSubjs{} compiled projects, \numSubjsPass{}
+successfully executed all tests and \numSubjsFail{} reported test
+failures.  Also, some projects may omit long-running tests on their
+default execution. For instance, the project
+\CodeIn{apache.maven-surefire} runs all unit tests in a few seconds in
+our environment.  According to our criteria, this project would be
+classified as \shortg{} but we noticed that by providing additional
+parameters from the subject, the integration tests are included during
+the execution.  After including the integration tests, the tests time
+increases to nearly 30 minutes.  Since it would be impractical to
+analyze each project, we considered only the tests executed by
+default.
 
 \begin{center}
 \fbox{
