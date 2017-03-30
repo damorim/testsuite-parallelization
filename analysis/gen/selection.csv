@@ -1,0 +1,435 @@
+project,group,xml_time
+4pr0n_ripme,testable,142.716
+4thline_cling,testable,53.818
+Aconex_scrutineer,testable,5.062
+ActiveJpa_activejpa,testable,7.187
+Adobe-Consulting-Services_acs-aem-commons,untestable,0
+Adobe-Marketing-Cloud_aem-project-archetype,untestable,0
+AdoptOpenJDK_jitwatch,testable,17.901
+AnujaK_restfiddle,untestable,0
+ArcBees_gwtchosen,untestable,0
+Ardesco_Selenium-Maven-Template,untestable,0
+Asquera_elasticsearch-http-basic,untestable,0
+Atmosphere_nettosphere,testable,44.181
+AxonFramework_Axon-trader,testable,3.6620000000000004
+Baeldung_spring-security-oauth,testable,8.179
+Baeldung_spring-security-registration,untestable,0
+BatooOrg_BatooJPA,untestable,0
+Berico-Technologies_CLAVIN,testable,7.8229999999999995
+BroadleafCommerce_BroadleafCommerce,testable,18.656999999999996
+Bukkit_Bukkit,testable,0.48100000000000004
+CamelCookbook_camel-cookbook-examples,testable,301.97200000000004
+CloudSlang_cloud-slang,testable,97.33700000000002
+CodeStory_fluent-http,testable,28.307000000000016
+Coding_WebIDE-Backend,untestable,0
+Comcast_cmb,testable,52.03699999999999
+CorfuDB_CorfuDB,untestable,0
+DeemOpen_zkui,testable,0.002
+DigitalPebble_storm-crawler,testable,5.875
+GlenKPeterson_Paguro,testable,1.356999999999998
+GoClipse_goclipse,untestable,0
+GoogleCloudPlatform_DataflowJavaSDK,testable,98.835
+Hidendra_LWC,untestable,0
+HolgerHees_cloudsync,testable,6.766
+HotswapProjects_HotswapAgent,testable,0.489
+HuaweiBigData_StreamCQL,testable,0.9530000000000002
+HuaweiBigData_carbondata,untestable,0
+INRIA_spoon,testable,76.43299999999999
+IanDarwin_Android-Cookbook-Examples,untestable,0
+ImmobilienScout24_yum-repo-server,testable,6.6720000000000015
+JCTools_JCTools,testable,224.4050000000001
+JSQLParser_JSqlParser,testable,3.935999999999998
+JakeWharton_DiskLruCache,testable,1.193
+JakubDziworski_Enkel-JVM-language,testable,0.762
+JeffLi1993_springboot-learning-example,untestable,0
+JodaOrg_joda-time,testable,2.191
+LiveRamp_hank,testable,196.41200000000006
+MachinePublishers_jBrowserDriver,untestable,0
+Microsoft_Git-Credential-Manager-for-Mac-and-Linux,testable,16.783000000000005
+ModeShape_modeshape,testable,625.2699999999995
+Moocar_logback-gelf,testable,0.422
+Multiverse_Multiverse-Core,testable,9.221
+NGDATA_hbase-indexer,untestable,0
+NLPchina_elasticsearch-analysis-ansj,untestable,0
+NLPchina_nlp-lang,testable,19.942
+NanoHttpd_nanohttpd,testable,11.848999999999997
+Netflix_Surus,untestable,0
+Nilhcem_FakeSMTP,testable,0.167
+NoCheatPlus_NoCheatPlus,untestable,0
+Nodeclipse_nodeclipse-1,untestable,0
+Nukkit_Nukkit,untestable,0
+OAuth-Apis_apis,testable,8.892
+OpenGamma_Strata,untestable,0
+OpenGrok_OpenGrok,testable,20.06200000000001
+OpenHFT_Chronicle-Logger,testable,4.2
+OpenHFT_Java-Lang,untestable,0
+OvercastNetwork_ProjectAres,testable,15.608
+Parquet_parquet-format,untestable,0
+PebbleTemplates_pebble,testable,2.817999999999999
+PeteGoo_tcSlackBuildNotifier,testable,1.5540000000000003
+RUB-NDS_WS-Attacker,testable,25.954000000000004
+RaiMan_SikuliX-2014,untestable,0
+Red5_red5-server,untestable,0
+RoaringBitmap_RoaringBitmap,testable,76.48400000000002
+RuedigerMoeller_fast-serialization,untestable,0
+RustDT_RustDT,untestable,0
+ScienJus_smartqq,untestable,0
+ScienJus_spring-authorization-manager,testable,5.212
+Sloeber_arduino-eclipse-plugin,untestable,0
+SmartBear_soapui,testable,34.63300000000001
+SoftInstigate_restheart,testable,31.013
+SomMeri_less4j,testable,3.454
+SonarSource_sonar-java,testable,49.14700000000007
+SonarSource_sonarlint-eclipse,untestable,0
+Steveice10_MCProtocolLib,testable,2.62
+Stratio_cassandra-lucene-index,testable,9.653999999999998
+Stratio_ingestion,testable,34.507999999999996
+Tesco_mewbase,testable,147.08399999999997
+TheHolyWaffle_TeamSpeak-3-Java-API,untestable,0
+UglyTroLL_Douban-Java-SDK-OAuth2,testable,32.464000000000006
+WebGoat_WebGoat-Legacy,untestable,0
+XiaoMi_linden,testable,21.800000000000004
+a2888409_face2face,untestable,0
+aaberg_sql2o,testable,5.268
+abc9070410_JComicDownloader,testable,12.838
+abel533_MyBatis-Spring-Boot,testable,0.037
+addthis_stream-lib,testable,88.53500000000001
+aerogear_aerogear-unifiedpush-server,testable,139.51399999999998
+aggregateknowledge_java-hll,testable,7.064
+agoncal_agoncal-book-javaee7,testable,0.9570000000000001
+ajanata_PretendYoureXyzzy,untestable,0
+ajermakovics_eclipse-instasearch,untestable,0
+alibaba_druid,untestable,0
+alibaba_dubbo,untestable,0
+alibaba_tamper,testable,0.5670000000000001
+aliyun_aliyun-oss-java-sdk,testable,9.815999999999997
+allegro_grunt-maven-plugin,testable,0.353
+allwefantasy_ServiceFramework,untestable,0
+amaembo_huntbugs,testable,6.417000000000001
+amelentev_java-oo,untestable,0
+amplab_succinct,testable,31.349000000000007
+amznlabs_ion-java,testable,0.4330000000000001
+analytically_innerbuilder,untestable,0
+andrewgaul_modernizer-maven-plugin,testable,0.14
+andrewgaul_s3proxy,testable,48.83
+andsel_moquette,testable,228.536
+angusws_tcx2nikeplus,testable,4.3
+antlr4ide_antlr4ide,testable,0.334
+antlr_codebuff,untestable,0
+antlr_stringtemplate4,untestable,0
+apache_accumulo,untestable,0
+apache_activemq-artemis,untestable,0
+apache_apex-core,testable,420.0060000000001
+apache_archiva,testable,486.5
+apache_beam,untestable,0
+apache_bigtop,untestable,0
+apache_bookkeeper,testable,0.077
+apache_eagle,testable,378.0819999999997
+apache_flink,testable,610.883
+apache_flume,testable,2845.883
+Adobe-Consulting-Services_acs-aem-commons,untestable,0
+CorfuDB_CorfuDB,untestable,0
+Netflix_Surus,untestable,0
+NoCheatPlus_NoCheatPlus,untestable,0
+OpenGamma_Strata,untestable,0
+alibaba_druid,untestable,0
+antlr_stringtemplate4,untestable,0
+apache_accumulo,untestable,0
+apache_activemq-artemis,untestable,0
+apache_beam,untestable,0
+apache_giraph,testable,978.579
+apache_incubator-brooklyn,testable,49.04200000000001
+apache_incubator-guacamole-client,testable,0.042
+apache_incubator-metron,testable,145.87000000000006
+apache_incubator-samoa,testable,52.029
+apache_jackrabbit,testable,400.7039999999999
+apache_jackrabbit-oak,testable,2902.3670000000106
+apache_logging-log4j2,testable,276.6949999999999
+apache_mahout,untestable,0
+apache_maven,testable,12.680999999999992
+apache_maven-surefire,testable,1.1390000000000002
+apache_mina,testable,41.90999999999998
+apache_nifi,untestable,0
+apache_opennlp,untestable,0
+apache_parquet-mr,testable,49.211
+apache_pdfbox,testable,27.17100000000001
+apache_sling,testable,888.1039999999986
+apache_stanbol,testable,129.89100000000002
+apache_tika,testable,235.08300000000008
+apache_tomee,testable,17.605
+apache_wicket,testable,107.40600000000016
+apereo_java-cas-client,testable,3.0049999999999977
+apiman_apiman,testable,26.080999999999992
+armzilla_amazon-echo-ha-bridge,testable,0.003
+arnaudroger_SimpleFlatMapper,testable,3.303999999999998
+aseldawy_spatialhadoop2,testable,16.62
+astamuse_asta4d,testable,7.248
+asterisk-java_asterisk-java,untestable,0
+atilika_kuromoji,testable,105.52099999999997
+atomix_atomix,testable,480.38500000000005
+aws_aws-sdk-android,testable,888.6769999999984
+aws_aws-sdk-java,testable,245.37999999999997
+awslabs_amazon-kinesis-client,testable,11.881
+awslabs_amazon-kinesis-connectors,testable,1.682
+awslabs_aws-apigateway-importer,testable,1.5579999999999998
+awslabs_dynamodb-cross-region-library,testable,0.294
+awslabs_dynamodb-transactions,testable,0.94
+b3log_symphony,untestable,0
+basho_riak-java-client,testable,33.56900000000001
+bazaarvoice_jolt,testable,1.1520000000000001
+benas_jql,testable,5.307
+bitcoinj_bitcoinj,testable,64.582
+blynkkk_blynk-server,testable,0.643
+bmwcarit_barefoot,testable,1.107
+bouncestorage_chaos-http-proxy,testable,86.709
+brahalla_Cerberus,testable,0.839
+bramp_ffmpeg-cli-wrapper,testable,1.545
+brianfrankcooper_YCSB,testable,269.089
+brianmcmichael_SAGU,testable,1.46
+bwssytems_ha-bridge,testable,0.109
+caelum_mamute,testable,17.778000000000013
+caelum_vraptor,testable,7.694999999999998
+caelum_vraptor4,testable,10.366999999999999
+camunda_camunda-bpm-platform,testable,1449.0079999999984
+centic9_jgit-cookbook,untestable,0
+chewiebug_GCViewer,testable,7.2090000000000005
+chocotan_lolibox,testable,0.017
+chocoteam_choco-solver,testable,999.84
+chrisvest_stormpot,testable,3.4909999999999997
+cloudera_htrace,testable,8.61
+cloudera_kitten,testable,4.3069999999999995
+cloudera_spark-dataflow,testable,55.67199999999999
+cobbzilla_s3s3mirror,testable,0.121
+codecentric_spring-boot-admin,testable,29.212
+codefollower_Tomcat-Research,testable,827.74
+codelibs_fess,testable,12.881000000000002
+cometd_cometd,untestable,0
+crashub_crash,testable,30.18100000000002
+danieldk_dictomaton,testable,4.185
+davidB_scala-maven-plugin,testable,0.05500000000000001
+davidmoten_geo,testable,1.643
+davidmoten_rtree,testable,8.322
+davidmoten_rxjava-jdbc,testable,2.502
+dcm4che_dcm4che,testable,4.270999999999999
+ddf-project_DDF,testable,116.708
+debezium_debezium,testable,21.069
+decebals_pf4j,testable,0.354
+deeplearning4j_nd4j,testable,1.7419999999999995
+devnied_EMV-NFC-Paycard-Enrollment,testable,1.339
+dianping_zebra,testable,0.11300000000000002
+dibbhatt_kafka-spark-consumer,testable,10.206
+dieforfree_qart4j,testable,0.008
+digitalfondue_lavagna,testable,18.038000000000004
+docker-java_docker-java,testable,3.328
+drtshock_Essentials,testable,0.031
+easymock_easymock,testable,3.2550000000000003
+easymock_objenesis,testable,0.59
+eclipse_leshan,testable,25.143999999999995
+eclipsesource_J2V8,testable,5.847000000000001
+eivindveg_HotSUploader,untestable,0
+elki-project_elki,testable,0.001
+etsy_statsd-jvm-profiler,testable,0.7479999999999999
+eugenp_REST-With-Spring,testable,0.521
+fabric8io_spring-cloud-kubernetes,testable,10.556
+facebookarchive_linkbench,testable,555.5379999999999
+fakereplace_fakereplace,testable,0.484
+feroult_yawp,testable,2.8129999999999966
+fizzed_rocker,untestable,0
+fluent_fluent-logger-java,testable,33.326
+forcedotcom_wsc,testable,4.582
+forge_core,testable,26.357999999999993
+fpj_zookeeper-book-example,testable,59.397000000000006
+freedomotic_freedomotic,testable,6.857000000000001
+frohoff_ysoserial,testable,2.774
+fusesource_hawtdispatch,testable,11.991999999999999
+galenframework_galen,testable,3.38
+gchq_Gaffer,testable,42.83099999999999
+geotools_geotools,testable,392.5599999999983
+giltene_jHiccup,testable,0.034
+github_maven-plugins,testable,0.839
+glowroot_glowroot,untestable,0
+glyptodon_guacamole-client,testable,0.043
+google_closure-compiler,testable,42.80100000000001
+google_google-java-format,testable,3.189
+googleads_googleads-java-lib,testable,48.73999999999999
+graphaware_neo4j-framework,testable,274.4119999999999
+graphaware_neo4j-reco,testable,11.692
+graphaware_neo4j-timetree,testable,82.72100000000002
+graphhopper_map-matching,testable,0.026
+greenmail-mail-test_greenmail,testable,50.888
+hantsy_angularjs-springmvc-sample,testable,2.743
+hantsy_angularjs-springmvc-sample-boot,untestable,0
+haraldk_TwelveMonkeys,testable,42.98799999999998
+hazelcast_hazelcast,testable,10305.585000000015
+hazelcast_hazelcast-jet,testable,452.55499999999995
+hdiv_hdiv,testable,7.713
+healthonnet_hon-lucene-synonyms,testable,2.9830000000000005
+hector-client_hector,testable,250.251
+hibernate_hibernate-ogm,testable,240.99999999999994
+hibernate_hibernate-search,untestable,0
+horrorho_InflatableDonkey,testable,0.3480000000000001
+httl_httl,testable,37.22800000000001
+ihaolin_diablo,testable,45.769999999999996
+ihaolin_wepay,testable,0.031
+imglib_imglib2,testable,4.943999999999999
+impetus-opensource_Kundera,untestable,0
+impossibl_pgjdbc-ng,testable,0.8640000000000002
+infinitest_infinitest,testable,7.812000000000002
+intuit_karate,testable,9.282999999999998
+intuit_wasabi,untestable,0
+ippontech_tatami,testable,348.02199999999993
+jankotek_mapdb,testable,236.0540000000001
+javaee-samples_javaee7-samples,testable,84.75100000000002
+javaparser_javaparser,untestable,0
+javaslang_javaslang,testable,278.0489999999998
+jawi_ols,testable,6.582
+jbake-org_jbake,testable,12.992
+jbarrez_spring-boot-with-activiti-example,testable,0.285
+jcabi_jcabi-aspects,testable,22.962000000000003
+jcabi_jcabi-github,testable,133.26600000000005
+jcabi_jcabi-ssh,testable,8.844
+jenkinsci_blueocean-plugin,testable,0.178
+jenkinsci_docker-build-publish-plugin,testable,45.03
+jenkinsci_docker-slaves-plugin,testable,12.335
+jenkinsci_docker-workflow-plugin,testable,607.9700000000001
+jenkinsci_gerrit-trigger-plugin,testable,11409.637000000002
+jenkinsci_github-plugin,testable,3158.345
+jenkinsci_java-client-api,testable,0.4690000000000001
+jenkinsci_mesos-plugin,testable,31.668
+jeremyh_jBCrypt,testable,11.733
+jeremylong_DependencyCheck,testable,0.29300000000000004
+jexp_batch-import,testable,13.479999999999999
+jexp_neo4j-shell-tools,untestable,0
+jfree_jfreechart,testable,6.004000000000007
+jgritman_httpbuilder,testable,45.708999999999996
+jhunters_jprotobuf,testable,2.094
+jitsi_jitsi-videobridge,testable,2.946
+jline_jline2,untestable,0
+jmacglashan_burlap,testable,11.036000000000001
+jmeter-maven-plugin_jmeter-maven-plugin,untestable,0
+jooby-project_jooby,testable,127.7090000000001
+jplag_jplag,testable,0.476
+jpmml_jpmml-evaluator,untestable,0
+jpush_jpush-api-java-client,testable,0.08
+jqno_equalsverifier,testable,4.910999999999996
+jsimone_webapp-runner,testable,0.247
+jsonld-java_jsonld-java,testable,21.529999999999994
+kaitoy_pcap4j,testable,1.7040000000000002
+keepkey_multibit-hd,testable,80.24900000000001
+kenglxn_QRGen,testable,2.3329999999999997
+klout_brickhouse,testable,9.450000000000003
+kongchen_swagger-maven-plugin,testable,7.059
+konsoletyper_teavm,testable,2146.4090000000006
+ktoso_maven-git-commit-id-plugin,testable,9.607
+languagetool-org_languagetool,testable,230.16700000000014
+larsga_Duke,testable,19.210999999999995
+lintool_warcbase,testable,16.642999999999997
+mangstadt_ez-vcard,testable,2.474999999999998
+mesos_storm,testable,0.8750000000000001
+mitre_HTTP-Proxy-Servlet,testable,15.881
+mongojack_mongojack,testable,353.80999999999995
+neo4j_neo4j-ogm,testable,422.8070000000001
+networknt_light-java,testable,65.803
+neuland_jade4j,testable,1.6729999999999994
+olivergierke_spring-restbucks,testable,12.749999999999998
+openscoring_openscoring,testable,1.669
+pac4j_pac4j,testable,10.979
+patrickfav_density-converter,testable,74.27100000000002
+perwendel_spark,testable,2.946
+pinterest_secor,testable,4.907
+protegeproject_webprotege,testable,1.7849999999999957
+rackerlabs_blueflood,testable,54.36699999999998
+raml-org_raml-java-parser,testable,4.7780000000000005
+redpen-cc_redpen,testable,32.334
+restx_restx,untestable,0
+rythmengine_rythmengine,testable,32.415000000000006
+schema-repo_schema-repo,testable,15.126999999999999
+sendgrid_sendgrid-java,testable,1.17
+sirensolutions_siren-join,testable,16.852999999999998
+speedment_speedment,testable,16.882999999999996
+spinscale_elasticsearch-opennlp-plugin,testable,62.205
+spotify_apollo,testable,22.781000000000006
+spotify_cassandra-reaper,testable,6.183
+spotify_docker-client,testable,3.456
+spotify_helios,testable,381.2109999999999
+spotify_netty-zmtp,testable,3.816
+spring-cloud_spring-cloud-aws,untestable,0
+spring-guides_tut-bookmarks,testable,0.93
+spring-projects_spring-amqp-samples,testable,1.6769999999999998
+spring-projects_spring-boot,testable,3.665
+spring-projects_spring-data-commons,testable,8.906999999999996
+spring-projects_spring-data-redis,testable,543.6960000000006
+spring-projects_spring-mvc-showcase,testable,13.475
+spring-projects_spring-retry,testable,6.566999999999999
+structr_structr,testable,895.1739999999996
+swagger-api_swagger-core,testable,6.875
+swagger-api_swagger-socket,testable,16.508
+takari_polyglot-maven,testable,7.416999999999999
+tamingtext_book,testable,59.01
+tdunning_t-digest,testable,209.06300000000002
+timmolter_XChange,testable,64.864
+tomighty_tomighty,testable,4.6049999999999995
+torquebox_jruby-maven-plugins,testable,3.7479999999999998
+trautonen_coveralls-maven-plugin,testable,1.409
+twilio_twilio-java,testable,90.58200000000002
+twitter_GraphJet,testable,68.88700000000001
+twitter_hbc,testable,0.826
+twitter_hraven,testable,274.0729999999999
+usc-isi-i2_Web-Karma,testable,27.942999999999998
+vaadin_framework,testable,36.16500000000001
+viritin_viritin,testable,1.6159999999999994
+winterbe_github-matrix,testable,2.077
+yahoo_egads,testable,2.444
+yahoo_samoa,testable,41.072
+yahoo_storm-yarn,testable,26.514
+yinwang0_pysonar2,testable,1.07
+ysc_word,testable,20.241
+zeromq_jeromq,testable,28.793000000000006
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,
+,not maven,

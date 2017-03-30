@@ -1,0 +1,5 @@
+#!/bin/bash
+if [[ ! -d "out" ]]; then
+    mkdir out
+fi
+./classify.py && R --vanilla --quite < classify.r
