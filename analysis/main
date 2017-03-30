@@ -3,15 +3,15 @@ if [[ ! -d "out" ]]; then
     mkdir out
 fi
 
+./selection.py 
+
 # Subject selection
-./selection.py && R --vanilla --quite < selection.r --args "gen/selection.csv"
+R --vanilla --quiet < selection.r --args "gen/selection.csv"
 
-# FIXME consider the other executions as well...
 # RQ 1
-R --vanilla --quite < timecost.r --args "data/execution-1.csv"
-
+R --vanilla --quiet < timecost.r --args "gen/selection.csv"
 
 # RQ 2
-R --vanilla --quite < testcost.r --args "testcost-med" 
-R --vanilla --quite < testcost.r --args "testcost-long" 
+R --vanilla --quiet < testcost.r --args "testcost-medium" 
+R --vanilla --quiet < testcost.r --args "testcost-long" 
 

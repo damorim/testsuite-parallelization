@@ -23,17 +23,6 @@ summarise(
 ###################
 # RQ1
 ###################
-compute_group <- function(time) {
-    if (time <= 60) {
-        return("short")
-    }
-    else if (time <= (5 * 60)) {
-        return("medium")
-    }
-    return("long")
-}
-
-
 print("Investigate: Build success but builder time = 0")
 select(filter(rq1_df, test_success == "true" &
                 maven_test_time <= 0),
@@ -43,13 +32,12 @@ select(filter(rq1_df, test_success == "true" &
                 xml_test_time <= 0),
        project_path)
 
-rq1_df$group <- sapply(rq1_df$xml_test_time, FUN = compute_group)
 rq1_df$tmin <- sapply(rq1_df$xml_test_time, FUN = function(v) {return(v / 60)})
 rq1_df <- filter(rq1_df, xml_test_time > 0)
 
 # Cost groups barplot
 pdf("out/barplot-timecost.pdf", height = 3, width = 3)
-ggplot(data = rq1_df, aes(x = group, fill = test_success)) +
+ggplot(data = rq1_df, aes(x = timecost_group, fill = test_success)) +
   geom_bar(width = .8, position = "dodge") +
   geom_text(
     size = 2.5,
@@ -66,7 +54,7 @@ ggplot(data = rq1_df, aes(x = group, fill = test_success)) +
 
 # Time cost boxplots
 pdf("out/boxplot-timecost.pdf", height = 3, width = 3)
-ggplot(data = rq1_df, aes(x = group, y = tmin, fill = test_success)) +
+ggplot(data = rq1_df, aes(x = timecost_group, y = tmin, fill = test_success)) +
   geom_boxplot() +  theme(strip.text = element_blank(),
                           strip.background = element_blank(),
                           legend.background = element_rect(),
@@ -74,7 +62,7 @@ ggplot(data = rq1_df, aes(x = group, y = tmin, fill = test_success)) +
                           legend.title = element_blank(),
                           legend.position = "top") +
   scale_fill_grey(start = 0.5, end = 0.8, labels = c("tests fail", "tests pass")) +
-  facet_wrap( ~ group, scales = "free") +
+  facet_wrap( ~ timecost_group, scales = "free") +
   labs(y = "Time cost (in minutes)", x = "Group")
 
 ###################
