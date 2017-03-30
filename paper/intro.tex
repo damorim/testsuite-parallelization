@@ -38,10 +38,9 @@ multi-core CPUs and the increasing popularization of testing
 frameworks and build systems, which today provide mature support for
 parallelization, enable test execution speedups through increased CPU
 usage~(see Section~\ref{sec:modes}).  These two elements~---~demand
-for cost-effective test execution and supply of testing
-infrastructure~---~led us to investigate the usage of parallelization
-features from testing frameworks and build systems in public
-open-source projects.
+for cost-effective test execution and supply of relatively inexpensive
+testing infrastructures~---~led us to investigate the usage of
+parallelism for running tests in public open-source projects.
 
 This paper reports on an empirical study we conducted to analyze the
 impact of low-level parallelization to speedup testing in open-source
@@ -64,16 +63,16 @@ considered in this study are as follows.
 Each dimension focuses on one aspect of our study.  The first
 dimension measures to which extent open-source projects contain time
 costly test suites.  In the limit, parallelization will be fruitless
-if all project contain short-running test suites The second dimension
+if all projects contain short-running test suites. The second dimension
 measures how often open-source projects, irrespective of their
 associated testing costs, use parallelization schemes.  This dimension
 is concerned with popularity of parallelization.  The third aspect
 evaluates the observed impact of parallelization on cost.  Finally,
 the last dimension evaluates the issues and benefits associated with
-running test suites with different parallel configuration (/modes).
+running test suites with different parallel configurations (/modes).
 Overall, the study of these dimensions help us layout the current
-state-of-the-practice in usage of parallelization in open-source
-projects.
+state-of-the-practice about the use and impact of parallelization in open-source
+projects, which presumably do not have large budgets.
 
 \Mar{organize according to each of these dimensions...$\rightarrow$}
 
@@ -163,10 +162,10 @@ tests sequentially within each process. \Mar{why 32-19 did not use
 
 %%  LocalWords:  parallelization multicore JUnit TestNG NUnit XXm YYm
 %%  LocalWords:  Groupon parallelizing multi JVMs CPUs JVM Milos TODO
-%%  LocalWords:  Ekstazi github CloudBuild PWA groupon criticality
+%%  LocalWords:  Ekstazi github CloudBuild PWA groupon criticality VM
 
  	
 %%% Local Variables:
 %%% TeX-master: "main"
 %%% End:
-%%  LocalWords:  jenkins
+%%  LocalWords:  jenkins API VMs datarace
