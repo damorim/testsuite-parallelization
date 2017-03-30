@@ -473,22 +473,19 @@ findings.
 \subsubsection{Support of parallelization configuration in build files}
 \label{sec:rqC-2}
 
-% considered all projects classified as \medg{} and \longg{}-running, a
-% total of \numMedLong{} subjects (see Figure~\ref{fig:rq1-barplot}). To
-% reduce noise we did not consider projects with \shortg{}-running test
-% suites as we observed that \percentShortSequential{} of those projects
-% do not use parallelism; including them would favor sequential
-% execution in our analysis.
-
 To extend our initial investigation, we mined several \pomf{} files
-must contain one of these keywords that contain parallelization
-keywords, namely \CodeIn{forkMode}, \CodeIn{forkCount}, and
-\CodeIn{parallel}.  This mining step, however, is not sound as a
-matching project may not indicate a project with a valid configuration
-for running tests in parallel.  False positive can happen because of
-comments, for instance.  To eliminate the cases of false positives and
-also to categorize true positive cases, we complemented the initial
-mining step with a manual inspection of files.
+from all \numMedLong{} projects classified as the \medg{} and
+\longg{}-running.
+\Jbc{rework this... $\rightarrow$}To reduce the number of build files
+to inspect, we consider only must contain one of these keywords that
+contain parallelization keywords, namely \CodeIn{forkMode},
+\CodeIn{forkCount}, and \CodeIn{parallel}.  This mining step, however,
+is not sound as a matching project may not indicate a project with a
+valid configuration for running tests in parallel.  False positive can
+happen because of comments, for instance.  To eliminate the cases of
+false positives and also to categorize true positive cases, we
+complemented the initial mining step with a manual inspection of
+files.
 
 %% settings); the second step (inspection) consists in a manual
 %% inspection to confirm the presence of parallelism settings in the
@@ -549,22 +546,22 @@ distributed across \numProjectsPar{} projects from our sample.
     \label{tab:inspection-table} 
 \end{figure}
 
-From the \numProjectsPar{} projects identified above, we investigated
-further the \numPomMatchedValid{} build files with parallel settings.
-We analyzed the support and distribution of parallel modes from this
-subset of projects. To calculate the distribution of parallel modes,
-we considered only the presence of the mode in at least one of the
-project settings.  Recall that a build file may contain more than one
-parallel setting and a project may contain several sub-modules with
-build files.  In case the value of a parallel option is resolved
-dynamically (\eg, via command-line argument or system variable) we
-compute all modes related to the option. For instance, depending on
-the value, the \CodeIn{parallel} option can be \Seq{} (\CodeIn{none}),
+\Jbc{rework this... $\rightarrow$} From the \numProjectsPar{} projects
+identified above, we investigated further the \numPomMatchedValid{}
+build files with parallel settings.  We analyzed the support and
+distribution of parallel modes from this subset of projects. To
+calculate the distribution of parallel modes, we considered only the
+presence of the mode in at least one of the project settings.  Recall
+that a build file may contain more than one parallel setting and a
+project may contain several sub-modules with build files.  In case the
+value of a parallel option is resolved dynamically (\eg, via
+command-line argument or system variable) we compute all modes related
+to the option. For instance, depending on the value, the
+\CodeIn{parallel} option can be \Seq{} (\CodeIn{none}),
 \ParClassSeqMeth{} (\CodeIn{classes}), \SeqClassParMeth{},
 (\CodeIn{methods}), and \ParClassParMeth{} (\CodeIn{all}).
-Figure~\ref{fig:freqmodes-static} summarizes our findings. \Jbc{Given that we
-checked each configuration, we could elaborate how these settings are
-used.} \Fix{Missing conclusion: Fork the most used configuration}
+Figure~\ref{fig:freqmodes-static} summarizes our findings.
+\Fix{Missing conclusion: Fork the most used configuration}
 
 \begin{figure}[h!]
     \centering
