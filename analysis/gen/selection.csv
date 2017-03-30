@@ -1,435 +1,435 @@
-project,group,xml_time
-4pr0n_ripme,testable,142.716
-4thline_cling,testable,53.818
-Aconex_scrutineer,testable,5.062
-ActiveJpa_activejpa,testable,7.187
-Adobe-Consulting-Services_acs-aem-commons,untestable,0
-Adobe-Marketing-Cloud_aem-project-archetype,untestable,0
-AdoptOpenJDK_jitwatch,testable,17.901
-AnujaK_restfiddle,untestable,0
-ArcBees_gwtchosen,untestable,0
-Ardesco_Selenium-Maven-Template,untestable,0
-Asquera_elasticsearch-http-basic,untestable,0
-Atmosphere_nettosphere,testable,44.181
-AxonFramework_Axon-trader,testable,3.6620000000000004
-Baeldung_spring-security-oauth,testable,8.179
-Baeldung_spring-security-registration,untestable,0
-BatooOrg_BatooJPA,untestable,0
-Berico-Technologies_CLAVIN,testable,7.8229999999999995
-BroadleafCommerce_BroadleafCommerce,testable,18.656999999999996
-Bukkit_Bukkit,testable,0.48100000000000004
-CamelCookbook_camel-cookbook-examples,testable,301.97200000000004
-CloudSlang_cloud-slang,testable,97.33700000000002
-CodeStory_fluent-http,testable,28.307000000000016
-Coding_WebIDE-Backend,untestable,0
-Comcast_cmb,testable,52.03699999999999
-CorfuDB_CorfuDB,untestable,0
-DeemOpen_zkui,testable,0.002
-DigitalPebble_storm-crawler,testable,5.875
-GlenKPeterson_Paguro,testable,1.356999999999998
-GoClipse_goclipse,untestable,0
-GoogleCloudPlatform_DataflowJavaSDK,testable,98.835
-Hidendra_LWC,untestable,0
-HolgerHees_cloudsync,testable,6.766
-HotswapProjects_HotswapAgent,testable,0.489
-HuaweiBigData_StreamCQL,testable,0.9530000000000002
-HuaweiBigData_carbondata,untestable,0
-INRIA_spoon,testable,76.43299999999999
-IanDarwin_Android-Cookbook-Examples,untestable,0
-ImmobilienScout24_yum-repo-server,testable,6.6720000000000015
-JCTools_JCTools,testable,224.4050000000001
-JSQLParser_JSqlParser,testable,3.935999999999998
-JakeWharton_DiskLruCache,testable,1.193
-JakubDziworski_Enkel-JVM-language,testable,0.762
-JeffLi1993_springboot-learning-example,untestable,0
-JodaOrg_joda-time,testable,2.191
-LiveRamp_hank,testable,196.41200000000006
-MachinePublishers_jBrowserDriver,untestable,0
-Microsoft_Git-Credential-Manager-for-Mac-and-Linux,testable,16.783000000000005
-ModeShape_modeshape,testable,625.2699999999995
-Moocar_logback-gelf,testable,0.422
-Multiverse_Multiverse-Core,testable,9.221
-NGDATA_hbase-indexer,untestable,0
-NLPchina_elasticsearch-analysis-ansj,untestable,0
-NLPchina_nlp-lang,testable,19.942
-NanoHttpd_nanohttpd,testable,11.848999999999997
-Netflix_Surus,untestable,0
-Nilhcem_FakeSMTP,testable,0.167
-NoCheatPlus_NoCheatPlus,untestable,0
-Nodeclipse_nodeclipse-1,untestable,0
-Nukkit_Nukkit,untestable,0
-OAuth-Apis_apis,testable,8.892
-OpenGamma_Strata,untestable,0
-OpenGrok_OpenGrok,testable,20.06200000000001
-OpenHFT_Chronicle-Logger,testable,4.2
-OpenHFT_Java-Lang,untestable,0
-OvercastNetwork_ProjectAres,testable,15.608
-Parquet_parquet-format,untestable,0
-PebbleTemplates_pebble,testable,2.817999999999999
-PeteGoo_tcSlackBuildNotifier,testable,1.5540000000000003
-RUB-NDS_WS-Attacker,testable,25.954000000000004
-RaiMan_SikuliX-2014,untestable,0
-Red5_red5-server,untestable,0
-RoaringBitmap_RoaringBitmap,testable,76.48400000000002
-RuedigerMoeller_fast-serialization,untestable,0
-RustDT_RustDT,untestable,0
-ScienJus_smartqq,untestable,0
-ScienJus_spring-authorization-manager,testable,5.212
-Sloeber_arduino-eclipse-plugin,untestable,0
-SmartBear_soapui,testable,34.63300000000001
-SoftInstigate_restheart,testable,31.013
-SomMeri_less4j,testable,3.454
-SonarSource_sonar-java,testable,49.14700000000007
-SonarSource_sonarlint-eclipse,untestable,0
-Steveice10_MCProtocolLib,testable,2.62
-Stratio_cassandra-lucene-index,testable,9.653999999999998
-Stratio_ingestion,testable,34.507999999999996
-Tesco_mewbase,testable,147.08399999999997
-TheHolyWaffle_TeamSpeak-3-Java-API,untestable,0
-UglyTroLL_Douban-Java-SDK-OAuth2,testable,32.464000000000006
-WebGoat_WebGoat-Legacy,untestable,0
-XiaoMi_linden,testable,21.800000000000004
-a2888409_face2face,untestable,0
-aaberg_sql2o,testable,5.268
-abc9070410_JComicDownloader,testable,12.838
-abel533_MyBatis-Spring-Boot,testable,0.037
-addthis_stream-lib,testable,88.53500000000001
-aerogear_aerogear-unifiedpush-server,testable,139.51399999999998
-aggregateknowledge_java-hll,testable,7.064
-agoncal_agoncal-book-javaee7,testable,0.9570000000000001
-ajanata_PretendYoureXyzzy,untestable,0
-ajermakovics_eclipse-instasearch,untestable,0
-alibaba_druid,untestable,0
-alibaba_dubbo,untestable,0
-alibaba_tamper,testable,0.5670000000000001
-aliyun_aliyun-oss-java-sdk,testable,9.815999999999997
-allegro_grunt-maven-plugin,testable,0.353
-allwefantasy_ServiceFramework,untestable,0
-amaembo_huntbugs,testable,6.417000000000001
-amelentev_java-oo,untestable,0
-amplab_succinct,testable,31.349000000000007
-amznlabs_ion-java,testable,0.4330000000000001
-analytically_innerbuilder,untestable,0
-andrewgaul_modernizer-maven-plugin,testable,0.14
-andrewgaul_s3proxy,testable,48.83
-andsel_moquette,testable,228.536
-angusws_tcx2nikeplus,testable,4.3
-antlr4ide_antlr4ide,testable,0.334
-antlr_codebuff,untestable,0
-antlr_stringtemplate4,untestable,0
-apache_accumulo,untestable,0
-apache_activemq-artemis,untestable,0
-apache_apex-core,testable,420.0060000000001
-apache_archiva,testable,486.5
-apache_beam,untestable,0
-apache_bigtop,untestable,0
-apache_bookkeeper,testable,0.077
-apache_eagle,testable,378.0819999999997
-apache_flink,testable,610.883
-apache_flume,testable,2845.883
-Adobe-Consulting-Services_acs-aem-commons,untestable,0
-CorfuDB_CorfuDB,untestable,0
-Netflix_Surus,untestable,0
-NoCheatPlus_NoCheatPlus,untestable,0
-OpenGamma_Strata,untestable,0
-alibaba_druid,untestable,0
-antlr_stringtemplate4,untestable,0
-apache_accumulo,untestable,0
-apache_activemq-artemis,untestable,0
-apache_beam,untestable,0
-apache_giraph,testable,978.579
-apache_incubator-brooklyn,testable,49.04200000000001
-apache_incubator-guacamole-client,testable,0.042
-apache_incubator-metron,testable,145.87000000000006
-apache_incubator-samoa,testable,52.029
-apache_jackrabbit,testable,400.7039999999999
-apache_jackrabbit-oak,testable,2902.3670000000106
-apache_logging-log4j2,testable,276.6949999999999
-apache_mahout,untestable,0
-apache_maven,testable,12.680999999999992
-apache_maven-surefire,testable,1.1390000000000002
-apache_mina,testable,41.90999999999998
-apache_nifi,untestable,0
-apache_opennlp,untestable,0
-apache_parquet-mr,testable,49.211
-apache_pdfbox,testable,27.17100000000001
-apache_sling,testable,888.1039999999986
-apache_stanbol,testable,129.89100000000002
-apache_tika,testable,235.08300000000008
-apache_tomee,testable,17.605
-apache_wicket,testable,107.40600000000016
-apereo_java-cas-client,testable,3.0049999999999977
-apiman_apiman,testable,26.080999999999992
-armzilla_amazon-echo-ha-bridge,testable,0.003
-arnaudroger_SimpleFlatMapper,testable,3.303999999999998
-aseldawy_spatialhadoop2,testable,16.62
-astamuse_asta4d,testable,7.248
-asterisk-java_asterisk-java,untestable,0
-atilika_kuromoji,testable,105.52099999999997
-atomix_atomix,testable,480.38500000000005
-aws_aws-sdk-android,testable,888.6769999999984
-aws_aws-sdk-java,testable,245.37999999999997
-awslabs_amazon-kinesis-client,testable,11.881
-awslabs_amazon-kinesis-connectors,testable,1.682
-awslabs_aws-apigateway-importer,testable,1.5579999999999998
-awslabs_dynamodb-cross-region-library,testable,0.294
-awslabs_dynamodb-transactions,testable,0.94
-b3log_symphony,untestable,0
-basho_riak-java-client,testable,33.56900000000001
-bazaarvoice_jolt,testable,1.1520000000000001
-benas_jql,testable,5.307
-bitcoinj_bitcoinj,testable,64.582
-blynkkk_blynk-server,testable,0.643
-bmwcarit_barefoot,testable,1.107
-bouncestorage_chaos-http-proxy,testable,86.709
-brahalla_Cerberus,testable,0.839
-bramp_ffmpeg-cli-wrapper,testable,1.545
-brianfrankcooper_YCSB,testable,269.089
-brianmcmichael_SAGU,testable,1.46
-bwssytems_ha-bridge,testable,0.109
-caelum_mamute,testable,17.778000000000013
-caelum_vraptor,testable,7.694999999999998
-caelum_vraptor4,testable,10.366999999999999
-camunda_camunda-bpm-platform,testable,1449.0079999999984
-centic9_jgit-cookbook,untestable,0
-chewiebug_GCViewer,testable,7.2090000000000005
-chocotan_lolibox,testable,0.017
-chocoteam_choco-solver,testable,999.84
-chrisvest_stormpot,testable,3.4909999999999997
-cloudera_htrace,testable,8.61
-cloudera_kitten,testable,4.3069999999999995
-cloudera_spark-dataflow,testable,55.67199999999999
-cobbzilla_s3s3mirror,testable,0.121
-codecentric_spring-boot-admin,testable,29.212
-codefollower_Tomcat-Research,testable,827.74
-codelibs_fess,testable,12.881000000000002
-cometd_cometd,untestable,0
-crashub_crash,testable,30.18100000000002
-danieldk_dictomaton,testable,4.185
-davidB_scala-maven-plugin,testable,0.05500000000000001
-davidmoten_geo,testable,1.643
-davidmoten_rtree,testable,8.322
-davidmoten_rxjava-jdbc,testable,2.502
-dcm4che_dcm4che,testable,4.270999999999999
-ddf-project_DDF,testable,116.708
-debezium_debezium,testable,21.069
-decebals_pf4j,testable,0.354
-deeplearning4j_nd4j,testable,1.7419999999999995
-devnied_EMV-NFC-Paycard-Enrollment,testable,1.339
-dianping_zebra,testable,0.11300000000000002
-dibbhatt_kafka-spark-consumer,testable,10.206
-dieforfree_qart4j,testable,0.008
-digitalfondue_lavagna,testable,18.038000000000004
-docker-java_docker-java,testable,3.328
-drtshock_Essentials,testable,0.031
-easymock_easymock,testable,3.2550000000000003
-easymock_objenesis,testable,0.59
-eclipse_leshan,testable,25.143999999999995
-eclipsesource_J2V8,testable,5.847000000000001
-eivindveg_HotSUploader,untestable,0
-elki-project_elki,testable,0.001
-etsy_statsd-jvm-profiler,testable,0.7479999999999999
-eugenp_REST-With-Spring,testable,0.521
-fabric8io_spring-cloud-kubernetes,testable,10.556
-facebookarchive_linkbench,testable,555.5379999999999
-fakereplace_fakereplace,testable,0.484
-feroult_yawp,testable,2.8129999999999966
-fizzed_rocker,untestable,0
-fluent_fluent-logger-java,testable,33.326
-forcedotcom_wsc,testable,4.582
-forge_core,testable,26.357999999999993
-fpj_zookeeper-book-example,testable,59.397000000000006
-freedomotic_freedomotic,testable,6.857000000000001
-frohoff_ysoserial,testable,2.774
-fusesource_hawtdispatch,testable,11.991999999999999
-galenframework_galen,testable,3.38
-gchq_Gaffer,testable,42.83099999999999
-geotools_geotools,testable,392.5599999999983
-giltene_jHiccup,testable,0.034
-github_maven-plugins,testable,0.839
-glowroot_glowroot,untestable,0
-glyptodon_guacamole-client,testable,0.043
-google_closure-compiler,testable,42.80100000000001
-google_google-java-format,testable,3.189
-googleads_googleads-java-lib,testable,48.73999999999999
-graphaware_neo4j-framework,testable,274.4119999999999
-graphaware_neo4j-reco,testable,11.692
-graphaware_neo4j-timetree,testable,82.72100000000002
-graphhopper_map-matching,testable,0.026
-greenmail-mail-test_greenmail,testable,50.888
-hantsy_angularjs-springmvc-sample,testable,2.743
-hantsy_angularjs-springmvc-sample-boot,untestable,0
-haraldk_TwelveMonkeys,testable,42.98799999999998
-hazelcast_hazelcast,testable,10305.585000000015
-hazelcast_hazelcast-jet,testable,452.55499999999995
-hdiv_hdiv,testable,7.713
-healthonnet_hon-lucene-synonyms,testable,2.9830000000000005
-hector-client_hector,testable,250.251
-hibernate_hibernate-ogm,testable,240.99999999999994
-hibernate_hibernate-search,untestable,0
-horrorho_InflatableDonkey,testable,0.3480000000000001
-httl_httl,testable,37.22800000000001
-ihaolin_diablo,testable,45.769999999999996
-ihaolin_wepay,testable,0.031
-imglib_imglib2,testable,4.943999999999999
-impetus-opensource_Kundera,untestable,0
-impossibl_pgjdbc-ng,testable,0.8640000000000002
-infinitest_infinitest,testable,7.812000000000002
-intuit_karate,testable,9.282999999999998
-intuit_wasabi,untestable,0
-ippontech_tatami,testable,348.02199999999993
-jankotek_mapdb,testable,236.0540000000001
-javaee-samples_javaee7-samples,testable,84.75100000000002
-javaparser_javaparser,untestable,0
-javaslang_javaslang,testable,278.0489999999998
-jawi_ols,testable,6.582
-jbake-org_jbake,testable,12.992
-jbarrez_spring-boot-with-activiti-example,testable,0.285
-jcabi_jcabi-aspects,testable,22.962000000000003
-jcabi_jcabi-github,testable,133.26600000000005
-jcabi_jcabi-ssh,testable,8.844
-jenkinsci_blueocean-plugin,testable,0.178
-jenkinsci_docker-build-publish-plugin,testable,45.03
-jenkinsci_docker-slaves-plugin,testable,12.335
-jenkinsci_docker-workflow-plugin,testable,607.9700000000001
-jenkinsci_gerrit-trigger-plugin,testable,11409.637000000002
-jenkinsci_github-plugin,testable,3158.345
-jenkinsci_java-client-api,testable,0.4690000000000001
-jenkinsci_mesos-plugin,testable,31.668
-jeremyh_jBCrypt,testable,11.733
-jeremylong_DependencyCheck,testable,0.29300000000000004
-jexp_batch-import,testable,13.479999999999999
-jexp_neo4j-shell-tools,untestable,0
-jfree_jfreechart,testable,6.004000000000007
-jgritman_httpbuilder,testable,45.708999999999996
-jhunters_jprotobuf,testable,2.094
-jitsi_jitsi-videobridge,testable,2.946
-jline_jline2,untestable,0
-jmacglashan_burlap,testable,11.036000000000001
-jmeter-maven-plugin_jmeter-maven-plugin,untestable,0
-jooby-project_jooby,testable,127.7090000000001
-jplag_jplag,testable,0.476
-jpmml_jpmml-evaluator,untestable,0
-jpush_jpush-api-java-client,testable,0.08
-jqno_equalsverifier,testable,4.910999999999996
-jsimone_webapp-runner,testable,0.247
-jsonld-java_jsonld-java,testable,21.529999999999994
-kaitoy_pcap4j,testable,1.7040000000000002
-keepkey_multibit-hd,testable,80.24900000000001
-kenglxn_QRGen,testable,2.3329999999999997
-klout_brickhouse,testable,9.450000000000003
-kongchen_swagger-maven-plugin,testable,7.059
-konsoletyper_teavm,testable,2146.4090000000006
-ktoso_maven-git-commit-id-plugin,testable,9.607
-languagetool-org_languagetool,testable,230.16700000000014
-larsga_Duke,testable,19.210999999999995
-lintool_warcbase,testable,16.642999999999997
-mangstadt_ez-vcard,testable,2.474999999999998
-mesos_storm,testable,0.8750000000000001
-mitre_HTTP-Proxy-Servlet,testable,15.881
-mongojack_mongojack,testable,353.80999999999995
-neo4j_neo4j-ogm,testable,422.8070000000001
-networknt_light-java,testable,65.803
-neuland_jade4j,testable,1.6729999999999994
-olivergierke_spring-restbucks,testable,12.749999999999998
-openscoring_openscoring,testable,1.669
-pac4j_pac4j,testable,10.979
-patrickfav_density-converter,testable,74.27100000000002
-perwendel_spark,testable,2.946
-pinterest_secor,testable,4.907
-protegeproject_webprotege,testable,1.7849999999999957
-rackerlabs_blueflood,testable,54.36699999999998
-raml-org_raml-java-parser,testable,4.7780000000000005
-redpen-cc_redpen,testable,32.334
-restx_restx,untestable,0
-rythmengine_rythmengine,testable,32.415000000000006
-schema-repo_schema-repo,testable,15.126999999999999
-sendgrid_sendgrid-java,testable,1.17
-sirensolutions_siren-join,testable,16.852999999999998
-speedment_speedment,testable,16.882999999999996
-spinscale_elasticsearch-opennlp-plugin,testable,62.205
-spotify_apollo,testable,22.781000000000006
-spotify_cassandra-reaper,testable,6.183
-spotify_docker-client,testable,3.456
-spotify_helios,testable,381.2109999999999
-spotify_netty-zmtp,testable,3.816
-spring-cloud_spring-cloud-aws,untestable,0
-spring-guides_tut-bookmarks,testable,0.93
-spring-projects_spring-amqp-samples,testable,1.6769999999999998
-spring-projects_spring-boot,testable,3.665
-spring-projects_spring-data-commons,testable,8.906999999999996
-spring-projects_spring-data-redis,testable,543.6960000000006
-spring-projects_spring-mvc-showcase,testable,13.475
-spring-projects_spring-retry,testable,6.566999999999999
-structr_structr,testable,895.1739999999996
-swagger-api_swagger-core,testable,6.875
-swagger-api_swagger-socket,testable,16.508
-takari_polyglot-maven,testable,7.416999999999999
-tamingtext_book,testable,59.01
-tdunning_t-digest,testable,209.06300000000002
-timmolter_XChange,testable,64.864
-tomighty_tomighty,testable,4.6049999999999995
-torquebox_jruby-maven-plugins,testable,3.7479999999999998
-trautonen_coveralls-maven-plugin,testable,1.409
-twilio_twilio-java,testable,90.58200000000002
-twitter_GraphJet,testable,68.88700000000001
-twitter_hbc,testable,0.826
-twitter_hraven,testable,274.0729999999999
-usc-isi-i2_Web-Karma,testable,27.942999999999998
-vaadin_framework,testable,36.16500000000001
-viritin_viritin,testable,1.6159999999999994
-winterbe_github-matrix,testable,2.077
-yahoo_egads,testable,2.444
-yahoo_samoa,testable,41.072
-yahoo_storm-yarn,testable,26.514
-yinwang0_pysonar2,testable,1.07
-ysc_word,testable,20.241
-zeromq_jeromq,testable,28.793000000000006
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
-,not maven,
+maven_test_time,xml_test_time,selection_group,overhead_time,project_path,test_success,timecost_group
+144.087,142.716,testable,1.370999999999981,4pr0n_ripme,false,medium
+59.276,53.818,testable,5.4580000000000055,4thline_cling,false,short
+7.463,5.062,testable,2.401,Aconex_scrutineer,true,short
+8.359,7.187,testable,1.1719999999999997,ActiveJpa_activejpa,true,short
+0,0,untestable,0,Adobe-Consulting-Services_acs-aem-commons,false,short
+0.279,0,untestable,0.279,Adobe-Marketing-Cloud_aem-project-archetype,true,short
+19.471,17.901,testable,1.5700000000000003,AdoptOpenJDK_jitwatch,true,short
+1.252,0,untestable,1.252,AnujaK_restfiddle,true,short
+1.895,0,untestable,1.895,ArcBees_gwtchosen,true,short
+1.933,0,untestable,1.933,Ardesco_Selenium-Maven-Template,true,short
+1.381,0,untestable,1.381,Asquera_elasticsearch-http-basic,false,short
+45.754,44.181,testable,1.5730000000000004,Atmosphere_nettosphere,true,short
+6.722,3.6620000000000004,testable,3.06,AxonFramework_Axon-trader,true,short
+10.074,8.179,testable,1.8949999999999996,Baeldung_spring-security-oauth,true,short
+1.275,0,untestable,1.275,Baeldung_spring-security-registration,true,short
+1.416,0,untestable,1.416,BatooOrg_BatooJPA,true,short
+8.895,7.8229999999999995,testable,1.072,Berico-Technologies_CLAVIN,false,short
+30.338,18.656999999999996,testable,11.681000000000004,BroadleafCommerce_BroadleafCommerce,true,short
+1.172,0.48100000000000004,testable,0.6909999999999998,Bukkit_Bukkit,true,short
+318.557,301.97200000000004,testable,16.58499999999998,CamelCookbook_camel-cookbook-examples,false,long
+125.086,97.33700000000002,testable,27.74899999999998,CloudSlang_cloud-slang,true,medium
+30.269,28.307000000000016,testable,1.961999999999982,CodeStory_fluent-http,false,short
+0.578,0,untestable,0.578,Coding_WebIDE-Backend,false,short
+53.222,52.03699999999999,testable,1.1850000000000094,Comcast_cmb,false,short
+0.976,0,untestable,0.976,CorfuDB_CorfuDB,false,short
+0.861,0.002,testable,0.859,DeemOpen_zkui,true,short
+8.261,5.875,testable,2.3859999999999992,DigitalPebble_storm-crawler,true,short
+2.811,1.356999999999998,testable,1.454000000000002,GlenKPeterson_Paguro,true,short
+17.716,0,untestable,17.716,GoClipse_goclipse,true,short
+102.336,98.835,testable,3.5010000000000048,GoogleCloudPlatform_DataflowJavaSDK,true,medium
+2.09,0,untestable,2.09,Hidendra_LWC,false,short
+7.748,6.766,testable,0.9820000000000002,HolgerHees_cloudsync,true,short
+2.569,0.489,testable,2.08,HotswapProjects_HotswapAgent,false,short
+2.135,0.9530000000000002,testable,1.1819999999999995,HuaweiBigData_StreamCQL,false,short
+0.849,0,untestable,0.849,HuaweiBigData_carbondata,false,short
+79.65899999999999,76.43299999999999,testable,3.225999999999999,INRIA_spoon,true,medium
+0,0,untestable,0,IanDarwin_Android-Cookbook-Examples,false,short
+8.687,6.6720000000000015,testable,2.014999999999998,ImmobilienScout24_yum-repo-server,true,short
+227.78,224.4050000000001,testable,3.3749999999999147,JCTools_JCTools,true,medium
+5.701,3.935999999999998,testable,1.7650000000000015,JSQLParser_JSqlParser,true,short
+2.594,1.193,testable,1.4009999999999998,JakeWharton_DiskLruCache,true,short
+3.609,0.762,testable,2.847,JakubDziworski_Enkel-JVM-language,true,short
+0,0,untestable,0,JeffLi1993_springboot-learning-example,false,short
+3.827,2.191,testable,1.6360000000000001,JodaOrg_joda-time,true,short
+202.648,196.41200000000006,testable,6.235999999999933,LiveRamp_hank,false,medium
+0.919,0,untestable,0.919,MachinePublishers_jBrowserDriver,true,short
+18.855,16.783000000000005,testable,2.0719999999999956,Microsoft_Git-Credential-Manager-for-Mac-and-Linux,true,short
+643.632,625.2699999999995,testable,18.36200000000042,ModeShape_modeshape,false,long
+7.149,0.422,testable,6.727,Moocar_logback-gelf,true,short
+16.144,9.221,testable,6.922999999999998,Multiverse_Multiverse-Core,true,short
+3.711,0,untestable,3.711,NGDATA_hbase-indexer,false,short
+0.833,0,untestable,0.833,NLPchina_elasticsearch-analysis-ansj,true,short
+20.815,19.942,testable,0.8730000000000011,NLPchina_nlp-lang,true,short
+22.554,11.848999999999997,testable,10.705000000000002,NanoHttpd_nanohttpd,true,short
+0.555,0,untestable,0.555,Netflix_Surus,false,short
+1.539,0.167,testable,1.3719999999999999,Nilhcem_FakeSMTP,false,short
+0.407,0,untestable,0.407,NoCheatPlus_NoCheatPlus,false,short
+48.296,0,untestable,48.296,Nodeclipse_nodeclipse-1,true,short
+0.199,0,untestable,0.199,Nukkit_Nukkit,false,short
+12.754,8.892,testable,3.862,OAuth-Apis_apis,true,short
+0.52,0,untestable,0.52,OpenGamma_Strata,false,short
+63.496,20.06200000000001,testable,43.434,OpenGrok_OpenGrok,false,short
+14.728,4.2,testable,10.527999999999999,OpenHFT_Chronicle-Logger,true,short
+0,0,untestable,0,OpenHFT_Java-Lang,false,short
+20.096,15.608,testable,4.4879999999999995,OvercastNetwork_ProjectAres,true,short
+2.685,0,untestable,2.685,Parquet_parquet-format,false,short
+3.638,2.817999999999999,testable,0.8200000000000007,PebbleTemplates_pebble,true,short
+2.505,1.5540000000000003,testable,0.9509999999999996,PeteGoo_tcSlackBuildNotifier,true,short
+32.001,25.954000000000004,testable,6.0469999999999935,RUB-NDS_WS-Attacker,true,short
+5.011,0,untestable,5.011,RaiMan_SikuliX-2014,true,short
+0.97,0,untestable,0.97,Red5_red5-server,true,short
+98.019,76.48400000000002,testable,21.534999999999982,RoaringBitmap_RoaringBitmap,true,medium
+0.712,0,untestable,0.712,RuedigerMoeller_fast-serialization,true,short
+17.92,0,untestable,17.92,RustDT_RustDT,true,short
+0.746,0,untestable,0.746,ScienJus_smartqq,false,short
+5.984,5.212,testable,0.7720000000000002,ScienJus_spring-authorization-manager,false,short
+24.623,0,untestable,24.623,Sloeber_arduino-eclipse-plugin,true,short
+42.421,34.63300000000001,testable,7.78799999999999,SmartBear_soapui,false,short
+34.224,31.013,testable,3.210999999999995,SoftInstigate_restheart,true,short
+8.645,3.454,testable,5.190999999999999,SomMeri_less4j,true,short
+60.601,49.14700000000007,testable,11.45399999999993,SonarSource_sonar-java,false,short
+23.902,0,untestable,23.902,SonarSource_sonarlint-eclipse,false,short
+3.462,2.62,testable,0.8420000000000001,Steveice10_MCProtocolLib,true,short
+14.35,9.653999999999998,testable,4.6960000000000015,Stratio_cassandra-lucene-index,true,short
+42.261,34.507999999999996,testable,7.753000000000007,Stratio_ingestion,true,short
+151.043,147.08399999999997,testable,3.9590000000000316,Tesco_mewbase,true,medium
+1.481,0,untestable,1.481,TheHolyWaffle_TeamSpeak-3-Java-API,true,short
+33.057,32.464000000000006,testable,0.5929999999999964,UglyTroLL_Douban-Java-SDK-OAuth2,false,short
+0.929,0,untestable,0.929,WebGoat_WebGoat-Legacy,true,short
+355.154,21.800000000000004,testable,333.354,XiaoMi_linden,true,short
+1.168,0,untestable,1.168,a2888409_face2face,true,short
+7.559,5.268,testable,2.2910000000000004,aaberg_sql2o,false,short
+13.478,12.838,testable,0.6400000000000006,abc9070410_JComicDownloader,true,short
+272.954,0.037,testable,272.91700000000003,abel533_MyBatis-Spring-Boot,false,short
+89.923,88.53500000000001,testable,1.387999999999991,addthis_stream-lib,true,medium
+148.527,139.51399999999998,testable,9.013000000000005,aerogear_aerogear-unifiedpush-server,false,medium
+9.142,7.064,testable,2.0779999999999994,aggregateknowledge_java-hll,true,short
+15.402,0.9570000000000001,testable,14.444999999999999,agoncal_agoncal-book-javaee7,false,short
+0.327,0,untestable,0.327,ajanata_PretendYoureXyzzy,false,short
+15.57,0,untestable,15.57,ajermakovics_eclipse-instasearch,true,short
+0,0,untestable,0,alibaba_druid,false,short
+1.223,0,untestable,1.223,alibaba_dubbo,false,short
+1.551,0.5670000000000001,testable,0.9839999999999999,alibaba_tamper,true,short
+10.529,9.815999999999997,testable,0.7130000000000027,aliyun_aliyun-oss-java-sdk,false,short
+2.097,0.353,testable,1.744,allegro_grunt-maven-plugin,true,short
+0.34,0,untestable,0.34,allwefantasy_ServiceFramework,false,short
+9.632,6.417000000000001,testable,3.214999999999999,amaembo_huntbugs,true,short
+2.772,0,untestable,2.772,amelentev_java-oo,false,short
+62.618,31.349000000000007,testable,31.268999999999995,amplab_succinct,true,short
+3.928,0.4330000000000001,testable,3.4949999999999997,amznlabs_ion-java,false,short
+0.743,0,untestable,0.743,analytically_innerbuilder,false,short
+2.872,0.14,testable,2.7319999999999998,andrewgaul_modernizer-maven-plugin,true,short
+49.478,48.83,testable,0.6480000000000032,andrewgaul_s3proxy,true,short
+231.583,228.536,testable,3.046999999999997,andsel_moquette,true,medium
+5.143,4.3,testable,0.843,angusws_tcx2nikeplus,false,short
+52.385,0.334,testable,52.050999999999995,antlr4ide_antlr4ide,true,short
+0.781,0,untestable,0.781,antlr_codebuff,true,short
+1.023,0,untestable,1.023,antlr_stringtemplate4,false,short
+0,0,untestable,0,apache_accumulo,false,short
+0.71,0,untestable,0.71,apache_activemq-artemis,false,short
+432.642,420.0060000000001,testable,12.63599999999991,apache_apex-core,false,long
+551.676,486.5,testable,65.17600000000004,apache_archiva,false,long
+0.829,0,untestable,0.829,apache_beam,false,short
+0.479,0,untestable,0.479,apache_bigtop,true,short
+4.679,0.077,testable,4.602,apache_bookkeeper,false,short
+756.688,378.0819999999997,testable,378.6060000000003,apache_eagle,true,long
+154.338,610.883,testable,-456.5450000000001,apache_flink,false,long
+2804.613,2845.883,testable,-41.2699999,apache_flume,true,long
+0,0,untestable,0,Adobe-Consulting-Services_acs-aem-commons,false,short
+1.074,0,untestable,1.074,CorfuDB_CorfuDB,false,short
+0.55,0,untestable,0.55,Netflix_Surus,false,short
+0.403,0,untestable,0.403,NoCheatPlus_NoCheatPlus,false,short
+0.54,0,untestable,0.54,OpenGamma_Strata,false,short
+0,0,untestable,0,alibaba_druid,false,short
+1.14,0,untestable,1.14,antlr_stringtemplate4,false,short
+0,0,untestable,0,apache_accumulo,false,short
+0.702,0,untestable,0.702,apache_activemq-artemis,false,short
+0.735,0,untestable,0.735,apache_beam,false,short
+1056.684,978.579,testable,78.10500000000002,apache_giraph,true,long
+101.537,49.04200000000001,testable,52.495,apache_incubator-brooklyn,false,short
+9.952,0.042,testable,9.91,apache_incubator-guacamole-client,false,short
+198.049,145.87000000000006,testable,52.178999999999945,apache_incubator-metron,false,medium
+57.833,52.029,testable,5.803999999999995,apache_incubator-samoa,true,short
+416.294,400.7039999999999,testable,15.590000000000089,apache_jackrabbit,true,long
+2919.335,2902.3670000000106,testable,16.967999999989388,apache_jackrabbit-oak,false,long
+492.705,276.6949999999999,testable,216.0100000000001,apache_logging-log4j2,false,medium
+0.438,0,untestable,0.438,apache_mahout,false,short
+40.996,12.680999999999992,testable,28.315000000000012,apache_maven,true,short
+0.581,1.1390000000000002,testable,-0.5580000000000003,apache_maven-surefire,false,short
+47.053,41.90999999999998,testable,5.143000000000015,apache_mina,true,short
+2.341,0,untestable,2.341,apache_nifi,false,short
+0.628,0,untestable,0.628,apache_opennlp,false,short
+84.981,49.211,testable,35.769999999999996,apache_parquet-mr,false,short
+29.714,27.17100000000001,testable,2.5429999999999886,apache_pdfbox,false,short
+1142.235,888.1039999999986,testable,254.13100000000134,apache_sling,false,long
+221.02100000000002,129.89100000000002,testable,91.13,apache_stanbol,false,medium
+257.507,235.08300000000008,testable,22.42399999999992,apache_tika,true,medium
+58.954,17.605,testable,41.349000000000004,apache_tomee,false,short
+157.05599999999998,107.40600000000016,testable,49.64999999999982,apache_wicket,true,medium
+6.535,3.0049999999999977,testable,3.5300000000000025,apereo_java-cas-client,true,short
+99.069,26.080999999999992,testable,72.98800000000001,apiman_apiman,false,short
+9.325,0.003,testable,9.322,armzilla_amazon-echo-ha-bridge,true,short
+8.065,3.303999999999998,testable,4.761000000000001,arnaudroger_SimpleFlatMapper,false,short
+17.989,16.62,testable,1.3689999999999998,aseldawy_spatialhadoop2,true,short
+40.564,7.248,testable,33.316,astamuse_asta4d,false,short
+0.692,0,untestable,0.692,asterisk-java_asterisk-java,false,short
+474.593,105.52099999999997,testable,369.07200000000006,atilika_kuromoji,true,medium
+487.776,480.38500000000005,testable,7.390999999999963,atomix_atomix,true,long
+908.479,888.6769999999984,testable,19.802000000001613,aws_aws-sdk-android,false,long
+290.6,245.37999999999997,testable,45.220000000000056,aws_aws-sdk-java,true,medium
+15.779,11.881,testable,3.8979999999999997,awslabs_amazon-kinesis-client,true,short
+3.26,1.682,testable,1.5779999999999998,awslabs_amazon-kinesis-connectors,true,short
+4.05,1.5579999999999998,testable,2.492,awslabs_aws-apigateway-importer,true,short
+5.502,0.294,testable,5.208,awslabs_dynamodb-cross-region-library,true,short
+2.724,0.94,testable,1.7840000000000003,awslabs_dynamodb-transactions,true,short
+0.205,0,untestable,0.205,b3log_symphony,false,short
+40.06,33.56900000000001,testable,6.4909999999999926,basho_riak-java-client,true,short
+45.207,1.1520000000000001,testable,44.055,bazaarvoice_jolt,true,short
+11.061,5.307,testable,5.754,benas_jql,true,short
+70.605,64.582,testable,6.02300000000001,bitcoinj_bitcoinj,false,medium
+4.69,0.643,testable,4.047000000000001,blynkkk_blynk-server,false,short
+2.943,1.107,testable,1.836,bmwcarit_barefoot,false,short
+87.916,86.709,testable,1.2069999999999936,bouncestorage_chaos-http-proxy,true,medium
+8.01,0.839,testable,7.170999999999999,brahalla_Cerberus,true,short
+4.694,1.545,testable,3.149,bramp_ffmpeg-cli-wrapper,false,short
+287.369,269.089,testable,18.28000000000003,brianfrankcooper_YCSB,true,medium
+3.108,1.46,testable,1.6480000000000001,brianmcmichael_SAGU,false,short
+1.192,0.109,testable,1.083,bwssytems_ha-bridge,true,short
+21.848,17.778000000000013,testable,4.069999999999986,caelum_mamute,false,short
+15.016,7.694999999999998,testable,7.321000000000002,caelum_vraptor,false,short
+12.087,10.366999999999999,testable,1.7200000000000006,caelum_vraptor4,true,short
+1663.081,1449.0079999999984,testable,214.07300000000146,camunda_camunda-bpm-platform,false,long
+0,0,untestable,0,centic9_jgit-cookbook,false,short
+8.898,7.2090000000000005,testable,1.6889999999999992,chewiebug_GCViewer,false,short
+19.087,0.017,testable,19.07,chocotan_lolibox,false,short
+1001.919,999.84,testable,2.078999999999951,chocoteam_choco-solver,false,long
+6.032,3.4909999999999997,testable,2.5410000000000004,chrisvest_stormpot,true,short
+9.632,8.61,testable,1.0220000000000002,cloudera_htrace,false,short
+5.711,4.3069999999999995,testable,1.4040000000000008,cloudera_kitten,false,short
+69.812,55.67199999999999,testable,14.140000000000008,cloudera_spark-dataflow,true,short
+0.93,0.121,testable,0.809,cobbzilla_s3s3mirror,false,short
+96.977,29.212,testable,67.765,codecentric_spring-boot-admin,false,short
+831.271,827.74,testable,3.530999999999949,codefollower_Tomcat-Research,false,long
+18.425,12.881000000000002,testable,5.543999999999999,codelibs_fess,true,short
+0.785,0,untestable,0.785,cometd_cometd,false,short
+39.646,30.18100000000002,testable,9.464999999999982,crashub_crash,false,short
+5.307,4.185,testable,1.1220000000000008,danieldk_dictomaton,true,short
+3.525,0.05500000000000001,testable,3.4699999999999998,davidB_scala-maven-plugin,false,short
+3.143,1.643,testable,1.4999999999999998,davidmoten_geo,true,short
+9.891,8.322,testable,1.5690000000000008,davidmoten_rtree,true,short
+4.64,2.502,testable,2.138,davidmoten_rxjava-jdbc,true,short
+18.342,4.270999999999999,testable,14.071,dcm4che_dcm4che,true,short
+326.473,116.708,testable,209.76500000000001,ddf-project_DDF,false,medium
+25.99,21.069,testable,4.920999999999999,debezium_debezium,true,short
+1.694,0.354,testable,1.3399999999999999,decebals_pf4j,true,short
+30.322,1.7419999999999995,testable,28.58,deeplearning4j_nd4j,true,short
+3.723,1.339,testable,2.384,devnied_EMV-NFC-Paycard-Enrollment,false,short
+12.391,0.11300000000000002,testable,12.278,dianping_zebra,false,short
+12.07,10.206,testable,1.8640000000000008,dibbhatt_kafka-spark-consumer,true,short
+0.716,0.008,testable,0.708,dieforfree_qart4j,true,short
+29.854,18.038000000000004,testable,11.815999999999995,digitalfondue_lavagna,true,short
+5.979,3.328,testable,2.6510000000000002,docker-java_docker-java,true,short
+4.168,0.031,testable,4.1370000000000005,drtshock_Essentials,false,short
+7.924,3.2550000000000003,testable,4.6690000000000005,easymock_easymock,false,short
+4.108,0.59,testable,3.518,easymock_objenesis,false,short
+14.354,25.143999999999995,testable,-10.789999999999996,eclipse_leshan,true,short
+7.449,5.847000000000001,testable,1.6019999999999985,eclipsesource_J2V8,false,short
+0,0,untestable,0,eivindveg_HotSUploader,false,short
+1.752,0.001,testable,1.7510000000000001,elki-project_elki,false,short
+2.302,0.7479999999999999,testable,1.5540000000000003,etsy_statsd-jvm-profiler,true,short
+3.136,0.521,testable,2.615,eugenp_REST-With-Spring,true,short
+16.661,10.556,testable,6.105000000000002,fabric8io_spring-cloud-kubernetes,false,short
+262.104,555.5379999999999,testable,-293.4339999999999,facebookarchive_linkbench,true,long
+4.773,0.484,testable,4.289,fakereplace_fakereplace,false,short
+6.888,2.8129999999999966,testable,4.075000000000003,feroult_yawp,true,short
+0.634,0,untestable,0.634,fizzed_rocker,false,short
+34.117,33.326,testable,0.7909999999999968,fluent_fluent-logger-java,true,short
+6.602,4.582,testable,2.0200000000000005,forcedotcom_wsc,true,short
+63.861,26.357999999999993,testable,37.503,forge_core,false,short
+60.974,59.397000000000006,testable,1.576999999999991,fpj_zookeeper-book-example,true,short
+15.687,6.857000000000001,testable,8.829999999999998,freedomotic_freedomotic,true,short
+3.935,2.774,testable,1.161,frohoff_ysoserial,false,short
+35.005,11.991999999999999,testable,23.013000000000005,fusesource_hawtdispatch,false,short
+6.014,3.38,testable,2.6340000000000003,galenframework_galen,false,short
+112.809,42.83099999999999,testable,69.97800000000001,gchq_Gaffer,false,short
+454.131,392.5599999999983,testable,61.571000000001675,geotools_geotools,true,long
+1.168,0.034,testable,1.134,giltene_jHiccup,true,short
+2.4,0.839,testable,1.561,github_maven-plugins,true,short
+0.722,0,untestable,0.722,glowroot_glowroot,false,short
+10.978,0.043,testable,10.935,glyptodon_guacamole-client,true,short
+86.68,42.80100000000001,testable,43.879,google_closure-compiler,true,short
+349.08299999999997,3.189,testable,345.89399999999995,google_google-java-format,false,short
+56.109,48.73999999999999,testable,7.369000000000014,googleads_googleads-java-lib,false,short
+279.709,274.4119999999999,testable,5.297000000000082,graphaware_neo4j-framework,false,medium
+13.16,11.692,testable,1.468,graphaware_neo4j-reco,true,short
+84.65,82.72100000000002,testable,1.9289999999999878,graphaware_neo4j-timetree,false,medium
+1.091,0.026,testable,1.065,graphhopper_map-matching,false,short
+54.344,50.888,testable,3.456000000000003,greenmail-mail-test_greenmail,true,short
+6.837,2.743,testable,4.093999999999999,hantsy_angularjs-springmvc-sample,true,short
+0.857,0,untestable,0.857,hantsy_angularjs-springmvc-sample-boot,false,short
+51.507,42.98799999999998,testable,8.51900000000002,haraldk_TwelveMonkeys,true,short
+88.0,10305.585000000015,testable,-10217.585000000015,hazelcast_hazelcast,false,long
+220.40699999999998,452.55499999999995,testable,-232.14799999999997,hazelcast_hazelcast-jet,true,long
+10.595,7.713,testable,2.8820000000000006,hdiv_hdiv,true,short
+4.259,2.9830000000000005,testable,1.2759999999999998,healthonnet_hon-lucene-synonyms,true,short
+354.102,250.251,testable,103.85099999999997,hector-client_hector,false,medium
+277.079,240.99999999999994,testable,36.079000000000065,hibernate_hibernate-ogm,true,medium
+0.721,0,untestable,0.721,hibernate_hibernate-search,false,short
+1.35,0.3480000000000001,testable,1.002,horrorho_InflatableDonkey,true,short
+38.563,37.22800000000001,testable,1.3349999999999937,httl_httl,false,short
+50.591,45.769999999999996,testable,4.821000000000005,ihaolin_diablo,false,short
+0.639,0.031,testable,0.608,ihaolin_wepay,false,short
+7.271,4.943999999999999,testable,2.327000000000001,imglib_imglib2,true,short
+0,0,untestable,0,impetus-opensource_Kundera,false,short
+2.799,0.8640000000000002,testable,1.9349999999999996,impossibl_pgjdbc-ng,false,short
+16.127,7.812000000000002,testable,8.314999999999998,infinitest_infinitest,false,short
+15.153,9.282999999999998,testable,5.870000000000003,intuit_karate,true,short
+0,0,untestable,0,intuit_wasabi,false,short
+358.161,348.02199999999993,testable,10.139000000000067,ippontech_tatami,false,long
+514.619,236.0540000000001,testable,278.56499999999994,jankotek_mapdb,true,medium
+136.941,84.75100000000002,testable,52.18999999999998,javaee-samples_javaee7-samples,false,medium
+0.728,0,untestable,0.728,javaparser_javaparser,false,short
+109.215,278.0489999999998,testable,-168.8339999999998,javaslang_javaslang,true,medium
+14.557,6.582,testable,7.9750000000000005,jawi_ols,false,short
+14.648,12.992,testable,1.6559999999999988,jbake-org_jbake,true,short
+11.418,0.285,testable,11.133,jbarrez_spring-boot-with-activiti-example,true,short
+13.902,22.962000000000003,testable,-9.060000000000004,jcabi_jcabi-aspects,true,short
+18.296,133.26600000000005,testable,-114.97000000000006,jcabi_jcabi-github,true,medium
+4.354,8.844,testable,-4.489999999999999,jcabi_jcabi-ssh,true,short
+14.253,0.178,testable,14.075,jenkinsci_blueocean-plugin,false,short
+35.466,45.03,testable,-9.564,jenkinsci_docker-build-publish-plugin,true,short
+18.465,12.335,testable,6.129999999999999,jenkinsci_docker-slaves-plugin,true,short
+614.649,607.9700000000001,testable,6.67899999999986,jenkinsci_docker-workflow-plugin,true,long
+2418.458,11409.637000000002,testable,-8991.179000000002,jenkinsci_gerrit-trigger-plugin,true,long
+3167.271,3158.345,testable,8.926000000000386,jenkinsci_github-plugin,true,long
+3.12,0.4690000000000001,testable,2.651,jenkinsci_java-client-api,true,short
+23.276,31.668,testable,-8.392,jenkinsci_mesos-plugin,true,short
+12.35,11.733,testable,0.6169999999999991,jeremyh_jBCrypt,true,short
+2.975,0.29300000000000004,testable,2.682,jeremylong_DependencyCheck,false,short
+14.401,13.479999999999999,testable,0.9210000000000012,jexp_batch-import,true,short
+0,0,untestable,0,jexp_neo4j-shell-tools,false,short
+10.722,6.004000000000007,testable,4.717999999999993,jfree_jfreechart,false,short
+47.009,45.708999999999996,testable,1.3000000000000043,jgritman_httpbuilder,false,short
+4.948,2.094,testable,2.8540000000000005,jhunters_jprotobuf,true,short
+5.204,2.946,testable,2.2579999999999996,jitsi_jitsi-videobridge,true,short
+0,0,untestable,0,jline_jline2,false,short
+14.561,11.036000000000001,testable,3.5249999999999986,jmacglashan_burlap,true,short
+0.48,0,untestable,0.48,jmeter-maven-plugin_jmeter-maven-plugin,false,short
+168.865,127.7090000000001,testable,41.155999999999906,jooby-project_jooby,false,medium
+6.351,0.476,testable,5.875,jplag_jplag,true,short
+0.515,0,untestable,0.515,jpmml_jpmml-evaluator,false,short
+2.115,0.08,testable,2.035,jpush_jpush-api-java-client,true,short
+6.37,4.910999999999996,testable,1.459000000000004,jqno_equalsverifier,true,short
+2.072,0.247,testable,1.8250000000000002,jsimone_webapp-runner,true,short
+23.917,21.529999999999994,testable,2.3870000000000076,jsonld-java_jsonld-java,true,short
+6.031,1.7040000000000002,testable,4.327,kaitoy_pcap4j,false,short
+85.97800000000001,80.24900000000001,testable,5.728999999999999,keepkey_multibit-hd,true,medium
+3.904,2.3329999999999997,testable,1.5710000000000002,kenglxn_QRGen,true,short
+11.506,9.450000000000003,testable,2.0559999999999974,klout_brickhouse,true,short
+11.206,7.059,testable,4.146999999999999,kongchen_swagger-maven-plugin,true,short
+541.205,2146.4090000000006,testable,-1605.2040000000006,konsoletyper_teavm,false,long
+11.866,9.607,testable,2.2590000000000003,ktoso_maven-git-commit-id-plugin,true,short
+253.587,230.16700000000014,testable,23.419999999999845,languagetool-org_languagetool,true,medium
+21.912,19.210999999999995,testable,2.701000000000004,larsga_Duke,true,short
+27.963,16.642999999999997,testable,11.320000000000004,lintool_warcbase,true,short
+5.12,2.474999999999998,testable,2.6450000000000022,mangstadt_ez-vcard,true,short
+2.582,0.8750000000000001,testable,1.7069999999999999,mesos_storm,true,short
+17.091,15.881,testable,1.2100000000000009,mitre_HTTP-Proxy-Servlet,true,short
+357.772,353.80999999999995,testable,3.962000000000046,mongojack_mongojack,true,long
+426.739,422.8070000000001,testable,3.9319999999999027,neo4j_neo4j-ogm,true,long
+41.845,65.803,testable,-23.958,networknt_light-java,true,medium
+3.528,1.6729999999999994,testable,1.8550000000000006,neuland_jade4j,true,short
+21.302,12.749999999999998,testable,8.552000000000001,olivergierke_spring-restbucks,true,short
+11.962,1.669,testable,10.293,openscoring_openscoring,false,short
+68.621,10.979,testable,57.641999999999996,pac4j_pac4j,false,short
+76.311,74.27100000000002,testable,2.039999999999992,patrickfav_density-converter,true,medium
+20.031,2.946,testable,17.084999999999997,perwendel_spark,true,short
+7.232,4.907,testable,2.325,pinterest_secor,true,short
+6.604,1.7849999999999957,testable,4.819000000000004,protegeproject_webprotege,true,short
+67.719,54.36699999999998,testable,13.352000000000011,rackerlabs_blueflood,true,short
+6.752,4.7780000000000005,testable,1.9739999999999993,raml-org_raml-java-parser,true,short
+36.599,32.334,testable,4.2649999999999935,redpen-cc_redpen,true,short
+0,0,untestable,0,restx_restx,false,short
+34.203,32.415000000000006,testable,1.7879999999999967,rythmengine_rythmengine,true,short
+18.784,15.126999999999999,testable,3.657,schema-repo_schema-repo,true,short
+2.824,1.17,testable,1.654,sendgrid_sendgrid-java,false,short
+19.101,16.852999999999998,testable,2.248000000000001,sirensolutions_siren-join,false,short
+29.224,16.882999999999996,testable,12.341000000000005,speedment_speedment,true,short
+63.171,62.205,testable,0.9660000000000011,spinscale_elasticsearch-opennlp-plugin,false,medium
+28.28,22.781000000000006,testable,5.498999999999995,spotify_apollo,true,short
+7.161,6.183,testable,0.9779999999999998,spotify_cassandra-reaper,true,short
+6.159,3.456,testable,2.703,spotify_docker-client,false,short
+97.59100000000001,381.2109999999999,testable,-283.6199999999999,spotify_helios,false,long
+5.645,3.816,testable,1.8289999999999997,spotify_netty-zmtp,true,short
+0,0,untestable,0,spring-cloud_spring-cloud-aws,false,short
+13.132,0.93,testable,12.202,spring-guides_tut-bookmarks,true,short
+8.963,1.6769999999999998,testable,7.286,spring-projects_spring-amqp-samples,true,short
+140.739,3.665,testable,137.074,spring-projects_spring-boot,false,short
+17.476,8.906999999999996,testable,8.569000000000003,spring-projects_spring-data-commons,true,short
+612.404,543.6960000000006,testable,68.7079999999994,spring-projects_spring-data-redis,false,long
+15.415,13.475,testable,1.9399999999999995,spring-projects_spring-mvc-showcase,true,short
+7.443,6.566999999999999,testable,0.8760000000000003,spring-projects_spring-retry,true,short
+1208.963,895.1739999999996,testable,313.7890000000003,structr_structr,false,long
+13.069,6.875,testable,6.194000000000001,swagger-api_swagger-core,true,short
+21.444,16.508,testable,4.936,swagger-api_swagger-socket,true,short
+41.355,7.416999999999999,testable,33.937999999999995,takari_polyglot-maven,false,short
+75.274,59.01,testable,16.264000000000003,tamingtext_book,false,short
+211.744,209.06300000000002,testable,2.680999999999983,tdunning_t-digest,false,medium
+73.941,64.864,testable,9.076999999999998,timmolter_XChange,true,medium
+5.686,4.6049999999999995,testable,1.0810000000000004,tomighty_tomighty,true,short
+9.898,3.7479999999999998,testable,6.15,torquebox_jruby-maven-plugins,false,short
+5.378,1.409,testable,3.9690000000000003,trautonen_coveralls-maven-plugin,true,short
+91.761,90.58200000000002,testable,1.1789999999999736,twilio_twilio-java,true,medium
+86.261,68.88700000000001,testable,17.37399999999998,twitter_GraphJet,true,medium
+1.936,0.826,testable,1.1099999999999999,twitter_hbc,true,short
+292.802,274.0729999999999,testable,18.7290000000001,twitter_hraven,true,medium
+36.716,27.942999999999998,testable,8.773000000000003,usc-isi-i2_Web-Karma,true,short
+147.028,36.16500000000001,testable,110.86299999999997,vaadin_framework,false,short
+10.801,1.6159999999999994,testable,9.185,viritin_viritin,true,short
+3.175,2.077,testable,1.0979999999999999,winterbe_github-matrix,false,short
+3.364,2.444,testable,0.9199999999999999,yahoo_egads,true,short
+44.528,41.072,testable,3.455999999999996,yahoo_samoa,true,short
+29.79,26.514,testable,3.276,yahoo_storm-yarn,false,short
+1.757,1.07,testable,0.6869999999999998,yinwang0_pysonar2,true,short
+21.341,20.241,testable,1.1000000000000014,ysc_word,true,short
+30.598,28.793000000000006,testable,1.8049999999999926,zeromq_jeromq,true,short
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
+,,not maven,,,,
