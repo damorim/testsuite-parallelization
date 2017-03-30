@@ -9,3 +9,9 @@ fi
 # FIXME consider the other executions as well...
 # RQ 1
 R --vanilla --quite < timecost.r --args "data/execution-1.csv"
+
+
+# RQ 2
+R --vanilla --quite < testcost.r --args "testcost-med" 
+R --vanilla --quite < testcost.r --args "testcost-long" 
+

@@ -1,7 +1,4 @@
-#!/usr/bin/env Rscript
-
 library(ggplot2)
-library(raster)
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -14,9 +11,11 @@ if (length(args)==0) {
 # ## coefficient of variation function
 # co.var <- function(x,na.rm=TRUE) sd(x,na.rm=na.rm)/mean(x,na.rm=na.rm)
 
-pdf(file=paste(name,".pdf",sep=""), width = 5, height = 1.5)
+output <- paste("out", name, sep="/")
+pdf(file=paste(output,".pdf",sep=""), width = 5, height = 1.5)
 
-dat <- read.csv(paste(name,".csv",sep=""), header = F)
+input <- paste("data", name, sep="/")
+dat <- read.csv(paste(input,".csv",sep=""), header = F)
 
 ## to compute median values across plots
 median <- aggregate(dat[, 2:2], list(dat$V1), median)
@@ -32,7 +31,7 @@ theme(axis.title.x=element_blank(),
       axis.text.x=element_blank(),
       axis.ticks.x=element_blank()
 ) +
-labs(y="Time (s)")+
+labs(y="Time cost (in secs)")+
 geom_hline(aes(yintercept=mean(median$x)), colour = "red", linetype = 2)+
 coord_cartesian(ylim = c(0,7.5))
 
