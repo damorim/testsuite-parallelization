@@ -16,29 +16,27 @@
   \caption{\label{fig:levels}Levels of parallelism.}
 \end{figure}
 
-This section provides important background on parallel test execution.
-
 Parallelism in test execution can be obtained at different levels.
-Figure~\ref{fig:levels} illustrates these levels.  The highest
-level indicates parallelism that can be obtained through different
-machines on the network.  For instance, using virtual machines from a
-cloud service to perform a distributed execution.  The machine space
-sits under the ``network space'' and provides a \emph{lower-level}
-parallelism.  In this case, computation can be offloaded at different
-CPUs within a machine and at different threads within each CPU.  Note
-that all these levels are complementary:  low-level parallelization
-schemes could leverage the computing power of server nodes in addition
-to the aggregate processing power of the farm.
+Figure~\ref{fig:levels} illustrates this.  The highest level indicates
+parallelism that can be obtained through different machines on the
+network.  For instance, using virtual machines from a cloud service to
+distribute test execution.  The lowest levels denote parallelism
+obtained within a single machine.  These levels are complementary:
+low-level parallelization leverages the computing power of server
+nodes whereas high-level schemes leverage the aggregate processing
+power of the farm.
 
-This paper focuses at low-level parallelism (\ie, machine and CPU
-space), which can be enabled through build systems and testing
-frameworks.  Given the proliferation of multi-core machines it is not
-surprising that testing frameworks provide today support for parallel
-test execution (e.g., JUnit~\cite{junit-org}, TestNG~\cite{testng},
-and NUnit~\cite{nunit}).  In the following we elaborate relevant
-features of and testing frameworks build systems.  We focused on Java,
-Maven, and JUnit but the discussion can be generalized to other
-language and tools.
+This paper focuses at low-level parallelism, where computation can be
+offloaded at different CPUs within a machine and at different threads
+within each CPU.  This form of parallelism is enabled through build
+systems (spawning processes in different CPUs) and testing frameworks
+(spawning threads in a CPU).  It is important to note that a variety
+of testing frameworks provide today support for parallel test
+execution (e.g., JUnit~\cite{junit-org}, TestNG~\cite{testng}, and
+NUnit~\cite{nunit}) as to leverage the power of multi-core processors.
+In the following, we elaborate relevant features of testing frameworks
+and build systems.  We focused on Java, Maven, and JUnit but the
+discussion can be generalized to other language and tools.
 
 \subsection{Testing Frameworks}
 \label{sec:frameworks}
@@ -153,3 +151,7 @@ pool de 5 threads em cada JVM para executar testes em paralelo.}
     parameter) and uses five threads (\CodeIn{threadCount} parameter)
     to run methods (\CodeIn{parallel} parameter) within each JVM.}
 \end{figure}
+
+%%  LocalWords:  parallelization CPUs JUnit TestNG NUnit multi JVM de
+%%  LocalWords:  JVMs falar explicar configuracao ilustrada levanta
+%%  LocalWords:  uma por cria cada executar paralelo escapeinside
