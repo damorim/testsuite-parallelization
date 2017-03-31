@@ -264,11 +264,11 @@ default.
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
-    \textit{Answering \numRQA{}:}~\emph{Given that
-    \percentMedLongRunning{} of the projects are costly (\ie,
-    \numMedLong{} projects from \medg{} and \longg{}), we concluded
-    that time-consuming regression test suites are relatively frequent
-    in open-source projects.}
+    \textit{Answering \numRQA{}:}~\emph{We concluded that
+    time-consuming regression test suites are relatively frequent in
+    open-source projects given that \percentMedLongRunning{} of the
+    projects are costly (\ie, \numMedLong{} projects from \medg{} and
+    \longg{}).}
 \end{minipage}
 }
 \end{center}
@@ -293,16 +293,16 @@ test frameworks (see Section~\ref{sec:frameworks}).
 \begin{figure}[ht]
     \centering
 
-    \begin{subfigure}{0.5\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{plots/testcost-medium.pdf}
-      \caption{\label{fig:medtcost}Medium group}
-    \end{subfigure}\\
-    \vspace{2.5ex}
-    \begin{subfigure}{0.5\textwidth}
+    \begin{subfigure}{0.47\textwidth}
       \centering
       \includegraphics[width=\textwidth]{plots/testcost-long.pdf}
       \caption{\label{fig:longtcost}Long group}
+    \end{subfigure}\\
+    \vspace{2.5ex}
+    \begin{subfigure}{0.47\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{plots/testcost-medium.pdf}
+      \caption{\label{fig:medtcost}Medium group}
     \end{subfigure}\\
     \vspace{2.5ex}
     \begin{subfigure}{0.5\textwidth}
@@ -311,8 +311,8 @@ test frameworks (see Section~\ref{sec:frameworks}).
         \toprule
         & $\sigma\leq1$ & $1<\sigma\leq5$ & $\sigma\ge5$ \\
         \midrule    
-        Medium & 17 & 20 & 7 \\
         Long   &  9 & 14 & 5 \\
+        Medium & 17 & 20 & 7 \\
         \bottomrule
       \end{tabular}
       \caption{\label{fig:sd}\Fix{adjust values}}    

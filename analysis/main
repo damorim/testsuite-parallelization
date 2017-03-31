@@ -3,15 +3,17 @@ if [[ ! -d "out" ]]; then
     mkdir out
 fi
 
-./selection.py 
+# ./selection.py 
+# 
+# # Subject selection
+# R --vanilla --quiet < selection.r --args "gen/selection.csv"
+# 
+# # RQ 1
+# R --vanilla --quiet < timecost.r --args "gen/selection.csv"
+# 
+# # RQ 2
+# R --vanilla --quiet < testcost.r --args "testcost-medium" 
+# R --vanilla --quiet < testcost.r --args "testcost-long" 
 
-# Subject selection
-R --vanilla --quiet < selection.r --args "gen/selection.csv"
-
-# RQ 1
-R --vanilla --quiet < timecost.r --args "gen/selection.csv"
-
-# RQ 2
-R --vanilla --quiet < testcost.r --args "testcost-medium" 
-R --vanilla --quiet < testcost.r --args "testcost-long" 
-
+# RQ 3
+R --vanilla --quiet < parallelism.r --args "data/parallel_modules.csv" 

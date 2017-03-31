@@ -38,14 +38,14 @@ rq1_df <- filter(rq1_df, xml_test_time > 0)
 # Cost groups barplot
 pdf("out/barplot-timecost.pdf", height = 3, width = 3)
 ggplot(data = rq1_df, aes(x = timecost_group, fill = test_success)) +
-  geom_bar(width = .8, position = "dodge") +
+  geom_bar(width = .8, position = "dodge", colour = "black") +
   geom_text(
-    size = 2.5,
+    size = 3,
     position = position_dodge(width = .75),
     stat = "count",
-    aes(label = ..count.. , y = ..count.. + 5)
+    aes(label = ..count.. , y = ..count.. + 8)
   ) +
-  scale_fill_grey(start = 0.4, end = 0.7, labels = c("tests fail", "tests pass")) +
+  scale_fill_brewer(labels = c("tests fail", "tests pass")) +
   theme(legend.background = element_rect(),
         legend.margin = margin(0),
         legend.position = "top",
@@ -61,31 +61,6 @@ ggplot(data = rq1_df, aes(x = timecost_group, y = tmin, fill = test_success)) +
                           legend.margin = margin(0),
                           legend.title = element_blank(),
                           legend.position = "top") +
-  scale_fill_grey(start = 0.5, end = 0.8, labels = c("tests fail", "tests pass")) +
+  scale_fill_brewer(labels = c("tests fail", "tests pass")) +
   facet_wrap( ~ timecost_group, scales = "free") +
   labs(y = "Time cost (in minutes)", x = "Group")
-
-###################
-# RQ2
-###################
-# pdf("boxplot-timecost-dist.pdf", height = 2, width = 4)
-# ggplot(rq2_df, aes(x = project, y = time)) +
-#   geom_boxplot() +
-#   theme(axis.text.x =  element_blank())
-
-##################
-# RQ3
-###################
-
-# pdf("parallel-modes.pdf", height = 2, width = 3)
-# 
-# # pdf("parallel-modes.pdf", height = 2, width = 3)
-# ggplot(data = distinct(select(rq3_df, project, level)), aes(x = level)) +
-#   geom_bar(width = .8) +
-#   geom_text(
-#     size = 2.5,
-#     stat = "count",
-#     aes(label = ..count.. , y = ..count.. + 0.5)
-#   ) +
-#   labs(y = "Frequency", x = "Parallelism Level")
-# 

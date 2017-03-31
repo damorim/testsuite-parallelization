@@ -7,7 +7,7 @@ def gen_testcost_data(group, testcases, selection):
         writer = csv.DictWriter(f, fieldnames=testcases[0].keys())
         writer.writeheader()
         for row in testcases:
-            if row["project"] in selection and row["project"] not in {"INRIA_spoon"}:
+            if row["project"] in selection:
                 try:
                     writer.writerow(row)
                 except:
