@@ -405,12 +405,37 @@
 \begin{abstract}
 Dealing with high testing costs is a long-standing problem in Software
 Engineering.  This is a particularly sensitive problem for projects
-with limited budget as many open-source projects.  In principle, the
-availability of relatively inexpensive multi-core processors and
-infrastructure to take advantage of them makes it possible to reduce
-testing costs.  This paper reports our findings on the usage of
-parallelization features from testing frameworks and build systems in
-open-source projects.  We observed that\Fix{...}
+with limited budget.  Today, the availability of low-cost multi-core
+processors and testing infrastructures to take advantage of them makes
+it possible to reduce testing costs.
+
+This paper reports our findings on the usage and impact of test
+execution parallelization in open-source projects.  This is a relevant
+problem given the tremendous popularity of open-source development and
+regression testing research.  Overall, considering a collection with
+over 300 popular Java projects we analyzed, we found that nearly one
+in every four projects contain costly test suites but usage of
+parallelization features still seem underutilized.  Furthermore, we
+found that different modes of parallelism provide different tradeoffs
+between efficiency and precision, influenced by test flakiness caused
+by non-determinism.
+
+This study brings to light the potential of parallelization to improve
+test efficiency and consequently is instrumental for development of
+new techniques to address existing limitations of tools and fears of
+users.
+
+%% We observed that (i) projects with costly test suites ocur in nearly
+%% one in every four projects, (ii) cost is relatively evenly distributed
+%% across tests in the suite, (iii) many long-running test suites do not
+%% use parallelization and the most frequent mode of execution is based
+%% on the simplest alternative of creating multiple virtual machines
+%% (``forking''), (iv) the impact of parallelization is substantial on
+%% those projects that use this feature, and (v) different modes of
+%% parallelism provide different tradeoffs between speedups and precision
+%% (as observed by test flakiness caused by non-determinism). 
+
+
 \end{abstract}
 
 % no keywords
@@ -477,4 +502,4 @@ open-source projects.  We observed that\Fix{...}
 
 
 
-%%  LocalWords:  Parallelization multi parallelization tmp
+%%  LocalWords:  Parallelization multi parallelization tmp tradeoffs
