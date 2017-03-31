@@ -15,18 +15,14 @@ More specifically, we pose the following research questions:
 \newcommand{\numRQB}{RQ2}
 \newcommand{\numRQC}{RQ3}
 \newcommand{\numRQD}{RQ4}
-%%\newcommand{\numRQE}{RQ5}
 \newcommand{\numRQF}{RQ5}
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
   regression test suites in open-source projects?}
 \newcommand{\RQB}{How the time cost is distributed across test cases?}
 \newcommand{\RQC}{How often developers provides support to parallel
-execution to amortize the execution cost?}
+execution of test suites?}
 \newcommand{\RQD}{What is the impact of parallelization?}
-%%\newcommand{\RQE}{What factors contribute to improve performance
-%%  through parallelization?\Jbc{Previously as "When does
-%%    parallelization works and when it does not so great?"}}
 \newcommand{\RQF}{What are the limitations of low-level parallelism?}
 
 \begin{itemize}
@@ -34,7 +30,6 @@ execution to amortize the execution cost?}
     \item \textbf{\numRQB.} \RQB
     \item \textbf{\numRQC.} \RQC
     \item \textbf{\numRQD.} \RQD
-%%    \item \textbf{\numRQE.} \RQE
     \item \textbf{\numRQF.} \RQF
 \end{itemize}
 
@@ -54,15 +49,15 @@ addresses the relationship of test cases and the overall execution
 cost: we are interested to investigate how the execution time is
 distributed among test cases.  In the third research question, we
 investigate if developers consider low-level parallelism features
-available out-of-the-box (see Section~\ref{sec:modes}). In addition,
-we want to identify what configurations are often used and why they
-are more popular (if any).  The fourth research question addresses the
-impact of low-level parallelism on test execution from projects in our
-sample set. We want to identify subjects that already use test
-parallelization and compare their performance in contrast to
-sequential execution. In addition, we are interested in evaluating the
-performance of sequential test suites with different parallelization
-settings.
+available out-of-the-box to amortize test execution (see
+Section~\ref{sec:modes}). In addition, we want to identify what
+configurations are often used and why they are more popular (if any).
+The fourth research question addresses the impact of low-level
+parallelism on test execution from projects in our sample set. We want
+to identify subjects that already use test parallelization and compare
+their performance in contrast to sequential execution. In addition, we
+are interested in evaluating the performance of sequential test suites
+with different parallelization settings.
 Finally, the fifth research question discusses the limitations and
 insights to overcome the pitfalls of parallelization.
 
@@ -423,13 +418,16 @@ smoothly across \Fix{529} tests, of which \Fix{119} take more than
     \item \emph{\RQC}
 \end{itemize}
 
-To evaluate the support of parallelization to run tests, we
-investigate if there are projects with parallel execution enabled by
-default and what configurations are more popular. In addition, we
-complement our investigation by analyzing several build files (\ie,
-\pomf{}) to identify projects that supports parallel execution but
-require additional execution parameters to enable this feature.  We
-describe our approach as follows:
+To evaluate the support of parallel execution of test suites, we
+considered the \numMedLong{} projects that ran in at least one minute
+identified in Section~\ref{sec:rqA} (\ie, \medg{} and \longg{}
+groups). We are interested to know if developers consider low-level
+parallelism features to amortize the execution cost. More precisely,
+we investigate if there are projects with parallelism configuration
+enabled by default or if developers configure this feature to run only
+on specific scenarios (\eg, dedicated server).  We describe our
+approach as follows:
+
 
 \subsubsection{Test execution with parallelism enabled by default}
 \label{sec:rqC-1}
@@ -559,7 +557,7 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.32\textwidth]{plots/barplot-modes-static.pdf}
-    \caption{\label{fig:freqmodes-static}Distribution of parallel modes 
+    \caption{\label{fig:freqmodes-static}Distribution of parallel modes
     identified statically in a subset of \numProjectsPar{} projects.
     A project may have support to more than one parallel mode.}
 \end{figure}
@@ -568,8 +566,8 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
 \fbox{
   \begin{minipage}{8cm}
       \textit{Answering \numRQC{}:}~\emph{Overall, results indicate
-      that \Jbc{summarize results from both parts (static and
-      dynamic)}.} 
+      that parallelism features are underused given that only \Fix{\%}
+      of projects supports parallel execution of test suites.}
   \end{minipage}
 }
 \end{center}
