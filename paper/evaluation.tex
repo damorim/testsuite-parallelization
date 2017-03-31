@@ -1,36 +1,97 @@
 \section{Evaluation}
 \label{sec:eval}
 
-We are interested in understanding the prevalence of time-consuming
-test suites and main sources of execution cost. We want to understand
-how the execution cost is distributed on test cases within a test
-suite and how developers approach test execution. Based on that, we
-study parallelization of testing frameworks and build systems.  More
-precisely, we investigate how prevalent test parallelization is, the
-potential for improving execution cost, issues of flakiness that
-hinders the use of parallelization, and how to address those issues.
-More specifically, we pose the following research questions:
+%% We are interested in understanding the prevalence of time-consuming
+%% test suites and main sources of execution cost. We want to understand
+%% how the execution cost is distributed on test cases within a test
+%% suite and how developers approach test execution. Based on that, we
+%% study parallelization of testing frameworks and build systems.  More
+%% precisely, we investigate how prevalent test parallelization is, the
+%% potential for improving execution cost, issues of flakiness that
+%% hinders the use of parallelization, and how to address those issues.
+%% More specifically, we pose the following research questions:
+
+%% The first research question addresses the prevalence of long-running
+%% test suites. We are interested to know if costly test suites are
+%% common in open-source projects.  The second research question
+%% addresses the relationship of test cases and the overall execution
+%% cost: we are interested to investigate how the execution time is
+%% distributed among test cases.  In the third research question, we
+%% investigate if developers consider low-level parallelism features
+%% available out-of-the-box to amortize test execution (see
+%% Section~\ref{sec:modes}). In addition, we want to identify what
+%% configurations are often used and why they are more popular (if any).
+%% The fourth research question addresses the impact of low-level
+%% parallelism on test execution from projects in our sample set. We want
+%% to identify subjects that already use test parallelization and compare
+%% their performance in contrast to sequential execution. In addition, we
+%% are interested in evaluating the performance of sequential test suites
+%% with different parallelization settings.
+%% Finally, the fifth research question discusses the limitations and
+%% insights to overcome the pitfalls of parallelization.
+
+%% \Comment{
+%%     \Fix{distribution of execution time per test case. For each subject
+%%     identified in the first research question, we investigate how
+%%     balanced is the cost of the test suite in contrast to the cost of
+%%     test cases and if there are subjects where the time cost is mostly
+%%     dominated by a small fraction of test cases.} \Fix{The third research
+%%     question addresses the distribution of regression tests according
+%%     to the use of computational resources.  We are interested in
+%%     investigating if regression test suites are CPU intensive and if there
+%%     are opportunities to improve performance. The RQ4 addresses}
+%%     \Fix{...elaborate...}
+
+%%     The rationale is that if the time cost of a regression test is equally
+%%     distributed among test cases, the execution cost could be potentially
+%%     improved by running tests in parallel (in contrast to the scenario
+%%     where only one test case dominates most of the execution time).
+%% }
+
+We pose the following research questions, organized by the dimensions
+presented in Section~\ref{sec:intro}.
 
 \newcommand{\numRQA}{RQ1}
 \newcommand{\numRQB}{RQ2}
 \newcommand{\numRQC}{RQ3}
 \newcommand{\numRQD}{RQ4}
-\newcommand{\numRQF}{RQ5}
+\newcommand{\numRQE}{RQ5}
+\newcommand{\numRQF}{RQ6}
 
 \newcommand{\RQA}{How prevalent is the occurence of time-consuming
-  regression test suites in open-source projects?}
-\newcommand{\RQB}{How the time cost is distributed across test cases?}
-\newcommand{\RQC}{How often developers provides support to parallel
-execution of test suites?}
-\newcommand{\RQD}{What is the impact of parallelization?}
-\newcommand{\RQF}{What are the limitations of low-level parallelism?}
+  test suites\Comment{ in open-source projects}?}
+\newcommand{\RQB}{How time is distributed across test cases?}
+\newcommand{\RQC}{How prevalent is the use of test suite
+  parallelization\Comment{ in open-source projects}?}
+\newcommand{\RQD}{What are the speedups obtained with parallelization
+  (in projects that actually use it) on cost?}
+\newcommand{\RQE}{What are the main reasons that prevent developers
+  from using test suite parallelization?}
+\newcommand{\RQF}{How different configurations of parallel execution affect testing
+  cost and flakiness?}
 
 \begin{itemize}
-    \item \textbf{\numRQA.} \RQA
-    \item \textbf{\numRQB.} \RQB
-    \item \textbf{\numRQC.} \RQC
-    \item \textbf{\numRQD.} \RQD
-    \item \textbf{\numRQF.} \RQF
+\item Potential
+  \begin{itemize}
+  \item \textbf{\numRQA.} \RQA
+  \item \textbf{\numRQB.} \RQB    
+  \end{itemize}    
+\item Usage
+  \begin{itemize}
+  \item \textbf{\numRQC.} \RQC    
+  \end{itemize}
+\item Effectiveness
+  \begin{itemize}
+  \item \textbf{\numRQD.} \RQD
+  \end{itemize}
+\item Perception
+  \begin{itemize}
+  \item \textbf{\numRQE.} \RQE
+  \end{itemize}
+\item Tradeoffs
+  \begin{itemize}
+  \item \textbf{\numRQF.} \RQF    
+  \end{itemize}          
 \end{itemize}
 
 %%\newcommand{\RQB}{What is the distribution of CPU and IO bound
@@ -42,65 +103,33 @@ execution of test suites?}
 %%\newcommand{\RQD}{How often developers use the parallelism features
 %%from build systems to improve runtime performance?}
 
-The first research question addresses the prevalence of long-running
-test suites. We are interested to know if costly test suites are
-common in open-source projects.  The second research question
-addresses the relationship of test cases and the overall execution
-cost: we are interested to investigate how the execution time is
-distributed among test cases.  In the third research question, we
-investigate if developers consider low-level parallelism features
-available out-of-the-box to amortize test execution (see
-Section~\ref{sec:modes}). In addition, we want to identify what
-configurations are often used and why they are more popular (if any).
-The fourth research question addresses the impact of low-level
-parallelism on test execution from projects in our sample set. We want
-to identify subjects that already use test parallelization and compare
-their performance in contrast to sequential execution. In addition, we
-are interested in evaluating the performance of sequential test suites
-with different parallelization settings.
-Finally, the fifth research question discusses the limitations and
-insights to overcome the pitfalls of parallelization.
-
-\Comment{
-    \Fix{distribution of execution time per test case. For each subject
-    identified in the first research question, we investigate how
-    balanced is the cost of the test suite in contrast to the cost of
-    test cases and if there are subjects where the time cost is mostly
-    dominated by a small fraction of test cases.} \Fix{The third research
-    question addresses the distribution of regression tests according
-    to the use of computational resources.  We are interested in
-    investigating if regression test suites are CPU intensive and if there
-    are opportunities to improve performance. The RQ4 addresses}
-    \Fix{...elaborate...}
-
-    The rationale is that if the time cost of a regression test is equally
-    distributed among test cases, the execution cost could be potentially
-    improved by running tests in parallel (in contrast to the scenario
-    where only one test case dominates most of the execution time).
-}
 
 \subsection{Subjects}
 \label{sec:subjects}
 
-We evaluated the characteristics of test suites in open-source
-development from a sample set of Java projects from \github{}.  We are
-interested to evaluate non-trivial test suites from popular projects
-that are in activity. We used the \github{}'s search
-API~\cite{githubsearch} to fetch Java projects according to the
-following criteria: (1) the primary language must be Java\footnote{In
-case of projects in multiple languages, the \github{} API considers
-the predominant language as the primary language.}; (2) the project
-has at least 100 stars; (3) latest update on (or after) January 1st,
-2016; (4) the \emph{readme} file contains the string \emph{mvn}.
+%% We evaluated the characteristics of test suites in open-source
+%% development from a sample set of Java projects from \github{}.  We are
+%% interested to evaluate non-trivial test suites from popular projects
+%% that are in activity.
 
-On \github{}, when a user adds a star to a project, s/he demonstrated
-appreciation and bookmarked it for later
-reference~\cite{github-stars}.  Although there is not a specific range
-for the number of stars, our criteria is an estimation to avoid
-trivial subjects: we assumed that \github{} users are likely to
-demonstrate interest on well-tested projects. The third criteria is a
-constraint to skip projects without recent activity. The fourth
-criteria is an approximation to find projects with Maven support. The
+%% , which is used on
+%% \github{} to indicate appreciation of a user to a
+%% project~\cite{github-stars},
+
+We used \github{}'s search API~\cite{githubsearch} to identify
+projects that satisfy the following criteria: (1) the primary language
+is Java\footnote{In case of projects in multiple languages, the
+  \github{} API considers the predominant language as the primary
+  language.}, (2) the project has at least 100 stars, (3) the latest
+update was on or after January 1st, 2016, and (4) the \emph{readme}
+file contains the string \emph{mvn}\footnote{As of now, \github{}'s
+  search API can only reflect contents from README file (not other
+  code elements).}.  We focused on Java for its popularity.  Although
+there is no clearcut limit on number of \github{}
+stars~\cite{github-stars} to define an interesting project, we
+observed that 100 was enough to eliminate trivial subjects. The third
+criteria is a constraint to skip projects without recent activity. The
+fourth criteria is an approximation to find Maven projects. The
 rationale is that if the string \emph{mvn} exists in the \emph{readme}
 file, it may represent a Maven call (\eg, to compile or test the
 project). We used Maven as a reference due to its popularity on Java
@@ -110,6 +139,7 @@ only projects with a \pomf{} file located in the root directory.
 Figure~\ref{fig:subject-query} illustrates the query to the \github{}
 API as an HTTP request.
 
+\vspace{1ex}
 \begin{figure}[h!]
 \centering
 \scriptsize
@@ -133,16 +163,15 @@ https://api.github.com/search/repositories?q=language:java
 
 As of March 25th 2017, our search criteria returned \SubjectsGithub{}
 subjects. Figure~\ref{fig:subjects} summarizes our sample set. From
-the \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
-were not Maven projects (or did not have a \pomf{} in the root
-directory) and we were unable to execute the tests from
-\SubjectsGithubNotTestable{} tests (\eg, missing dependencies or
-incompatible testing environment). To ensure that our sample set is
-stable, we retested the remaining subjects to eliminate flaky tests
-(total of \SubjectsGithubFlaky{} subjects). Our final set consists in
+\SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
+projects were not Maven (or did not have a \pomf{} in the root
+directory) and \SubjectsGithubNotTestable{} projects were untestable
+(because of missing dependencies or incompatible testing environment,
+for example). To ensure that our sample set was stable, we retested
+the remaining subjects to eliminate flaky tests (total of
+\SubjectsGithubFlaky{} subjects). Our final set consists in
 \numSubjs{} testable subjects.
 
-\vspace{-1ex}
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{plots/subjs.pdf}
@@ -153,7 +182,6 @@ stable, we retested the remaining subjects to eliminate flaky tests
     \SubjectsGithubFlaky{} projects with flaky tests. We considered
     \numSubjs{} projects to conduct our study.}
 \end{figure}
-\vspace{-2ex}
 
 \subsection{Setup and Replication}
 \label{sec:setup}

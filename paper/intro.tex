@@ -1,4 +1,5 @@
 \section{Introduction}
+\label{sec:intro}
 
 %% . which can disrupt the development
 %% process~\cite{hilton-etal-ase2016}.\Comment{  This is often referred to as the
@@ -53,30 +54,31 @@ impact of low-level parallelization to speedup testing in open-source
 projects.  This is a relevant problem given the tremendous popularity
 of open-source development and regression testing
 research~\cite{yoo-harman-stvr2012}.  The dimensions of analysis we
-considered in this study are as follows.
+considered in this study are as follows: potential, usage,
+effectiveness, perception, and tradeoffs.
 
-\begin{enumerate}
-\item \textbf{Prevalence of long-running test suites.}
-\item \textbf{Prevalence of test suite parallelization.}
-\item \textbf{Developer's opinion (when parallelization not used).}    
-\item \textbf{Speedups of parallelization (when used).}
-\item \textbf{Issues versus benefits on using parallelization modes.}
-\end{enumerate}
+%% \begin{enumerate}
+%% \item \textbf{Prevalence of long-running test suites.}
+%% \item \textbf{Prevalence of test suite parallelization.}
+%% \item \textbf{Developer's opinion (when parallelization not used).}    
+%% \item \textbf{Speedups of parallelization (when used).}
+%% \item \textbf{Issues versus benefits on using parallelization modes.}
+%% \end{enumerate}
 
-Each dimension focuses on one aspect of our study.  The first
-dimension measures to which extent open-source projects contain costly
-test suites.  In the limit, parallelization would be fruitless if all
-projects contained short-running test suites. The second dimension
-measures how often open-source projects, irrespective of their
-associated testing costs, use parallelization schemes.  The third
-dimension evaluates how developers involved in costly projects not
-using test suite parallelization perceive this technology.  The fourth
-dimension evaluates the observed impact of parallelization (when
-actually used) on cost.  Finally, the fifth dimension evaluates the
+Each dimension focuses on one aspect of our study.  The dimension
+\textbf{potential} measures the potential of parallelization to make
+an impact on testing costs.  In the limit, parallelization would be
+fruitless if all projects used short-running test suites or if the
+bulk of execution cost was dominated by a relatively small number of
+tests in the suite. The dimension \textbf{usage} measures how often
+open-source projects actually use parallelization schemes.  The
+dimension \textbf{effectiveness} measures the observed impact of
+parallelization (when used) on testing costs. The dimension
+\textbf{perception} focuses on how developers involved in costly
+projects not using test suite parallelization perceive this
+technology.  Finally, the dimension \textbf{tradeoffs} evaluates the
 issues and benefits associated with running test suites with different
-parallel configurations (/modes).  Overall, this study help us layout
-the current state-of-the-practice about usage and impact of test suite
-parallelization in open-source projects.
+parallel configurations (/modes).
 
 \Mar{organize according to each of these dimensions...$\rightarrow$}
 
