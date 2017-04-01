@@ -77,9 +77,7 @@ the cost of running all test methods is amortized by a pool of
 threads. Similarly, the configuration \ParClassSeqMeth{} may speedup
 test suites composed by several small test classes. Notice that both
 configurations \ParClassSeqMeth{} and \SeqClassParMeth{} avoid
-data-race condition at different levels. \Luis{This is wrong $\rightarrow$} 
-For instance, if two test classes performs I/O operations to the same file,
-the configuration \SeqClassParMeth{} would be preferable. Finally, 
+data-race condition at different levels. For instance, if two test methods performs operations in a same variable, the configuration \SeqClassParMeth{} would be preferable. Finally, 
 the configuration \ParClassParMeth{} does not impose any sequential 
 execution but it is more likely to manifest data-races as methods 
 from different classes run in parallel.
