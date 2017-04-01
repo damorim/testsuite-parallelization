@@ -16,24 +16,25 @@
   \caption{\label{fig:levels}Levels of parallelism.}
 \end{figure}
 
-Parallelism in test execution can be obtained at different levels.
-Figure~\ref{fig:levels} illustrates this.  The highest level indicates
-parallelism that can be obtained through different machines on the
+Figure~\ref{fig:levels} illustrates the different levels where
+parallelism in test execution can be obtained.
+The highest level indicates
+parallelism obtained through different machines on the
 network.  For instance, using virtual machines from a cloud service to
 distribute test execution.  The lowest levels denote parallelism
 obtained within a single machine.  These levels are complementary:
-low-level parallelization leverages the computing power of server
-nodes whereas high-level schemes leverage the aggregate processing
+the lowest levels leverage the computing power of server
+nodes whereas the highest level leverages the aggregate processing
 power of the farm.
 
-This paper focuses at low-level parallelism, where computation can be
+This paper focuses on low-level parallelism, where computation can be
 offloaded at different CPUs within a machine and at different threads
 within each CPU.  This form of parallelism is enabled through build
 systems (spawning processes in different CPUs) and testing frameworks
-(spawning threads in a CPU).  It is important to note that a variety
+(spawning threads in one given CPU).  It is important to note that a variety
 of testing frameworks provide today support for parallel test
 execution (e.g., JUnit~\cite{junit-org}, TestNG~\cite{testng}, and
-NUnit~\cite{nunit}) as to leverage the power of multi-core processors.
+NUnit~\cite{nunit}) as to benefit from the available power of popular multi-core processors.
 In the following, we elaborate relevant features of testing frameworks
 and build systems.  We focused on Java, Maven, and JUnit but the
 discussion can be generalized to other language and tools.
