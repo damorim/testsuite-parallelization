@@ -113,14 +113,17 @@ can run in a forked process at time.  To the best of our knowledge, we
 are unaware of any build system capable of running multiple classes at
 time within a forked process.
 
-\subsubsection*{Illustration}~Figure~\ref{fig:surefire} illustrates
-the support of parallel execution with the configuration
-\ForkParMeth{} on Maven, a popular build system in Java projects.
-Maven uses a configuration file based on XML (known as \pomf{}) to
-define tasks related to the project building and these tasks are
-performed several plugins. \Jbc{falar do surefire e explicar a
-configuracao ilustrada - Surefire levanta uma JVM por core e cria uma
-pool de 5 threads em cada JVM para executar testes em paralelo.}
+%%  to
+%% define tasks related to the project building and these tasks are
+%% performed several plugins.This file
+%% contains defintions of tasks, which are implemented by a collection of
+%% plugins.
+
+
+
+%% \Jbc{falar do surefire e explicar a
+%% configuracao ilustrada - Surefire levanta uma JVM por core e cria uma
+%% pool de 5 threads em cada JVM para executar testes em paralelo.}
 
 \begin{figure}[h!]
 \centering
@@ -144,11 +147,17 @@ pool de 5 threads em cada JVM para executar testes em paralelo.}
     </configuration>
 </plugin>
 \end{lstlisting}
-    \caption{\label{fig:surefire} Maven setup with the configuration
-    \ForkParMeth{}.  Maven forks one JVM per core (\CodeIn{forkCount}
-    parameter) and uses five threads (\CodeIn{threadCount} parameter)
-    to run methods (\CodeIn{parallel} parameter) within each JVM.}
+    \caption{\label{fig:surefire} Configuration \ForkParMeth{} on Maven.}
 \end{figure}
+
+\subsubsection*{Example}~Figure~\ref{fig:surefire} shows a
+fragment of a Maven configuration file, known as \pomf{}, highlighting
+options to run tests using the parallel execution mode \ForkParMeth{}.
+With this configuration, Maven~---~through its test plugin
+Surefire~\cite{maven-surefire-plugin}~---~forks one JVM per core
+(\CodeIn{forkCount} parameter) and uses five threads
+(\CodeIn{threadCount} parameter) to run methods (\CodeIn{parallel}
+parameter) within each forked JVM.
 
 %%  LocalWords:  parallelization CPUs JUnit TestNG NUnit multi JVM de
 %%  LocalWords:  JVMs falar explicar configuracao ilustrada levanta
