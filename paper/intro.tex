@@ -66,19 +66,27 @@ effectiveness, perception, and tradeoffs.
 %% \end{enumerate}
 
 Each dimension focuses on one aspect of our study.  The dimension
-\textbf{potential} measures the potential of parallelization to make
-an impact on testing costs.  In the limit, parallelization would be
-fruitless if all projects used short-running test suites or if the
-bulk of execution cost was dominated by a relatively small number of
-tests in the suite. The dimension \textbf{usage} measures how often
-open-source projects actually use parallelization schemes.  The
-dimension \textbf{effectiveness} measures the observed impact of
-parallelization (when used) on testing costs. The dimension
-\textbf{perception} focuses on how developers involved in costly
-projects not using test suite parallelization perceive this
-technology.  Finally, the dimension \textbf{tradeoffs} evaluates the
-issues and benefits associated with running test suites with different
-parallel configurations (/modes).
+\textbf{potential} measures the potential of parallelization to reduce
+testing costs.  In the limit, parallelization would be fruitless if
+all projects used short-running test suites or if the bulk of
+execution cost was dominated by a relatively small number of tests in
+the suite.  The dimension \textbf{effectiveness} measures the observed
+impact of parallelization\Comment{~---~when used in selected
+  open-source projects~---~} on testing costs.  Intuitively, benefits
+are proportional to the cost reduction that parallelization brings.
+In the limit, the overhead of spawning virtual machines or threads can
+even result in added cost.  The dimension \textbf{adoption} evaluates
+(i) how often open-source projects use parallelization schemes and
+(ii) how developers involved in costly projects (not using test suite
+parallelization) perceive this technology.  It is important to measure
+resistance to the technology and its reasons.  Finally, the dimension
+\textbf{tradeoff} evaluates the issues and benefits associated
+with\Comment{running test suites with} different parallel
+configurations.  The configuration choice can affect both test cost
+and test flakiness.  Flakiness is caused by the non-determinism
+resulted from running tests in different
+schedulings. Paretto-efficient~\cite{hwang-masud-1979} configurations
+can guide future developments in this area.
 
 \Mar{organize according to each of these dimensions...$\rightarrow$}
 
