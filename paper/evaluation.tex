@@ -436,6 +436,42 @@ smoothly across \Fix{529} tests, of which \Fix{119} take more than
 %% scenario, executing tests in parallel may have insignificant impact
 %% since a small subset of test cases dominates the execution.}
 
+\subsection{Answering research question \numRQD{}}
+\label{sec:rqD}
+
+\begin{itemize}
+    \item \emph{\RQD}
+\end{itemize}
+
+To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
+parallelization settings enabled by default identified in \numRQC{}
+and compared their time cost with sequential execution. We are
+interested in measuring the execution speedup (if any) when the
+parallelization settings are activated. It is important to mention
+that we ignored the remaining \Fix{??} subjects identified in
+Section~\ref{sec:rqC-2} because it would be impractical to execute
+each subject on specific conditions to measure the impact of
+parallelization.
+
+To enforce sequential execution, \Luis{rework this $\rightarrow$} we 
+analyzed the \numProjectsPar{} subjects looking for the parallelism 
+configuration inside the \pomf{} of each module. To run the subjects
+sequentially, we manually modified the Maven Surefire configuration
+from the \numPomMatchedValid{} identified before to not run in parallel.
+The Figure~\ref{fig:surefire-configuration} show the injected configuration
+in each \pomf{}.
+
+\input{codes/surefire}
+
+\begin{center}
+\fbox{
+  \begin{minipage}{8cm}
+      \textit{Answering \numRQD{}:}~\emph{\Jbc{summarize
+      findings.....}}
+  \end{minipage}
+}
+\end{center}
+
 \subsection{Answering research question \numRQC{}}
 \label{sec:rqC}
 
@@ -593,42 +629,6 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
       \textit{Answering \numRQC{}:}~\emph{Overall, results indicate
       that parallelism features are underused given that only \Fix{\%}
       of projects supports parallel execution of test suites.}
-  \end{minipage}
-}
-\end{center}
-
-\subsection{Answering research question \numRQD{}}
-\label{sec:rqD}
-
-\begin{itemize}
-    \item \emph{\RQD}
-\end{itemize}
-
-To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
-parallelization settings enabled by default identified in \numRQC{}
-and compared their time cost with sequential execution. We are
-interested in measuring the execution speedup (if any) when the
-parallelization settings are activated. It is important to mention
-that we ignored the remaining \Fix{??} subjects identified in
-Section~\ref{sec:rqC-2} because it would be impractical to execute
-each subject on specific conditions to measure the impact of
-parallelization.
-
-To enforce sequential execution, \Luis{rework this $\rightarrow$} we 
-analyzed the \numProjectsPar{} subjects looking for the parallelism 
-configuration inside the \pomf{} of each module. To run the subjects
-sequentially, we manually modified the Maven Surefire configuration
-from the \numPomMatchedValid{} identified before to not run in parallel.
-The Figure~\ref{fig:surefire-configuration} show the injected configuration
-in each \pomf{}.
-
-\input{codes/surefire}
-
-\begin{center}
-\fbox{
-  \begin{minipage}{8cm}
-      \textit{Answering \numRQD{}:}~\emph{\Jbc{summarize
-      findings.....}}
   \end{minipage}
 }
 \end{center}
