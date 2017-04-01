@@ -190,10 +190,10 @@ threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
   \emph{sysstat} package to measure performance, }git to fetch
 subjects, Java 8, and Maven 3.3.9 to build and test subjects. We used
 Python 3.4, Bash, and R to process the data and generate plots.  All
-source artifacts are publicly available (on request) for
-replication\Comment{ at \Fix{create gh-pages}}.  This includes
-supporting scripts (\eg, the script that test subjects and generates
-the raw data), and the full list of projects. \Comment{, and a
+source artifacts are publicly available for replication (on
+request)\Comment{ at \Fix{create gh-pages}}.  This includes supporting
+scripts (\eg, the script that test subjects and generates raw analysis
+data) and the full list of projects. \Comment{, and a
   \emph{Vagrantfile} to emulate our hardware and all software
   dependencies.}
 
@@ -205,36 +205,40 @@ the raw data), and the full list of projects. \Comment{, and a
     \item \textbf{\RQA}
 \end{itemize}
 
-To evaluate the frequency of time-consuming regression tests, we
-considered the \numSubjs{} subjects from Section~\ref{sec:subjects}
-and compared the elapsed time to run their tests. \Jbc{The following
-steps may change $\rightarrow$}
-Figure~\ref{fig:mvn-execution} shows the commands used in our script
-to test each subject. The main loop (lines 5-11) iterates over the
-list of subjects and invokes Maven in separated steps (lines 7-9). To
-avoid inflating the measured time we executed Maven in different
-steps: we first compiled the source and test files (line 7), made all
-dependencies available locally (line 8) and later, we ran the tests in
-offline mode (line 9) to bypass package updates. After the execution,
-we used a regular expression on the output log to extract the elapsed
-time (line 10). Before collecting the time cost, we executed all
-subjects and randomly selected 100 logs to inspect and identify
-non-related tasks (\eg, \emph{javadoc} generation and static analysis)
-to ignore during the experiment (lines 1-3).  To avoid noise from
-operating system events, we used a dedicated server remotely via SSH
-with the operating system running only essential services (\eg, the
-SSH server). In addition, we configured the \CodeIn{isolcpus} option
-from the Linux Kernel \cite{linux-kernel} to isolate six virtual CPUs
-to execute our experiment and the remaining CPUs to run the operating
+We considered the \numSubjs{} subjects from Section~\ref{sec:subjects}
+to evaluate prevalence of projects with costly test suites.  To
+measure cost we used the following methodology. \Jbc{The following
+  steps may change $\rightarrow$} Figure~\ref{fig:mvn-execution} shows
+the commands used in our script to test each subject. The main loop
+(lines 5-11) iterates over the list of subjects and invokes Maven at
+different steps (lines 7-9) as to reduce measurement noise.  We first
+compiled the source and test files (line 7), made all dependencies
+available locally (line 8) and later, we ran the tests in offline mode
+(line 9) to bypass package updates. After the execution, we used a
+regular expression on the output log to extract the elapsed time (line
+10).
+
+Prior to running this script, we randomly selected a hundred projects
+to inspect corresponding execution logs.  The goal of the inspection
+was to identify tasks unrelated to testing (\eg, \emph{javadoc}
+generation and static analysis) that could interfere in our
+measurement.  These extra tasks were ignored from execution (lines
+1-3).  Furthermore, to avoid noise from operating system events, we
+configured our workstation to run only essential services.  The
+machine was dedicated to our experiments and we accessed it via
+SSH. In addition, we configured the \CodeIn{isolcpus} option from the
+Linux Kernel \cite{linux-kernel} to isolate six virtual CPUs to
+execute our experiment and the remaining CPUs to run the operating
 system. By isolating a set of virtual CPUs, we prevent
-context-switching from experiment processes and OS-related processes.
+context-switching from experiment processes and OS-related
+processes.\Mar{can we cite this?}
 
 \input{codes/evaluation}
 
-We ran each subject's tests three times and grouped them according to
-the time cost (in average): tests that run in less than a minute
-(\shortg{} group), tests than run in one minute and less than five
-minutes (\medg{} group), and tests that run in five (or more) minutes
+We ran the test suite for each subject three times reporting their
+averages.  We grouped measurements in three time ranges: tests that
+run within a minute (\shortg{} group), tests that run in one to five
+minutes (\medg{} group), and tests that run in five or more minutes
 (\longg{} group). We based our classification from a previous work
 \cite{gligoric-etal-issta2015} and added the \medg{} group due to the
 variability of the time cost from subjects out of the \shortg{} group.
