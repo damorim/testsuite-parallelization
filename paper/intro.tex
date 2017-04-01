@@ -49,14 +49,6 @@ parallelism for running tests in public open-source projects.
 %%   find a reference to that or ask Fan Long what source he used (maybe
 %%   browsed with public API).}
 
-This paper reports on an empirical study we conducted to analyze the
-impact of low-level parallelization to speedup testing in open-source
-projects.  This is a relevant problem given the tremendous popularity
-of open-source development and regression testing
-research~\cite{yoo-harman-stvr2012}.  The dimensions of analysis we
-considered in this study are as follows: potential, usage,
-effectiveness, perception, and tradeoffs.
-
 %% \begin{enumerate}
 %% \item \textbf{Prevalence of long-running test suites.}
 %% \item \textbf{Prevalence of test suite parallelization.}
@@ -65,16 +57,23 @@ effectiveness, perception, and tradeoffs.
 %% \item \textbf{Issues versus benefits on using parallelization modes.}
 %% \end{enumerate}
 
-Each dimension focuses on one aspect of our study.  The dimension
-\textbf{potential} measures the potential of parallelization to reduce
-testing costs.  In the limit, parallelization would be fruitless if
-all projects used short-running test suites or if the bulk of
-execution cost was dominated by a relatively small number of tests in
-the suite.  The dimension \textbf{effectiveness} measures the observed
-impact of parallelization\Comment{~---~when used in selected
-  open-source projects~---~} on testing costs.  Intuitively, benefits
-are proportional to the cost reduction that parallelization brings.
-In the limit, the overhead of spawning virtual machines or threads can
+This paper reports on an empirical study we conducted to analyze the
+impact of low-level parallelization to speedup testing in open-source
+projects.  This is a relevant problem given the tremendous popularity
+of open-source development and regression testing
+research~\cite{yoo-harman-stvr2012}.  The dimensions of analysis we
+considered in this study are as follows: potential, effectiveness,
+adoption, and tradeoffs.  Each dimension focuses on one aspect of our
+study.  The dimension \textbf{potential} measures the potential of
+parallelization to reduce testing costs.  In the limit,
+parallelization would be fruitless if all projects used short-running
+test suites or if the bulk of execution cost was dominated by a
+relatively small number of tests in the suite.  The dimension
+\textbf{effectiveness} measures the observed impact of
+parallelization\Comment{~---~when used in selected open-source
+  projects~---~} on testing costs.  Intuitively, benefits are
+proportional to the cost reduction that parallelization brings.  In
+the limit, the overhead of spawning virtual machines or threads can
 even result in added cost.  The dimension \textbf{adoption} evaluates
 (i) how often open-source projects use parallelization schemes and
 (ii) how developers involved in costly projects (not using test suite
@@ -82,11 +81,11 @@ parallelization) perceive this technology.  It is important to measure
 resistance to the technology and its reasons.  Finally, the dimension
 \textbf{tradeoff} evaluates the issues and benefits associated
 with\Comment{running test suites with} different parallel
-configurations.  The configuration choice can affect both test cost
-and test flakiness.  Flakiness is caused by the non-determinism
-resulted from running tests in different
-schedulings. Paretto-efficient~\cite{hwang-masud-1979} configurations
-can guide future developments in this area.
+configurations.  Note that the configuration choice can affect both
+test cost and test flakiness, which is caused by the non-determinism
+resulted from running tests in different schedulings. Discovering
+Pareto-efficient~\cite{hwang-masud-1979} configurations is important
+to guide practitioners and future developments in this area.
 
 \Mar{organize according to each of these dimensions...$\rightarrow$}
 
@@ -182,4 +181,5 @@ tests sequentially within each process. \Mar{why 32-19 did not use
 %%% Local Variables:
 %%% TeX-master: "main"
 %%% End:
-%%  LocalWords:  jenkins API VMs datarace
+%%  LocalWords:  jenkins API VMs datarace tradeoffs tradeoff Paretto
+%%  LocalWords:  schedulings
