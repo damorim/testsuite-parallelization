@@ -43,7 +43,7 @@ discussion can be generalized to other language and tools.
 \label{sec:frameworks}
 
 The list below shows the choices to control parallelism within one
-Java virtual machine (JVM), which runs in a single CPU process.  These
+Java Virtual Machine (JVM), which runs in a single CPU process.  These
 options are offered by the testing framework, \eg{}, JUnit.
 
 \begin{itemize}
@@ -95,20 +95,21 @@ run in parallel.
 \subsection{Build Systems}
 \label{sec:builder}
 
-The list below shows the choices to control parallelism through build
-systems which uses multiple JVMs on different processes each:
+The list below shows the choices to control parallelism through the
+build system, \eg{}, Maven.  The build system can spaw multiple JVMs,
+each running on its own OS process on a given CPU and handling a
+partition of the test set.
 
 \begin{itemize}
 \item
     \textbf{Forked classes; sequential methods (\ForkSeq).}~This
-        configuration corresponds to the parallel execution of test
-        classes on different JVMs with test methods running
-        sequentially within each JVM.
+    configuration spawns multiple JVMs, assigning a partition of the
+    test set to each JVM.  Test methods run sequentially within each
+    JVM.
 \item
-    \textbf{Forked classes; parallel methods (\ForkParMeth).}~This
-        configuration corresponds to the parallel execution of test
-        classes on different JVMs with test methods running on
-        multiple threads within each JVM.
+    \textbf{Forked classes; parallel methods (\ForkParMeth).}~In
+    addition to forking multiple JVMs, as \ForkSeq{} does, this
+    configuration runs tests concurrently, as \SeqClassParMeth{} does.
 \end{itemize}
 
 Several build systems support the execution of test classes in forked
