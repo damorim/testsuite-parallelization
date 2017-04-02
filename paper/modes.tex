@@ -42,46 +42,55 @@ discussion can be generalized to other language and tools.
 \subsection{Testing Frameworks}
 \label{sec:frameworks}
 
-The list below shows the choices to control parallelism within a Java
-virtual machine (JVM) which runs in a single process of the CPU.
+The list below shows the choices to control parallelism within one
+Java virtual machine (JVM), which runs in a single CPU process.  These
+options are offered by the testing framework, \eg{}, JUnit.
 
 \begin{itemize}
 \item
     \textbf{Sequential (\Seq).}~No parallelism is involved.
 \item
     \textbf{Sequential classes; parallel methods
-        (\SeqClassParMeth).}~This configuration corresponds to the
-        sequential execution of test classes and test methods run in
-        multiple threads.
+      (\SeqClassParMeth).}~This configuration corresponds to running
+    test classes sequentially, but running test methods from those
+    classes concurrently.
 \item
     \textbf{Parallel classes; sequential methods
-        (\ParClassSeqMeth{}).}~This configuration corresponds to the
-        execution of test classes in multiple threads and tests run
-        sequentially within each thread.
+      (\ParClassSeqMeth{}).}~This configuration corresponds to running
+    test classes concurrently, but running test methods sequentially.
 \item
     \textbf{Parallel classes; Parallel methods
-        (\ParClassParMeth).}~This configuration corresponds
-        conceptually to the union of \ParClassSeqMeth{} and
-        \SeqClassParMeth{}: the testing framework runs test methods
-        from several classes on multiple threads.
+      (\ParClassParMeth).}~This configuration corresponds to the
+    combination of \SeqClassParMeth{} and \ParClassSeqMeth{}.  
 \end{itemize}
 
-The configuration \Seq{} is a proper fit for short-running test suites
-since this is the default configuration and the execution provides
-feedback in an acceptable time. However, for costly suites, it is
-impractical for developers to wait long-running executions to take
-action.  In this scenario, the remaining configuration may help to
-amortize the execution cost depending on how the test suite was
-designed. For instance, the configuration \SeqClassParMeth{} may
-speedup the execution of test suites composed large test classes since
-the cost of running all test methods is amortized by a pool of
-threads. Similarly, the configuration \ParClassSeqMeth{} may speedup
-test suites composed by several small test classes. Notice that both
-configurations \ParClassSeqMeth{} and \SeqClassParMeth{} avoid
-data-race condition at different levels. For instance, if two test methods performs operations in a same variable, the configuration \SeqClassParMeth{} would be preferable. Finally, 
-the configuration \ParClassParMeth{} does not impose any sequential 
-execution but it is more likely to manifest data-races as methods 
-from different classes run in parallel.
+%% The configuration \Seq{} is a proper fit for short-running test suites
+%% since this is the default configuration and the execution provides
+%% feedback in an acceptable time. However, for costly suites, it is
+%% impractical for developers to wait long-running executions to take
+%% action.  In this scenario, the remaining configuration may help to
+%% amortize the execution cost depending on how the test suite was
+%% designed. For instance,
+
+Notice that an important aspect in deciding which configuration to use
+(or in designing new test suites) is the possibility of race
+conditions on shared data during execution. For instance,
+configuration \ParClassSeqMeth{} may be preferable over
+\SeqClassParMeth{} when it is clear that several test methods in one
+class perform operations involving one given variable that is visible
+statically or within the scope of the test class.
+
+\Fix{unconvincing.  please, revise this.$\rightarrow$}Considering efficiency, the
+configuration \SeqClassParMeth{} may speedup the execution of test
+suites composed of large test classes since the cost of running all
+test methods is amortized by a pool of threads\Mar{$\leftarrow$
+  unclear to me.  you need to argument why one would prefer C1 over
+  C2.}. Similarly, the configuration \ParClassSeqMeth{} may speedup
+test suites composed by several small test classes.\Mar{$\leftarrow$
+  again, unclear to me (the reader).}  Finally, the configuration
+\ParClassParMeth{} does not impose any sequential execution but it is
+more likely to manifest data-races as methods from different classes
+run in parallel.
 
 \subsection{Build Systems}
 \label{sec:builder}
