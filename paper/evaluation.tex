@@ -543,17 +543,16 @@ To extend our initial investigation, we mined several \pomf{} files
 from all \numMedLong{} projects classified as the \medg{} and
 \longg{}-running.
 \Luis{rework this... $\rightarrow$}To reduce the number of build files
-to inspect, we consider only \pomf{} files that contain the
-configuration node inside a \CodeIn{plugin} tag with a child tag named
-\CodeIn{artifactId} with the content \CodeIn{maven-surefire-plugin}.
-This mining step, however, is not sound as a matching project may not 
+to inspect, we consider only \pomf{} files that contain
+\CodeIn{plugin} tags with a child tag \CodeIn{artifactId} with the
+value \CodeIn{maven-surefire-plugin} and a \CodeIn{configuration}
+node. This mining step, however, is not sound as a matching project may not 
 indicate a project with a valid configuration for running tests in parallel.
-\Comment{
-False positive can happen because of comments, for instance.  
-To eliminate the cases of false positives and also to categorize 
-true positive cases, we complemented the initial mining step with a 
-manual inspection of files.
-}
+
+%False positive can happen because of comments, for instance.  
+%To eliminate the cases of false positives and also to categorize 
+%true positive cases, we complemented the initial mining step with a 
+%manual inspection of files.
 %% settings); the second step (inspection) consists in a manual
 %% inspection to confirm the presence of parallelism settings in the
 %% build file and classify them according to the parallelism level.
@@ -562,11 +561,8 @@ manual inspection of files.
 
 Figure~\ref{tab:inspection-table} summarizes our results. The first
 column indicates the group of projects according to their time cost.
-The second column indicates the number of build files per group.  The
-third column is a subset from the previous column and represents the
-number of build files found in the mining step (including
-false-positives highlighted in parentheses). The last column indicates
-the ratio of projects with parallelization settings.
+The second column indicates the number of build files per group. 
+The last column indicates the ratio of projects with parallelization settings.
 
 From the \numMedLong{} subjects, we found \pomMedLong{} \pomf{} files.
 The \numPomMatched{} configurations are distributed across \numProjectsPar{} projects from our sample.
@@ -623,7 +619,8 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.32\textwidth]{plots/barplot-modes-static.pdf}
-    \caption{\label{fig:freqmodes-static}Distribution of parallel modes
+	\caption{\label{fig:freqmodes-static}\Luis{This is wrong, it
+	should be \textbf{CF0} instead of \textbf{CL0}}Distribution of parallel modes
     identified statically in a subset of \numProjectsPar{} projects.
     A project may have support to more than one parallel mode.}
 \end{figure}
