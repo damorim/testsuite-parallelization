@@ -451,7 +451,7 @@ smoothly across \Fix{529} tests, of which \Fix{119} take more than
 \label{sec:rqD}
 
 \begin{itemize}
-    \item \emph{\RQD}
+    \item \textbf{\RQD}
 \end{itemize}
 
 To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
@@ -485,6 +485,7 @@ in each \pomf{}.
 
 \subsection{Adoption}
 \label{sec:rqC}
+\label{sec:rqE}
 
 \begin{itemize}
     \item \emph{\RQC}
@@ -532,6 +533,8 @@ findings.
 \end{figure}
 
 \Fix{Elaborate findings....}
+
+
 
 \subsubsection{Support of parallelization configuration in build files}
 \label{sec:rqC-2}
@@ -632,6 +635,27 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
       that parallelism features are underused given that only
 	  \percentParallel{}
       of projects supports parallel execution of test suites.}
+  \end{minipage}
+}
+\end{center}
+
+\begin{itemize}
+	\item \textbf{\RQE{}}
+\end{itemize}
+
+\Luis{rework this $\rightarrow$}
+We considered the \numNonParallel{} subjects that do not use any
+parallel mode from Section~\ref{sec:rqC} and elaborated a
+quick survey to extent the comprehension about why developers do not
+use parallel configuration. \Luis{describe how we created the survey}.
+In total, we sent \emailsSent{} e-mails to developers that recently
+contributed to the project and received \emailsAnswered{} answers.
+
+\begin{center}
+\fbox{
+  \begin{minipage}{8cm}
+      \textit{Answering \numRQE{}:~\emph{\Luis{summarize
+	  findings...}}}
   \end{minipage}
 }
 \end{center}
