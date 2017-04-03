@@ -20,9 +20,8 @@ for subj in $SUBJECTS; do
     cat $LOG | grep "\[INFO\] Total time:"
 done
 \end{lstlisting}
-\caption{\label{fig:mvn-execution} Bash script to evaluate the time cost of
-    test suites. For each subject, we compile the source and test files, fetch
-    all dependencies, and execute the tests in offline mode ignoring
-    non-related tasks. Unnecessary commands are omitted for simplicity.}
-%\vspace{-5ex}
+\caption{\label{fig:mvn-execution} Bash script to measure time cost of
+  test suites. For each subject, we compile the source and test files,
+  fetch all dependencies, and execute the tests in offline mode
+  ignoring non-related tasks. Test-unrelated tasks are omitted.\Jbc{these results will be updated}}
 \end{figure}
