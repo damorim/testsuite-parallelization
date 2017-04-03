@@ -492,8 +492,6 @@ shows these results.
 %% different groups of subjects}\Fix{TODO: collect data + compute the
 %% statistic, create a scatter plot to identify groups of subjects}
 
-%% \Jbc{I shouldn't introduce parallelization arguments here but we have
-%% to address this at some point:
 %% Regression tests that are well distributed may benefit from
 %% parallelism since more tests executes at the same time while the
 %% opposite scenario may require a different approach. In the later
@@ -508,10 +506,10 @@ shows these results.
 \end{itemize}
 
 To answer \numRQD{}, we considered \numProjectsPar{} subjects that we
-tested and confirmed parallelization activated by default, and
-compared their time cost with sequential execution. We are interested
-in measuring the execution speedup (if any) when the parallelization
-settings are activated.
+tested and confirmed parallelization activated by default (see
+Section~\ref{sec:rqC-1}), and compared their time cost with sequential
+execution. We are interested in measuring the execution speedup (if
+any) when the parallelization settings are activated.
 
 %% To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
 %% parallelization settings enabled by default identified in \numRQC{}
