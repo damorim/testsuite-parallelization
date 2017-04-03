@@ -80,17 +80,14 @@ configuration \ParClassSeqMeth{} may be preferable over
 class perform operations involving one given variable that is visible
 statically or within the scope of the test class.
 
-\Fix{unconvincing.  please, revise this.$\rightarrow$}Considering efficiency, the
-configuration \SeqClassParMeth{} may speedup the execution of test
-suites composed of large test classes since the cost of running all
-test methods is amortized by a pool of threads\Mar{$\leftarrow$
-  unclear to me.  you need to argument why one would prefer C1 over
-  C2.}. Similarly, the configuration \ParClassSeqMeth{} may speedup
-test suites composed by several small test classes.\Mar{$\leftarrow$
-  again, unclear to me (the reader).}  Finally, the configuration
-\ParClassParMeth{} does not impose any sequential execution but it is
-more likely to manifest data-races as methods from different classes
-run in parallel.
+Considering efficiency, the configuration \SeqClassParMeth{} may
+speedup the execution of test classes composed of small test methods
+involving variables that is visible within the scope of the method.
+Similarly, the configuration \ParClassSeqMeth{} may speedup
+test suites composed by several test classes with few test methods.
+Finally, the configuration \ParClassParMeth{} does not impose any 
+sequential execution but it is more likely to manifest data-races as 
+methods from different classes run in parallel.
 
 \subsection{Build Systems}
 \label{sec:builder}
