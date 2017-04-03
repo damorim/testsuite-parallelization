@@ -454,21 +454,27 @@ smoothly across \Fix{529} tests, of which \Fix{119} take more than
     \item \textbf{\RQD}
 \end{itemize}
 
-To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
-parallelization settings enabled by default identified in \numRQC{}
-and compared their time cost with sequential execution. We are
-interested in measuring the execution speedup (if any) when the
-parallelization settings are activated. It is important to mention
-that we ignored the remaining \Fix{??} subjects identified in
-Section~\ref{sec:rqC-2} because it would be impractical to execute
-each subject on specific conditions to measure the impact of
-parallelization.
+To answer \numRQD{}, we considered \numProjectsPar{} subjects that we
+tested and confirmed parallelization activated by default, and
+compared their time cost with sequential execution. We are interested
+in measuring the execution speedup (if any) when the parallelization
+settings are activated.
 
-To enforce sequential execution, \Luis{rework this $\rightarrow$} we 
-analyzed the \numProjectsPar{} subjects looking for the parallelism 
-configuration inside the \pomf{} of each module. To run the subjects
-sequentially, we manually modified the Maven Surefire configuration
-from the \numPomMatched{} identified before to not run in parallel.
+%% To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
+%% parallelization settings enabled by default identified in \numRQC{}
+%% and compared their time cost with sequential execution. We are
+%% interested in measuring the execution speedup (if any) when the
+%% parallelization settings are activated. It is important to mention
+%% that we ignored the remaining \Fix{??} subjects identified in
+%% Section~\ref{sec:rqC-2} because it would be impractical to execute
+%% each subject on specific conditions to measure the impact of
+%% parallelization.
+
+To enforce sequential execution, we analyzed the \numProjectsPar{}
+subjects looking for the parallelism configuration inside the \pomf{} 
+of each module. To run the subjects sequentially, we manually modified 
+the Maven Surefire configuration in order to force the subjects to
+execute tests in sequential mode.
 
 \begin{center}
 \fbox{
@@ -536,11 +542,12 @@ findings.
 To extend our initial investigation, we mined several \pomf{} files
 from all \numMedLong{} projects classified as the \medg{} and
 \longg{}-running.
-\Luis{rework this... $\rightarrow$}To reduce the number of build files
+To reduce the number of build files
 to inspect, we consider only \pomf{} files that contain
 \CodeIn{plugin} tags with a child tag \CodeIn{artifactId} with the
 value \CodeIn{maven-surefire-plugin} and a \CodeIn{configuration}
-node. This mining step, however, is not sound as a matching project may not 
+node. Figure~\ref{fig:surefire-configuration} shows an example of
+configuration node mined. This mining step, however, is not sound as a matching project may not 
 indicate a project with a valid configuration for running tests in parallel.
 
 %False positive can happen because of comments, for instance.  
