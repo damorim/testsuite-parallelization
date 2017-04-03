@@ -469,10 +469,6 @@ analyzed the \numProjectsPar{} subjects looking for the parallelism
 configuration inside the \pomf{} of each module. To run the subjects
 sequentially, we manually modified the Maven Surefire configuration
 from the \numPomMatched{} identified before to not run in parallel.
-The Figure~\ref{fig:surefire-configuration} show the injected configuration
-in each \pomf{}.
-
-\input{codes/surefire}
 
 \begin{center}
 \fbox{
@@ -533,8 +529,6 @@ findings.
 \end{figure}
 
 \Fix{Elaborate findings....}
-
-
 
 \subsubsection{Support of parallelization configuration in build files}
 \label{sec:rqC-2}
@@ -629,9 +623,10 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
 \fbox{
   \begin{minipage}{8cm}
       \textit{Answering \numRQC{}:}~\emph{Overall, results indicate
-      that parallelism features are underused given that only
+      that parallelism features are underused by defailt given that only
 	  \percentParallel{}
-      of projects supports parallel execution of test suites.}
+      of projects supports parallel execution of test suites without
+	  any extra parameter.}
   \end{minipage}
 }
 \end{center}
@@ -642,12 +637,39 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
 
 \Luis{rework this $\rightarrow$}
 We considered the \numNonParallel{} subjects that do not use any
-parallel mode from Section~\ref{sec:rqC} and elaborated a
+parallel mode from Section~\ref{sec:rqC-1} and elaborated a
 quick survey to extent the comprehension about why developers do not
 use parallel configuration. \Luis{describe how we created the survey}.
-In total, we sent \emailsSent{} e-mails to developers that recently
-contributed to the project and received \emailsAnswered{} answers.
+We first retrieve the last 20 commits from the project repository and
+got the developers e-mails. In total, we sent \emailsSent{} e-mails to
+different developers that recently contributed to the project.
+There were \emailsAnswered{} replies, and \emailsTrueAnswers{} of
+those were answering the survey.
 
+The survey sent was composed by three open questions and one closed
+question: (I) How long does it take for test to run in your
+environment? Can you briefly define your setup? (II) Do you confirm
+that your project does not run in parallel? (III) Select a reason for
+not using parallelization: (a) I did not know it was possible; (b) I
+was concerned with concurrency issues; (c) I use a continuous
+integration server; (d) Some other reason. Please elaborate.
+
+\Comment{
+\begin{enumerate}
+	\item How long does it take for test to run in your
+		environment?
+	\item Can you briefly define your setup?
+	\item Do you confirm that your project does not run in
+		parallel?
+	\item Select a reason for not using paralellization:
+		\begin{enumarate}
+			\item I did not know it was possible;
+			\item I was concerned with concurrency issues;
+			\item I use a continuous integration server;
+			\item Some other reason.
+		\end{enumerate}
+\end{enumerate}
+}
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
