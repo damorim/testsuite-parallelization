@@ -189,7 +189,7 @@ threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
 (64-bit version).  Software settings include \Comment{the Linux
   \emph{sysstat} package to measure performance, }git to fetch
 subjects, Java 8, and Maven 3.3.9 to build and test subjects. We used
-Python 3.4, Bash, and R to process the data and generate plots.  All
+Python 3.4, Bash, R and Ruby 2.3 to process the data and generate plots.  All
 source artifacts are publicly available for replication (on
 request)\Comment{ at \Fix{create gh-pages}}.  This includes supporting
 scripts (\eg, the script that test subjects and generates raw analysis
@@ -635,9 +635,11 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
 	\item \textbf{\RQE{}}
 \end{itemize}
 
-\Luis{rework this $\rightarrow$}
-We considered the \numNonParallel{} subjects that do not use any
-parallel mode from Section~\ref{sec:rqC-1} and elaborated a
+To understand why developers prefer not use parallel test execution,
+we considered the \numNonParallel{} subjects that do not use any
+parallel mode from Section~\ref{sec:rqC-1} (\ie{}, \medg{} and
+\longg{}
+projects that does not run in parallel by default) and elaborated a
 quick survey to extent the comprehension about why developers do not
 use parallel configuration. \Luis{describe how we created the survey}.
 We first retrieve the last 20 commits from the project repository and
@@ -678,6 +680,15 @@ integration server; (d) Some other reason. Please elaborate.
   \end{minipage}
 }
 \end{center}
+
+
+\Luis{these values need macro $\rightarrow$}
+From the valid replies, we noticed that \Fix{55.2\%
+(16/\emailsTrueAnswers{})} of developers use an external continuous
+integration server to run tests, \Fix{27.6\% (8/\emailsTrueAnswers{})} run tests in the
+development machine, \Fix{13.8\% (4/\emailsTrueAnswers{})} did
+not specified the environment.
+
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the
