@@ -128,11 +128,11 @@ observed that 100 was enough to eliminate trivial subjects. The third
 criteria is a constraint to skip projects without recent activity. The
 fourth criteria is an approximation to find Maven projects. The
 rationale is that if the string \emph{mvn} exists in the \emph{readme}
-file, it may represent a Maven call (\eg, to compile or test the
+file, it may represent a Maven call (\eg, to compile or to test the
 project). We used Maven as a reference due to its popularity on Java
-projects and to automate our evaluation scripts. A Maven project may
-contain several sub-modules with multiple \pomf{} files. We considered
-only projects with a \pomf{} file located in the root directory.
+projects and to assist one of our experiments. A Maven project may
+contain several sub-modules with multiple \pomf{} files but we only
+considered projects with a \pomf{} file located in the root directory.
 Figure~\ref{fig:subject-query} illustrates the query to the \github{}
 API as an HTTP request.
 
@@ -161,12 +161,12 @@ https://api.github.com/search/repositories?q=language:java
 As of March 25th 2017, our search criteria returned \SubjectsGithub{}
 subjects. Figure~\ref{fig:subjects} summarizes our sample set. From
 \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
-projects were not Maven (or did not have a \pomf{} in the root
-directory) and \SubjectsGithubNotTestable{} projects were untestable
+projects were not Maven or did not have a \pomf{} in the root
+directory and \SubjectsGithubNotTestable{} projects were untestable
 (because of missing dependencies or incompatible testing environment,
 for example). To ensure that our sample set was stable, we retested
-the remaining subjects to eliminate flaky tests (total of
-\SubjectsGithubFlaky{} subjects). Our final set consists in
+the remaining subjects to eliminate projects with flaky tests (total of
+\SubjectsGithubFlaky{} subjects). Our final set consists of
 \numSubjs{} testable subjects.
 
 \begin{figure}[ht]
