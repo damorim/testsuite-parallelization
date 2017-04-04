@@ -561,10 +561,7 @@ developers configure this feature to run only on specific scenarios
 We re-executed the tests from the \numMedLong{} projects and we
 configured Maven to output all runtime parameters and their current
 values. We run only the test bootstrap step as the actual test
-execution is unnecessary to output the runtime parameters.  From the
-Maven output, we capture the parameters related to parallelism
-configurations and mapped these configurations to a parallelization
-mode.
+execution is unnecessary to output the runtime parameters.
 According to Maven's documentation~\cite{maven-surefire-plugin}, any
 parallelism configuration depends either on (1) the parameter
 \CodeIn{parallel} to define the parallelism mode within a JVM followed
