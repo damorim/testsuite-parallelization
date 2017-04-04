@@ -85,7 +85,7 @@ of analysis we presented in Section~\ref{sec:intro}.
   \item \textbf{\numRQC.} \RQC    
   \item \textbf{\numRQE.} \RQE
   \end{itemize}
-\item Tradeoff
+\item Tradeoffs
   \begin{itemize}
   \item \textbf{\numRQF.} \RQF    
   \end{itemize}          
@@ -219,7 +219,7 @@ execution, we used a regular expression on the output log to extract
 the elapsed time (line 10).
 
 Prior to running this script, we inspected Maven execution logs from a
-sample inclduing a hundred projects.  The goal of this inspection step
+sample including a hundred projects.  The goal of this inspection step
 is to find tasks unrelated to testing (\eg, \emph{javadoc} generation
 and static analyses) that could interfere in our measurements.  The
 tasks we found were ignored from execution (lines 1-3).  Furthermore,
@@ -251,7 +251,7 @@ regression test selection.\Comment{ and added the \medg{} group due to
   the variability of the time cost from subjects out of the \shortg{}
   group} Figure~\ref{fig:rq1-barplot} shows the number of projects in
 each group.  As it is to be expected, \longg{} and \medg{} projects do
-not occur as frequently as \shortg{} projects.  However, they do ocur
+not occur as frequently as \shortg{} projects.  However, they do occur
 in relatively high numbers.  Figure~\ref{fig:rq1-boxplot} shows cost
 distribution of test suites in each group as boxplots.  The
 distribution associated with the \shortg{} group is the most
@@ -327,20 +327,23 @@ For simplicity, we considered only the tests executed by default.
 
 \vspace{1ex}
 \begin{itemize}
-    \item \textbf{\RQB}
+    \item \numRQB. \textbf{\RQB}
 \end{itemize}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon; they account to nearly \percentMedLongRunning{} of the
-\numSubjs{} projects we analyzed.  However, parallelism by itself does
-not assure speedups on those projects.  One sensible factor that is
+\numSubjs{} projects we analyzed.  This reveals the importance to
+speedup test execution not only to huge projects as those from
+Google~\cite{google-tap,google-ci} and
+Microsoft~\cite{prasad-shulte-ieee-microsoft-ci}.  However, use of
+parallelism does not imply speedups.  One sensible factor that is
 important to the effectiveness of low-level parallelism is the
 distribution of test costs in the test suite.  In the limit, if cost
 is dominated by a single test, it is unlikely that parallelization
 will be beneficial as a test method is the smallest working unit in
 test frameworks (see Section~\ref{sec:frameworks}).
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
     \begin{subfigure}{0.47\textwidth}
       \centering
@@ -352,62 +355,84 @@ test frameworks (see Section~\ref{sec:frameworks}).
       \centering
       \includegraphics[width=\textwidth]{plots/testcost-medium.pdf}
       \caption{\label{fig:medtcost}Medium group.}
-    \end{subfigure}\\
-    \vspace{2ex}
-    \begin{subfigure}{0.15\textwidth}
-      \centering
-      \includegraphics[width=.85\textwidth]{plots/boxplots-testcases.pdf}
-        \caption{\label{fig:medtcost}Distribution of test cases.}
-    \end{subfigure}~
-    \begin{subfigure}{0.3\textwidth}
-      \centering
-      \includegraphics[width=.95\textwidth]{plots/scatter-testcost.pdf}
-        \caption{\label{fig:scattercost}\Fix{legend}}
-     \end{subfigure}\\
-    \vspace{2ex}
-    \begin{subfigure}{0.5\textwidth}
-      \centering
-      \begin{tabular}{rrrr}
-        \toprule
-        & $\sigma\leq1$ & $1<\sigma\leq5$ & $\sigma\ge5$ \\
-        \midrule    
-        Long   &  7 & 15 & 12 \\
-        Medium & 22 & 19 & 7 \\
-        \bottomrule
-      \end{tabular}
-      \caption{\label{fig:sd}Standard deviantion of test cases}
-    \end{subfigure}%
-    \caption{\label{fig:time-distributions}Distribution of test case
-    execution cost per project.}%
+    \end{subfigure}
+    %% \vspace{2ex}
+    %% \begin{subfigure}{0.5\textwidth}
+    %%   \centering
+    %%   \begin{tabular}{rrrr}
+    %%     \toprule
+    %%     & $\sigma\leq1$ & $1<\sigma\leq5$ & $\sigma\ge5$ \\
+    %%     \midrule    
+    %%     Long   &  7 & 15 & 12 \\
+    %%     Medium & 22 & 19 & 7 \\
+    %%     \bottomrule
+    %%   \end{tabular}
+    %%   \caption{\label{fig:sd}Standard deviation ($\sigma$) of test case running times.}
+    %% \end{subfigure}
+    \caption{\label{fig:time-distributions}Time distributions.}%
 \end{figure}
 
 \sloppy Figures~\ref{fig:longtcost} and~\ref{fig:medtcost} show the
-time distribution of tests per project.  We observed that the average
-median value of execution cost for a test was relatively small (dashed
-horizontal red lines), namely 0.31s for \medg{} projects and
-0.23s for \longg{} projects.  Note that correlation between cost
-of test suites and cost of their individual tests is not to be
-expected.  The standard deviation ($\sigma$) associated with each
-distribution was relatively low.  Figure~\ref{fig:sd} shows the number
-of projects within specific ranges of $\sigma$ values.  We also
-observed that projects with very high standard deviations may or may
-not be indicative of monopolization of execution by a small number of
-tests.  For example, the highest value of $\sigma$ occurred in project
-\CodeIn{uber\_chaperone}, whose test suite was classified as
-medium-running.  This project contains only \Fix{65} tests, \Fix{62} of
+time distribution of individual test cases per project.  We observed
+that the average median value of execution cost for a test was
+relatively small (dashed horizontal red lines), namely 0.31s for
+\medg{} projects and 0.23s for \longg{} projects.  The standard
+deviations associated with each distribution were relatively
+low.\Comment{ Figure~\ref{fig:sd} shows the number of projects within
+  specific ranges of $\sigma$ values.}  Note that high standard
+deviations may or may not be indicative of monopolization of execution
+by a small number of tests.  For example, the highest value of
+$\sigma$ occurred in \CodeIn{uber\_chaperone}, a project from the
+medium group.  This project contains only \Fix{65} tests, \Fix{62} of
 which take less than \Fix{0.5s} to run, \Fix{1} of which takes nearly
 \Fix{3s} to run, and \Fix{2} of which take \Fix{40m} to run.  This is
 an example where test suite parallelization may not be very beneficial
-as \Fix{$>$99\%} execution cost is dominated by only \Fix{3\%} of the
-tests.  Without these two tests this project would have been
+as \Fix{$>$99\%} of the execution cost is dominated by only \Fix{3\%}
+of the tests.  Without these two tests this project would have been
 classified as short-running.  A closer inspection in the data
-indicates that the project \CodeIn{uber\_chaperone} was an extreme case;
-we did not find projects with similar characteristics of time
+indicates that the project \CodeIn{uber\_chaperone} was an extreme
+case.  We did not find projects with similar characteristics of time
 monopolization.  Project \CodeIn{facebookarchive\_linkbench} is
 classified as long-running and has the second highest value of
 $\sigma$.  For this project, however, cost is distributed more
-smoothly across \Fix{529} tests, of which \Fix{119} take more than
-\Fix{1s} to run.  
+smoothly across \Fix{529} tests, of which \Fix{119 (23\%)} take more
+than \Fix{1s} to run.
+
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}{0.15\textwidth}
+    \centering
+    \includegraphics[width=.85\textwidth]{plots/boxplots-testcases.pdf}
+    \caption{\label{fig:size-testsuites}Size of test suites.}
+  \end{subfigure}
+  ~
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{plots/scatter-testcost.pdf}
+    \caption{\label{fig:scattercost}Size versus running time of
+      test suites.}
+  \end{subfigure}
+  \caption{\label{fig:time-versus-size}Relating size and time.}%
+\end{figure}
+
+Figure~\ref{fig:time-distributions} showed that the average median
+times were similar.  A closer inspection on results indicates that the
+difference in overall running times across projects in these groups is
+mainly justified by the number of test cases.
+Figure~\ref{fig:size-testsuites} shows the difference in the
+distribution of test suite sizes across groups.\Mar{$\leftarrow$ show
+  stats to indicate discrimination of two distributions} Furthermore,
+we also noted a strong positive correlation between running time and
+number of test on projects in the \longg{} group.  The positive
+correlation between these two variables was, however, weak in the
+\medg{} group, suggesting that saving time in this group with test
+suite parallelization may be more challenging as relatively fewer
+tests dominate overall execution time.  Figure~\ref{fig:scattercost}
+shows these results.
+
+%% This 
+%% indication that it is more beneficial to parallelize long projects as
+%% cost is spread across many
 
 \begin{center}
 \fbox{
@@ -789,3 +814,10 @@ another method of parallelization with distributed build machines.
 %% the meaning of cpuness} \Fix{Describe how I measured user, system and
 %% "wall" time}.  \Fix{Explain results}.  \Fix{show plots}}
 %% 
+
+%%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
+%%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS
+%%  LocalWords:  framexleftmargin CPUs Tahr sysstat gh Vagrantfile
+%%  LocalWords:  javadoc isolcpus JUnit's JUnitCore Gligoric boxplots
+%%  LocalWords:  outliers apache uber chaperone facebookarchive
+%%  LocalWords:  linkbench
