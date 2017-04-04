@@ -673,14 +673,13 @@ Figure~\ref{fig:freqmodes-static} summarizes our findings.
 
 To understand why developers prefer not use parallel test execution,
 we considered the \numNonParallel{} subjects that do not use any
-parallel mode from Section~\ref{sec:rqC-1} (\ie{}, \medg{} and
-\longg{}
-projects that does not run in parallel by default) and elaborated a
+parallel mode from Section~\ref{sec:rqC-1} and elaborated a
 quick survey to extent the comprehension about why developers do not
 use parallel configuration. \Luis{describe how we created the survey}.
 We first retrieve the last 20 commits from the project repository and
-got the developers e-mails. In total, we sent \emailsSent{} e-mails to
-different developers that recently contributed to the project.
+got the developers e-mails. In total, we sent an e-mail to
+\emailsSent{} developers that recently contributed to the
+\numNonParallel{} projects.
 There were \emailsAnswered{} replies, and \emailsTrueAnswers{} of
 those were answering the survey.
 
@@ -708,23 +707,33 @@ integration server; (d) Some other reason. Please elaborate.
 		\end{enumerate}
 \end{enumerate}
 }
+
+From the valid replies, we confirmed that the projects we sent the
+e-mails takes more than 1 minute to run tests and \emailsSeq{}
+confirmed that those projects do not use parallel testing using Maven
+Surefire. The other projects that we do not confirm, need and extra
+parameter to execute in parallel mode \Luis{make sure that they are
+inside the static analysis sheets made before}.
+
+We noticed that \pctEmailsCI{} of developers use an continuous integration 
+server to run tests, \pctEmailsLocal{} run tests in the
+development machine, \pctEmailsDidNotSpecify{} did not specified their
+testing setup.
+We also noticed that one project has testing enabled without parallel 
+configuration, however, the maintainers never run the test. 
+Considering developers did not know about the existence of the
+parallelism configuration \pctEmailsDoNotKnow{} of the replies
+confirmed that. Three of the developers also confirmed that they use
+another method of parallelization with distributed build machines.
+
 \begin{center}
 \fbox{
-  \begin{minipage}{8cm}
-      \textit{Answering \numRQE{}:~\emph{\Luis{summarize
-	  findings...}}}
-  \end{minipage}
+	\begin{minipage}{8cm}
+		\textit{Answering \numRQE{}:~\emph{\Luis{summarize
+		findings...}}}
+	\end{minipage}
 }
 \end{center}
-
-
-\Luis{these values need macro $\rightarrow$}
-From the valid replies, we noticed that \Fix{55.2\%
-(16/\emailsTrueAnswers{})} of developers use an external continuous
-integration server to run tests, \Fix{27.6\% (8/\emailsTrueAnswers{})} run tests in the
-development machine, \Fix{13.8\% (4/\emailsTrueAnswers{})} did
-not specified the environment.
-
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the
