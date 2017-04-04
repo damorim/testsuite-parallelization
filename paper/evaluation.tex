@@ -734,8 +734,8 @@ We first retrieve the last 20 commits from the project repository and
 got the developers e-mails. In total, we sent an e-mail to
 \emailsSent{} developers that recently contributed to the
 \numNonParallel{} projects.
-There were \emailsAnswered{} replies, and \emailsTrueAnswers{} of
-those were answering the survey.
+There were \emailsAnswered{} replies from \emailsProjectsAnswered{}, 
+and \emailsFalseAnswers{} was not able to explain how the testing works.
 
 The survey sent was composed by three open questions and one closed
 question: (I) How long does it take for test to run in your
@@ -762,23 +762,21 @@ integration server; (d) Some other reason. Please elaborate.
 \end{enumerate}
 }
 
-From the valid replies, we confirmed that the projects we sent the
-e-mails takes more than 1 minute to run tests and \emailsSeq{}
-confirmed that those projects do not use parallel testing using Maven
-Surefire. The other projects that we do not confirm, need and extra
-parameter to execute in parallel mode \Luis{make sure that they are
-inside the static analysis sheets made before}.
+From the valid replies, we confirmed that the projects takes more than
+\Fix{1m} to run tests and \emailsSeq{} confirmed that those projects do not use 
+parallel testing using Maven Surefire. The other projects that we do not 
+confirm, need and extra parameter to execute in parallel mode \Luis{make 
+sure that they are inside the static analysis sheets made before}.
 
 We noticed that \pctEmailsCI{} of developers use an continuous integration 
 server to run tests, \pctEmailsLocal{} run tests in the
 development machine, \pctEmailsDidNotSpecify{} did not specified their
-testing setup.
-We also noticed that one project has testing enabled without parallel 
-configuration, however, the maintainers never run the test. 
+testing setup. We also observed that one project has testing enabled 
+without parallelization. However the maintainers do not execute the tests.
 Considering developers did not know about the existence of the
 parallelism configuration \pctEmailsDoNotKnow{} of the replies
 confirmed that. Three of the developers also confirmed that they use
-another method of parallelization with distributed build machines.
+another method of parallelization with a distributed build machines.
 
 \begin{center}
 \fbox{
