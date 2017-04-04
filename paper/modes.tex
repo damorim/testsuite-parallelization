@@ -125,11 +125,13 @@ corresponding results when jobs finish.  Note that forking can only be
 combined with configuration \SeqClassParMeth{} (see
 Section~\ref{sec:frameworks}) as Maven only accepts one test class at
 a time per forked process.\Mar{$\leftarrow$Are you sure about this?
-  It seems silly.  Maybe, the rationale is to ``keep design simple''.}
+  It seems silly.  Maybe, the rationale is to ``keep design
+  simple''.}\Jbc{I'm sure. in addition to keep design simple, I feel
+  like this was initially conceived to run tests in isolation}
 To attenuate the non-trivial cost of spawning new processes and JVMs on
 every test class, Maven offers an option to reuse the
 JVM.\Mar{$\leftarrow$confirma?  se sim, pode mostrar isto na
-  configuracao abaixo?}
+  configuracao abaixo?}\Jbc{added...}
 
 %%We are unaware of other build system capable of running multiple
 %%classes at time within a forked process.
@@ -154,7 +156,7 @@ JVM.\Mar{$\leftarrow$confirma?  se sim, pode mostrar isto na
     numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
     basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
     morekeywords={parallel, threadCount, perCoreThreadCount,
-    forkCount, reuseFork},
+    forkCount, reuseForks},
     deletekeywords={true}
 }
 \begin{lstlisting}
@@ -163,6 +165,7 @@ JVM.\Mar{$\leftarrow$confirma?  se sim, pode mostrar isto na
     <artifactId>maven-surefire-plugin</artifactId>
     <configuration>
         <forkCount>1C</forkCount>
+        <reuseForks>true</reuseForks>
         <parallel>methods</parallel>
         <threadCount>5</threadCount>
     </configuration>
@@ -178,7 +181,9 @@ With this configuration, Maven~---~through its test plugin
 Surefire~\cite{maven-surefire-plugin}~---~forks one JVM per core
 (\CodeIn{forkCount} parameter) and uses five threads
 (\CodeIn{threadCount} parameter) to run methods (\CodeIn{parallel}
-parameter) within each forked JVM.
+parameter) within each forked JVM. After the execution of a test
+class, Maven reuses the forked JVM for the next execution
+(\CodeIn{reuseFork} parameter).
 
 %%  LocalWords:  parallelization CPUs JUnit TestNG NUnit multi JVM de
 %%  LocalWords:  JVMs falar explicar configuracao ilustrada levanta
