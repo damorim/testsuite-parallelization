@@ -564,7 +564,6 @@ relevant configurations and classify their parallelization level (see
 Section \ref{sec:modes}) based on their values. To avoid waiting all
 tests to terminate, we just run the bootstrap phase and we skip the
 actual test execution.
-
 According to Maven's documentation~\cite{maven-surefire-plugin}, any
 parallelization setting depends either on (1) \CodeIn{parallel} to
 define the parallelism level within a JVM followed by
@@ -572,8 +571,11 @@ define the parallelism level within a JVM followed by
 in older versions) to define the number of forked JVMs. For each test
 execution, we look for theses parameters and their values to classify
 them.  \Jbc{Missing: explain how we mapped the configurations to
-parallel level.} Figure~\ref{fig:freqmodes-dynamic} summarizes our
-findings.
+parallel level.}
+
+From the \numMedLong{} projects, we identified \numProjectsPar{}
+projects with parallel execution enabled by default.
+Figure~\ref{fig:freqmodes-dynamic} summarizes our findings.
 
 \begin{figure}[h!]
     \centering
