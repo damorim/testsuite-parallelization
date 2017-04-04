@@ -548,41 +548,43 @@ To evaluate the support of parallel execution of test suites, we
 considered the \numMedLong{} projects that ran in at least one minute
 identified in Section~\ref{sec:rqA} (\ie, \medg{} and \longg{}
 groups). We are interested to know if developers consider low-level
-parallelism features to amortize the execution cost. More precisely,
-we investigate if there are projects with parallelism configuration
-enabled by default or if developers configure this feature to run only
-on specific scenarios (\eg, dedicated server).  We describe our
-approach as follows:
+parallelism modes to amortize the execution cost (see
+Section~\ref{sec:modes}). More precisely, we investigate if there are
+projects with parallelization modes enabled by default or if
+developers configure this feature to run only on specific scenarios
+(\eg, dedicated server).  We describe our approach as follows:
 
 
 \subsubsection{Test execution with parallelism enabled by default}
 \label{sec:rqC-1}
 
-We configured Maven to output all configuration variables.  The
-rationale is that, for each project's module, we can capture relevant
-configurations and classify their parallelization level (see Section
-\ref{sec:modes}) based on their values. To avoid waiting all tests to
-terminate, we just run the bootstrap phase and we skip the actual test
-execution.  According to Maven's
-documentation~\cite{maven-surefire-plugin}, any parallelization
-setting depends either on (1) \CodeIn{parallel} to define the
-parallelism mode within a JVM followed by \CodeIn{threadCount} or (2)
-\CodeIn{forkCount} (or \CodeIn{forkMode} in older versions) to define
-the number of forked JVMs. For each test execution, we look for theses
-parameters and their values to map to one of the possible
-parallelization modes.  For instance, if a given project contains a
-module with the setting \CodeIn{<forkCount>1C</forkCount>}, the
-possible classifications are \ForkSeq{} or \ForkParMeth{} depending on
-the presence and the value of the parameter \CodeIn{parallel}.
+We re-executed the tests from the \numMedLong{} projects and we
+configured Maven to output all runtime parameters and their current
+values. We run only the test bootstrap step as the actual test
+execution is unnecessary to output the runtime parameters.  From the
+Maven output, we capture the parameters related to parallelism
+configurations and mapped these configurations to a parallelization
+mode.
+According to Maven's documentation~\cite{maven-surefire-plugin}, any
+parallelism configuration depends either on (1) the parameter
+\CodeIn{parallel} to define the parallelism mode within a JVM followed
+by the parameter \CodeIn{threadCount} or (2) the parameter
+\CodeIn{forkCount}\footnote{This parameter is named \CodeIn{forkMode}
+in old versions of Maven Surefire} to define the number of forked
+JVMs. For each execution, we capture theses parameters and their
+values to map to one of the possible parallelization modes.  For
+instance, if a given project contains a module with the parameter
+\CodeIn{<forkCount>1C</forkCount>}, the possible classifications are
+\ForkSeq{} or \ForkParMeth{} depending on the presence and the value
+of the parameter \CodeIn{parallel} (\ie, the presence of
+\CodeIn{<parallel>methods</parallel>} results in the parallel mode
+\ForkParMeth{}).
 Large projects may contain several test suites distributed on
 different Maven modules with different configurations. In this case,
 we collect the Maven output from each module and we consider only the
 distinct configurations. For instance, if a project contains two
 modules with the same parallelism mode, we count only one occurrence
-to not inflate our final results. Finally, some projects use a value
-informed as an argument instead of adding the value statically in the
-configuration value. In this case, we consider all possible values for
-the parameterized parameter.  From the \numMedLong{} projects, we
+to not inflate our results.  From the \numMedLong{} projects, we
 identified \numProjectsPar{} projects with parallel execution enabled
 by default.  Figure~\ref{tab:freqmodes-dynamic} summarizes our
 findings.
@@ -598,22 +600,22 @@ findings.
 %\end{figure}
 \begin{figure}[ht!]
     \centering
-    \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}llll}
+    \resizebox{.48\textwidth}{!}{%
+    \begin{tabular}{llcl}
         \toprule
-        Group & Subject & - & -\\%
+        Group & Subject & \# of modules & Mode\\%
         \midrule%
-        long   & JenkinsCI gerrit-trigger-plugin & 1 & \ForkSeq{}\\%
-        medium & Jcabi & 1 & \ParClassParMeth{}\\%
+        long   & JenkinsCI Gerrit Trigger Plugin & 1 & \ForkSeq{}\\%
+        medium & Jcabi Github & 1 & \ParClassParMeth{}\\%
         medium & Jankotek MapDB & 1 & \ParClassParMeth{}\\%
-        medium & Apache logging-log4J2 & 25 & \ForkSeq{}\\%
+        medium & Apache Logging Log4J2 & 25 & \ForkSeq{}\\%
         medium & Javaslang & 3 & \ParClassParMeth{}\\%
         \bottomrule%
-    \end{tabular*}
-    \caption{\Fix{TODO}}
+    \end{tabular}}
+    \caption{Subjects with test execution in parallel enabled by
+    default}
     \label{tab:freqmodes-dynamic}
 \end{figure}
-
-\Fix{Elaborate findings....}
 
 \subsubsection{Support of parallelization configuration in build files}
 \label{sec:rqC-2}
@@ -628,6 +630,11 @@ value \CodeIn{maven-surefire-plugin} and a \CodeIn{configuration}
 node. Figure~\ref{fig:surefire-configuration} shows an example of
 configuration node mined. This mining step, however, is not sound as a matching project may not 
 indicate a project with a valid configuration for running tests in parallel.
+
+Finally, some projects use a value informed as an argument in the
+command line instead of declaring a static value in the configuration
+file (\ie, \pomf{}). In this case, we consider all valid values for
+the parameter.
 
 %False positive can happen because of comments, for instance.  
 %To eliminate the cases of false positives and also to categorize 
