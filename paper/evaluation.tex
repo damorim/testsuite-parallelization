@@ -505,25 +505,14 @@ shows these results.
 
 To answer \numRQD{}, we considered \numProjectsPar{} subjects that we
 tested and confirmed parallelization activated by default (see
-Section~\ref{sec:rqC-1}), and compared their time cost with sequential
-execution. We are interested in measuring the execution speedup (if
-any) when the parallelization settings are activated.
-
-%% To answer \numRQD{}, we considered the \numProjectsPar{} subjects with
-%% parallelization settings enabled by default identified in \numRQC{}
-%% and compared their time cost with sequential execution. We are
-%% interested in measuring the execution speedup (if any) when the
-%% parallelization settings are activated. It is important to mention
-%% that we ignored the remaining \Fix{??} subjects identified in
-%% Section~\ref{sec:rqC-2} because it would be impractical to execute
-%% each subject on specific conditions to measure the impact of
-%% parallelization.
-
-To enforce sequential execution, we analyzed the \numProjectsPar{}
-subjects looking for the parallelism configuration inside the \pomf{} 
-of each module. To run the subjects sequentially, we manually modified 
-the Maven Surefire configuration in order to force the subjects to
-execute tests in sequential mode.
+Section~\ref{sec:rqC-1}). To measure the overall speedup obtained from
+parallel execution, we compared the elapsed time in the default
+execution (parallelization enabled) and re-executed the tests
+sequentially.
+To enforce sequential execution,
+\Fix{elaborar metodologia}
+\Fix{dizer que verificamos que a execucao eh consistente e o
+outcome eh igual ao da execucao padrao}.
 
 \begin{center}
 \fbox{
