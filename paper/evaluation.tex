@@ -558,33 +558,59 @@ approach as follows:
 \subsubsection{Test execution with parallelism enabled by default}
 \label{sec:rqC-1}
 
-Initially, we configured Maven to output all configuration variables.
-The rationale is that, for each project's module, we can capture
-relevant configurations and classify their parallelization level (see
-Section \ref{sec:modes}) based on their values. To avoid waiting all
-tests to terminate, we just run the bootstrap phase and we skip the
-actual test execution.
-According to Maven's documentation~\cite{maven-surefire-plugin}, any
-parallelization setting depends either on (1) \CodeIn{parallel} to
-define the parallelism level within a JVM followed by
-\CodeIn{threadCount} or (2) \CodeIn{forkCount} (or \CodeIn{forkMode}
-in older versions) to define the number of forked JVMs. For each test
-execution, we look for theses parameters and their values to classify
-them.  \Jbc{Missing: explain how we mapped the configurations to
-parallel level.}
+We configured Maven to output all configuration variables.  The
+rationale is that, for each project's module, we can capture relevant
+configurations and classify their parallelization level (see Section
+\ref{sec:modes}) based on their values. To avoid waiting all tests to
+terminate, we just run the bootstrap phase and we skip the actual test
+execution.  According to Maven's
+documentation~\cite{maven-surefire-plugin}, any parallelization
+setting depends either on (1) \CodeIn{parallel} to define the
+parallelism mode within a JVM followed by \CodeIn{threadCount} or (2)
+\CodeIn{forkCount} (or \CodeIn{forkMode} in older versions) to define
+the number of forked JVMs. For each test execution, we look for theses
+parameters and their values to map to one of the possible
+parallelization modes.  For instance, if a given project contains a
+module with the setting \CodeIn{<forkCount>1C</forkCount>}, the
+possible classifications are \ForkSeq{} or \ForkParMeth{} depending on
+the presence and the value of the parameter \CodeIn{parallel}.
+Large projects may contain several test suites distributed on
+different Maven modules with different configurations. In this case,
+we collect the Maven output from each module and we consider only the
+distinct configurations. For instance, if a project contains two
+modules with the same parallelism mode, we count only one occurrence
+to not inflate our final results. Finally, some projects use a value
+informed as an argument instead of adding the value statically in the
+configuration value. In this case, we consider all possible values for
+the parameterized parameter.  From the \numMedLong{} projects, we
+identified \numProjectsPar{} projects with parallel execution enabled
+by default.  Figure~\ref{tab:freqmodes-dynamic} summarizes our
+findings.
 
-From the \numMedLong{} projects, we identified \numProjectsPar{}
-projects with parallel execution enabled by default.
-Figure~\ref{fig:freqmodes-dynamic} summarizes our findings.
-
-\begin{figure}[h!]
+%\begin{figure}[h!]
+%    \centering
+%    \includegraphics[width=0.32\textwidth]{plots/barplot-modes-dynamic.pdf}
+%    \caption{\label{fig:freqmodes-dynamic}\Fix{fix
+%    caption}Distribution of parallel modes identified dynamically in a
+%    subset of \numProjectsPar{} projects.  A project may have support
+%    to more than one parallel mode. Also, a project may run only a
+%    subset tests in parallel by default.}
+%\end{figure}
+\begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.32\textwidth]{plots/barplot-modes-dynamic.pdf}
-    \caption{\label{fig:freqmodes-dynamic}\Fix{fix
-    caption}Distribution of parallel modes identified dynamically in a
-    subset of \numProjectsPar{} projects.  A project may have support
-    to more than one parallel mode. Also, a project may run only a
-    subset tests in parallel by default.}
+    \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}llll}
+        \toprule
+        Group & Subject & - & -\\%
+        \midrule%
+        long   & JenkinsCI gerrit-trigger-plugin & 1 & \ForkSeq{}\\%
+        medium & Jcabi & 1 & \ParClassParMeth{}\\%
+        medium & Jankotek MapDB & 1 & \ParClassParMeth{}\\%
+        medium & Apache logging-log4J2 & 25 & \ForkSeq{}\\%
+        medium & Javaslang & 3 & \ParClassParMeth{}\\%
+        \bottomrule%
+    \end{tabular*}
+    \caption{\Fix{TODO}}
+    \label{tab:freqmodes-dynamic}
 \end{figure}
 
 \Fix{Elaborate findings....}
