@@ -78,16 +78,17 @@ conditions on shared data during execution.  Data sharing can occur
 through state that is reachable from statically-declared variables in
 the program or through variables declared within the scope of the test
 class~\cite{luo-etal-fse2014}.  Considering data race avoidance,
-intuitively, configuration \SeqClassParMeth{} is preferable over
-\ParClassSeqMeth{} when it is clear that test methods in a class do
-not manipulate shared state, which can be challenging to
-determine~\cite{bell-etal-esecfse2015}, whereas \ParClassSeqMeth{} is
-preferable over \SeqClassParMeth{} when it is clear that several test
-methods in one class perform operations involving shared data.
-Configuration \ParClassParMeth{} is more likely to manifest data races
-during execution as it does not restrict scheduling orderings. Note
-that speedups depend on several factors, including the test suite size
-and distribution of test methods per class.
+configuration \SeqClassParMeth{} is preferable over \ParClassSeqMeth{}
+when it is clear that test methods in a class do not manipulate shared
+state, which can be challenging to
+determine~\cite{bell-etal-esecfse2015}.  Similarly, \ParClassSeqMeth{}
+is preferable over \SeqClassParMeth{} when it is clear that several
+test methods in a class perform operations involving shared data.
+Configuration \ParClassParMeth{} does not restrict scheduling
+orderings.  Consequently, it is more likely to manifest data races
+during execution. Note that speedups depend on several factors,
+including the test suite size and distribution of test methods per
+class.
 
 \subsection{Build Systems}
 \label{sec:builder}
@@ -118,15 +119,14 @@ partition of the test set.
 
 Forking OS processes to run test jobs is a popular mechanism of build
 systems to obtain parallelism at the machine space (see
-Figure~\ref{fig:levels}).  For Java-based systems (e.g., Maven and
-Ant), this amounts to spawning one JVM instance (per process) per CPU,
-on a machine with potentially many virtual CPUs, and aggregating
-corresponding results when jobs finish.  Note that forking can only be
-combined with configuration \SeqClassParMeth{} (see
-Section~\ref{sec:frameworks}) as Maven only accepts one test class at
-a time per forked process.  To attenuate the non-trivial cost of
-spawning new processes and JVMs on every test class, Maven offers an
-option to reuse the JVM.
+Figure~\ref{fig:levels}).  For Java-based build systems, such as Maven
+and Ant, this amounts to spawning one JVM instance to handle a test
+job and aggregating corresponding results when test jobs finish.  Note
+that forking can only be combined with configuration
+\SeqClassParMeth{} (see Section~\ref{sec:frameworks}) as Maven only
+accepts one test class at a time per forked process.  To attenuate the
+non-trivial cost of spawning new JVM processes on every test class,
+Maven offers an option to reuse the JVM.
 
 %% \Mar{$\leftarrow$Are you sure about this?
 %%   It seems silly.  Maybe, the rationale is to ``keep design
@@ -180,13 +180,13 @@ option to reuse the JVM.
 \subsubsection*{Example}~Figure~\ref{fig:surefire} shows a
 fragment of a Maven configuration file, known as \pomf{}, highlighting
 options to run tests using the parallel execution mode \ForkParMeth{}.
-With this configuration, Maven~---~through its test plugin
-Surefire~\cite{maven-surefire-plugin}~---~forks one JVM per core
-(\CodeIn{forkCount} parameter) and uses five threads
-(\CodeIn{threadCount} parameter) to run methods (\CodeIn{parallel}
-parameter) within each forked JVM. After the execution of a test
-class, Maven reuses the forked JVM for the next execution
-(\CodeIn{reuseFork} parameter).
+Maven implements this feature through its JUnit test plugin
+Surefire~\cite{maven-surefire-plugin}.  With this configuration, Maven
+forks one JVM per core (\CodeIn{forkCount} parameter) and uses five
+threads (\CodeIn{threadCount} parameter) to run test methods
+(\CodeIn{parallel} parameter) within each forked JVM.  Maven reuses
+created JVMs on subsequent forks when execution of a test class
+terminates (\CodeIn{reuseFork} parameter).
 
 %%  LocalWords:  parallelization CPUs JUnit TestNG NUnit multi JVM de
 %%  LocalWords:  JVMs falar explicar configuracao ilustrada levanta
@@ -194,4 +194,4 @@ class, Maven reuses the forked JVM for the next execution
 %%  LocalWords:  xleftmargin framexleftmargin basicstyle boxpos
 %%  LocalWords:  numberstyle morekeywords threadCount forkCount
 %%  LocalWords:  perCoreThreadCount reuseFork deletekeywords groupId
-%%  LocalWords:  artifactId
+%%  LocalWords:  artifactId reuseForks
