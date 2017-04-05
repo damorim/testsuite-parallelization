@@ -533,15 +533,17 @@ shows these results.
 To answer \numRQD{}, we considered \numProjectsPar{} subjects that we
 tested and confirmed parallelization activated by default (see
 Section~\ref{sec:rqC-1}). To measure the overall speedup obtained from
-parallel execution, we compared the elapsed time in the default
-execution (parallelization enabled) and re-executed the tests
-sequentially.  To enforce sequential execution, we modified the
-existing configurations. Also, we verified that, for each project,
-both executions (\ie, default and sequential) are consistent and
-produce the same outcome. To compute the speedup, we divide the
-sequential time by the default execution. For instance, for a project
-that runs in $10m$ sequentially and runs in $5m$ in the default execution,
-the speedup is two.
+parallel execution, we compared the elapsed time from the default
+execution (parallelization enabled) and the elapsed time from the
+sequential execution.  For each project, we modified the existing
+configurations to disable the parallel test execution. In addition, we
+verified that both executions produce the same outcome to eliminate
+noise from failing tests.
+To compute the speedup, we divide the time obtained in the sequential
+execution by the time obtained from the default execution.  For
+instance, if a project runs the tests sequentially in $10m$ and the
+same execution runs in $5m$ with parallelization enabled (default
+execution), the speedup is two.
 
 \begin{figure}[h!]
 \centering
@@ -566,15 +568,23 @@ Medium & Apache Log4J2 & 8.21m & 4.73m & x0.58\\%
 \label{tab:speedup}
 \end{figure}
 
-Figure~\ref{tab:speedup} summarizes our findings.
-\Fix{falar sobre o resultado geral dos speedups - elaborar menor e
-maior speedup}
+Figure~\ref{tab:speedup} summarizes our findings by increasing order
+of speedup. The columns ``Group'' and ``Name'' indicates the time cost
+group and the name of the subject, column ``T$_{\text{d}}$'' reports
+the elapsed time in the default execution, the column
+``T$_{\text{s}}$'' reports the elapsed time in the sequential
+execution, and the column ``Speedup'' reports the overall speedup. We
+observed that \Fix{falar sobre o resultado geral dos speedups -
+elaborar menor e maior speedup... acho que so vale a pena discutir
+quando tiver conviccao dos 2 casos}
 
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
-      \textit{Answering \numRQD{}:}~\emph{\Jbc{summarize
-      findings.....}}
+      \textit{Answering \numRQD{}:}~\emph{Overall, results indicate
+      that the speedup obtained with parallelization is
+      \Fix{$\sim$x\%} (in average) for \Fix{\%} of the projects
+      (\Fix{x} out of \Fix{w}). }
   \end{minipage}
 }
 \end{center}
@@ -652,13 +662,13 @@ of modules with tests in the default execution, and the column
         \midrule%
         Long   & JenkinsCI Gerrit Trigger Plugin & 1 & \ForkSeq{}\\%
         Medium & Apache Logging Log4J2 & 25 & \ForkSeq{}\\%
-        Medium & Apache Flink & - & - \\%
-        Medium & BounceStorage Chaos HTTP Proxy & - & -\\%
-        Medium & Hazelcast Jet & - & -\\%
+        Medium & Apache Flink & 74 & \ForkSeq{} \\%
+        Medium & BounceStorage Chaos HTTP Proxy & 1 & \ParClassSeqMeth{}\\%
+        Medium & Hazelcast Jet & 7 & \ForkSeq{}\\%
         Medium & Jankotek MapDB & 1 & \ParClassParMeth{}\\%
-        Medium & Javaslang & - & \ParClassParMeth{}\\%
-        Medium & Jcabi Github & - & \ParClassParMeth{}\\%
-        Medium & Spotify Helios & - & - \\%
+        Medium & Javaslang & 3 & \ParClassParMeth{}\\%
+        Medium & Jcabi Github & 1 & \ParClassParMeth{}\\%
+        Medium & Spotify Helios & 8 & \ForkSeq{}\\%
         \bottomrule%
     \end{tabular}}
     \caption{Subjects with parallel test execution enabled by
