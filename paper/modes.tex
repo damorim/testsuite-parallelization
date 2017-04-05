@@ -116,22 +116,25 @@ partition of the test set.
 %% enable parallel execution within each process in addition to running
 %% test classes on different processes.
 
-Forking OS processes to run test jobs is a common feature of build
-systems as to obtain parallelism at the machine space (see
+Forking OS processes to run test jobs is a popular mechanism of build
+systems to obtain parallelism at the machine space (see
 Figure~\ref{fig:levels}).  For Java-based systems (e.g., Maven and
 Ant), this amounts to spawning one JVM instance (per process) per CPU,
 on a machine with potentially many virtual CPUs, and aggregating
 corresponding results when jobs finish.  Note that forking can only be
 combined with configuration \SeqClassParMeth{} (see
 Section~\ref{sec:frameworks}) as Maven only accepts one test class at
-a time per forked process.\Mar{$\leftarrow$Are you sure about this?
-  It seems silly.  Maybe, the rationale is to ``keep design
-  simple''.}\Jbc{I'm sure. in addition to keep design simple, I feel
-  like this was initially conceived to run tests in isolation}
-To attenuate the non-trivial cost of spawning new processes and JVMs on
-every test class, Maven offers an option to reuse the
-JVM.\Mar{$\leftarrow$confirma?  se sim, pode mostrar isto na
-  configuracao abaixo?}\Jbc{added...}
+a time per forked process.  To attenuate the non-trivial cost of
+spawning new processes and JVMs on every test class, Maven offers an
+option to reuse the JVM.
+
+%% \Mar{$\leftarrow$Are you sure about this?
+%%   It seems silly.  Maybe, the rationale is to ``keep design
+%%   simple''.}\Jbc{I'm sure. in addition to keep design simple, I feel
+%%   like this was initially conceived to run tests in isolation}
+
+%% \Mar{$\leftarrow$confirma?  se sim, pode mostrar isto na
+%%   configuracao abaixo?}\Jbc{added...}
 
 %%We are unaware of other build system capable of running multiple
 %%classes at time within a forked process.
