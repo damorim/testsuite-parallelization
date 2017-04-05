@@ -508,11 +508,35 @@ tested and confirmed parallelization activated by default (see
 Section~\ref{sec:rqC-1}). To measure the overall speedup obtained from
 parallel execution, we compared the elapsed time in the default
 execution (parallelization enabled) and re-executed the tests
-sequentially.
-To enforce sequential execution,
-\Fix{elaborar metodologia}
-\Fix{dizer que verificamos que a execucao eh consistente e o
-outcome eh igual ao da execucao padrao}.
+sequentially.  To enforce sequential execution, we modified the
+existing configurations. Also, we verified that, for each project,
+both executions (\ie, default and sequential) are consistent and
+produce the same outcome. To compute the speedup, we divide the
+sequential time by the default execution. For instance, for a project
+that runs in $10m$ sequentially and runs in $5m$ in the default execution,
+the speedup is two.
+
+\begin{figure}[ht!]
+\centering
+\resizebox{.48\textwidth}{!}{%
+\begin{tabular}{lllll}
+\toprule
+Group & Subject & T$_{\text{p}}$ & T$_{\text{s}}$ & Speedup\\%
+\midrule%
+Long   & JenkinsCI Gerrit Trigger Plugin & \Fix{?} & \Fix{?} & \Fix{?}\\%
+Medium & Apache Logging Log4J2           & \Fix{?} & \Fix{?} & \Fix{?}\\%
+Medium & Jankotek MapDB                  & \Fix{?} & \Fix{?} & \Fix{?}\\%
+Medium & Javaslang                       & \Fix{?} & \Fix{?} & \Fix{?}\\%
+Medium & Jcabi Github                    & \Fix{?} & \Fix{?} & \Fix{?}\\%
+\bottomrule%
+\end{tabular}}
+\caption{\Fix{Comparacao de tempo sequencial e paralelo}}
+\label{tab:speedup}
+\end{figure}
+
+Figure~\ref{tab:speedup} summarizes our findings.
+\Fix{falar sobre o resultado geral dos speedups - elaborar menor e
+maior speedup}
 
 \begin{center}
 \fbox{
@@ -638,13 +662,13 @@ the parameter.
 %% Figure \Fix{removed} describes the discovery step: we list the paths
 %% of all build files and filter only the files that contain any of the
 
-Figure~\ref{tab:inspection-table} summarizes our results. \Fix{The first
-column indicates the group of projects according to their time cost.
-The second column indicates the number of build files per group.
-The last column indicates the ratio of projects with parallelization settings.
-From the \numMedLong{} subjects, we found \pomMedLong{} \pomf{} files.
-The \numPomMatched{} configurations are distributed across
-\numProjectsPar{} projects from our sample.}
+Figure~\ref{tab:inspection-table} summarizes our results.
+\Fix{The first column indicates the group of projects according to
+their time cost.  The second column indicates the number of build
+files per group.  The last column indicates the ratio of projects with
+parallelization settings.  From the \numMedLong{} subjects, we found
+\pomMedLong{} \pomf{} files.  The \numPomMatched{} configurations are
+distributed across \numProjectsPar{} projects from our sample.}
 
 % \emph{From these results we found that $\sim$51\% of medium and
 % long-running projects do not use parallel features to run test
@@ -667,7 +691,6 @@ The \numPomMatched{} configurations are distributed across
     \caption{\Fix{This is a COPY from the previous table!}}
     \label{tab:inspection-table}
 \end{figure}
-
 %% \begin{figure}[ht!]
 %%     \centering
 %%     \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}ccc}
@@ -725,8 +748,9 @@ The \numPomMatched{} configurations are distributed across
       \textit{Answering \numRQC{}:}~\emph{Overall, results indicate
       that parallelism features are underused by default given that
       only \percentParallel{} of projects  (5 out of \numMedLong)
-      supports parallel execution of test suites without any extra
-      parameter.}
+      supports parallel execution of test suites by default and
+      \Fix{?\%} (\Fix{y} out of \numMedLong{}) require additional
+      parameters to enable these features.}
   \end{minipage}
 }
 \end{center}
