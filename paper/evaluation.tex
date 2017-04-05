@@ -527,22 +527,26 @@ shows these results.
 \label{sec:rqD}
 
 \begin{itemize}
-    \item \textbf{\RQD}
+    \item \numRQD{}. \textbf{\RQD}
 \end{itemize}
 
-To answer \numRQD{}, we considered \numProjectsPar{} subjects that we
-tested and confirmed parallelization activated by default (see
-Section~\ref{sec:rqC-1}). To measure the overall speedup obtained from
-parallel execution, we compared the elapsed time from the default
-execution (parallelization enabled) and the elapsed time from the
-sequential execution.  For each project, we modified the existing
-configurations to disable the parallel test execution. In addition, we
-verified that both executions produce the same outcome to eliminate
-noise from failing tests.
-To compute the speedup, we divide the time obtained in the sequential
-execution by the time obtained from the default execution.  For
-instance, if a project runs the tests sequentially in $10m$ and the
-same execution runs in $5m$ with parallelization enabled (default
+To answer \numRQD{}, we considered all \numProjectsPar{} subjects from
+our benchmark that use parallelization by default in Maven to run
+tests.  Section~\ref{sec:rqC-1} describes in detail our methodology to
+identify these subjects. For each project, the speedup (or slowdown)
+corresponds to the ratio between the elapsed time of a sequential
+execution and the elapsed time of a corresponding parallel execution,
+obtained as described in the script from
+Figure~\ref{fig:mvn-execution}.  As usual, a ratio above 1x denotes
+speedup and a ratio below 1x denotes slowdown.
+
+For each project, we modified the existing configurations to disable
+the parallel test execution. In addition, we verified that both
+executions produce the same outcome to eliminate noise from failing
+tests.  To compute the speedup, we divide the time obtained in the
+sequential execution by the time obtained from the default execution.
+For instance, if a project runs the tests sequentially in $10m$ and
+the same execution runs in $5m$ with parallelization enabled (default
 execution), the speedup is two.
 
 \begin{figure}[h!]
