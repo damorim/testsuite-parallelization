@@ -636,7 +636,7 @@ distinct configurations. For instance, if a project contains two
 modules with the same parallelism mode, we count only one occurrence
 to not inflate our results.
 From the \numMedLong{} projects, we identified \numProjectsPar{}
-projects with the parallel execution modes \ForkSeq{} and
+projects with the parallel execution modes \ForkSeq{}, \ParClassSeqMeth{} and
 \ParClassParMeth{} enabled by default.
 Figure~\ref{tab:freqmodes-dynamic} summarizes our findings. The column
 ``Group'' indicates the test cost group (see
@@ -739,7 +739,7 @@ distributed across \numProjectsPar{} projects from our sample.}
         Medium &Spotify Helios & 3 & \ForkSeq\\%
         \bottomrule%
     \end{tabular}}
-    \caption{\Fix{legend}}
+    \caption{Subjects with parallelization configurations in build files.}
     \label{tab:inspection-table}
 \end{figure}
 %% \begin{figure}[ht!]
