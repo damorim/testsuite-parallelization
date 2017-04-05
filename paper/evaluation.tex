@@ -543,21 +543,26 @@ sequential time by the default execution. For instance, for a project
 that runs in $10m$ sequentially and runs in $5m$ in the default execution,
 the speedup is two.
 
-\begin{figure}[ht!]
+\begin{figure}[h!]
 \centering
 \resizebox{.48\textwidth}{!}{%
-\begin{tabular}{lllll}
+\begin{tabular}{llrrl}
 \toprule
-Group & Subject & T$_{\text{p}}$ & T$_{\text{s}}$ & Speedup\\%
+Group & Subject & T$_{\text{d}}$ & T$_{\text{s}}$ & Speedup\\%
 \midrule%
-Long   & JenkinsCI Gerrit Trigger Plugin & \Fix{?} & \Fix{?} & \Fix{?}\\%
-Medium & Apache Logging Log4J2           & \Fix{?} & \Fix{?} & \Fix{?}\\%
-Medium & Jankotek MapDB                  & \Fix{?} & \Fix{?} & \Fix{?}\\%
-Medium & Javaslang                       & \Fix{?} & \Fix{?} & \Fix{?}\\%
-Medium & Jcabi Github                    & \Fix{?} & \Fix{?} & \Fix{?}\\%
+Medium & Jcabi GitHub & 0.30m & 2.75m & x9.01\\%
+Medium & Apache Flink & 2.57m & 10.02m & x3.90\\%
+Medium & Spotify Helios & 1.63m & 3.70m & x2.28\\%
+Medium & Hazelcast Jet & 3.67m & 8.26m & x2.25\\%
+  Long & Jenkins CI Gerrit Plugin & 40.31m & 76.32m & x1.89\\%
+Medium & Jankotek MapDB & 8.58m & 10.51m & x1.23\\%
+Medium & Javaslang & 1.82m & 2.12m & x1.16\\%
+Medium & BounceStorage Chaos HTTP Proxy & 1.47m & 1.47m & x1.00\\%
+Medium & Apache Log4J2 & 8.21m & 4.73m & x0.58\\%
 \bottomrule%
 \end{tabular}}
-\caption{\Fix{Comparacao de tempo sequencial e paralelo}}
+\caption{\Fix{Comparacao de tempo sequencial e paralelo ordenado por
+    speedup}}
 \label{tab:speedup}
 \end{figure}
 
@@ -647,9 +652,13 @@ of modules with tests in the default execution, and the column
         \midrule%
         Long   & JenkinsCI Gerrit Trigger Plugin & 1 & \ForkSeq{}\\%
         Medium & Apache Logging Log4J2 & 25 & \ForkSeq{}\\%
+        Medium & Apache Flink & - & - \\%
+        Medium & BounceStorage Chaos HTTP Proxy & - & -\\%
+        Medium & Hazelcast Jet & - & -\\%
         Medium & Jankotek MapDB & 1 & \ParClassParMeth{}\\%
-        Medium & Javaslang & 3 & \ParClassParMeth{}\\%
-        Medium & Jcabi Github & 1 & \ParClassParMeth{}\\%
+        Medium & Javaslang & - & \ParClassParMeth{}\\%
+        Medium & Jcabi Github & - & \ParClassParMeth{}\\%
+        Medium & Spotify Helios & - & - \\%
         \bottomrule%
     \end{tabular}}
     \caption{Subjects with parallel test execution enabled by
