@@ -527,56 +527,69 @@ shows these results.
 \label{sec:rqD}
 
 \begin{itemize}
-    \item \textbf{\RQD}
+    \item \numRQD{}. \textbf{\RQD}
 \end{itemize}
 
-To answer \numRQD{}, we considered \numProjectsPar{} subjects that we
-tested and confirmed parallelization activated by default (see
-Section~\ref{sec:rqC-1}). To measure the overall speedup obtained from
-parallel execution, we compared the elapsed time from the default
-execution (parallelization enabled) and the elapsed time from the
-sequential execution.  For each project, we modified the existing
-configurations to disable the parallel test execution. In addition, we
-verified that both executions produce the same outcome to eliminate
-noise from failing tests.
-To compute the speedup, we divide the time obtained in the sequential
-execution by the time obtained from the default execution.  For
-instance, if a project runs the tests sequentially in $10m$ and the
-same execution runs in $5m$ with parallelization enabled (default
-execution), the speedup is two.
+To answer \numRQD{}, we considered \emph{all} \numProjectsPar{}
+subjects from our benchmark that use parallelization by default in
+Maven to run tests.  Section~\ref{sec:rqC-1} describes in detail the
+methodology we used to find these subjects. For each project, the
+speedup (or slowdown) corresponds to the ratio ($T_s/T_p$) between the
+elapsed time of a sequential execution ($T_s$) and the elapsed time of
+a corresponding parallel execution ($T_p$), obtained as described in
+the script from Figure~\ref{fig:mvn-execution}.  As usual, a ratio
+above 1x denotes speedup and a ratio below 1x denotes slowdown.
+
+%% For each project, we modified the existing configurations to disable
+%% the parallel test execution. In addition, we verified that both
+%% executions produce the same outcome to eliminate noise from failing
+%% tests.  To compute the speedup, we divide the time obtained in the
+%% sequential execution by the time obtained from the default execution.
+%% For instance, if a project runs the tests sequentially in $10m$ and
+%% the same execution runs in $5m$ with parallelization enabled (default
+%% execution), the speedup is two.
 
 \begin{figure}[h!]
 \centering
 \resizebox{.48\textwidth}{!}{%
 \begin{tabular}{llrrl}
 \toprule
-Group & Subject & T$_{\text{d}}$ & T$_{\text{s}}$ & Speedup\\%
+\emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
 \midrule%
-Medium & Jcabi GitHub & 0.30m & 2.75m & x9.01\\%
-Medium & Apache Flink & 2.57m & 10.02m & x3.90\\%
-Medium & Spotify Helios & 1.63m & 3.70m & x2.28\\%
-Medium & Hazelcast Jet & 3.67m & 8.26m & x2.25\\%
-  Long & Jenkins CI Gerrit Plugin & 40.31m & 76.32m & x1.89\\%
-Medium & Jankotek MapDB & 8.58m & 10.51m & x1.23\\%
-Medium & Javaslang & 1.82m & 2.12m & x1.16\\%
-Medium & BounceStorage Chaos HTTP Proxy & 1.47m & 1.47m & x1.00\\%
-Medium & Apache Log4J2 & 8.21m & 4.73m & x0.58\\%
+Medium & BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.47m & 1.00x\\%
+Medium & Apache \textbf{Flink} & 10.02m & 2.57m & 3.90x\\%
+Long & Jenkins CI \textbf{Gerrit} Plugin & 76.32m & 40.31m &  1.89x\\%
+Medium & Spotify \textbf{Helios} & 3.70m & 1.63m & 2.28x\\%  
+Medium & \textbf{Javaslang} & 2.12m & 1.82m & 1.16x\\%
+Medium & \textbf{Jcabi} GitHub & 2.75m & 0.30m & \cellcolor{lightgray}9.01x\\%
+Medium & Hazelcast \textbf{Jet} & 8.26m & 3.67m & 2.25x\\%
+Medium & Apache \textbf{Log4J2} & 4.73m & 8.21m & \cellcolor{lightgray}0.58x\\%
+Medium & Jankotek \textbf{MapDB} & 10.51m & 8.58m & 1.23x\\%
+\midrule
+\textbf{total} &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
 \end{tabular}}
-\caption{\Fix{Comparacao de tempo sequencial e paralelo ordenado por
-    speedup}}
+\caption{Speedup (or slowdown) of parallel execution ($T_p$) over
+  sequential execution ($T_s$).  Default parallel configuration of
+  Maven is used.  Abbreviation of project names appear in bold face
+  and highest slowdown/speedup appear in gray color.}
 \label{tab:speedup}
 \end{figure}
 
-Figure~\ref{tab:speedup} summarizes our findings by increasing order
-of speedup. The columns ``Group'' and ``Name'' indicates the time cost
-group and the name of the subject, column ``T$_{\text{d}}$'' reports
-the elapsed time in the default execution, the column
-``T$_{\text{s}}$'' reports the elapsed time in the sequential
-execution, and the column ``Speedup'' reports the overall speedup. We
-observed that \Fix{falar sobre o resultado geral dos speedups -
-elaborar menor e maior speedup... acho que so vale a pena discutir
-quando tiver conviccao dos 2 casos}
+Figure~\ref{tab:speedup} summarizes results.  Lines are sorted by
+abbreviated project names, which appear in bold.  Columns
+``\emph{Group}'' and ``\emph{Name}'' indicate, respectively, the
+project group and the name of the subject.  Column ``$T_s$'' shows
+sequential execution time whereas column ``$T_p$'' shows parallel
+execution time. Column ``$T_s/T_p$'' shows the speedup or slowdown
+associated with parallel execution.
+
+Results indicate that, on average, parallel execution was
+\avgSpeedup{} times faster compared to sequential execution.  We noted
+two extreme cases: \CodeIn{JCabi} and \CodeIn{Log4J2}.  \Fix{falar
+  sobre o resultado geral dos speedups - elaborar menor e maior
+  speedup... acho que so vale a pena discutir quando tiver conviccao
+  dos 2 casos}
 
 \begin{center}
 \fbox{
