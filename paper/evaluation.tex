@@ -591,15 +591,10 @@ The first when using the default parallel configuration, runs a
 \textbf{C3} configuration with small test classes and big test
 methods, allowing to run multiple methods and classes at once. The
 high slowdown happens when big methods run sequentially.
-\Comment{The second which most test
-classes run one, two, or three test methods with the configuration
-\Mar{We are not using bold for these.  If you want you can change, but
-  please do so by holding all locks.}\textbf{C2}, without the
-reutilization of JVM forks\Mar{Don't understand.
-  Fork-configurations have an F in front, no?  Like FC1.  Please
-  check.  Do you mean FC0 for Log4J? (I checked Figure 10)}. This specific
-configuration is useful when there is the need to isolate the test
-class execution from another, which is the case.}
+The second when using the default parallel configuration, runs a
+\textbf{FC0} configuration with small test classes and small test
+methods, which is slowdown by the JVM creation overhead. This
+configuration is useful to isolate each test method from each other.
 \Luis{$\leftarrow$ rework this} \Fix{falar
   sobre o resultado geral dos speedups - elaborar menor e maior
   speedup... acho que so vale a pena discutir quando tiver conviccao
