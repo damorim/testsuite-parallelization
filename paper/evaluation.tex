@@ -992,18 +992,33 @@ answered the last question, or did not knew an answer.
 }
 \end{center}
 
+\subsection{Tradeoffs}
+\label{sec:rq6-tradeoffs}
 
+This dimension assesses the impact of using distinct parallel
+configurations on test flakiness (negative impact) and speedup
+(positive impact).  Recall that increased resource contention obtained
+with parallelism can lead to concurrency issues such as data races.
+Hence, flakiness and speedup are contradictory forces that drive
+configuration selection.  Note also that Section~\ref{sec:rqD}
+evaluated variable speedup in isolation, focused on project
+configuration where parallelism is used by default.
 
 \begin{itemize}
     \item \numRQF{}. \textbf{\RQF{}}
 \end{itemize}
 
-To answer \numRQF{}, we considered the top ten projects with
-long-running test suites and all parallel modes (see
-Section~\ref{sec:modes}). In this experiment, we run the test suites
-with different parallel modes and evaluated the average time cost and
-rate of failing tests. To avoid noise, we carefully selected only
-subjects with nonfailing tests to avoid noise in our measurements.
+To answer this research question we selected projects as follows.  To
+avoid noise in our measurements, we first discarded projects
+containing failing tests (note that we measure flakiness).  Then, we
+sorted projects in descending order of their execution times and
+selected the top ten projects from the resulting set.
+
+In this experiment, the baseline technique is \Seq{} and the
+evaluation techniques are all the configuration modes listed in
+Section~\ref{sec:modes}.  We ran each of the technique for \Fix{X}
+times reporting elapsed time and number of failing tests each time.
+We reported average results.
 
 \Fix{Elaborate results from efficiency}
 
@@ -1041,9 +1056,6 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 8765 & 10\% & 10\% & 10\% & 10\% & 10
 \label{tab:rq6-flaky}
 \end{figure}
 
-\subsubsection{Trade-offs}
-\label{seq:rq6-tradeoffs}
-\Fix{discuss trade-offs and elaborate conclusion....}
 
 \begin{center}
 \fbox{
