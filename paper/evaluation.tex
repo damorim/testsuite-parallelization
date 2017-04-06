@@ -592,15 +592,18 @@ associated with parallel execution.
 
 Results indicate that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.  We noted
-two extreme cases: \CodeIn{Jcabi} and \CodeIn{Log4J2}.
-The first when using the default parallel configuration, runs a
-\textbf{C3} configuration with small test classes and big test
-methods, allowing to run multiple methods and classes at once. The
-high slowdown happens when big methods run sequentially.
+three extreme cases: \CodeIn{Chaos}, \CodeIn{Jcabi} and \CodeIn{Log4J2}.
+The first, the default configuration is \textbf{C2}, however, the test is
+composed of takes $>$99\% of the test time. In this case, when running
+in sequential the execution time is almost the same as the parallel
+execution.
 The second when using the default parallel configuration, runs a
-\textbf{FC0} configuration with small test classes and small test
-methods, which is slowdown by the JVM creation overhead. This
-configuration is useful to isolate each test method from each other.
+\textbf{C3} configuration with small test classes and big test
+methods. In this case, a high slowdown is noticed when running those
+big methods sequentially.
+The third, runs parallel configuration in \Fix{80\%} of the project
+modules, however, the test time is dominated by one of the
+sequentially running modules.
 \Luis{$\leftarrow$ rework this} \Fix{falar
   sobre o resultado geral dos speedups - elaborar menor e maior
   speedup... acho que so vale a pena discutir quando tiver conviccao
@@ -690,15 +693,15 @@ same configuration, we counted only one occurrence.
         \toprule
         \emph{Subject} & \emph{\# of modules} & \emph{Mode}\\%
         \midrule%
-        \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1 &  \ParClassSeqMeth{}\\%
-        \Comment{Apache }Flink & 74 & \ForkSeq{} \\%        
-        \Comment{JenkinsCI }Gerrit\Comment{ Trigger Plugin} & 1 & \ForkSeq{}\\%
-        \Comment{Spotify }Helios & 8 & \ForkSeq{}\\%
-        Javaslang & 3 & \ParClassParMeth{}\\%
-        Jcabi\Comment{ Github} & 1 & \ParClassParMeth{}\\%        
-        \Comment{Hazelcast }Jet & 7 & \ForkSeq{}\\%
-        \Comment{Apache Logging }Log4J2 & 25 & \ForkSeq{}\\%
-        \Comment{Jankotek }MapDB & 1 & \ParClassParMeth{}\\%        
+        \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1/1 &  \ParClassSeqMeth{}\\%
+        \Comment{Apache }Flink & 74/74 & \ForkSeq{} \\%        
+        \Comment{JenkinsCI }Gerrit\Comment{ Trigger Plugin} & 1/1 & \ForkSeq{}\\%
+        \Comment{Spotify }Helios & 8/8 & \ForkSeq{}\\%
+        Javaslang & 3/3 & \ParClassParMeth{}\\%
+        Jcabi\Comment{ Github} & 1/1 & \ParClassParMeth{}\\%        
+        \Comment{Hazelcast }Jet & 7/14 & \ForkSeq{}\\%
+        \Comment{Apache Logging }Log4J2 & 25/31 & \ForkSeq{}\\%
+        \Comment{Jankotek }MapDB & 1/2 & \ParClassParMeth{}\\%        
         \bottomrule%
     \end{tabular}
 %    }
