@@ -556,15 +556,17 @@ above 1x denotes speedup and a ratio below 1x denotes slowdown.
 \toprule
 \emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
 \midrule%
-Medium & BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.47m & 1.00x\\%
-Medium & Apache \textbf{Flink} & 10.02m & 2.57m & 3.90x\\%
-Long & Jenkins CI \textbf{Gerrit} Plugin & 76.32m & 40.31m &  1.89x\\%
-Medium & Spotify \textbf{Helios} & 3.70m & 1.63m & 2.28x\\%  
-Medium & \textbf{Javaslang} & 2.12m & 1.82m & 1.16x\\%
-Medium & \textbf{Jcabi} GitHub & 2.75m & 0.30m & \cellcolor{lightgray}9.01x\\%
+Medium & BounceStorage \textbf{Chaos} HTTP Proxy  & 1.51m & 1.47m & 1.02x\\%
+Medium & Apache \textbf{Flink} & 11.79m & 2.57m & 4.59x\\%
+Long & Jenkins CI \textbf{Gerrit} Plugin & 51.19m & 40.31m &  1.26x\\%
+Medium & Spotify \textbf{Helios} & 4.46m & 1.63m & 2.73x\\%  
+Medium & \textbf{Javaslang} & 2.18m & 1.82m & 1.19x\\%
+Medium & \textbf{Jcabi} GitHub & 2.76m & 0.30m &
+    \cellcolor{lightgray}9.2x\\%
 Medium & Hazelcast \textbf{Jet} & 8.26m & 3.67m & 2.25x\\%
-Medium & Apache \textbf{Log4J2} & 4.73m & 8.21m & \cellcolor{lightgray}0.58x\\%
-Medium & Jankotek \textbf{MapDB} & 10.51m & 8.58m & 1.23x\\%
+Medium & Apache \textbf{Log4J2} & 8.24m & 8.21m & 
+    \cellcolor{lightgray}1.00x\\%
+Medium & Jankotek \textbf{MapDB} & 10.06m & 8.58m & 1.17x\\%
 \midrule
 \textbf{total} &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
