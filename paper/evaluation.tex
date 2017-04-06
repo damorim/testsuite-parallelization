@@ -711,21 +711,26 @@ same configuration, we counted only one occurrence.
     %\end{figure}
 \end{wrapfigure}      
 Figure~\ref{tab:freqmodes-dynamic} shows the projects we idendified
-where parallelism is enabled by default.  Column ``\emph{Subject}''
-indicates the name of the project, column ``\emph{\# of modules}''
-indicates the number of detected modules containing tests, and column
-``\emph{Mode}'' shows the parallel configuration mode used in those
-modules (see Section~\ref{sec:modes}).  It came as a surprise the
-observation that no project used distinct configurations in their
-modules. Considering our set of \numMedLong{} projects, we found that
-only \textbf{\numProjectsPar{}} of those projects had parallelism
-enabled by default, with only configurations \ParClassSeqMeth{},
+where parallelism is enabled by default in Maven.  Column
+``\emph{Subject}'' indicates the name of the project, column
+``\emph{\# of modules}'' indicates the fraction of modules containing
+tests that use the configuration of parallelism mentioned in column
+``\emph{Mode}''.  We note that, considering these projects, the
+modules that do not use the configuration cited use the sequential
+configuration \Seq{}.  For example, six modules (=31-25) from Log4J2
+use sequential configuration.
+
+It came as a surprise the observation that
+no project used distinct configurations in their modules. Considering
+our set of \numMedLong{} projects, we found that only
+\textbf{\numProjectsPar{}} of those projects had parallelism enabled
+by default, with only configurations \ParClassSeqMeth{},
 \ParClassParMeth{}, and \ForkSeq{} being used.  Configurations
 \ParClassParMeth{} and \ForkSeq{} were the most popular among these
 cases.  Note that these results under-approximate real usage of
 parallelism as we used default parameters in our scripts to spawn the
 Maven process.  That decision could prevent execution of particular
-test modules.  
+test modules.
 %\begin{figure}[h!]
 %    \centering
 %    \includegraphics[width=0.32\textwidth]{plots/barplot-modes-dynamic.pdf}
