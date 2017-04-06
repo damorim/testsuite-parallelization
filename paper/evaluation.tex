@@ -887,24 +887,27 @@ the union of the two subject sets.
 
 
 To answer this research question we surveyed developers involved in a
-selection of projects listed in Section~\ref{sec:rqC-1}.  The goal of
-the survey is to better comprehend developer's attitude towards use of
-parallelism to speedup regression testing in open-source projects.
+selection of projects from our benchmark with time-consuming test
+suites.  The goal of the survey is to better comprehend developer's
+attitude towards the use of parallelism as a mechanism to speedup
+regression testing.  We surveyed developers from a total of
+\Fix{x=83-11-y} projects.  From the initial list of \numMedLong{}
+project, we discarded 11 projects that we knew a priori used
+parallelization, and \Fix{y} projects that we could not find
+developer's emails from commit logs.  From this list of projects, we
+mined potential participants for our study.  More precisely, we
+searched for developer's name and email from the last 20 commits to
+the corresponding project repository.  Using this approach, we
+identified a total of \emailsSent{} eligible participants.  Finally,
+we sent plain-text e-mails to those developers with the survey.  In
+total, \emailsAnswered{} developers replied but we discarded
+\emailsFalseAnswers{} replies with subjective answers.  Considering
+projects covered by the answers, a total of \emailsProjectsAnswered{}
+projects (\percEmailsProjectsAnswered{} of the total) were represented
+in those replies.  Note that multiple developers on each project
+received emails.
 
-
-we considered \numNonParallel{} subjects that do not use parallel
-configuration as default test execution from
-
-We first retrieve the last 20 commits from the project repository and
-got the developers e-mails. In total, we sent an e-mail to
-\emailsSent{} developers that recently contributed to the 
-\numNonParallel{} projects, and we did not found any e-mail from
-\Fix{??} projects using \CodeIn{git} tool.
-\Luis{Here I want to say that I could not found any valid e-mail using
-\textit{git log}}
-There were \emailsAnswered{} replies from \emailsProjectsAnswered{}
-projects, and \emailsFalseAnswers{} developers was not able to 
-explain how the testing works or was not able to answer the survey.
+\Mar{----- estou aqui}
 
 The survey sent was composed by three open questions and one closed
 question: (I) How long does it take for test to run in your
@@ -1102,4 +1105,4 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 8765 & 10\% & 10\% & 10\% & 10\% & 10
 %%  LocalWords:  framexleftmargin CPUs Tahr sysstat gh Vagrantfile
 %%  LocalWords:  javadoc isolcpus JUnit's JUnitCore Gligoric boxplots
 %%  LocalWords:  outliers apache uber chaperone facebookarchive
-%%  LocalWords:  linkbench
+%%  LocalWords:  linkbench priori
