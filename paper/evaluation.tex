@@ -533,18 +533,12 @@ shows these results.
     \item \numRQD{}. \textbf{\RQD}
 \end{itemize}
 
-To answer \numRQD{}, we considered \emph{all} \numProjectsPar{}
-subjects from our benchmark that use parallelization by default in
-Maven to run tests.  Section~\ref{sec:rqC-1} describes in detail the
-methodology we used to find these subjects. For each project, the
-speedup (or slowdown) corresponds to the ratio ($T_s/T_p$) between the
-elapsed time of a sequential execution ($T_s$) and the elapsed time of
-a corresponding parallel execution ($T_p$), obtained as described in
-the script from Figure~\ref{fig:mvn-execution}.  As usual, a ratio
-above 1x denotes speedup and a ratio below 1x denotes slowdown.
-
-%% For each project, we modified the existing configurations to disable
-%% the parallel test execution. In addition, we verified that both
+To answer \numRQD{}, we considered \numProjectsPar{} subjects from our
+benchmark that use parallelization \emph{by default} when running
+tests.  In those projects, parallelization is active without passing
+any extra parameters.  Section~\ref{sec:rqC-1} describes in detail the
+methodology we used to find these subjects and
+Section~\ref{seq:rq6-tradeoffs}, we verified that both
 %% executions produce the same outcome to eliminate noise from failing
 %% tests.  To compute the speedup, we divide the time obtained in the
 %% sequential execution by the time obtained from the default execution.
@@ -588,34 +582,43 @@ abbreviated project names, which appear in bold.  Columns
 project group and the name of the subject.  Column ``$T_s$'' shows
 sequential execution time whereas column ``$T_p$'' shows parallel
 execution time. Column ``$T_s/T_p$'' shows the speedup or slowdown
-associated with parallel execution.
+associated with parallel execution.   As usual, a ratio
+above 1x denotes speedup and a ratio below 1x denotes slowdown.
 
 Results indicate that, on average, parallel execution was
-\avgSpeedup{} times faster compared to sequential execution.  We noted
-three extreme cases: \CodeIn{Chaos}, \CodeIn{Jcabi} and \CodeIn{Log4J2}.
-The first, the default configuration is \textbf{C2}, however, the test is
-composed of takes $>$99\% of the test time. In this case, when running
-in sequential the execution time is almost the same as the parallel
-execution.
-The second when using the default parallel configuration, runs a
-\textbf{C3} configuration with small test classes and big test
-methods. In this case, a high slowdown is noticed when running those
-big methods sequentially.
-The third, runs parallel configuration in \Fix{80\%} of the project
-modules, however, the test time is dominated by one of the
-sequentially running modules.
-\Luis{$\leftarrow$ rework this} \Fix{falar
-  sobre o resultado geral dos speedups - elaborar menor e maior
-  speedup... acho que so vale a pena discutir quando tiver conviccao
-  dos 2 casos}
+\avgSpeedup{} times faster compared to sequential execution.  Three
+cases worth special attention: \CodeIn{Chaos}, \CodeIn{Jcabi} and
+\CodeIn{Log4J2}.  No significant speedup was observed in
+\CodeIn{Chaos}, a project with only three test classes, of which one
+monopolizes the bulk of test execution time.  This project uses
+configuration \ParClassSeqMeth{}, which runs test classes in parallel
+and test methods, declared in each class, sequentially.  Consequently,
+speedup cannot be obtained as the cost of the single expensive test
+class cannot be broken down with the selected configuration.  Although
+project \CodeIn{Jcabi} also uses configuration \ParClassSeqMeth{},
+results obtained are very different compared to \CodeIn{Chaos}.  The
+speedup observed in \CodeIn{Jcabi} was the highest amongst all
+projects.  This project contains test classes with a small number of
+test methods and several methods in those classes are time-consuming.
+As result, the CPUs available for testing are kept occupied for the
+most part during test execution.  Finally, we note that parallel
+execution in \CodeIn{Log4J2} was innefective.  We found that Maven
+invokes several test modules in this project but the test modules that
+dominate execution time run sequentially by default.
+
+%% The third, runs parallel configuration in
+%% \Fix{80\%} of the project modules, however, the test time is dominated
+%% by one of the sequentially running modules.  \Luis{$\leftarrow$ rework
+%%   this} \Fix{falar sobre o resultado geral dos speedups - elaborar
+%%   menor e maior speedup... acho que so vale a pena discutir quando
+%%   tiver conviccao dos 2 casos}
 
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
-      \textit{Answering \numRQD{}:}~\emph{Overall, results indicate
-      that the speedup obtained with parallelization is
-      \Fix{$\sim$x\%} (in average) for \Fix{\%} of the projects
-      (\Fix{x} out of \Fix{w}). }
+    \textit{Answering \numRQD{}:}~\emph{ The average speedup observed
+      with default configurations of parallelization was
+      \avgSpeedup{}x.}
   \end{minipage}
 }
 \end{center}
