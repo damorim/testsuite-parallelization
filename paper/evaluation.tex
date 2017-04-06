@@ -68,7 +68,7 @@ of analysis we presented in Section~\ref{sec:intro}.
 \newcommand{\RQE}{What are the main reasons that prevent developers
   from using test suite parallelization?}
 \newcommand{\RQF}{To which extent parallel execution configurations affect testing
-  cost and flakiness?}
+  costs and flakiness?}
 
 \begin{itemize}
 \item Potential
@@ -910,7 +910,7 @@ mined potential participants for our study.  More precisely, we
 searched for developer's name and email from the last 20 commits to
 the corresponding project repository.  Using this approach, we
 identified a total of \emailsSent{} eligible participants.  Finally,
-we sent plain-text e-mails to those developers with the survey.  In
+we sent plain-text e-mails, containing the survey, to those developers.  In
 total, \emailsAnswered{} developers replied but we discarded
 \emailsFalseAnswers{} replies with subjective answers.  Considering
 projects covered by the answers, a total of \emailsProjectsAnswered{}
@@ -955,23 +955,31 @@ developers:
 \end{wrapfigure}
 The goal of the first two questions is to identify potential
 discrepancies between the environment used to obtain our results and
-environment of the developers.  Overall, we found that \Fix{...}
+the environment of developers.  Overall, we found that \Fix{...}
 
-\Mar{... estou aqui ...}
+\Mar{... estou trabalhando neste texto ...}
 
-Based on the answers from the developers, we confirmed that most of
-the subjects execution time was compatible with the results found at
-Section~\ref{sec:rqA}. From Question I, we noticed that \emailsCI{}
+Based on the answers from developers, we confirmed that most of the
+subjects execution time was compatible with the results found at
+Section~\ref{sec:rqA}.
+
+\Fix{revise...} From Question I, we noticed that \emailsCI{}
 developers confirmed the use of an continuous integration server to
 run tests, which \emailsDistributed{} of them is using a distributed
 continuous integration server as an alternative to parallelism.
 From a local development, \emailsLocal{} developers answered that they
 run tests in a local machine, and \emailsNotDescribed{} developers did
 not described their environment.
-From Question II, we noticed that \emailsSequential{} confirmed that
-they do not execute tests in parallel, and \emailsParallel{} did not
-confirmed, however, the developers confirmed the need of an extra
-parameter at the command line to execute in parallel.
+
+Considering question 2, we found that \emailsSequential{} of the
+\emailsProjectsAnswered{} projects indeed did not execute tests in
+parallel.  The discrepancy is justified by cases where neither of our
+checks (static or dynamic) could detect presence of parallelism.  \Fix{elaborate}
+
+%% did not confirmed, however,
+%% the developers confirmed the need of an extra parameter at the command
+%% line to execute in parallel.
+
 From Question III, \emailsA{} of developers do not know that
 parallelism is an available configuration for Maven Surefire,
 \emailsB{} of developers do not use parallel testing concerned with
@@ -992,22 +1000,37 @@ answered the last question, or did not knew an answer.
 }
 \end{center}
 
+\subsection{Tradeoffs}
+\label{sec:rq6-tradeoffs}
 
+This dimension assesses the impact of using distinct parallel
+configurations on test flakiness (negative impact) and speedup
+(positive impact).  Recall that increased resource contention obtained
+with parallelism can lead to concurrency issues such as data races.
+Hence, flakiness and speedup are contradictory forces that drive
+configuration selection.  Note also that Section~\ref{sec:rqD}
+evaluated variable speedup in isolation, focused on project
+configuration where parallelism is used by default.
 
 \begin{itemize}
     \item \numRQF{}. \textbf{\RQF{}}
 \end{itemize}
 
-To answer \numRQF{}, we considered the top ten projects with
-long-running test suites and all parallel modes (see
-Section~\ref{sec:modes}). In this experiment, we run the test suites
-with different parallel modes and evaluated the average time cost and
-rate of failing tests. To avoid noise, we carefully selected only
-subjects with nonfailing tests to avoid noise in our measurements.
+To answer this research question we selected projects as follows.  To
+avoid noise in measuring flakiness we first discarded projects
+containing failing tests.  Then, we sorted projects in descending
+order of their execution times and selected the top ten projects from
+the resulting set.  In this experiment, the baseline technique is
+sequential execution (\ie{}, configuration \Seq{}) and the evaluation
+techniques consist of all configuration modes listed in
+Section~\ref{sec:modes}.  We ran each of those techniques for \Fix{X}
+times computing elapsed time and number of failing tests in each run.
+Figures~\ref{tab:rq6-efficiency} and~\ref{tab:rq6-flaky} summarize the
+results we obtained.
 
 \Fix{Elaborate results from efficiency}
 
-Figure~\ref{tab:rq6-efficiency} summarizes our findings.
+
 
 \begin{figure}[h!]
 \centering
@@ -1023,9 +1046,6 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.00x & 1.00x & 1.00x & 1.00x
 \label{tab:rq6-efficiency}
 \end{figure}
 
-\Fix{Elaborate results about flakiness}
-
-Figure~\ref{tab:rq6-flaky} summarizes our findings.
 
 \begin{figure}[h!]
 \centering
@@ -1041,9 +1061,6 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 8765 & 10\% & 10\% & 10\% & 10\% & 10
 \label{tab:rq6-flaky}
 \end{figure}
 
-\subsubsection{Trade-offs}
-\label{seq:rq6-tradeoffs}
-\Fix{discuss trade-offs and elaborate conclusion....}
 
 \begin{center}
 \fbox{
