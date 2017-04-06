@@ -43,8 +43,8 @@ discussion can be generalized to other language and tools.
 \label{sec:frameworks}
 
 The list below shows the choices to control parallelism within one
-Java Virtual Machine (JVM), which runs in a single CPU process.  These
-options are offered by the testing framework, \eg{}, JUnit.
+Java Virtual Machine (JVM).  These options are offered by the testing
+framework (\eg{}, JUnit).
 
 \begin{itemize}
 \item
@@ -93,21 +93,29 @@ class.
 \subsection{Build Systems}
 \label{sec:builder}
 
-The list below shows the choices to control parallelism through the
-build system, \eg{}, Maven.  The build system can spawn multiple JVMs,
-each running on its own OS process on a given CPU and handling a
-partition of the test set.
+
+%% The build system can spawn multiple JVMs, each running on its own OS
+%% process on a given CPU and handling a partition of the test set.
+
+Forking OS processes to run test jobs is the basic mechanism of build
+systems to obtain parallelism at the machine space (see
+Figure~\ref{fig:levels}).  For Java-based build systems, such as Maven
+and Ant, this amounts to spawning one JVM, on a given CPU, to handle a
+test job and aggregating results when jobs finish.  The list below
+shows the choices to control parallelism through the build system
+(\eg{}, Maven).
 
 \begin{itemize}
 \item
-    \textbf{Forked classes; sequential methods (\ForkSeq).}~This
-    configuration spawns multiple JVMs, assigning a partition of the
-    test set to each JVM.  Test methods run sequentially within each
-    JVM.
+    \textbf{Forked JVMs with sequential methods (\ForkSeq).}~The build
+    system spawns multiple JVMs with this configuration, assigning a
+    partition of the set of test classes to each JVM.  Test methods
+    run sequentially within each JVM.
 \item
-    \textbf{Forked classes; parallel methods (\ForkParMeth).}~In
-    addition to forking multiple JVMs, as \ForkSeq{} does, this
-    configuration runs tests concurrently, as \SeqClassParMeth{} does.
+    \textbf{Forked JVMs with parallel methods (\ForkParMeth).}~With
+    this configuration, the build system forks multiple JVMs, as
+    \ForkSeq{} does.  However, it runs tests concurrently, as
+    \SeqClassParMeth{} does.
 \end{itemize}
 
 %% In the configuration \ForkSeq{}, each spawned
@@ -117,16 +125,14 @@ partition of the test set.
 %% enable parallel execution within each process in addition to running
 %% test classes on different processes.
 
-Forking OS processes to run test jobs is a popular mechanism of build
-systems to obtain parallelism at the machine space (see
-Figure~\ref{fig:levels}).  For Java-based build systems, such as Maven
-and Ant, this amounts to spawning one JVM instance to handle a test
-job and aggregating corresponding results when test jobs finish.  Note
-that forking can only be combined with configuration
-\SeqClassParMeth{} (see Section~\ref{sec:frameworks}) as Maven only
-accepts one test class at a time per forked process.  To attenuate the
-non-trivial cost of spawning new JVM processes on every test class,
-Maven offers an option to reuse the JVM.
+Note from the listing that forking can only be combined with
+configuration \SeqClassParMeth{} (see Section~\ref{sec:frameworks}) as
+Maven made the design choice to only accept one test class at a time
+per forked process.  Maven offers an option to reuse JVMs that can be
+used to attenuate the potentially high cost of spawning new JVM
+processes on every test class (if reuse is enabled) and also to
+achieve test isolation (if reuse is disabled).
+
 
 %% \Mar{$\leftarrow$Are you sure about this?
 %%   It seems silly.  Maybe, the rationale is to ``keep design
@@ -180,8 +186,8 @@ Maven offers an option to reuse the JVM.
 \subsubsection*{Example}~Figure~\ref{fig:surefire} shows a
 fragment of a Maven configuration file, known as \pomf{}, highlighting
 options to run tests using the parallel execution mode \ForkParMeth{}.
-Maven implements this feature through its JUnit test plugin
-Surefire~\cite{maven-surefire-plugin}.  With this configuration, Maven
+Maven implements this feature through its Surefire JUnit test
+plugin~\cite{maven-surefire-plugin}.  With this configuration, Maven
 forks one JVM per core (\CodeIn{forkCount} parameter) and uses five
 threads (\CodeIn{threadCount} parameter) to run test methods
 (\CodeIn{parallel} parameter) within each forked JVM.  Maven reuses
