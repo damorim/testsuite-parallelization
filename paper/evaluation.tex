@@ -992,8 +992,19 @@ answered the last question, or did not knew an answer.
 
 
 \begin{itemize}
-    \item \textbf{\RQF{}}
+    \item \numRQF{}. \textbf{\RQF{}}
 \end{itemize}
+
+To answer \numRQF{}, we considered the top ten projects with
+long-running test suites and all parallel modes (see
+Section~\ref{sec:modes}). In this experiment, we run the test suites
+with different parallel modes and evaluated the average time cost and
+rate of failing tests. To avoid noise, we carefully selected only
+subjects with nonfailing tests to avoid noise in our measurements.
+
+\Fix{Elaborate results from efficiency}
+
+Figure~\ref{tab:rq6-efficiency} summarizes our findings.
 
 \begin{figure}[h!]
 \centering
@@ -1009,6 +1020,10 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.00x & 1.00x & 1.00x & 1.00x
 \label{tab:rq6-efficiency}
 \end{figure}
 
+\Fix{Elaborate results about flakiness}
+
+Figure~\ref{tab:rq6-flaky} summarizes our findings.
+
 \begin{figure}[h!]
 \centering
 \resizebox{.48\textwidth}{!}{%
@@ -1019,10 +1034,11 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.00x & 1.00x & 1.00x & 1.00x
 BounceStorage \textbf{Chaos} HTTP Proxy  & 8765 & 10\% & 10\% & 10\% & 10\% & 10\%\\%
 \bottomrule%
 \end{tabular}}
-\caption{\Fix{Tabela de flakyness}}
-\label{tab:rq6-efficiency}
+\caption{\Fix{Tabela de flakiness}}
+\label{tab:rq6-flaky}
 \end{figure}
 
+\Fix{discuss trade-offs and elaborate conclusion....}
 
 \begin{center}
 \fbox{
