@@ -696,17 +696,15 @@ indicates the number of detected modules containing tests, and column
 ``\emph{Mode}'' shows the parallel configuration mode used in those
 modules (see Section~\ref{sec:modes}).  It came as a surprise the
 observation that no project used distinct configurations in their
-modules.\Mar{$\leftarrow$ table indicates this.  please confirm.}
-Considering our set of \numMedLong{} projects, we found that only
-\textbf{\numProjectsPar{}} of those projects had parallelism enabled
-by default, with only configurations \ParClassSeqMeth{},
+modules. Considering our set of \numMedLong{} projects, we found that
+only \textbf{\numProjectsPar{}} of those projects had parallelism
+enabled by default, with only configurations \ParClassSeqMeth{},
 \ParClassParMeth{}, and \ForkSeq{} being used.  Configurations
 \ParClassParMeth{} and \ForkSeq{} were the most popular among these
 cases.  Note that these results under-approximate real usage of
 parallelism as we used default parameters in our scripts to spawn the
 Maven process.  That decision could prevent execution of particular
-test modules.  To complement this experiemnt, we also looked in
-\emph{pom.xml} files for the presence of parallelism.
+test modules.  
 %\begin{figure}[h!]
 %    \centering
 %    \includegraphics[width=0.32\textwidth]{plots/barplot-modes-dynamic.pdf}
@@ -720,27 +718,50 @@ test modules.  To complement this experiemnt, we also looked in
 
 \subsubsection{Presence of parallelism configurations in build files}
 \label{sec:rqC-2}
+Given the inherent limitation of dynamic monitoring to find evidence
+of parallelism, we also looked for indication of parallelism in
+\emph{pom.xml} files\Comment{ in the same sample set of \numMedLong{}
+  projects}. In principle, some projects can use parallel execution
+although that is only activated when developers pass certain
+parameters to the build process. For instance, it is possible to
+create in Maven multiple configurations in the same build file and
+select dynamically which one should be used.
 
-\Mar{----------------------- estou aqui}
+\Mar{I have no clue what you mean here... Why should I care about
+  space on build files?  I thought we did this check
+  for every project and module.  $\rightarrow$}\Fix{To reduce the
+  space of \Fix{x} build files, we considered a subset of \Fix{y}
+  build files with the following criteria}: the given \pomf{} file has
+\CodeIn{maven-surefire-plugin} plugin declaration and it has an
+explicit \CodeIn{configuration} declaration. We automatically parsed
+these \Fix{y} files and we used the same approach to classify the
+parallelization mode from the parsed configurations as in our previous
+analysis. In an initial analysis, we noticed that some projects do not
+declare a static value in some parameters, instead, these projects
+inform the actual value in the command line. To handle this case, we
+computed all valid values for the parameter.
 
-To extend our previous investigation, we evaluated the presence of
-parallelism configuration in several build files (\ie, \pomf{} files)
-from the same sample set of \numMedLong{} projects. The rationale is
-that some projects may have support to parallel execution but it is
-deactivated by default (\ie, require additional arguments before the
-test execution). For instance, on Maven, it is possible to create
-multiple configurations in the same build file and activate any of
-them dynamically.  To reduce the space of \Fix{x} build files, we
-considered a subset of \Fix{y} build files with the following
-criteria: the given \pomf{} file has \CodeIn{maven-surefire-plugin}
-plugin declaration and it has an explicit \CodeIn{configuration}
-declaration. We automatically parsed these \Fix{y} files and we used
-the same approach to classify the parallelization mode from the parsed
-configurations as in our previous analysis. In an initial analysis, we
-noticed that some projects do not declare a static value in some
-parameters, instead, these projects inform the actual value in the
-command line. To handle this case, we computed all valid values for
-the parameter.
+We found ten projects that use parallelism using this methodology.
+Compared to the set of projects listed in Figure~\ref{tab:speedup}, we
+found two new projects, namely: \CodeIn{Google Cloud\Comment{
+    Platform} DataflowJavaSDK} (using configuration C3) and
+\CodeIn{Mapstruct} (using configuration \ForkSeq{}).  Curiously, we
+also found that project \CodeIn{Jcabi} was not detected using this
+methodology.  That happened because \Mar{please, explain why}.
+Considering the static and dynamic methods together, we found a total
+of 11 distinct projects using parallelism, corresponding to the union
+of the two subject sets.
+
+\begin{center}
+\fbox{
+  \begin{minipage}{8cm}
+      \textit{Answering \numRQC{}:}~\emph{Results indicate that test
+        suite parallelization is underused.  Overall, only
+        \percentParallel{} of costly projects (11 out of \numMedLong)
+        use parallelism.}
+  \end{minipage}
+}
+\end{center}
 
 %False positive can happen because of comments, for instance.  
 %To eliminate the cases of false positives and also to categorize 
@@ -752,40 +773,41 @@ the parameter.
 %% Figure \Fix{removed} describes the discovery step: we list the paths
 %% of all build files and filter only the files that contain any of the
 
-Figure~\ref{tab:inspection-table} summarizes our results.
-\Fix{The first column indicates the group of projects according to
-their time cost.  The second column indicates the number of build
-files per group.  The last column indicates the ratio of projects with
-parallelization settings.  From the \numMedLong{} subjects, we found
-\pomMedLong{} \pomf{} files.  The \numPomMatched{} configurations are
-distributed across \numProjectsPar{} projects from our sample.}
+%% Figure~\ref{tab:inspection-table} summarizes our results.
+%% \Fix{The first column indicates the group of projects according to
+%% their time cost.  The second column indicates the number of build
+%% files per group.  The last column indicates the ratio of projects with
+%% parallelization settings.  From the \numMedLong{} subjects, we found
+%% \pomMedLong{} \pomf{} files.  The \numPomMatched{} configurations are
+%% distributed across \numProjectsPar{} projects from our sample.}
 
-% \emph{From these results we found that $\sim$51\% of medium and
-% long-running projects do not use parallel features to run test
-% suites.}\Mar{please make it consistent with research
-% question}\Mar{explain this is over(under)-estimated...}
-\begin{figure}[ht!]
-    \centering
-    \resizebox{.48\textwidth}{!}{%
-    \begin{tabular}{llcl}
-        \toprule
-        Group & Subject & \# of modules & Mode\\%
-        \midrule%
-        Long   &JenkinsCI Gerrit Trigger Plugin& 1 & \ForkSeq\\%
-        Medium &Bouncestorage Chaos Http Proxy & 1 & C2\\%
-        Medium &Javaslang & 1 & C3\\%
-        Medium &Apache Flink & 1 &\ForkSeq\\%
-        Medium &Apache Logging Log4J2 & 3 & \ForkSeq{}\\%
-        Medium &Google Cloud Platform DataflowJavaSDK & 1 & C3\\%
-        Medium &Hazelcast Jet & 1 & \ForkSeq\\%
-        Medium &Jankotek MapDB & 1 & C3\\%
-        Medium &Mapstruct & 1 & \ForkSeq\\%
-        Medium &Spotify Helios & 3 & \ForkSeq\\%
-        \bottomrule%
-    \end{tabular}}
-    \caption{Subjects with parallelization configurations in build files.}
-    \label{tab:inspection-table}
-\end{figure}
+%% % \emph{From these results we found that $\sim$51\% of medium and
+%% % long-running projects do not use parallel features to run test
+%% % suites.}\Mar{please make it consistent with research
+%% % question}\Mar{explain this is over(under)-estimated...}
+%% \begin{figure}[ht!]
+%%     \centering
+%%     \resizebox{.48\textwidth}{!}{%
+%%     \begin{tabular}{llcl}
+%%         \toprule
+%%         Group & Subject & \# of modules & Mode\\%
+%%         \midrule%
+%%         Long   &JenkinsCI Gerrit Trigger Plugin& 1 & \ForkSeq\\%
+%%         Medium &Bouncestorage Chaos Http Proxy & 1 & C2\\%
+%%         Medium &Javaslang & 1 & C3\\%
+%%         Medium &Apache Flink & 1 &\ForkSeq\\%
+%%         Medium &Apache Logging Log4J2 & 3 & \ForkSeq{}\\%
+%%         Medium &Google Cloud Platform DataflowJavaSDK & 1 & C3\\%
+%%         Medium &Hazelcast Jet & 1 & \ForkSeq\\%
+%%         Medium &Jankotek MapDB & 1 & C3\\%
+%%         Medium &Mapstruct & 1 & \ForkSeq\\%
+%%         Medium &Spotify Helios & 3 & \ForkSeq\\%
+%%         \bottomrule%
+%%     \end{tabular}}
+%%     \caption{Subjects with parallelization configurations in build files.}
+%%     \label{tab:inspection-table}
+%% \end{figure}
+
 %% \begin{figure}[ht!]
 %%     \centering
 %%     \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}ccc}
@@ -837,21 +859,8 @@ distributed across \numProjectsPar{} projects from our sample.}
 %%     A project may have support to more than one parallel mode.}
 %% \end{figure}
 
-\begin{center}
-\fbox{
-  \begin{minipage}{8cm}
-      \textit{Answering \numRQC{}:}~\emph{Overall, results indicate
-      that parallelism features are underused by default given that
-      only \percentParallel{} of projects  (5 out of \numMedLong)
-      supports parallel execution of test suites by default and
-      \Fix{12\%} (\Fix{10} out of \numMedLong{}) require additional
-      parameters to enable these features.}
-  \end{minipage}
-}
-\end{center}
-
 \begin{itemize}
-	\item \textbf{\RQE{}}
+	\item \numRQE{}. \textbf{\RQE{}}
 \end{itemize}
 
 To understand why developers prefer not use parallel test execution,
