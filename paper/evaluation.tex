@@ -615,52 +615,57 @@ configuration is useful to isolate each test method from each other.
 \label{sec:rqC}
 \label{sec:rqE}
 
-Research questions \numRQC{} and \numRQE{} investigate to which extent
-parallelization is used in practice.  It is important to investigate
-adoption as it is possible that developers may use alternative
-mechanisms to execute tests.
+The dimension adoption focuses on the usage of parallelism in
+open-source projects.  It evaluates (\numRQC) how often open-source
+projects use parallelization schemes and (\numRQE) how developers
+involved in costly projects, not using parallelization, perceive this
+technology.
 
 \begin{itemize}
-    \item \numRQC. \emph{\RQC}
+    \item \numRQC. \textbf{\RQC{}}
 \end{itemize}
 
-To answer \numRQC{}, we selected all projects that ran in at least one
-minute, \ie, projects from the \medg{} and \longg{} groups.  This set
-includes \numMedLong{} projects (see Section~\ref{sec:rqA}).  We
+To answer \numRQC{}, we selected all projects from the \medg{} and
+\longg{} groups, \ie, projects that ran in at least one minute.  This
+set includes \numMedLong{} projects (see Section~\ref{sec:rqA}).  We
 looked for dynamic and static manifestations of parallelism.
-Section~\ref{sec:rqC-1} and~\ref{sec:rqC-2} report results for each of
-these cases.
+
+%% The
+%% following section report results for each of these cases.
 
 \vspace{1ex}
-\subsubsection{Test execution with parallelism enabled by default}
+\subsubsection{Dynamic checking}
 \label{sec:rqC-1}
 
 To find dynamic evidence of parallelism, we ran the test suites from
 our set of \numMedLong{} projects to output all key-value pairs of
 Maven parameters.  To that end, we used the option~\CodeIn{-X} to
 produce debug output and the option~\CodeIn{-DskipTests} to skip
-execution of tests.  We observed that only bootstrapping execution
-suffices to discover which parallel configuration modes Maven will
-actually use.  According to Maven's
-documentation~\cite{maven-surefire-plugin}, any parallelism
-configuration depends either on (1) the parameter \CodeIn{parallel} to
-define the parallelism mode within a JVM followed by the parameter
+execution of tests.  We observed that only bootstrapping the Maven
+process suffices to discover which parallel configuration modes it
+will use to run tests.  According to Maven's
+documentation~\cite{maven-surefire-plugin}, a parallel configuration
+depends either on (1) the parameter \CodeIn{parallel} to define the
+parallelism mode within a JVM followed by the parameter
 \CodeIn{threadCount} or (2) the parameter
 \CodeIn{forkCount}\footnote{This parameter is named \CodeIn{forkMode}
   in old versions of Maven Surefire} to define the number of forked
-JVMs. For each execution, we capture theses parameters and their
-values to map to one of the possible parallelization modes.  For
-instance, if a given project contains a module with the parameter
+JVMs.  As such, we captured, for each project, all related key-value
+pairs of Maven parameters and mapped those pairs to one of the
+possible parallelization modes.  For instance, if a given project
+contains a module with the parameter
 \CodeIn{<forkCount>1C</forkCount>}, the possible classifications are
 \ForkSeq{} or \ForkParMeth{} depending on the presence and the value
-of the parameter \CodeIn{parallel} (\ie, the presence of
-\CodeIn{<parallel>methods</parallel>} results in the parallel mode
-\ForkParMeth{}).  Large projects may contain several test suites
-distributed on different Maven modules with different
-configurations. In this case, we collect the Maven output from each
-module discarding duplicates. For instance, if a project contains two
-modules with the same parallelism mode, we count only one occurrence
-to not inflate our results.
+of the parameter \CodeIn{parallel}.  If the parameter
+\CodeIn{parallel} is set to \CodeIn{methods} the detected mode will be
+\ForkParMeth{}.  Large projects may contain several test suites
+distributed on different Maven modules potentially using different
+configurations.  For those cases, we collected the Maven output from
+each module discarding duplicates as to avoid inflating results. For
+instance, if a project contains two modules using the same
+configuration, we counted only one occurrence.
+
+\Mar{---- estou aqui}
 
 %% Column
 %% ``Group'' indicates the test cost group (see
