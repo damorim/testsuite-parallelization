@@ -68,7 +68,7 @@ of analysis we presented in Section~\ref{sec:intro}.
 \newcommand{\RQE}{What are the main reasons that prevent developers
   from using test suite parallelization?}
 \newcommand{\RQF}{To which extent parallel execution configurations affect testing
-  cost and flakiness?}
+  costs and flakiness?}
 
 \begin{itemize}
 \item Potential
@@ -1009,20 +1009,20 @@ configuration where parallelism is used by default.
 \end{itemize}
 
 To answer this research question we selected projects as follows.  To
-avoid noise in our measurements, we first discarded projects
-containing failing tests (note that we measure flakiness).  Then, we
-sorted projects in descending order of their execution times and
-selected the top ten projects from the resulting set.
-
-In this experiment, the baseline technique is \Seq{} and the
-evaluation techniques are all the configuration modes listed in
-Section~\ref{sec:modes}.  We ran each of the technique for \Fix{X}
-times reporting elapsed time and number of failing tests each time.
-We reported average results.
+avoid noise in measuring flakiness we first discarded projects
+containing failing tests.  Then, we sorted projects in descending
+order of their execution times and selected the top ten projects from
+the resulting set.  In this experiment, the baseline technique is
+sequential execution (\ie{}, configuration \Seq{}) and the evaluation
+techniques consist of all configuration modes listed in
+Section~\ref{sec:modes}.  We ran each of those techniques for \Fix{X}
+times computing elapsed time and number of failing tests in each run.
+Figures~\ref{tab:rq6-efficiency} and~\ref{tab:rq6-flaky} summarize the
+results we obtained.
 
 \Fix{Elaborate results from efficiency}
 
-Figure~\ref{tab:rq6-efficiency} summarizes our findings.
+
 
 \begin{figure}[h!]
 \centering
@@ -1038,9 +1038,6 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.00x & 1.00x & 1.00x & 1.00x
 \label{tab:rq6-efficiency}
 \end{figure}
 
-\Fix{Elaborate results about flakiness}
-
-Figure~\ref{tab:rq6-flaky} summarizes our findings.
 
 \begin{figure}[h!]
 \centering
