@@ -586,7 +586,12 @@ associated with parallel execution.
 
 Results indicate that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.  We noted
-two extreme cases: \CodeIn{JCabi} and \CodeIn{Log4J2}.  \Fix{falar
+two extreme cases: \CodeIn{JCabi} and \CodeIn{Log4J2}, which most test
+classes run one, two, or three test methods with the configuration
+\textbf{C2}, without the reutilization of JVM forks. This specific
+configuration is useful when there is the need to isolate the test
+class execution from another, which is the case.
+\Luis{$\leftarrow$ rework this} \Fix{falar
   sobre o resultado geral dos speedups - elaborar menor e maior
   speedup... acho que so vale a pena discutir quando tiver conviccao
   dos 2 casos}
