@@ -725,25 +725,22 @@ test modules.
 Given the inherent limitation of dynamic monitoring to find evidence
 of parallelism, we also looked for indication of parallelism in
 \emph{pom.xml} files\Comment{ in the same sample set of \numMedLong{}
-  projects}. In principle, some projects can use parallel execution
+projects}. In principle, some projects can use parallel execution
 although that is only activated when developers pass certain
 parameters to the build process. For instance, it is possible to
 create in Maven multiple configurations in the same build file and
-select dynamically which one should be used.
-
-\Mar{I have no clue what you mean here... Why should I care about
-  space on build files?  I thought we did this check
-  for every project and module.  $\rightarrow$}\Fix{To reduce the
-  space of \Fix{x} build files, we considered a subset of \Fix{y}
-  build files with the following criteria}: the given \pomf{} file has
-\CodeIn{maven-surefire-plugin} plugin declaration and it has an
-explicit \CodeIn{configuration} declaration. We automatically parsed
-these \Fix{y} files and we used the same approach to classify the
-parallelization mode from the parsed configurations as in our previous
-analysis. In an initial analysis, we noticed that some projects do not
-declare a static value in some parameters, instead, these projects
-inform the actual value in the command line. To handle this case, we
-computed all valid values for the parameter.
+select dynamically which one should be used.  We automatically parsed
+\Fix{X} build files and we used the same approach to classify the
+parsed configurations as in our previous analysis. Initially, we
+noticed that our approach was unable to infer the parallel mode in
+some projects because these projects do not declare a static value in
+some parameters (\eg,
+\CodeIn{<parallel>\$\{parallel.type\}</parellel>}). For these projects,
+it is required to inform additional parameters to enable the parallel
+mode in the command line (\eg, \CodeIn{mvn test
+-Dparallel.type=classesAndMethods}). \Jbc{We wouldn't have FALSE
+NEGATIVES if we considered this $\rightarrow$}To handle this case, we
+considered all valid values for the parameter.
 
 We found ten projects that use parallelism using this methodology.
 Compared to the set of projects listed in Figure~\ref{tab:speedup}, we
