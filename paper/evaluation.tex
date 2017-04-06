@@ -324,6 +324,7 @@ specific project and observed that testing time goes to nearly 30
 minutes.  For simplicity, we considered only the tests executed by
 default.
 
+\vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -337,9 +338,9 @@ default.
 \end{minipage}
 }
 \end{center}
-
-
 \vspace{1ex}
+
+
 \begin{itemize}
     \item \numRQB. \textbf{\RQB}
 \end{itemize}
@@ -461,6 +462,7 @@ shows these results.
 %% indication that it is more beneficial to parallelize long projects as
 %% cost is spread across many
 
+\vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -470,6 +472,7 @@ shows these results.
 \end{minipage}
 }
 \end{center}
+\vspace{1ex}
 
 %% We are interested to know whether
 %% most of the execution cost of a subject is dominated by a small subset
@@ -617,52 +620,60 @@ configuration is useful to isolate each test method from each other.
 \label{sec:rqC}
 \label{sec:rqE}
 
-Research questions \numRQC{} and \numRQE{} investigate to which extent
-parallelization is used in practice.  It is important to investigate
-adoption as it is possible that developers may use alternative
-mechanisms to execute tests.
+The dimension adoption focuses on the usage of parallelism in
+open-source projects.  It evaluates (\numRQC) how often open-source
+projects use parallelization schemes and (\numRQE) how developers
+involved in costly projects, not using parallelization, perceive this
+technology.
 
 \begin{itemize}
-    \item \numRQC. \emph{\RQC}
+    \item \numRQC. \textbf{\RQC{}}
 \end{itemize}
 
-To answer \numRQC{}, we selected all projects that ran in at least one
-minute, \ie, projects from the \medg{} and \longg{} groups.  This set
-includes \numMedLong{} projects (see Section~\ref{sec:rqA}).  We
+To answer \numRQC{}, we selected all projects from the \medg{} and
+\longg{} groups, \ie, projects that ran in at least one minute.  This
+set includes \numMedLong{} projects (see Section~\ref{sec:rqA}).  We
 looked for dynamic and static manifestations of parallelism.
-Section~\ref{sec:rqC-1} and~\ref{sec:rqC-2} report results for each of
-these cases.
+
+%% The
+%% following section report results for each of these cases.
 
 \vspace{1ex}
-\subsubsection{Test execution with parallelism enabled by default}
+\subsubsection{Dynamic checking}
 \label{sec:rqC-1}
 
 To find dynamic evidence of parallelism, we ran the test suites from
 our set of \numMedLong{} projects to output all key-value pairs of
 Maven parameters.  To that end, we used the option~\CodeIn{-X} to
 produce debug output and the option~\CodeIn{-DskipTests} to skip
-execution of tests.  We observed that only bootstrapping execution
-suffices to discover which parallel configuration modes Maven will
-actually use.  According to Maven's
-documentation~\cite{maven-surefire-plugin}, any parallelism
-configuration depends either on (1) the parameter \CodeIn{parallel} to
-define the parallelism mode within a JVM followed by the parameter
+execution of tests.  We skipped execution of tests as we observed from
+sampling that only bootstrapping the Maven process suffices to infer
+which parallel configuration modes it will use to actually run the
+tests.  It is also important to point that we used the default
+configurations specified in the project.  We inferred parallel
+configurations by searching for certain configuration parameters in
+log files. According to Maven's
+documentation~\cite{maven-surefire-plugin}, a parallel configuration
+depends either on (1) the parameter \CodeIn{parallel} to define the
+parallelism mode within a JVM followed by the parameter
 \CodeIn{threadCount} or (2) the parameter
 \CodeIn{forkCount}\footnote{This parameter is named \CodeIn{forkMode}
   in old versions of Maven Surefire} to define the number of forked
-JVMs. For each execution, we capture theses parameters and their
-values to map to one of the possible parallelization modes.  For
-instance, if a given project contains a module with the parameter
+JVMs.  As such, we captured, for each project, all related key-value
+pairs of Maven parameters and mapped those pairs to one of the
+possible parallelization modes.  For instance, if a given project
+contains a module with the parameter
 \CodeIn{<forkCount>1C</forkCount>}, the possible classifications are
-\ForkSeq{} or \ForkParMeth{} depending on the presence and the value
-of the parameter \CodeIn{parallel} (\ie, the presence of
-\CodeIn{<parallel>methods</parallel>} results in the parallel mode
-\ForkParMeth{}).  Large projects may contain several test suites
-distributed on different Maven modules with different
-configurations. In this case, we collect the Maven output from each
-module discarding duplicates. For instance, if a project contains two
-modules with the same parallelism mode, we count only one occurrence
-to not inflate our results.
+\ForkSeq{} or \ForkParMeth{}, depending on the presence and the value
+of the parameter \CodeIn{parallel}.  If the parameter
+\CodeIn{parallel} is set to \CodeIn{methods} the detected mode will be
+\ForkParMeth{}.  Large projects may contain several test suites
+distributed on different Maven modules potentially using different
+configurations.  For those cases, we collected the Maven output from
+each module discarding duplicates as to avoid inflating counts for
+configuration modes that appear in several modules of the same
+project. For instance, if a project contains two modules using the
+same configuration, we counted only one occurrence.
 
 %% Column
 %% ``Group'' indicates the test cost group (see
@@ -721,43 +732,46 @@ test modules.
 %    subset tests in parallel by default.}
 %\end{figure}
 
+%% Recall that some projects can use parallel execution that is only
+%% activated when developers pass certain parameters to the build
+%% process. For instance, it is possible to create in Maven multiple
+%% configurations in the same build file and select dynamically which one
+%% should be used.  
 
-\subsubsection{Presence of parallelism configurations in build files}
+\subsubsection{Static checking}
 \label{sec:rqC-2}
 Given the inherent limitation of dynamic monitoring to find evidence
-of parallelism, we also looked for indication of parallelism in
-\emph{pom.xml} files\Comment{ in the same sample set of \numMedLong{}
-  projects}. In principle, some projects can use parallel execution
-although that is only activated when developers pass certain
-parameters to the build process. For instance, it is possible to
-create in Maven multiple configurations in the same build file and
-select dynamically which one should be used.
+of parallelism, we also looked for indication of parallelism in build
+files\Comment{ in the same sample set of \numMedLong{} projects}.  We
+parsed all \emph{pom.xml} files under the project's directory and used
+the same approach as in our previous analysis to classify
+configurations.  We noticed initially that our approach was unable to
+infer the configuration mode for cases where the decision depends on
+the input (\eg,
+\CodeIn{<parallel>\$\{parallel.type\}</parallel>}). For these
+projects, the tester needs to provide additional parameters in the
+command line to enable parallelization (\eg, \CodeIn{mvn test
+  -Dparallel.type=classesAndMethods}). To handle those case, we
+considered all possible values for the parameter (in this case,
+\CodeIn{\$\{parallel.type\}}).  It is also important to note that this
+approach is not immune to false negatives, which can ocurr when
+\emph{pom.xml} files are encapsulated in jar files or downloaded from
+the network.  Consequently, this static checking is complementary to
+the dynamic checking, previously presented.
 
-\Mar{I have no clue what you mean here... Why should I care about
-  space on build files?  I thought we did this check
-  for every project and module.  $\rightarrow$}\Fix{To reduce the
-  space of \Fix{x} build files, we considered a subset of \Fix{y}
-  build files with the following criteria}: the given \pomf{} file has
-\CodeIn{maven-surefire-plugin} plugin declaration and it has an
-explicit \CodeIn{configuration} declaration. We automatically parsed
-these \Fix{y} files and we used the same approach to classify the
-parallelization mode from the parsed configurations as in our previous
-analysis. In an initial analysis, we noticed that some projects do not
-declare a static value in some parameters, instead, these projects
-inform the actual value in the command line. To handle this case, we
-computed all valid values for the parameter.
+Overall, we found, using this methodology, ten projects that use
+parallelism.  Compared to the set of projects listed in
+Figure~\ref{tab:speedup}, we found two new projects, namely:
+\CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
+configuration C3) and \CodeIn{Mapstruct} (using configuration
+\ForkSeq{}).  Curiously, we also found that project \CodeIn{Jcabi} was
+not detected using this methodology.  That happened because this
+project loads its \emph{pom.xml} file from a jar file that we did not
+check.  Considering the static and dynamic methods together, we found
+a total of 11 distinct projects using parallelism, corresponding to
+the union of the two subject sets.
 
-We found ten projects that use parallelism using this methodology.
-Compared to the set of projects listed in Figure~\ref{tab:speedup}, we
-found two new projects, namely: \CodeIn{Google Cloud\Comment{
-    Platform} DataflowJavaSDK} (using configuration C3) and
-\CodeIn{Mapstruct} (using configuration \ForkSeq{}).  Curiously, we
-also found that project \CodeIn{Jcabi} was not detected using this
-methodology.  That happened because \Mar{please, explain why}.
-Considering the static and dynamic methods together, we found a total
-of 11 distinct projects using parallelism, corresponding to the union
-of the two subject sets.
-
+\vspace{1ex}
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
@@ -768,6 +782,7 @@ of the two subject sets.
   \end{minipage}
 }
 \end{center}
+\vspace{1ex}
 
 %False positive can happen because of comments, for instance.  
 %To eliminate the cases of false positives and also to categorize 
@@ -931,10 +946,10 @@ developing in a local machine}, \emailsD{} of developers thinks that
 it is not worthy the effort, and \emailsNA{} of developers did not
 answered the last question, or did not knew an answer.
 
-\begin{figure}[ht]
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=0.25\textwidth]{plots/survey.pdf}                                                                                                                                                   
-     \caption{\Luis{todo}}
+    \includegraphics[width=.15\textwidth]{plots/survey.pdf}
+    \caption{\Luis{todo}\label{fig:rq5-answers}}
 \end{figure}
 
 
@@ -1005,6 +1020,20 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 8765 & 10\% & 10\% & 10\% & 10\% & 10
 \end{minipage}
 }
 \end{center}
+
+
+\subsection{Threats to Validity}
+
+\Fix{Jean and Luis should write this. This is really important for an
+  empirical study.  You need to undertand main sources of threat:
+  internal, external, and construct.  Read this document for the
+  basics: http://www.statsdirect.com/help/basics/validity.htm.  Read
+  this document for an example:
+  http://www.cin.ufpe.br/~damorim/publications/perez-etal-icst2017.pdf}
+
+\subsection{Lessons Learned}
+
+\Fix{Marcelo can write this...}
 
 %%To evaluate the distribution of execution time per project, we sorted
 %%the test cases by decreasing order of elapsed time and calculated the
