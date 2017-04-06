@@ -829,16 +829,20 @@ distributed across \numProjectsPar{} projects from our sample.}
 \end{itemize}
 
 To understand why developers prefer not use parallel test execution,
-we considered the \numNonParallel{} subjects that do not use any
-parallel mode from Section~\ref{sec:rqC-1} and elaborated a
+we considered \numNonParallel{} subjects that do not use parallel
+configuration as default test execution from Section~\ref{sec:rqC-1} and elaborated a
 quick survey to extent the comprehension about why developers do not
 use parallel configuration. \Luis{describe how we created the survey}.
 We first retrieve the last 20 commits from the project repository and
 got the developers e-mails. In total, we sent an e-mail to
-\emailsSent{} developers that recently contributed to the
-\numNonParallel{} projects.
-There were \emailsAnswered{} replies from \emailsProjectsAnswered{}, 
-and \emailsFalseAnswers{} was not able to explain how the testing works.
+\emailsSent{} developers that recently contributed to the 
+\numNonParallel{} projects, and we did not found any e-mail from
+\Fix{??} projects using \CodeIn{git} tool.
+\Luis{Here I want to say that I could not found any valid e-mail using
+\textit{git log}}
+There were \emailsAnswered{} replies from \emailsProjectsAnswered{}
+projects, and \emailsFalseAnswers{} developers was not able to 
+explain how the testing works or was not able to answer the survey.
 
 The survey sent was composed by three open questions and one closed
 question: (I) How long does it take for test to run in your
@@ -848,38 +852,45 @@ not using parallelization: (a) I did not know it was possible; (b) I
 was concerned with concurrency issues; (c) I use a continuous
 integration server; (d) Some other reason. Please elaborate.
 
-\Comment{
-\begin{enumerate}
-	\item How long does it take for test to run in your
-		environment?
-	\item Can you briefly define your setup?
-	\item Do you confirm that your project does not run in
-		parallel?
-	\item Select a reason for not using paralellization:
-		\begin{enumarate}
-			\item I did not know it was possible;
-			\item I was concerned with concurrency issues;
-			\item I use a continuous integration server;
-			\item Some other reason.
-		\end{enumerate}
-\end{enumerate}
-}
+%% \begin{enumerate}
+%% 	\item How long does it take for test to run in your
+%%		environment?
+%%	\item Can you briefly define your setup?
+%%	\item Do you confirm that your project does not run in
+%%		parallel?
+%%	\item Select a reason for not using paralellization:
+%%		\begin{enumarate}
+%%			\item I did not know it was possible;
+%%			\item I was concerned with concurrency issues;
+%%			\item I use a continuous integration server;
+%%			\item Some other reason.
+%%		\end{enumerate}
+%% \end{enumerate}
 
-From the valid replies, we confirmed that the projects takes more than
-\Fix{1m} to run tests and \emailsSeq{} confirmed that those projects do not use 
-parallel testing using Maven Surefire. The other projects that we do not 
-confirm, need and extra parameter to execute in parallel mode \Luis{make 
-sure that they are inside the static analysis sheets made before}.
+Based on the answers from the developers, we confirmed that most of
+the subjects execution time was compatible with the results found at
+Section~\ref{sec:rqA}. From Question I, we noticed that \emailsCI{}
+developers confirmed the use of an continuous integration server to
+run tests, which \emailsDistributed{} of them is using a distributed
+continuous integration server as an alternative to parallelism.
+From a local development, \emailsLocal{} developers answered that they
+run tests in a local machine, and \emailsNotDescribed{} developers did
+not described their environment.
+From Question II, we noticed that \emailsSequential{} confirmed that
+they do not execute tests in parallel, and \emailsParallel{} did not
+confirmed, however, the developers confirmed the need of an extra
+parameter at the command line to execute in parallel.
+From Question III, \emailsA{} of developers do not know that
+parallelism is an available configuration for Maven Surefire,
+\emailsB{} of developers do not use parallel testing concerned with
+concurrency issues, \emailsD{} of developers uses a continuous
+integretion server for run tests while working \Luis{here I want to
+say that they use it for something like "non-blocking testing" while
+developing in a local machine}, \emailsD{} of developers thinks that
+it is not worthy the effort, and \emailsNA{} of developers did not
+answered the last question, or did not knew an answer.
 
-We noticed that \pctEmailsCI{} of developers use an continuous integration 
-server to run tests, \pctEmailsLocal{} run tests in the
-development machine, \pctEmailsDidNotSpecify{} did not specified their
-testing setup. We also observed that one project has testing enabled 
-without parallelization. However the maintainers do not execute the tests.
-Considering developers did not know about the existence of the
-parallelism configuration \pctEmailsDoNotKnow{} of the replies
-confirmed that. Three of the developers also confirmed that they use
-another method of parallelization with a distributed build machines.
+\Luis{Pie chart}
 
 \begin{center}
 \fbox{
