@@ -324,6 +324,7 @@ specific project and observed that testing time goes to nearly 30
 minutes.  For simplicity, we considered only the tests executed by
 default.
 
+\vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -337,9 +338,9 @@ default.
 \end{minipage}
 }
 \end{center}
-
-
 \vspace{1ex}
+
+
 \begin{itemize}
     \item \numRQB. \textbf{\RQB}
 \end{itemize}
@@ -461,6 +462,7 @@ shows these results.
 %% indication that it is more beneficial to parallelize long projects as
 %% cost is spread across many
 
+\vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -470,6 +472,7 @@ shows these results.
 \end{minipage}
 }
 \end{center}
+\vspace{1ex}
 
 %% We are interested to know whether
 %% most of the execution cost of a subject is dominated by a small subset
@@ -641,9 +644,13 @@ To find dynamic evidence of parallelism, we ran the test suites from
 our set of \numMedLong{} projects to output all key-value pairs of
 Maven parameters.  To that end, we used the option~\CodeIn{-X} to
 produce debug output and the option~\CodeIn{-DskipTests} to skip
-execution of tests.  We observed that only bootstrapping the Maven
-process suffices to discover which parallel configuration modes it
-will use to run tests.  According to Maven's
+execution of tests.  We skipped execution of tests as we observed from
+sampling that only bootstrapping the Maven process suffices to infer
+which parallel configuration modes it will use to actually run the
+tests.  It is also important to point that we used the default
+configurations specified in the project.  We inferred parallel
+configurations by searching for certain configuration parameters in
+log files. According to Maven's
 documentation~\cite{maven-surefire-plugin}, a parallel configuration
 depends either on (1) the parameter \CodeIn{parallel} to define the
 parallelism mode within a JVM followed by the parameter
@@ -655,17 +662,16 @@ pairs of Maven parameters and mapped those pairs to one of the
 possible parallelization modes.  For instance, if a given project
 contains a module with the parameter
 \CodeIn{<forkCount>1C</forkCount>}, the possible classifications are
-\ForkSeq{} or \ForkParMeth{} depending on the presence and the value
+\ForkSeq{} or \ForkParMeth{}, depending on the presence and the value
 of the parameter \CodeIn{parallel}.  If the parameter
 \CodeIn{parallel} is set to \CodeIn{methods} the detected mode will be
 \ForkParMeth{}.  Large projects may contain several test suites
 distributed on different Maven modules potentially using different
 configurations.  For those cases, we collected the Maven output from
-each module discarding duplicates as to avoid inflating results. For
-instance, if a project contains two modules using the same
-configuration, we counted only one occurrence.
-
-\Mar{---- estou aqui}
+each module discarding duplicates as to avoid inflating counts for
+configuration modes that appear in several modules of the same
+project. For instance, if a project contains two modules using the
+same configuration, we counted only one occurrence.
 
 %% Column
 %% ``Group'' indicates the test cost group (see
@@ -724,40 +730,46 @@ test modules.
 %    subset tests in parallel by default.}
 %\end{figure}
 
+%% Recall that some projects can use parallel execution that is only
+%% activated when developers pass certain parameters to the build
+%% process. For instance, it is possible to create in Maven multiple
+%% configurations in the same build file and select dynamically which one
+%% should be used.  
 
-\subsubsection{Presence of parallelism configurations in build files}
+\subsubsection{Static checking}
 \label{sec:rqC-2}
 Given the inherent limitation of dynamic monitoring to find evidence
-of parallelism, we also looked for indication of parallelism in
-\emph{pom.xml} files\Comment{ in the same sample set of \numMedLong{}
-projects}. In principle, some projects can use parallel execution
-although that is only activated when developers pass certain
-parameters to the build process. For instance, it is possible to
-create in Maven multiple configurations in the same build file and
-select dynamically which one should be used.  We automatically parsed
-\Fix{X} build files and we used the same approach to classify the
-parsed configurations as in our previous analysis. Initially, we
-noticed that our approach was unable to infer the parallel mode in
-some projects because these projects do not declare a static value in
-some parameters (\eg,
-\CodeIn{<parallel>\$\{parallel.type\}</parellel>}). For these projects,
-it is required to inform additional parameters to enable the parallel
-mode in the command line (\eg, \CodeIn{mvn test
--Dparallel.type=classesAndMethods}). \Jbc{We wouldn't have FALSE
-NEGATIVES if we considered this $\rightarrow$}To handle this case, we
-considered all valid values for the parameter.
+of parallelism, we also looked for indication of parallelism in build
+files\Comment{ in the same sample set of \numMedLong{} projects}.  We
+parsed all \emph{pom.xml} files under the project's directory and used
+the same approach as in our previous analysis to classify
+configurations.  We noticed initially that our approach was unable to
+infer the configuration mode for cases where the decision depends on
+the input (\eg,
+\CodeIn{<parallel>\$\{parallel.type\}</parallel>}). For these
+projects, the tester needs to provide additional parameters in the
+command line to enable parallelization (\eg, \CodeIn{mvn test
+  -Dparallel.type=classesAndMethods}). To handle those case, we
+considered all possible values for the parameter (in this case,
+\CodeIn{\$\{parallel.type\}}).  It is also important to note that this
+approach is not immune to false negatives, which can ocurr when
+\emph{pom.xml} files are encapsulated in jar files or downloaded from
+the network.  Consequently, this static checking is complementary to
+the dynamic checking, previously presented.
 
-We found ten projects that use parallelism using this methodology.
-Compared to the set of projects listed in Figure~\ref{tab:speedup}, we
-found two new projects, namely: \CodeIn{Google Cloud\Comment{
-    Platform} DataflowJavaSDK} (using configuration C3) and
-\CodeIn{Mapstruct} (using configuration \ForkSeq{}).  Curiously, we
-also found that project \CodeIn{Jcabi} was not detected using this
-methodology.  That happened because \Mar{please, explain why}.
-Considering the static and dynamic methods together, we found a total
-of 11 distinct projects using parallelism, corresponding to the union
-of the two subject sets.
+Overall, we found, using this methodology, ten projects that use
+parallelism.  Compared to the set of projects listed in
+Figure~\ref{tab:speedup}, we found two new projects, namely:
+\CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
+configuration C3) and \CodeIn{Mapstruct} (using configuration
+\ForkSeq{}).  Curiously, we also found that project \CodeIn{Jcabi} was
+not detected using this methodology.  That happened because this
+project loads its \emph{pom.xml} file from a jar file that we did not
+check.  Considering the static and dynamic methods together, we found
+a total of 11 distinct projects using parallelism, corresponding to
+the union of the two subject sets.
 
+\vspace{1ex}
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
@@ -768,6 +780,7 @@ of the two subject sets.
   \end{minipage}
 }
 \end{center}
+\vspace{1ex}
 
 %False positive can happen because of comments, for instance.  
 %To eliminate the cases of false positives and also to categorize 
