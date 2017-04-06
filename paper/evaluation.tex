@@ -586,9 +586,16 @@ associated with parallel execution.
 
 Results indicate that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.  We noted
-two extreme cases: \CodeIn{JCabi} and \CodeIn{Log4J2}, which most test
+two extreme cases\Mar{note that one is a case of very high speedup and
+  another is a case of very high slowdown.  It is strange that the
+  same explanation justify both cases.  Are you only referring to
+  Log4J2 or both cases in your explanation?}: \CodeIn{Jcabi} and \CodeIn{Log4J2}, which most test
 classes run one, two, or three test methods with the configuration
-\textbf{C2}, without the reutilization of JVM forks. This specific
+\Mar{We are not using bold for these.  If you want you can change, but
+  please do so by holding all locks.}\textbf{C2}, without the
+reutilization of JVM forks\Mar{Don't understand.
+  Fork-configurations have an F in front, no?  Like FC1.  Please
+  check.  Do you mean FC0 for Log4J? (I checked Figure 10)}. This specific
 configuration is useful when there is the need to isolate the test
 class execution from another, which is the case.
 \Luis{$\leftarrow$ rework this} \Fix{falar
