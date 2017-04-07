@@ -946,13 +946,6 @@ developers:
 %%			\item Some other reason.
 %%		\end{enumerate}
 %% \end{enumerate}
-
-\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
-    \centering
-    \includegraphics[width=.15\textwidth]{plots/survey.pdf}
-    \caption{\label{fig:rq5-answers}Summary of developer's answers to
-      question~\ref{questionThree}.}
-\end{wrapfigure}
 %% One of the goals of the first questions is to identify potential
 %% discrepancies between our experimental environment and the environment
 %% of developers.  Overall, we found that \Fix{...}
@@ -962,38 +955,45 @@ compatible with the results we reported in Section~\ref{sec:rqA}.
 Furthermore, \emailsCI{} of the participants indicated the use of
 Continuous Integration (CI) to run tests, with \emailsDistributed{} of
 these participants reporting that test suites were modularized and
-those modules were tested independetly in CI servers through different
+those modules are tested independetly in CI servers through different
 parameters. A total of \emailsLocal{} participants answered that they
-do run tests in their local machines.  Note that CI does not preclude
-low-level parallelization.  For example, installations of open-source
-CI tools (\eg{}, Jenkins~\cite{jenkins}) in dedicated servers will
-still benefit from running tests faster, using test suite
-parallelization.
+do run tests in their local machines.  Note, however, that CI does not
+preclude low-level parallelization.  For example, installations of
+open-source CI tools (\eg{}, Jenkins~\cite{jenkins}) in dedicated
+servers will still benefit from running tests faster through low-level
+test suite parallelization.
 
 % \emailsNotDescribed{} developers did not described their environment.
 
-Considering question 2, we found that \emailsSequential{} of the
-\emailsProjectsAnswered{} projects indeed did not execute tests in
-parallel.  The mismatch is justified by cases where neither of our
-checks (static or dynamic) could detect presence of parallelism.  \Fix{elaborate}
-\Luis{i looked at those 6 weird projects, and 1 of them contains a
-false-negative from rq4, one of them considered the distributed CI
-server as parallelism, 2 of them had a custom test runner, and 2 of
-them implements parallelism inside the test (they test two+ things in
-one test method.}
+Considering question 2, participants responded that
+\emailsSequential{} of the \emailsProjectsAnswered{} projects did not
+execute tests in parallel.  This mismatch is justified by cases where
+neither of our checks (static or dynamic) could detect presence of
+parallelism.  \Fix{elaborate} \Luis{i looked at those 6 weird
+  projects, and 1 of them contains a false-negative from rq4, one of
+  them considered the distributed CI server as parallelism, 2 of them
+  had a custom test runner, and 2 of them implements parallelism
+  inside the test (they test two+ things in one test method.}
 %% did not confirmed, however,
 %% the developers confirmed the need of an extra parameter at the command
 %% line to execute in parallel.
 
-From Question III, \emailsA{} of developers do not know that
-parallelism is an available configuration for Maven Surefire,
-\emailsB{} of developers do not use parallel testing concerned with
-concurrency issues, \emailsD{} of developers uses a continuous
-integretion server for run tests while working \Luis{here I want to
-say that they use it for something like "non-blocking testing" while
-developing in a local machine}, \emailsD{} of developers thinks that
-it is not worthy the effort, and \emailsNA{} of developers did not
-answered the last question, or did not knew an answer.
+\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
+    \centering
+    \includegraphics[width=.15\textwidth]{plots/survey.pdf}
+    \caption{\label{fig:rq5-answers}Summary of developer's answers to
+      question~\ref{questionThree}.}
+\end{wrapfigure}
+Considering question 3, \emailsA{} of developers who answered the
+survery did not know that parallelism was available in Maven,
+\emailsB{} of developers mentioned that they did not use parallelism
+because of concerns with concurrency issues, \emailsD{} of developers
+uses a continuous integretion server for run tests while working
+\Luis{here I want to say that they use it for something like
+  "non-blocking testing" while developing in a local machine},
+\emailsD{} of developers thinks that it is not worthy the effort, and
+\emailsNA{} of developers did not answered the last question, or did
+not knew an answer.
 
 
 \begin{center}
