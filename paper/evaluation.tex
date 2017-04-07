@@ -972,8 +972,8 @@ neither of our checks (static or dynamic) could detect presence of
 parallelism.  
 
 We investigated this six projects further, and one of them contained a
-false-negative result from \numRQC{}, which means that a configuration file
-is compacted inside a Java container. One of them considered a
+false-negative result from \numRQC{}, which means that a \pomf{}
+is compacted inside a \CodeIn{jar} file. One of them considered a
 distributed CI server as parallelism. Two of those projects had a
 custom JUnit test runner, which handles the parallelism itself. The
 last two projects run the parallelism inside the test method, one runs
