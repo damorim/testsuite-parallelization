@@ -683,16 +683,12 @@ configuration modes that appear in several modules of the same
 project. For instance, if a project contains two modules using the
 same configuration, we counted only one occurrence.
 
-%% Column
-%% ``Group'' indicates the test cost group (see
-%% Figure~\ref{fig:rq1-barplot}), the
-
-\begin{figure}[t!]
-%\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
-  %    \footnotesize
-  \small
-    \centering
-%    \setlength{\tabcolsep}{2.5pt}
+%\begin{figure}[t!]
+\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
+  \footnotesize
+  %  \small
+  \centering
+  \setlength{\tabcolsep}{2.5pt}
 %    \resizebox{.48\textwidth}{!}{%
     \begin{tabular}{lrr}
         \toprule
@@ -713,8 +709,8 @@ same configuration, we counted only one occurrence.
     \caption{Subjects with parallel test execution enabled by
     default.}
     \label{tab:freqmodes-dynamic}
-\end{figure}
-%\end{wrapfigure}
+%\end{figure}
+\end{wrapfigure}
 
 Figure~\ref{tab:freqmodes-dynamic} shows the projects we idendified
 where parallelism is enabled by default in Maven.  Column
