@@ -969,11 +969,18 @@ Considering question 2, participants responded that
 \emailsSequential{} of the \emailsProjectsAnswered{} projects did not
 execute tests in parallel.  This mismatch is justified by cases where
 neither of our checks (static or dynamic) could detect presence of
-parallelism.  \Fix{elaborate} \Luis{i looked at those 6 weird
-  projects, and 1 of them contains a false-negative from rq4, one of
-  them considered the distributed CI server as parallelism, 2 of them
-  had a custom test runner, and 2 of them implements parallelism
-  inside the test (they test two+ things in one test method.}
+parallelism.  
+
+We investigated this six projects further, and one of them contained a
+false-negative result from \numRQC{}, which means that a configuration file
+is compacted inside a Java container. One of them considered a
+distributed CI server as parallelism. Two of those projects had a
+custom JUnit test runner, which handles the parallelism itself. The
+last two projects run the parallelism inside the test method, one runs
+a manually created Thread to run some tests, and the other runs in
+parallel by using Java 8 collection streams, that allows the
+developers to iterate over a list in parallel.
+
 %% did not confirmed, however,
 %% the developers confirmed the need of an extra parameter at the command
 %% line to execute in parallel.
