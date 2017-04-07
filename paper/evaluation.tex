@@ -989,25 +989,34 @@ developers to iterate over a list in parallel.
     \centering
     \includegraphics[width=.15\textwidth]{plots/survey.pdf}
     \caption{\label{fig:rq5-answers}Summary of developer's answers to
-      question~\ref{questionThree}.}
+      survey question~\ref{questionThree}.}
 \end{wrapfigure}
-Considering question 3, \emailsA{} of developers who answered the
-survery did not know that parallelism was available in Maven,
-\emailsB{} of developers mentioned that they did not use parallelism
-because of concerns with concurrency issues, \emailsD{} of developers
-uses a continuous integretion server for run tests while working
-\Luis{here I want to say that they use it for something like
-  "non-blocking testing" while developing in a local machine},
-\emailsD{} of developers thinks that it is not worthy the effort, and
-\emailsNA{} of developers did not answered the last question, or did
-not knew an answer.
-
+Considering question 3, the distribution of answers was as follows.  A
+total of \emailsA{} of the \emailsProjectsAnswered{} developers who
+answered the survey did not know that parallelism was available in
+Maven (option ``a''), \emailsB{} of developers mentioned that they did
+not use parallelism concerned with possible concurrency issues (option
+``b''), \emailsD{} of developers mentioned that continuous integration
+services sufficed to provide timely feedback while running only smoke
+tests (\ie{}, short-running tests) locally (option ``c'')\Comment{here
+  I want to say that they use it for something like "non-blocking
+  testing" while developing in a local machine}, and \emailsD{} of
+developers who provided an alternative answer (option ``d'') mentioned
+that using parallelism was not worth the effort of preparing the test
+suites to take advantage of available processing power.  A total of
+\emailsNA{} of participants did not answer the last question of the
+survey.  Figure~\ref{fig:rq5-answers} shows a pie chart summarizing
+the distribution of answers.
 
 \begin{center}
 \fbox{
 	\begin{minipage}{8cm}
-		\textit{Answering \numRQE{}:~\emph{\Luis{summarize
-		findings...}}}
+	  \textit{Answering \numRQE{}:}~\emph{Results suggest that dealing
+       with concurrency issues (\ie{}, the extra work to organize test
+       suite to safely explore concurrency) was the principal reason
+       for developers not investing in parallelism.  Other reasons
+       included availability of continuous integration services and
+       unfamiliarity with the technology.}
 	\end{minipage}
 }
 \end{center}
