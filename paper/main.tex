@@ -418,20 +418,22 @@ and testing infrastructures that build on such technology make it
 possible to reduce testing costs.
 
 This paper reports our findings on the usage and impact of test
-execution parallelization in open-source projects. This is a
-relevant problem given the tremendous popularity of open-source
-development and regression testing research. Overall, considering
-a collection with \numSubjs{} popular Java projects we analyzed, we
-found that nearly one in every four projects contain costly test
-suites but parallelization features still seem underutilized.
-Furthermore, we found that different modes of parallelism provide
-different tradeoffs between efficiency and precision, which is
-influenced by test flakiness caused by non-determinism.
+execution parallelization in open-source projects. This is a relevant
+problem given the tremendous popularity of open-source development and
+regression testing research. Overall, considering a collection with
+\numSubjs{} popular Java projects we analyzed, we found that
+\percentMedLongRunning{} of the projects contain costly test suites
+but parallelization features still seem underutilized in practice with
+the main reason being the fear of high cost in maintaining test suites
+for dealing with concurrency issues.  \Fix{Furthermore, we found that
+different modes of parallelism provide different tradeoffs between
+efficiency and precision, which is influenced by test flakiness caused
+by non-determinism.}
 
-This study brings to light the potential of parallelization to improve
-test efficiency and consequently is instrumental in the
-development of new techniques to address existing limitations of
-tools and fears of users.
+This study brings to light the benefits and burdens of test suite
+parallelization to improve test efficiency. It can serve as a guide
+both to practicioners and developers of new techniques and tools
+aiming to speedup test execution with parallelization.
 
 %% We observed that (i) projects with costly test suites ocur in nearly
 %% one in every four projects, (ii) cost is relatively evenly distributed

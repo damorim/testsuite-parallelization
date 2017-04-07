@@ -41,7 +41,12 @@ parallelization, enable test execution speedups through increased CPU
 usage~(see Section~\ref{sec:modes}).  These two elements~---~demand
 for cost-effective test execution and supply of relatively inexpensive
 testing infrastructures~---~led us to investigate the usage of
-parallelism for running tests in public open-source projects.
+parallelism to speed up test execution.  This paper reports on an
+empirical study we conducted to analyze the usage and impact of
+low-level parallelization in speeding up testing for open-source
+projects.  This is a relevant problem given the tremendous popularity
+of open-source development and regression testing
+research~\cite{yoo-harman-stvr2012}.
 
 %% \Mar{Fan Long
 %%   (http://people.csail.mit.edu/fanl/) often uses a plot to show the
@@ -57,18 +62,13 @@ parallelism for running tests in public open-source projects.
 %% \item \textbf{Issues versus benefits on using parallelization modes.}
 %% \end{enumerate}
 
-This paper reports on an empirical study we conducted to analyze the
-impact of low-level parallelization to speedup testing in open-source
-projects.  This is a relevant problem given the tremendous popularity
-of open-source development and regression testing
-research~\cite{yoo-harman-stvr2012}.  The dimensions of analysis we
-considered in this study are as follows: potential, effectiveness,
-adoption, and tradeoffs.  Each dimension focuses on one aspect of our
-study.  The dimension \textbf{potential} measures the potential of
-parallelization to reduce testing costs.  In the limit,
-parallelization would be fruitless if all projects used short-running
-test suites or if the bulk of execution cost was dominated by a
-relatively small number of tests in the suite.  The dimension
+The dimensions of analysis we considered in this study are as follows:
+potential, effectiveness, adoption, and tradeoffs.  Each dimension
+focuses on one aspect of our study.  The dimension \textbf{potential}
+measures the potential of parallelization to reduce testing costs.  In
+the limit, parallelization would be fruitless if all projects used
+short-running test suites or if the bulk of execution cost was
+dominated by a single test in the suite.  The dimension
 \textbf{effectiveness} measures the observed impact of
 parallelization\Comment{~---~when used in selected open-source
   projects~---~} on testing costs.  Intuitively, benefits are
@@ -83,9 +83,12 @@ resistance to the technology and its reasons.  Finally, the dimension
 with\Comment{running test suites with} different parallel
 configurations.  Note that the configuration choice can affect both
 test cost and test flakiness, which is caused by the non-determinism
-resulted from running tests in different schedulings. Discovering
-Pareto-efficient~\cite{hwang-masud-1979} configurations is important
-to guide practitioners and future developments in this area.
+resulted from running test methods and classes in different
+orderings.
+
+%% Discovering Pareto-efficient~\cite{hwang-masud-1979}
+%% configurations is important to guide practitioners and future
+%% developments in this area.
 
 \Mar{organize according to each of these dimensions...$\rightarrow$}
 
