@@ -1,13 +1,6 @@
 \section{Parallel Execution of Test Suites}
 \label{sec:modes}
 
-\begin{figure}[t!]
-  \centering
-  \includegraphics[width=0.35\textwidth]{figs/parallel-levels.pdf}
-  \vspace{-1ex}
-  \caption{\label{fig:levels}Levels of parallelism.}
-\end{figure}
-
 Figure~\ref{fig:levels} illustrates the different levels where
 parallelism in test execution can be obtained.
 The highest level indicates
@@ -18,6 +11,13 @@ obtained within a single machine.  These levels are complementary:
 the lowest levels leverage the computing power of server
 nodes whereas the highest level leverages the aggregate processing
 power of the farm.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.35\textwidth]{figs/parallel-levels.pdf}
+  \vspace{-1ex}
+  \caption{\label{fig:levels}Levels of parallelism.}
+\end{figure}
 
 This paper focuses on low-level parallelism, where computation can be
 offloaded at different CPUs within a machine and at different threads

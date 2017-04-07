@@ -73,24 +73,22 @@ dominated by a single test in the suite.  The dimension
 parallelization\Comment{~---~when used in selected open-source
   projects~---~} on testing costs.  Intuitively, benefits are
 proportional to the cost reduction that parallelization brings.  In
-the limit, the overhead of spawning virtual machines or threads can
-even result in added cost.  The dimension \textbf{adoption} evaluates
-(i) how often open-source projects use parallelization schemes and
-(ii) how developers involved in costly projects (not using test suite
-parallelization) perceive this technology.  It is important to measure
-resistance to the technology and its reasons.  Finally, the dimension
-\textbf{tradeoffs} evaluates the issues and benefits associated
-with\Comment{running test suites with} different parallel
-configurations.  Note that the configuration choice can affect both
-test cost and test flakiness, which is caused by the non-determinism
-resulted from running test methods and classes in different
-orderings.
+the limit, however, the overhead of spawning virtual machines or
+threads can even result in added cost.  The dimension
+\textbf{adoption} evaluates (i) how often open-source projects use
+parallelization schemes and (ii) how developers involved in costly
+projects (not using test suite parallelization) perceive this
+technology.  It is important to measure resistance to the technology
+and its reasons.  Finally, the dimension \textbf{tradeoffs} evaluates
+the issues and benefits associated with\Comment{running test suites
+  with} different parallel configurations.  Note that the
+configuration choice can affect both test cost and test flakiness,
+which is caused by the non-determinism resulted from running test
+methods and classes in different orderings.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
 %% configurations is important to guide practitioners and future
 %% developments in this area.
-
-\Mar{organize according to each of these dimensions...$\rightarrow$}
 
 %% papers also indicate the important of speeding up the testing process
 %% in other industrial domain, e.g., in 
@@ -109,50 +107,98 @@ orderings.
 %% eight virtual CPUs (four cores with two native threads each) and the
 %% default Maven configuration of each project.
 
-%% RQ1 + RQ2
+\subsection{Summary of ``Potential'' results}
+
 We selected \numSubjs{} popular Java projects from \github{}
 containing Maven build files~\cite{maven} to assess how prevalent
 long-running test suites are.  Section~\ref{sec:eval} details our
 methodology to select subjects and to isolate our experiments from
-environmental noise.  In summary, results indicate that $\sim$21\% of
-the test suites take at least 1m to run and $\sim$8\% of the test
-suites take at least 5m to run.  Considering all the \numMedLong{}
-projects in the $>$1m group (\percentMedLongRunning{} of
-\numSubjs{})\Fix{$\leftarrow$this is not right. check macros.}, the
-average execution time is \averageMedLongRunning{}.  Results also show
-that individual tests are typically short-running, taking often less
-than half a second to run.  Furthermore, we found that only in rare
-cases few test cases monopolize execution cost associated with each
-test suite.  Overall, these results suggest that test suite
-parallelization has the potential to optimize these test suites.
+environmental noise.  Results indicate that nearly
+\percentMedLongRunning{} of the projects take at least 1m to run their
+test suites and \percentLongRunning{} of the projects take at least 5m
+to run their suites.  Considering the \numMedLong{} projects in those
+two groups, the average execution time is \averageMedLongRunning{}.
+Results also show that individual tests are typically short-running,
+taking often less than half a second to run.  Furthermore, we found
+that only in rare cases few test cases monopolize execution cost
+associated with each test suite.  \emph{Overall, our results suggest
+  that test suite parallelization has the potential to optimize test
+  suites.}
 
-%%RQ3
-Given the high execution cost associated with a significant number of
-\github{} projects, we decided to investigate usage of test
-suite parallelization in practice.  It is important to note that modern build
-systems (\eg{}, Maven~\cite{maven}) offer parallelization options to
-accelerate test execution (see Section~\ref{sec:modes}).  To find how
-popular these features are in practice, we first analyzed build files
-\emph{statically}.  Considering the $>$1m group of projects
-(\numMedLong{} in total), we found that 49\% (41/\numMedLong{}) of
-them use some parallelization option.  Considering those projects that
-take more than 5m to run (\numLong{} in total), usage of parallelism
-increases to 59\% (19/\numLong{}).  Furthermore, we found that
-``forking'' virtual machines was the most prevalent parallel mode used
-in practice.  This mode is used twice as much as any other mode used.
-Important to note that ``forking VMs'' is perhaps the simplest of the
-parallelization modes~--~it is provided by the build system as opposed
-to the testing framework.  This result suggests that datarace
-flakiness~\cite{luo-etal-fse2014} may be a concern to users as
-``forking'' does not exploit thread-level concurrency within each VM,
-which can create contention on data reachable from the static
-area~\cite{bell-kaiser-icse2014,bell-etal-esecfse2015}.  Instead, it
-creates independent processes (\ie{}, Java VM instances) and executes
-tests sequentially within each process. \Mar{why 32-19 did not use
-  parallelization?}
+\subsection{Summary of ``Effectiveness'' results}
 
-\Fix{...Discuss impact...}\Mar{what about free services (jenkins)?
-  how much can you scale execution and how expensive would that be?}
+As to avoid introduction of unintended noise when measuring time, we
+evaluated effectiveness on projects that we knew a priori ran their
+test suite in parallel by default.  Results indicate that the average
+speedup of parallelization was \avgSpeedup{}x.  Although we found
+cases with very high speedups (\eg{}, 9.2x), we found some cases where
+speedups were insignificant.  \emph{Overall, our results suggest that
+  it may not be obvious to achieve huge speedups with test suite
+  parallelization.}
+
+\subsection{Summary of ``Adoption'' results}
+
+We considered two aspects in measuring adoption of the technology.
+First, we analyzed quantitatively current usage of parallelism in
+open-source projects.  Then, we investigated the key reasons that
+justify resistance of developers in using test suite parallelization.
+For the quantitative analysis we checked both statically (parsing
+build files) and dynamically (monitoring execution of build files) for
+the presence of parallelization.  Considering only those projects that
+take longer than a minute to run their test suites, we found that only
+\percentParallel{} of them use parallelism.  When considering the
+feedback received from developers involved in those projects we
+realized the proportion should was a bit higher, of
+\percentParallelUpdated{}, but still relatively low.  For the
+qualitative analysis we surveyed developers from a selection of costly
+projects that did not use parallelization.  Section~\ref{sec:rqE}
+details our selection methodology. \emph{Results indicate that dealing
+  with concurrency issues related with parallelization (in particular,
+  the extra work to organize test suite to safely explore concurrency)
+  was the main barrier for adoption.  Other reasons included
+  availability of continuous integration services and unfamiliarity
+  with the technology.}
+
+%% %%RQ3
+%% Given the high execution cost associated with a significant number of
+%% \github{} projects, we decided to investigate usage of test
+%% suite parallelization in practice.  It is important to note that modern build
+%% systems (\eg{}, Maven~\cite{maven}) offer parallelization options to
+%% accelerate test execution (see Section~\ref{sec:modes}).  To find how
+%% popular these features are in practice, we first analyzed build files
+%% \emph{statically}.  Considering the $>$1m group of projects
+%% (\numMedLong{} in total), we found that 49\% (41/\numMedLong{}) of
+%% them use some parallelization option.  Considering those projects that
+%% take more than 5m to run (\numLong{} in total), usage of parallelism
+%% increases to 59\% (19/\numLong{}).  Furthermore, we found that
+%% ``forking'' virtual machines was the most prevalent parallel mode used
+%% in practice.  This mode is used twice as much as any other mode used.
+%% Important to note that ``forking VMs'' is perhaps the simplest of the
+%% parallelization modes~--~it is provided by the build system as opposed
+%% to the testing framework.  This result suggests that datarace
+%% flakiness~\cite{luo-etal-fse2014} may be a concern to users as
+%% ``forking'' does not exploit thread-level concurrency within each VM,
+%% which can create contention on data reachable from the static
+%% area~\cite{bell-kaiser-icse2014,bell-etal-esecfse2015}.  Instead, it
+%% creates independent processes (\ie{}, Java VM instances) and executes
+%% tests sequentially within each process. \Mar{why 32-19 did not use
+%%   parallelization?}
+
+\subsection{Summary of ``Tradeoff'' results}
+
+\Fix{bla bla bla bla bla bla bla blabla bla bla blabla bla bla blabla
+  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
+  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
+  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
+  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
+  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
+  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
+  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
+  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
+  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
+  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
+  bla bla blabla bla bla blabla bla bla blabla bla bla bla}
+
 
 %% \Mar{missing connection. why parallelism?}  From these results we
 %% investigated (2) how frequently the projects we considered use
