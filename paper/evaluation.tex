@@ -683,7 +683,19 @@ configuration modes that appear in several modules of the same
 project. For instance, if a project contains two modules using the
 same configuration, we counted only one occurrence.
 
-%\begin{figure}[t!]
+
+Figure~\ref{tab:freqmodes-dynamic} shows the projects we idendified
+where parallelism is enabled by default in Maven.  Column
+``\emph{Subject}'' indicates the name of the project, column
+``\emph{\# of modules}'' indicates the fraction of modules containing
+tests that use the configuration of parallelism mentioned in column
+``\emph{Mode}''.  We note that, considering these projects, the
+modules that do not use the configuration cited use the sequential
+configuration \Seq{}.  For example, six modules (=31-25) from Log4J2
+use sequential configuration.
+
+It came as a surprise the observation that
+no project used distinct configurations in their modules. Considering
 \begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
   \footnotesize
   %  \small
@@ -705,25 +717,10 @@ same configuration, we counted only one occurrence.
         \Comment{Jankotek }MapDB & 1/2 & \ParClassParMeth{}\\%        
         \bottomrule%
     \end{tabular}
-%    }
     \caption{Subjects with parallel test execution enabled by
     default.}
     \label{tab:freqmodes-dynamic}
-%\end{figure}
 \end{wrapfigure}
-
-Figure~\ref{tab:freqmodes-dynamic} shows the projects we idendified
-where parallelism is enabled by default in Maven.  Column
-``\emph{Subject}'' indicates the name of the project, column
-``\emph{\# of modules}'' indicates the fraction of modules containing
-tests that use the configuration of parallelism mentioned in column
-``\emph{Mode}''.  We note that, considering these projects, the
-modules that do not use the configuration cited use the sequential
-configuration \Seq{}.  For example, six modules (=31-25) from Log4J2
-use sequential configuration.
-
-It came as a surprise the observation that
-no project used distinct configurations in their modules. Considering
 our set of \numMedLong{} projects, we found that only
 \textbf{\numProjectsPar{}} of those projects had parallelism enabled
 by default, with only configurations \ParClassSeqMeth{},
@@ -919,9 +916,9 @@ received emails.  We sent the following set of questions to
 developers:
 
 \begin{enumerate}
-\item How long does it take for test to run in your environment? Can
+\item How long does it take for tests to run in your environment? Can
   you briefly define your setup?
-\item Do you confirm that your project does not run in parallel?
+\item Do you confirm that your regression test suite does *not* run in parallel?
 \item\label{questionThree} Select a reason for not using parallelization:
   \begin{enumerate}[label=\alph*)]
   \item I did not know it was possible
@@ -953,34 +950,37 @@ Considering question 1, we confirmed that execution time was
 compatible with the results we reported in Section~\ref{sec:rqA}.
 Furthermore, \emailsCI{} of the participants indicated the use of
 Continuous Integration (CI) to run tests, with \emailsDistributed{} of
-these participants reporting that test suites were modularized and
+these participants reporting that test suites are modularized and
 those modules are tested independetly in CI servers through different
-parameters. A total of \emailsLocal{} participants answered that they
-do run tests in their local machines.  Note, however, that CI does not
-preclude low-level parallelization.  For example, installations of
-open-source CI tools (\eg{}, Jenkins~\cite{jenkins}) in dedicated
-servers will still benefit from running tests faster through low-level
-test suite parallelization.
+parameters.  Those participants argumented that such practice helps to
+reduce time to observe test failures, which is the goal of speeding up
+regression testing.  A total of \emailsLocal{} participants answered
+that they do run tests in their local machines.  Note, however, that
+CI does not preclude low-level parallelization.  For example,
+installations of open-source CI tools (\eg{}, Jenkins~\cite{jenkins})
+in dedicated servers would benefit from running tests faster through
+low-level test suite parallelization.
 
 % \emailsNotDescribed{} developers did not described their environment.
 
-Considering question 2, the answers we collected show that six of the
-\emailsProjectsAnswered{} projects execute tests in parallel.  This
-mismatch is justified by cases where neither of our checks (static or
-dynamic) could detect presence of parallelism.  A closer look at these
-projects revealed that one of them contained a \emph{pom.xml} file
-encapsulated in a jar file (similar case as reported in
-Section~\ref{sec:rqC-2}), in one of the projects the particpant
-considered that distributed CI was a form of parallelism, and in four
-projects parallelism was implemented natively\Luis{$\leftarrow$ is
-this the right word?}~---~two projects
-implemented concurrency control with custom JUnit test runners and two
-other projects implemented concurrency within test methods.  Note
-that, considering four extra cases (ignored two distributed CI cases),
-the usage of parallelization increases from \percentParallel{} to
-\percentParallelUpdated{}.  However, we do not consider this change
-significant enough to modify our conclusion about practical adoption
-of parallelization (\numRQC{}).
+Considering question 2, the answers we collected indicated, to our
+surprise, that six of the \emailsProjectsAnswered{} projects execute
+tests in parallel.  This mismatch is justified by cases where neither
+of our checks (static or dynamic) could detect presence of
+parallelism.  A closer look at these projects revealed that one of
+them contained a \emph{pom.xml} file encapsulated in a jar file
+(similar case as reported in Section~\ref{sec:rqC-2}), in one of the
+projects the particpant considered that distributed CI was a form of
+parallelism, and in four projects the team preferred to implement
+parallelization instead of using existing features from the testing
+framework and the build system~---~in two projects the team
+implemented concurrency control with custom JUnit test runners and in
+two other projects the team implemented concurrency within test
+methods.  Note that, considering these four extra cases (ignored two
+distributed CI cases), the usage of parallelization increases from
+\percentParallel{} to \percentParallelUpdated{}.  We do not consider
+this change significant enough to modify our conclusion about
+practical adoption of parallelization (\numRQC{}).
 
 %% , one runs a manually created Thread to run some
 %% tests, and the other runs in parallel by using Java 8 collection
@@ -991,16 +991,15 @@ of parallelization (\numRQC{}).
 %% the developers confirmed the need of an extra parameter at the command
 %% line to execute in parallel.
 
+Considering question 3, the distribution of answers was as follows.  A
+total of \emailsA{} of the \emailsProjectsAnswered{} developers who
+answered the survey did not know that parallelism was available in
 \begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
     \centering
     \includegraphics[width=.18\textwidth]{plots/survey.pdf}
     \caption{\label{fig:rq5-answers}Summary of developer's answers to
       survey question~\ref{questionThree}.}
 \end{wrapfigure}
-
-Considering question 3, the distribution of answers was as follows.  A
-total of \emailsA{} of the \emailsProjectsAnswered{} developers who
-answered the survey did not know that parallelism was available in
 Maven (option ``a''), \emailsB{} of developers mentioned that they did
 not use parallelism concerned with possible concurrency issues (option
 ``b''), \emailsD{} of developers mentioned that continuous integration
