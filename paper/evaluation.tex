@@ -171,7 +171,7 @@ directory, \SubjectsGithubNotTestable{} projects were untestable
 for example), and \SubjectsGithubFlaky{} projects were ``flaky''.
 \Jbc{Check if this is ok $\rightarrow$} We executed each project's
 test suite for three times to identify projects containing flaky tests
-and to ignore these tests (\ie, using the \CodeIn{@Ignore} annotation
+and ignored these tests (\ie, using the \CodeIn{@Ignore} annotation
 from JUnit) to avoid introducing noise in our experiments.  Our final
 set of subjects consists of \numSubjs{} projects.
 
@@ -180,7 +180,7 @@ set of subjects consists of \numSubjs{} projects.
     \includegraphics[width=0.25\textwidth]{plots/subjs.pdf}
     \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular
     projects hosted on \github{}. From this initial sample, we ignored
-    \SubjectsGithubNotMaven{} projects without Maven support,
+    \SubjectsGithubNotMaven{} projects without Maven support and
     \SubjectsGithubNotTestable{} untestable projects\Comment{, and
     \SubjectsGithubFlaky{} projects with flaky tests}. We considered
     \numSubjs{} projects to conduct our study.}
