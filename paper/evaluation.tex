@@ -1044,21 +1044,20 @@ parallelism by default.
     \item \numRQF{}. \textbf{\RQF{}}
 \end{itemize}
 
-To answer this research question we selected projects as follows.  To
-avoid noise in measuring flakiness we first discarded projects
-containing failing tests.  Then, we sorted projects in descending
-order of their execution times and selected the top ten projects from
-the resulting set.  In this experiment, the baseline technique is
-sequential execution (\ie{}, configuration \Seq{}) and the evaluation
-techniques consist of all configuration modes listed in
-Section~\ref{sec:modes}.  We ran each of those techniques for \Fix{X}
-times computing elapsed time and number of failing tests in each run.
+To answer this research question, we considered all six parallel
+levels from Section~\ref{sec:modes} and we selected the top 10
+projects with long-running tests suites that satisfies the following
+criteria: (1) tests run in sequence by default and (2) test suite
+consists only by passing tests. The first criteria is to use the
+default execution (\ie, configuration \Seq{}) as a baseline to compare
+speedup with the other parallel configurations. The second criteria is
+to avoid introducing noise when measuring the rate of flakiness caused
+by the non-deterministic execution of tests. We are interested only in
+failures manifested when parallelism is enabled. Since the number of
+failing tests may vary, we run each project three times and report
+report the average elapsed time and rate of flakiness.
 Figures~\ref{tab:rq6-efficiency} and~\ref{tab:rq6-flaky} summarize the
-results we obtained.
-
-\Fix{Elaborate results from efficiency}
-
-
+results obtained.
 
 \begin{figure}[h!]
 \centering
@@ -1074,6 +1073,7 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.00x & 1.00x & 1.00x & 1.00x
 \label{tab:rq6-efficiency}
 \end{figure}
 
+\Fix{Elaborate results from efficiency}
 
 \begin{figure}[h!]
 \centering
@@ -1089,6 +1089,9 @@ BounceStorage \textbf{Chaos} HTTP Proxy  & 8765 & 10\% & 10\% & 10\% & 10\% & 10
 \label{tab:rq6-flaky}
 \end{figure}
 
+\Fix{Elaborate results from flakiness}
+
+\Fix{Conclude}
 
 \begin{center}
 \fbox{
