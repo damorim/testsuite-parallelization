@@ -168,11 +168,12 @@ subjects. Figure~\ref{fig:subjects} summarizes our sample set. From
 projects were not Maven or did not have a \pomf{} in the root
 directory, \SubjectsGithubNotTestable{} projects were untestable
 (because of missing dependencies or incompatible testing environment,
-for example), and \SubjectsGithubFlaky{} projects were ``flaky''.  We
-executed each project's test suite for three times to identify
-projects containing flaky tests that could introduce noise in our
-experiments.  Our final set of subjects consists of \numSubjs{}
-projects.
+for example), and \SubjectsGithubFlaky{} projects were ``flaky''.
+\Jbc{Check if this is ok $\rightarrow$} We executed each project's
+test suite for three times to identify projects containing flaky tests
+and to ignore these tests (\ie, using the \CodeIn{@Ignore} annotation
+from JUnit) to avoid introducing noise in our experiments.  Our final
+set of subjects consists of \numSubjs{} projects.
 
 \begin{figure}[ht]
     \centering
@@ -180,8 +181,8 @@ projects.
     \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular
     projects hosted on \github{}. From this initial sample, we ignored
     \SubjectsGithubNotMaven{} projects without Maven support,
-    \SubjectsGithubNotTestable{} untestable projects, and
-    \SubjectsGithubFlaky{} projects with flaky tests. We considered
+    \SubjectsGithubNotTestable{} untestable projects\Comment{, and
+    \SubjectsGithubFlaky{} projects with flaky tests}. We considered
     \numSubjs{} projects to conduct our study.}
 \end{figure}
 
@@ -567,7 +568,7 @@ Medium & Apache \textbf{Log4J2} & 8.24m & 8.21m &
     \cellcolor{lightgray}1.00x\\%
 Medium & Jankotek \textbf{MapDB} & 10.06m & 8.58m & 1.17x\\%
 \midrule
-\textbf{total} &  &  &  & \avgSpeedup{}x\\
+\textbf{average} &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
 \end{tabular}}
 \caption{Speedup (or slowdown) of parallel execution ($T_p$) over
