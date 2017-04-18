@@ -1054,10 +1054,11 @@ speedup with the other parallel configurations. The second criteria is
 to avoid introducing noise when measuring the rate of flakiness caused
 by the non-deterministic execution of tests. We are interested only in
 failures manifested when parallelism is enabled. Since the number of
-failing tests may vary, we run each project three times and report
-report the average elapsed time and rate of flakiness.
-Figures~\ref{tab:rq6-efficiency} and~\ref{tab:rq6-flaky} summarize the
-results obtained.
+failing tests may vary, we run each project three times and report the
+average elapsed time and rate of flakiness.
+Figures~\ref{tab:rq6-efficiency} (ordered by time cost)
+and~\ref{tab:rq6-flaky} (ordered by the number of tests) summarize the
+obtained results.
 
 \begin{figure}[h!]
 \centering
@@ -1066,17 +1067,18 @@ results obtained.
 \toprule
 \emph{Subject} & \Seq{} & \SeqClassParMeth{} & \ParClassSeqMeth{} & \ParClassParMeth{} & \ForkSeq{} & \ForkParMeth{}\\%
 \midrule%
-%% BounceStorage \textbf{Chaos} HTTP Proxy  & 1.47m & 1.00x & 1.00x & 1.00x & 1.00x & 1.00x\\%
-Snazy OHC & - & - & - & - & - & -\\%
-RoaringBitmap & - & - & - & - & - & -\\%
-Linkedin Pinot & - & - & - & - & - & -\\%
-Jenkinsci Github-Plugin & - & - & - & - & - & -\\%
-Geotools & - & - & - & - & - & -\\%
-Kite-SDK Kite & - & - & - & - & - & -\\%
-Apache Giraph & - & - & - & - & - & -\\%
-Openmrs Core & - & - & - & - & - & -\\%
-Jenkinsci Docker-Workflow-plugin & - & - & - & - & - & -\\%
+Linkedin Pinot & 3480.091s & 1703.958s & 24.726s & 2229.822s & 783.12s & 761.973s\\%
+Jenkins CI Github Plugin & 3298.603s & 2049.709s & 1547.261s & 1240.544s & 2975.232s & 227.214s \\%
+Kite SDK & - & - & - & - & - & -\\%
+Apache Giraph & 1041.884s & 37.666s & 116.78s & 1037.105s & 1038.39s & 45.992s\\%
+OpenMRS Core & - & - & - & - & - & -\\%
+Jenkins CI Docker Workflow Plugin & 447.069s & 490.675s & 27.69s & 8.244s & 439.207s & 38.3s\\%
 Apache Eagle & - & - & - & - & - & -\\%
+Geotools & - & - & - & - & - & -\\%
+Atomix & - & - & - & - & - & -\\%
+Kuromoji & - & - & - & - & - & -\\%
+\Fix{Snazy OHC} & - & - & - & - & - & -\\%
+\Fix{RoaringBitmap} & - & - & - & - & - & -\\%
 \bottomrule%
 \end{tabular}}
 \caption{\Fix{Tabela de eficiencia}}
@@ -1092,17 +1094,18 @@ Apache Eagle & - & - & - & - & - & -\\%
 \toprule
 \emph{Subject} & \emph{\# of tests} & \SeqClassParMeth{} & \ParClassSeqMeth{} & \ParClassParMeth{} & \ForkSeq{} & \ForkParMeth{}\\%
 \midrule%
-%% BounceStorage \textbf{Chaos} HTTP Proxy  & 8765 & 10\% & 10\% & 10\% & 10\% & 10\%\\%
-Snazy OHC & - & - & - & - & - & -\\%
-RoaringBitmap & - & - & - & - & -\\%
-Linkedin Pinot & - & - & - & - & -\\%
-Jenkinsci Github-Plugin & - & - & - & - & -\\%
-Geotools & - & - & - & - & -\\%
-Kite-SDK Kite & - & - & - & - & -\\%
-Apache Giraph & - & - & - & - & -\\%
-Openmrs Core & - & - & - & - & -\\%
-Jenkinsci Docker-Workflow-plugin & - & - & - & - & -\\%
-Apache Eagle & - & - & - & - & -\\%
+Linkedin Pinot & - & - & - & - & - & -\\%
+Jenkins CI Github Plugin & - & - & - & - & 0\% & -\\%
+Kite SDK & - & - & - & - & - & -\\%
+Apache Giraph & - & - & - & - & - & -\\%
+OpenMRS Core & - & - & - & - & - & -\\%
+Jenkins CI Docker Workflow Plugin & - & - & - & - & 0\% & -\\%
+Apache Eagle & - & - & - & - & - & -\\%
+Geotools & - & - & - & - & - & -\\%
+Atomix & - & - & - & - & - & -\\%
+Kuromoji & - & - & - & - & - & -\\%
+\Fix{Snazy OHC} & - & - & - & - & - & -\\%
+\Fix{RoaringBitmap} & - & - & - & - & - & -\\%
 \bottomrule%
 \end{tabular}}
 \caption{\Fix{Tabela de flakiness}}
