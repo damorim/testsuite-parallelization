@@ -1,4 +1,12 @@
-\newcommand{\Fix}[1]{\textbf{[[}{\color{red} #1}\textbf{]]}}
+% \newcommand{\finalVersion} % Uncomment this line to generate a
+% production ready pdf
+
+\ifdefined\finalVersion
+    \newcommand{\LineComment}[3]{}
+\else
+    \newcommand{\LineComment}[3]{\textbf{[[#1}{\color{#2} #3}\textbf{]]}}
+\fi
+
 \newcommand{\pef}{PEF}
 %% please, do not italicize ``i.e.'' and ``e.g.'' - Marcelo
 \newcommand{\ie}{i.e.}
@@ -6,9 +14,11 @@
 \newcommand{\etal}{et al.}
 \newcommand{\Comment}[1]{}
 \newcommand{\CodeIn}[1]{{\small\texttt{#1}}}
-\newcommand{\Jbc}[1]{\textbf{[[Jean: }{\color{orange} #1}\textbf{]]}}
-\newcommand{\Luis}[1]{\textbf{[[Luis: }{\color{darkblue} #1}\textbf{]]}}
-\newcommand{\Mar}[1]{\textbf{[[Marcelo: }{\color{darkgreen} #1}\textbf{]]}}
+
+\newcommand{\Fix}[1]{\LineComment{}{red}{#1}}
+\newcommand{\Jbc}[1]{\LineComment{Jean: }{orange}{#1}}
+\newcommand{\Luis}[1]{\LineComment{Luis: }{darkblue}{#1}}
+\newcommand{\Mar}[1]{\LineComment{Marcelo: }{darkgreen}{#1}}
 
 %% use this macros
 \newcommand{\github}{Github} %% change consistently
