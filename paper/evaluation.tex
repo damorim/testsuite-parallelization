@@ -1121,14 +1121,16 @@ the time cost (\ie, $T_\text{cost}$).
 \small
 \begin{tabular}{l|c|cccccccccc}
 \toprule
-\multirow{2}{*}{\emph{Subject}} & \emph{\Seq{}} &
+\multirow{2}{*}{\emph{Subject (module)}} & \emph{\Seq{}} &
     \colheader{\SeqClassParMeth} & \colheader{\ParClassSeqMeth} &
     \colheader{\ParClassParMeth} & \colheader{\ForkSeq} &
     \colheader{\ForkParMeth} \\ %\cline{2-12}
     & $T_\text{cost}$ & \subcol{} & \subcol{} & \subcol{} & \subcol{}
     & \subcol{}\\%
 \midrule%
-Choco Solver & Xm & \entry{A}{B} & \entry{A}{B} & \entry{A}{B} & \entry{A}{B} & \entry{A}{B}\\%
+    OpenMRS Core (\CodeIn{api})           & 13.8m & \entry{1.04}{58.07} & \entry{1.86}{65.55} & \entry{2.01}{61.56} & \entry{1.51}{0} & \colheader{X}\\%
+Apache Flume (\CodeIn{flume-ng-core}) & 8.3m & \entry{2.82}{18.11} & \entry{1.07}{0} & \entry{2.78}{16.84} & \entry{0.98}{0} & \entry{2.87}{18.88}\\%
+Apache Giraph (\CodeIn{giraph-core})  & 7m & \entry{2.08}{5.08} & \colheader{X} & \entry{1.01}{0} & \entry{1}{B} & \colheader{X}\\%
 
 %% Linkedin Pinot & 3480.091s & 1703.958s & 24.726s & 2229.822s & 783.12s & 761.973s\\%
 %% Linkedin Pinot & 58m & 2.04x & 140x & 1.56x & 4.44x & 4.56x\\%
