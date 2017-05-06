@@ -1049,46 +1049,46 @@ parallelism by default.
 
 To answer this research question, we conducted an experiment involving
 the six parallel configurations from Section~\ref{sec:modes}  and the
-top 10 long-running test modules from our sample
-set. The rationale for this selection criteria was to maximize the
-chances of observing speedup and flakiness, assuming that long-running
-tests also have many tests. Indeed, we confirmed that test suites in
-these projects contain at least \Fix{X} tests. Also, we preferred to
-compare the effect of a configuration over a single test module for
-projects with multiple test modules.  Recall that large projects may
-contain several test modules, and these modules may contain distinct
-characteristics that could favor one configuration and not others;
-therefore, it would be necessary to check each module individually for
-a fair comparison.  We are interested in understanding how efficiency
-(\ie, testing cost) and flakiness (\ie, failing tests) are affected
-when we run a test suite with different parallel configurations.
-Recall that increased resource contention obtained with parallelism
-can lead to concurrency issues such as data races.  Flakiness and
-speedup are contradictory forces that drive configuration selection.
-We used as a \emph{control group} (\ie, baseline) the sequential
-execution of each subject's tests. Notice that for measuring
-flakiness, we have to consider only tests that failed due to the
-concurrency in the parallel execution.  For that reason, we
-re-executed the tests in sequence ten times and carefully verified
-that there are only passing tests in our baseline.  We considered ten
-as the number of re-executions based on the approach used by Google
-reported in a previous work on test flakiness~\cite{luo-etal-fse2014}.
-To obtain parallel configurations, we implemented a script that takes
-a subject and a configuration (\eg, \ForkSeq{}) as inputs, and the
-script outputs the modified version of the subject with the desired
-configuration. The workflow consists in copying the project directory
-to a new directory, finding all existing build files (\ie, \pomf{}
-files), and modifying all existing Maven Surefire configurations with
-new values for the parameters \CodeIn{parallel}, \CodeIn{forkCount},
-and \CodeIn{threadCount} using an XPath~\cite{xpath} library to
-manipulate XML documents. For configurations with forked JVMs enabled
-(\ie, \ForkSeq{} and \ForkParMeth{}), we changed the
-\CodeIn{forkCount} with the value \CodeIn{1C} (\ie, one JVM per core).
-To adjust the pool of threads for parallelism within a JVM, we changed
-the parameter \CodeIn{threadCount} with \Jbc{should we consider 2 as
-it is the number of native threads per core OR 6 as it represents 3
-Cores * 2 native threads?}.  To run the subjects and their respective
-variations (\ie, the modified versions according to the parallelism
+top 10 long-running test modules from our sample set. The rationale
+for this selection criteria was to maximize the chances of observing
+speedup and flakiness, assuming that long-running tests also have many
+tests. Indeed, we confirmed that test suites in these projects contain
+at least 236 tests ($1,662.7$ in average). Also, we preferred to compare the
+effect of a configuration over a single test module for projects with
+multiple test modules.  Recall that large projects may contain several
+test modules, and these modules may contain distinct characteristics
+that could favor one configuration and not others; therefore, it would
+be necessary to check each module individually for a fair comparison.
+We are interested in understanding how efficiency (\ie, testing cost)
+and flakiness (\ie, failing tests) are affected when we run a test
+suite with different parallel configurations.  Recall that increased
+resource contention obtained with parallelism can lead to concurrency
+issues such as data races.  Flakiness and speedup are contradictory
+forces that drive configuration selection.  We used as a \emph{control
+group} (\ie, baseline) the sequential execution of each subject's
+tests. Notice that for measuring flakiness, we have to consider only
+tests that failed due to the concurrency in the parallel execution.
+For that reason, we re-executed the tests in sequence ten times and
+carefully verified that there are only passing tests in our baseline.
+We considered ten as the number of re-executions based on the approach
+used by Google reported in a previous work on test
+flakiness~\cite{luo-etal-fse2014}.  To obtain parallel configurations,
+we implemented a script that takes a subject and a configuration (\eg,
+\ForkSeq{}) as inputs, and the script outputs the modified version of
+the subject with the desired configuration. The workflow consists in
+copying the project directory to a new directory, finding all existing
+build files (\ie, \pomf{} files), and modifying all existing Maven
+Surefire configurations with new values for the parameters
+\CodeIn{parallel}, \CodeIn{forkCount}, and \CodeIn{threadCount} using
+an XPath~\cite{xpath} library to manipulate XML documents. For
+configurations with forked JVMs enabled (\ie, \ForkSeq{} and
+\ForkParMeth{}), we changed the \CodeIn{forkCount} with the value
+\CodeIn{1C} (\ie, one JVM per core).  To adjust the pool of threads
+for parallelism within a JVM, we changed the parameter
+\CodeIn{threadCount} with \Jbc{should we consider 2 as it is the
+number of native threads per core OR 6 as it represents 3 Cores * 2
+native threads?}.  To run the subjects and their respective variations
+(\ie, the modified versions according to the parallelism
 configuration), we used a similar approach as described in
 Figure~\ref{fig:mvn-execution} except that we added a timeout of one
 hour to run the tests. We used the \CodeIn{timeout}
@@ -1104,7 +1104,8 @@ reported the speedup (\ie, $\Uparrow_\text{speed} = T_{\text{s}} /
 T_{\text{p}}$) in average, and for flakiness, we reported the rate of
 failing tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$) in
 average.  Figure~\ref{tab:rq6-table} summarizes the obtained results
-ordered by the time cost (\ie, $T_\text{cost}$).
+ordered by the time cost (\ie, $T_\text{cost}$). \Fix{Remember to
+explain efficiency cutoff, JVM crashes and timeout}
 
 %% Table header macros
 \newcommand{\subcolA}{$\Uparrow_\text{speed}$}
