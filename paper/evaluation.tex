@@ -1114,23 +1114,24 @@ the time cost (\ie, $T_\text{cost}$).
 \newcommand{\subcolB}{$\%_\text{fail}$}
 \newcommand{\colheader}[1]{\multicolumn{2}{c}{\emph{#1}}}
 \newcommand{\subcol}{\subcolA{} & \subcolB{}}
-\newcommand{\entry}[2]{#1x & #2\%}
+\newcommand{\entry}[2]{#1 & #2}
 
 \begin{figure*}[t]
 \centering
 \small
-\begin{tabular}{l|c|cccccccccc}
+\begin{tabular}{l|rr|rrrrrrrrrr}
 \toprule
-\multirow{2}{*}{\emph{Subject (module)}} & \emph{\Seq{}} &
+\multirow{2}{*}{\emph{Subject (module)}} & \multicolumn{2}{c|}{\emph{\Seq}} &
     \colheader{\SeqClassParMeth} & \colheader{\ParClassSeqMeth} &
     \colheader{\ParClassParMeth} & \colheader{\ForkSeq} &
     \colheader{\ForkParMeth} \\ %\cline{2-12}
-    & $T_\text{cost}$ & \subcol{} & \subcol{} & \subcol{} & \subcol{}
+    & $T_\text{cost} $ & $\mathit{N}$ & \subcol{} & \subcol{} & \subcol{} & \subcol{}
     & \subcol{}\\%
 \midrule%
-OpenMRS Core (\CodeIn{api})           & 13.8m & \entry{1.04}{58.07} & \entry{1.86}{65.55} & \entry{2.01}{61.56} & \entry{1.51}{0} & \colheader{JVM crash}\\%
-Apache Flume (\CodeIn{flume-ng-core}) & 8.3m & \entry{2.82}{18.11} & \entry{1.07}{0} & \entry{2.78}{16.84} & \entry{0.98}{0} & \entry{2.87}{18.88}\\%
-Apache Giraph (\CodeIn{giraph-core})  & 7m & \entry{2.08}{5.08} & \colheader{JVM crash} & \entry{1.01}{0} & \entry{1}{0} & \colheader{JVM crash}\\%
+OpenMRS Core (\CodeIn{api})           & \entry{13.8m}{X} & \entry{-}{58.07\%} & \entry{1.86x}{65.55\%} & \entry{2.01x}{61.56\%} & \entry{1.51x}{0\%} & \colheader{\cellcolor{lightgray}JVM Crash}\\%
+Apache Flume (\CodeIn{core}) & \entry{8.3m}{Y} & \entry{2.82x}{18.11\%} & \entry{-}{0\%} & \entry{2.78x}{16.84\%} & \entry{-}{0\%} & \entry{2.87x}{18.88\%}\\%
+Apache Giraph (\CodeIn{core})  & \entry{7m}{Z} & \entry{2.08x}{5.08\%} & \colheader{\cellcolor{lightgray}JVM Crash}  & \entry{-}{0\%} & \entry{-}{0}\% & \colheader{\cellcolor{lightgray}JVM Crash}\\%
+Struct (\CodeIn{rest})  & \entry{Xm}{Z} & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%}\\%
 
 %% Linkedin Pinot & 3480.091s & 1703.958s & 24.726s & 2229.822s & 783.12s & 761.973s\\%
 %% Linkedin Pinot & 58m & 2.04x & 140x & 1.56x & 4.44x & 4.56x\\%
