@@ -19,9 +19,9 @@ mainly on distributing the testing workload.  Evidence of this are the
 Google TAP system~\cite{google-tap,google-ci} and the Microsoft
 CloudBuild system~\cite{prasad-shulte-ieee-microsoft-ci}, which
 provide distributed infrastructures to efficiently build massive
-amounts of code and run tests.  Building server clusters is also a
+amounts of code and run tests.  Building in-house server clusters is also a
 popular mechanism to distribute testing workloads.  For example, as of
-August 2013, the Groupon PWA system, which powers the
+August 2013, the test suite fo the Groupon PWA system, which powers the
 \url{groupon.com} website, included over 19K tests.  To run all those
 tests under 10m, Groupon used a cluster of 4 computers with 24 cores
 each~\cite{kim-etal-fse2013}.
@@ -30,8 +30,8 @@ At large organizations, the alternative of renting cloud
 services\footnote{List of popular hosting cloud services:
   \url{https://clutch.co/cloud}} or even building proprietary
 infrastructures to running tests is a legitimate approach to mitigate
-the regression testing problem.  However, for projects with low
-budgets and yet relatively heavy testing workloads, this solution may
+the regression testing problem.  However, for projects with modest
+ or inexistent budgets and yet relatively heavy testing workloads, this solution may
 not be economically viable.  For these cases, the use of commodity
 hardware (\eg{}, existing workstations), emerges as an attractive
 solution for running tests.  Furthermore, the proliferation of
@@ -41,12 +41,7 @@ parallelization, enable test execution speedups through increased CPU
 usage~(see Section~\ref{sec:modes}).  These two elements~---~demand
 for cost-effective test execution and supply of relatively inexpensive
 testing infrastructures~---~led us to investigate the usage of
-parallelism to speed up test execution.  This paper reports on an
-empirical study we conducted to analyze the usage and impact of
-low-level parallelization in speeding up testing for open-source
-projects.  This is a relevant problem given the tremendous popularity
-of open-source development and regression testing
-research~\cite{yoo-harman-stvr2012}.
+parallelism to speed up test execution.
 
 %% \Mar{Fan Long
 %%   (http://people.csail.mit.edu/fanl/) often uses a plot to show the
@@ -62,29 +57,39 @@ research~\cite{yoo-harman-stvr2012}.
 %% \item \textbf{Issues versus benefits on using parallelization modes.}
 %% \end{enumerate}
 
-The dimensions of analysis we considered in this study are as follows:
-potential, effectiveness, adoption, and tradeoffs.  Each dimension
-focuses on one aspect of our study.  The dimension \textbf{potential}
-measures the potential of parallelization to reduce testing costs.  In
-the limit, parallelization would be fruitless if all projects used
-short-running test suites or if the bulk of execution cost was
-dominated by a single test in the suite.  The dimension
-\textbf{effectiveness} measures the observed impact of
-parallelization\Comment{~---~when used in selected open-source
-  projects~---~} on testing costs.  Intuitively, benefits are
-proportional to the cost reduction that parallelization brings.  In
-the limit, however, the overhead of spawning virtual machines or
-threads can even result in added cost.  The dimension
-\textbf{adoption} evaluates (i) how often open-source projects use
-parallelization schemes and (ii) how developers involved in costly
-projects (not using test suite parallelization) perceive this
-technology.  It is important to measure resistance to the technology
-and its reasons.  Finally, the dimension \textbf{tradeoffs} evaluates
-the issues and benefits associated with\Comment{running test suites
-  with} different parallel configurations.  Note that the
-configuration choice can affect both test cost and test flakiness,
-which is caused by the non-determinism resulted from running test
-methods and classes in different orderings.
+This paper reports on an empirical study we conducted to analyze the
+usage and impact of low-level parallelization in speeding up testing
+in open-source projects.  This is a relevant problem given the
+tremendous popularity of open-source development and regression
+testing research~\cite{yoo-harman-stvr2012}.  Note that
+parallelization is complementary to other approaches to mitigate
+testing costs such as (safe) test
+selection~\cite{Rothermel:1997:SER:248233.248262} and continuous
+integration~\cite{Saff:2003:RWD:951952.952340}.  The dimensions of
+analysis we considered in this study are (i) potential, (iii)
+adoption, and (iii) tradeoffs, (iv) speedups.
+
+%% Each dimension
+%% focuses on one aspect of the study.
+
+The dimension \textbf{feasibility} measures the potential of
+parallelization to reduce testing costs.  In the limit,
+parallelization would be fruitless if all projects used short-running
+test suites or if the bulk of execution cost was dominated by a single
+test in the suite.  The dimension \textbf{adoption} evaluates (i) how
+often existing open-source projects use parallelization schemes and
+(ii) how developers involved in costly projects (not using test suite
+parallelization) perceive this technology.  It is important to measure
+resistance of practicioners to the technology and to understand their
+reasons.  The dimension \textbf{tradeoffs} evaluates the issues and
+benefits associated with\Comment{running test suites with} the use of
+possible parallel configurations.  Note that the configuration choice
+affects testing cost and flakiness, caused by the non-determinism
+resulted from running different schedulings of test methods and
+classes.  Finally, the dimension \textbf{speedups} measures the
+observed impact of parallelization\Comment{~---~when used in selected
+  open-source projects~---~} in running times.  We briefly summarize
+each of these dimensions in the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
 %% configurations is important to guide practitioners and future
@@ -107,8 +112,7 @@ methods and classes in different orderings.
 %% eight virtual CPUs (four cores with two native threads each) and the
 %% default Maven configuration of each project.
 
-\subsection{Summary of ``Potential'' results}
-
+\vspace{1ex}\noindent\textbf{Feasibility.}~
 We selected \numSubjs{} popular Java projects from \github{}
 containing Maven build files~\cite{maven} to assess how prevalent
 long-running test suites are.  Section~\ref{sec:eval} details our
@@ -125,39 +129,26 @@ associated with each test suite.  \emph{Overall, our results suggest
   that test suite parallelization has the potential to optimize test
   suites.}
 
-\subsection{Summary of ``Effectiveness'' results}
 
-As to avoid introduction of unintended noise when measuring time, we
-evaluated effectiveness on projects that we knew a priori ran their
-test suite in parallel by default.  Results indicate that the average
-speedup of parallelization was \avgSpeedup{}x.  Although we found
-cases with very high speedups (\eg{}, 9.2x), we found some cases where
-speedups were insignificant.  \emph{Overall, our results suggest that
-  it may not be obvious to achieve huge speedups with test suite
-  parallelization.}
-
-\subsection{Summary of ``Adoption'' results}
-
-We considered two aspects in measuring adoption of the technology.
-First, we analyzed quantitatively current usage of parallelism in
-open-source projects.  Then, we investigated the key reasons that
-justify resistance of developers in using test suite parallelization.
-For the quantitative analysis we checked both statically (parsing
-build files) and dynamically (monitoring execution of build files) for
-the presence of parallelization.  Considering only those projects that
-take longer than a minute to run their test suites, we found that only
-\percentParallel{} of them use parallelism.  When considering the
-feedback received from developers involved in those projects we
-realized the proportion should was a bit higher, of
-\percentParallelUpdated{}, but still relatively low.  For the
-qualitative analysis we surveyed developers from a selection of costly
-projects that did not use parallelization.  Section~\ref{sec:rqE}
-details our selection methodology. \emph{Results indicate that dealing
-  with concurrency issues related with parallelization (in particular,
-  the extra work to organize test suite to safely explore concurrency)
-  was the main barrier for adoption.  Other reasons included
-  availability of continuous integration services and unfamiliarity
-  with the technology.}
+\vspace{1ex}\noindent\textbf{Adoption.}~ We considered two aspects in
+measuring technology adoption.  First, we measured usage of
+parallelism in open-source projects.  Then, we ran a survey with
+developers to understand the reasons that explain resistance to using
+the technology.  For the quantitative analysis we checked both
+statically (parsing build files) and dynamically (monitoring execution
+of build files) for the presence of parallelization.  Considering only
+those projects that take longer than a minute to run their test
+suites, we found that only \percentParallel{} of them use parallelism.
+When correcting this value with the feedback obtained a posteriori
+from developers, we realized that the proportion should be higher, of
+\percentParallelUpdated{}.  For the qualitative analysis we surveyed
+developers from a selection of costly projects that did not use
+parallelization.  \emph{Results indicate that test suite
+  parallelization is underutilized and dealing with concurrency issues
+  related with parallelization (\eg{}, the extra work to organize test
+  suite to avoid concurrency errors) was the main barrier for
+  adoption.  Other reasons included availability of continuous
+  integration services and unfamiliarity with the technology.}
 
 %% %%RQ3
 %% Given the high execution cost associated with a significant number of
@@ -184,8 +175,7 @@ details our selection methodology. \emph{Results indicate that dealing
 %% tests sequentially within each process. \Mar{why 32-19 did not use
 %%   parallelization?}
 
-\subsection{Summary of ``Tradeoff'' results}
-
+\vspace{1ex}\noindent\textbf{Tradeoffs.}~
 \Fix{bla bla bla bla bla bla bla blabla bla bla blabla bla bla blabla
   bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
   blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
@@ -198,6 +188,23 @@ details our selection methodology. \emph{Results indicate that dealing
   bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
   blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
   bla bla blabla bla bla blabla bla bla blabla bla bla bla}
+
+\vspace{1ex}\noindent\textbf{Speedups.}~
+%% \Mar{move to here} Intuitively, benefits are
+%% proportional to the cost reduction that parallelization brings.  In
+%% the limit, however, the overhead of spawning virtual machines or
+%% threads can even result in added cost.
+\Mar{...revise with scalability results...}
+As to avoid introduction of unintended noise when measuring time, we
+evaluated effectiveness on projects that we knew a priori ran their
+test suite in parallel by default.  Results indicate that the average
+speedup of parallelization was \avgSpeedup{}x.  Although we found
+cases with very high speedups (\eg{}, 9.2x), we found some cases where
+speedups were insignificant.  \emph{Overall, our results suggest that
+  it may not be obvious to achieve huge speedups with test suite
+  parallelization.}
+
+\Mar{write one or two lessons learned}
 
 
 %% \Mar{missing connection. why parallelism?}  From these results we
