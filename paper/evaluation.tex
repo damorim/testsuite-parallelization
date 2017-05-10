@@ -970,11 +970,15 @@ the distribution of answers.
     \item \numRQSpeedupOne{}. \textbf{\RQSpeedupOne}
 \end{itemize}
 
-To answer \numRQSpeedupOne{}, we considered \numProjectsPar{} subjects from our
-benchmark that use parallelization \emph{by default} when running
-tests.  In those projects, parallelization is active without passing
-any extra parameters.  Section~\ref{sec:rqC-1} describes in detail the
-methodology we used to find these subjects.
+To answer \numRQSpeedupOne{}, we considered the \numProjectsPar{}
+subjects from our benchmark that use parallelization \emph{by default}
+(see Figure~\ref{tab:freqmodes-dynamic}).  We compared running times
+with parallelization~---~configured by project owners~---~and without
+parallelization.
+
+%% In those projects, parallelization is active without
+%% passing any extra parameters.  Section~\ref{sec:rqC-1} describes in
+%% detail the methodology we used to find these subjects.
 %and
 %Section~\ref{seq:rq6-tradeoffs}, we verified that both
 %% executions produce the same outcome to eliminate noise from failing
@@ -985,18 +989,17 @@ methodology we used to find these subjects.
 %% execution), the speedup is two.
 
 Figure~\ref{tab:speedup} summarizes results.  Lines are sorted by
-abbreviated project names, which appear in bold.  Columns
-``\emph{Group}'' and ``\emph{Name}'' indicate, respectively, the
-project group and the name of the subject.  Column ``$T_s$'' shows
-sequential execution time whereas column ``$T_p$'' shows parallel
-execution time. Column ``$T_s/T_p$'' shows the speedup or slowdown
-associated with parallel execution.   As usual, a ratio
-above 1x denotes speedup and a ratio below 1x denotes slowdown.
+abbreviated project names.  Columns ``\emph{Group}'' and
+``\emph{Name}'' indicate, respectively, the group and the name of the
+subject.  Column ``$T_s$'' shows sequential execution time and column
+``$T_p$'' shows parallel execution time. Column ``$T_s/T_p$'' shows
+the speedup or slowdown.  As usual, a ratio above 1x denotes speedup
+and a ratio below 1x denotes slowdown.
 
 \begin{figure}[h!]
-\footnotesize
 \centering
 \resizebox{.45\textwidth}{!}{%
+\scriptsize
 \begin{tabular}{llrrr}
 \toprule
 \emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
@@ -1018,11 +1021,9 @@ Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
 \end{tabular}}
 \caption{Speedup (or slowdown) of parallel execution ($T_p$) over
   sequential execution ($T_s$).  Default parallel configuration of
-  Maven is used.  Abbreviation of project names appear in bold face
-  and highest slowdown/speedup appear in gray color.}
+  Maven is used.  Highest slowdown/speedup appears in gray color.}
 \label{tab:speedup}
 \end{figure}
-
 
 Results indicate that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.  Three
@@ -1055,9 +1056,9 @@ dominate execution time run sequentially by default.
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
-    \textit{Answering \numRQSpeedupOne{}:}~\emph{ The average speedup observed
-      with default configurations of parallelization was
-      \avgSpeedup{}x.}
+    \textit{Answering \numRQSpeedupOne{}:}~\emph{Considering the
+      machine setup we used, the average speedup observed with default
+      configurations of parallelization was \avgSpeedup{}x.}
   \end{minipage}
 }
 \end{center}
@@ -1234,19 +1235,6 @@ explain efficiency cutoff, JVM crashes and timeout}
 \end{minipage}
 }
 \end{center}
-
-
-
-
-\subsection{Threats to Validity}
-
-\Fix{To appear... Elaborate CONSTRUCT, INTERNAL and EXTERNAL threats.
-I'm going to be writing this ASAP as I finish to present the results
-from RQ6}
-
-\subsection{Lessons Learned}
-
-\Fix{Marcelo can write this...}
 
 %%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
 %%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS
