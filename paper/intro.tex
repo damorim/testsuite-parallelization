@@ -67,7 +67,7 @@ testing costs such as (safe) test
 selection~\cite{Rothermel:1997:SER:248233.248262} and continuous
 integration~\cite{Saff:2003:RWD:951952.952340}.  The dimensions of
 analysis we considered in this study are (i) potential, (iii)
-adoption, and (iii) tradeoffs, (iv) speedups.
+adoption, and (iii) flakiness, (iv) speedups.
 
 %% Each dimension
 %% focuses on one aspect of the study.
@@ -76,20 +76,19 @@ The dimension \textbf{feasibility} measures the potential of
 parallelization to reduce testing costs.  In the limit,
 parallelization would be fruitless if all projects used short-running
 test suites or if the bulk of execution cost was dominated by a single
-test in the suite.  The dimension \textbf{adoption} evaluates (i) how
+test in the suite.  The dimension \textbf{adoption} evaluates how
 often existing open-source projects use parallelization schemes and
-(ii) how developers involved in costly projects (not using test suite
+how developers involved in costly projects (not using test suite
 parallelization) perceive this technology.  It is important to measure
 resistance of practicioners to the technology and to understand their
-reasons.  The dimension \textbf{tradeoffs} evaluates the issues and
-benefits associated with\Comment{running test suites with} the use of
-possible parallel configurations.  Note that the configuration choice
-affects testing cost and flakiness, caused by the non-determinism
-resulted from running different schedulings of test methods and
-classes.  Finally, the dimension \textbf{speedups} measures the
-observed impact of parallelization\Comment{~---~when used in selected
-  open-source projects~---~} in running times.  We briefly summarize
-each of these dimensions in the following.
+reasons.  The dimension \textbf{issues} reports the observed problems
+associated with running tests in parallel.  For example, test
+flakiness, which is caused by interference on shared state from
+non-deterministic executions of test methods and classes.  Finally,
+the dimension \textbf{speedups} evaluates the observed impact of
+parallelization\Comment{~---~when used in selected open-source
+  projects~---~} in running times.  We briefly summarize each of these
+dimensions in the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
 %% configurations is important to guide practitioners and future
@@ -175,7 +174,7 @@ parallelization.  \emph{Results indicate that test suite
 %% tests sequentially within each process. \Mar{why 32-19 did not use
 %%   parallelization?}
 
-\vspace{1ex}\noindent\textbf{Tradeoffs.}~
+\vspace{1ex}\noindent\textbf{Issues.}~
 \Fix{bla bla bla bla bla bla bla blabla bla bla blabla bla bla blabla
   bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
   blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla

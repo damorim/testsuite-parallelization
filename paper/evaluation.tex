@@ -1,4 +1,111 @@
 \newpage
+\section{Objects of Analysis}
+\label{sec:subjects}
+
+%% We evaluated the characteristics of test suites in open-source
+%% development from a sample set of Java projects from \github{}.  We are
+%% interested to evaluate non-trivial test suites from popular projects
+%% that are in activity.
+
+%% , which is used on
+%% \github{} to indicate appreciation of a user to a
+%% project~\cite{github-stars},
+
+We used \github{}'s search API~\cite{githubsearch} to identify
+projects that satisfy the following criteria: (1) the primary language
+is Java\footnote{In case of projects in multiple languages, the
+  \github{} API considers the predominant language as the primary
+  language.}, (2) the project has at least 100 stars, (3) the latest
+update was on or after January 1st, 2016, and (4) the \emph{readme}
+file contains the string \emph{mvn}.  We focused on Java for its
+popularity.  Although there is no clearcut limit on the number of
+\github{} stars~\cite{github-stars} to define relevant projects, we
+observed that 100 was enough to eliminate trivial subjects. The third
+criteria serves to skip projects without recent activity. The fourth
+criteria is an approximation to find Maven projects.\Comment{ The
+  rationale is that if the string \emph{mvn} exists in the
+  \emph{readme} file, it may represent a Maven call (\eg, to compile
+  or to test the project).} We focused on Maven for its popularity on
+Java projects.  Important to highlight that, as of now, the
+\github{}'s search API can only reflect contents from README file (not
+other code elements); it does not provide a feature to search for
+projects containing certain files in the dir structure (\eg{},
+\emph{pom.xml}).  Figure~\ref{fig:subject-query} illustrates the query
+to the \github{} API as an HTTP request.  
+
+\vspace{1ex}
+\begin{figure}[h!]
+\centering
+\scriptsize
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    deletekeywords={true}
+}
+\begin{lstlisting}
+https://api.github.com/search/repositories?q=language:java
+        +stars:>=100+pushed:>=2016-01-01
+        +mvn%20in:readme+sort:stars
+\end{lstlisting}
+    \caption{\label{fig:subject-query} Query to the \github{} API for
+    projects with the following criteria: (1) Java, (2) at least 100
+    stars, (3) updated on January 1st, 2016 (or later), (4) contains
+    the string \emph{mvn} in the \emph{readme} file. Output is
+    paginated in descending order of stars.}
+\end{figure}
+
+After obtaining a list of
+potential projects, we filtered those containing a \pomf{} file in the
+root directory.  A Maven project may contain several sub-modules with
+multiple \pomf{} files.\Comment{  We based our methodology to select
+experimental subjects on other recent studies in testing and
+debugging~\cite{gligoric-etal-issta2015,perez-etal-icst2017}.}
+As of March 25th 2017, our search criteria returned \SubjectsGithub{}
+subjects. Figure~\ref{fig:subjects} summarizes our sample set. 
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.25\textwidth]{plots/subjs.pdf}
+    \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular
+    projects hosted on \github{}. From this initial sample, we ignored
+    \SubjectsGithubNotMaven{} projects without Maven support and
+    \SubjectsGithubNotTestable{} untestable projects\Comment{, and
+    \SubjectsGithubFlaky{} projects with flaky tests}. We considered
+    \numSubjs{} projects to conduct our study.}
+\end{figure}
+
+From \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
+projects were not Maven or did not have a \pomf{} in the root
+directory, \SubjectsGithubNotTestable{} projects were untestable
+because of missing dependencies or incompatible testing environment,
+for example, and \SubjectsGithubFlaky{} projects were ``flaky''.
+\Jbc{Check if this is ok $\rightarrow$} We executed each project's
+test suite for three times to identify projects containing flaky tests
+and ignored these tests (\ie, using the \CodeIn{@Ignore} annotation
+from JUnit) to avoid introducing noise in our experiments.  Our final
+set of subjects consists of \numSubjs{} projects.
+
+
+\subsection{Setup and Replication}
+\label{sec:setup}
+
+To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
+processor machine with eight virtual CPUs (four cores with two native
+threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
+(64-bit version).  Software settings include \Comment{the Linux
+  \emph{sysstat} package to measure performance, }git to fetch
+subjects, Java 8, and Maven 3.3.9 to build and test subjects. We used
+Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3} to process the
+data and generate plots.  All source artifacts are publicly available
+for replication (on request)\Comment{ at \Fix{create gh-pages}}.  This
+includes supporting scripts (\eg, the script that test subjects and
+generates raw analysis data) and the full list of projects. \Comment{,
+  and a \emph{Vagrantfile} to emulate our hardware and all software
+  dependencies.}
+
+
 \section{Evaluation}
 \label{sec:eval}
 
@@ -52,169 +159,79 @@
 We pose the following research questions, organized by the dimensions
 of analysis we presented in Section~\ref{sec:intro}.
 
-\newcommand{\numRQA}{RQ1}
-\newcommand{\numRQB}{RQ2}
-\newcommand{\numRQC}{RQ3}
-\newcommand{\numRQE}{RQ4}
-\newcommand{\numRQF}{RQ5}
-\newcommand{\numRQD}{RQ6}
-\newcommand{\numRQG}{RQ7}
 
-\newcommand{\RQA}{How prevalent is the occurence of time-consuming
+%% Feasibility
+\newcommand{\numRQFeasibilityOne}{RQ1}
+\newcommand{\RQFeasibilityOne}{How prevalent is the occurence of time-consuming
   test suites\Comment{ in open-source projects}?}
-\newcommand{\RQB}{How time is distributed across test cases?}
-\newcommand{\RQC}{How popular is test suite
+
+\newcommand{\numRQFeasibilityTwo}{RQ2}
+\newcommand{\RQFeasibilityTwo}{How time is distributed across test cases?}
+
+%% Adoption
+\newcommand{\numRQAdoptionOne}{RQ3}
+\newcommand{\RQAdoptionOne}{How popular is test suite
   parallelization\Comment{ in open-source projects}?}
-\newcommand{\RQD}{What are the speedups obtained with parallelization
-  (in projects that actually use it) on cost?}
-\newcommand{\RQE}{What are the main reasons that prevent developers
+
+\newcommand{\numRQAdoptionTwo}{RQ4}
+\newcommand{\RQAdoptionTwo}{What are the main reasons that prevent developers
   from using test suite parallelization?}
-\newcommand{\RQF}{How parallel execution configurations affect testing
-  costs and flakiness?}
-\newcommand{\RQG}{How test execution scales with the number of
+
+%% Speedups
+\newcommand{\numRQSpeedupOne}{RQ5}
+\newcommand{\RQSpeedupOne}{What are the speedups obtained with parallelization
+  (in projects that actually use it)?}
+
+\newcommand{\numRQSpeedupTwo}{RQ6}
+\newcommand{\RQSpeedupTwo}{How test execution scales with the number of
   available CPUs?}
+
+%% Issues
+\newcommand{\numRQIssuesOne}{RQ7}
+\newcommand{\RQIssuesOne}{How parallel execution configurations affect testing
+  costs and flakiness?}
+
 
 \setlist[itemize]{leftmargin=1em}
 \begin{itemize}
 \item Feasibility
   \begin{itemize}
-  \item \textbf{\numRQA.} \RQA
-  \item \textbf{\numRQB.} \RQB    
+  \item \textbf{\numRQFeasibilityOne.} \RQFeasibilityOne
+  \item \textbf{\numRQFeasibilityTwo.} \RQFeasibilityTwo    
   \end{itemize}
 \item Adoption
   \begin{itemize}
-  \item \textbf{\numRQC.} \RQC    
-  \item \textbf{\numRQE.} \RQE
-  \end{itemize}
-\item Tradeoffs
-  \begin{itemize}
-  \item \textbf{\numRQF.} \RQF    
+  \item \textbf{\numRQAdoptionOne.} \RQAdoptionOne    
+  \item \textbf{\numRQAdoptionTwo.} \RQAdoptionTwo
   \end{itemize}
 \item Speedups
   \begin{itemize}
-  \item \textbf{\numRQD.} \RQD
-  \item \textbf{\numRQG.} \RQG
-  \end{itemize}    
+  \item \textbf{\numRQSpeedupOne.} \RQSpeedupOne
+  \item \textbf{\numRQSpeedupTwo.} \RQSpeedupTwo
+  \end{itemize}      
+\item Issues
+  \begin{itemize}
+  \item \textbf{\numRQIssuesOne.} \RQIssuesOne    
+  \end{itemize}
 \end{itemize}
 
-%%\newcommand{\RQB}{What is the distribution of CPU and IO bound
+%%\newcommand{\RQFeasibilityTwo}{What is the distribution of CPU and IO bound
 %%regression test suites from the sample set?}
 %%
-%%\newcommand{\RQC}{How uniformly distributed is the execution time
+%%\newcommand{\RQAdoptionOne}{How uniformly distributed is the execution time
 %%across test cases in costly projects?}
 %%
-%%\newcommand{\RQD}{How often developers use the parallelism features
+%%\newcommand{\RQAdoptionTwo}{How often developers use the parallelism features
 %%from build systems to improve runtime performance?}
 
 
-\subsection{Subjects}
-\label{sec:subjects}
-
-%% We evaluated the characteristics of test suites in open-source
-%% development from a sample set of Java projects from \github{}.  We are
-%% interested to evaluate non-trivial test suites from popular projects
-%% that are in activity.
-
-%% , which is used on
-%% \github{} to indicate appreciation of a user to a
-%% project~\cite{github-stars},
-
-We used \github{}'s search API~\cite{githubsearch} to identify
-projects that satisfy the following criteria: (1) the primary language
-is Java\footnote{In case of projects in multiple languages, the
-  \github{} API considers the predominant language as the primary
-  language.}, (2) the project has at least 100 stars, (3) the latest
-update was on or after January 1st, 2016, and (4) the \emph{readme}
-file contains the string \emph{mvn}.  We focused on Java for its
-popularity.  Although there is no clearcut limit on the number of
-\github{} stars~\cite{github-stars} to define relevant projects, we
-observed that 100 was enough to eliminate trivial subjects. The third
-criteria serves to skip projects without recent activity. The fourth
-criteria is an approximation to find Maven projects.\Comment{ The
-  rationale is that if the string \emph{mvn} exists in the
-  \emph{readme} file, it may represent a Maven call (\eg, to compile
-  or to test the project).} We focused on Maven for its popularity on
-Java projects.  Important to highlight that, as of now, the
-\github{}'s search API can only reflect contents from README file (not
-other code elements); it does not provide a feature to search for
-projects containing certain files in the dir structure (\eg{},
-\emph{pom.xml}).  Figure~\ref{fig:subject-query} illustrates the query
-to the \github{} API as an HTTP request.  After obtaining a list of
-potential projects, we filtered those containing a \pomf{} file in the
-root directory.  A Maven project may contain several sub-modules with
-multiple \pomf{} files.  We based our methodology to select
-experimental subjects on other recent studies in testing and
-debugging~\cite{gligoric-etal-issta2015,perez-etal-icst2017}.
-
-\vspace{1ex}
-\begin{figure}[h!]
-\centering
-\scriptsize
-\lstset{
-    escapeinside={@}{@},
-    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
-    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    deletekeywords={true}
-}
-\begin{lstlisting}
-https://api.github.com/search/repositories?q=language:java
-        +stars:>=100+pushed:>=2016-01-01
-        +mvn%20in:readme+sort:stars
-\end{lstlisting}
-    \caption{\label{fig:subject-query} Query to the \github{} API for
-    projects with the following criteria: (1) Java, (2) at least 100
-    stars, (3) updated on January 1st, 2016 (or later), (4) contains
-    the string \emph{mvn} in the \emph{readme} file. Output is
-    paginated in descending order of stars.}
-\end{figure}
-
-As of March 25th 2017, our search criteria returned \SubjectsGithub{}
-subjects. Figure~\ref{fig:subjects} summarizes our sample set. From
-\SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
-projects were not Maven or did not have a \pomf{} in the root
-directory, \SubjectsGithubNotTestable{} projects were untestable
-(because of missing dependencies or incompatible testing environment,
-for example), and \SubjectsGithubFlaky{} projects were ``flaky''.
-\Jbc{Check if this is ok $\rightarrow$} We executed each project's
-test suite for three times to identify projects containing flaky tests
-and ignored these tests (\ie, using the \CodeIn{@Ignore} annotation
-from JUnit) to avoid introducing noise in our experiments.  Our final
-set of subjects consists of \numSubjs{} projects.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.25\textwidth]{plots/subjs.pdf}
-    \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular
-    projects hosted on \github{}. From this initial sample, we ignored
-    \SubjectsGithubNotMaven{} projects without Maven support and
-    \SubjectsGithubNotTestable{} untestable projects\Comment{, and
-    \SubjectsGithubFlaky{} projects with flaky tests}. We considered
-    \numSubjs{} projects to conduct our study.}
-\end{figure}
-
-\subsection{Setup and Replication}
-\label{sec:setup}
-
-To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
-processor machine with eight virtual CPUs (four cores with two native
-threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
-(64-bit version).  Software settings include \Comment{the Linux
-  \emph{sysstat} package to measure performance, }git to fetch
-subjects, Java 8, and Maven 3.3.9 to build and test subjects. We used
-Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3} to process the
-data and generate plots.  All source artifacts are publicly available
-for replication (on request)\Comment{ at \Fix{create gh-pages}}.  This
-includes supporting scripts (\eg, the script that test subjects and
-generates raw analysis data) and the full list of projects. \Comment{,
-  and a \emph{Vagrantfile} to emulate our hardware and all software
-  dependencies.}
 
 \subsection{Feasibility}
 \label{sec:rqA}
 \label{sec:rqB}
 
 \begin{itemize}
-    \item \numRQA{}. \textbf{\RQA}
+    \item \numRQFeasibilityOne{}. \textbf{\RQFeasibilityOne}
 \end{itemize}
 %\Jbc{The following steps may change $\rightarrow$}
 
@@ -335,7 +352,7 @@ default.
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
-    \textit{Answering \numRQA{}:}~\emph{We conclude that
+    \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
       time-consuming test suites are relatively frequent in
       open-source projects.  We found that \percentMedLongRunning{} of
       the \numSubjs{} projects we analyzed (\ie{}, over 1 in every 5
@@ -349,12 +366,12 @@ default.
 
 
 \begin{itemize}
-    \item \numRQB. \textbf{\RQB}
+    \item \numRQFeasibilityTwo. \textbf{\RQFeasibilityTwo}
 \end{itemize}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon, accounting to nearly \percentMedLongRunning{} of the
-\numSubjs{} projects we analyzed.  Research question \numRQB{}
+\numSubjs{} projects we analyzed.  Research question \numRQFeasibilityTwo{}
 measures the distribution of test costs in test suites as to estimate
 (lack of) potential of obtaining speedups with parallelization.  In
 the limit, if cost is dominated by a single test from a large test
@@ -482,7 +499,7 @@ Figure~\ref{fig:scattercost} illustrates this correlation.
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
-    \textit{Answering \numRQB{}:}~\emph{Overall, results indicate that
+    \textit{Answering \numRQFeasibilityTwo{}:}~\emph{Overall, results indicate that
     projects with a very small number of tests monopolizing end-to-end
     execution time were rare.}
 \end{minipage}
@@ -495,7 +512,7 @@ Figure~\ref{fig:scattercost} illustrates this correlation.
 %% of test cases or if the cost is nearly equally distributed. 
 
 %% We also evaluated the dispersion of time distributions (one
-%% distribution per project) to answer research question \numRQB{}.  To
+%% distribution per project) to answer research question \numRQFeasibilityTwo{}.  To
 %% measure dispersion \emph{across} projects we used Relative Standard
 %% Deviation (RSD)~\cite{everitt-book-stats-2010}.  Note that, if we were
 %% to analyze each project in isolation, the standard deviation of a
@@ -548,16 +565,16 @@ Figure~\ref{fig:scattercost} illustrates this correlation.
 \label{sec:rqE}
 
 The dimension adoption focuses on the usage of parallelism in
-open-source projects.  It evaluates (\numRQC) how often open-source
-projects use parallelization schemes and (\numRQE) how developers
+open-source projects.  It evaluates (\numRQAdoptionOne) how often open-source
+projects use parallelization schemes and (\numRQSpeedupOne) how developers
 involved in costly projects, not using parallelization, perceive this
 technology.
 
 \begin{itemize}
-    \item \numRQC. \textbf{\RQC{}}
+    \item \numRQAdoptionOne. \textbf{\RQAdoptionOne{}}
 \end{itemize}
 
-To answer \numRQC{}, we selected all projects from the \medg{} and
+To answer \numRQAdoptionOne{}, we selected all projects from the \medg{} and
 \longg{} groups, \ie, projects that ran in at least one minute.  This
 set includes \numMedLong{} projects (see Section~\ref{sec:rqA}).  We
 looked for dynamic and static manifestations of parallelism.
@@ -702,7 +719,7 @@ the union of the two subject sets.
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
-      \textit{Answering \numRQC{}:}~\emph{Results indicate that test
+      \textit{Answering \numRQAdoptionOne{}:}~\emph{Results indicate that test
         suite parallelization is underused.  Overall, only
         \percentParallel{} of costly projects (11 out of \numMedLong)
         use parallelism.}
@@ -807,10 +824,10 @@ the union of the two subject sets.
 %%     A project may have support to more than one parallel mode.}
 %% \end{figure}
 
-\begin{itemize}
-	\item \numRQE{}. \textbf{\RQE{}}
-\end{itemize}
 
+\begin{itemize}
+	\item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
+\end{itemize}
 
 To answer this research question we surveyed developers involved in a
 selection of projects from our benchmark with time-consuming test
@@ -899,7 +916,7 @@ methods.  Note that, considering these four extra cases (ignored two
 distributed CI cases), the usage of parallelization increases from
 \percentParallel{} to \percentParallelUpdated{}.  We do not consider
 this change significant enough to modify our conclusion about
-practical adoption of parallelization (\numRQC{}).
+practical adoption of parallelization (\numRQAdoptionOne{}).
 
 %% , one runs a manually created Thread to run some
 %% tests, and the other runs in parallel by using Java 8 collection
@@ -936,7 +953,7 @@ the distribution of answers.
 \begin{center}
 \fbox{
 	\begin{minipage}{8cm}
-	  \textit{Answering \numRQE{}:}~\emph{Results suggest that dealing
+	  \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
        with concurrency issues (\ie{}, the extra work to organize test
        suite to safely explore concurrency) was the principal reason
        for developers not investing in parallelism.  Other reasons
@@ -946,7 +963,118 @@ the distribution of answers.
 }
 \end{center}
 
-\subsection{Tradeoffs}
+\subsection{Speedups}
+\label{sec:rqD}
+
+\begin{itemize}
+    \item \numRQSpeedupOne{}. \textbf{\RQSpeedupOne}
+\end{itemize}
+
+To answer \numRQSpeedupOne{}, we considered \numProjectsPar{} subjects from our
+benchmark that use parallelization \emph{by default} when running
+tests.  In those projects, parallelization is active without passing
+any extra parameters.  Section~\ref{sec:rqC-1} describes in detail the
+methodology we used to find these subjects.
+%and
+%Section~\ref{seq:rq6-tradeoffs}, we verified that both
+%% executions produce the same outcome to eliminate noise from failing
+%% tests.  To compute the speedup, we divide the time obtained in the
+%% sequential execution by the time obtained from the default execution.
+%% For instance, if a project runs the tests sequentially in $10m$ and
+%% the same execution runs in $5m$ with parallelization enabled (default
+%% execution), the speedup is two.
+
+Figure~\ref{tab:speedup} summarizes results.  Lines are sorted by
+abbreviated project names, which appear in bold.  Columns
+``\emph{Group}'' and ``\emph{Name}'' indicate, respectively, the
+project group and the name of the subject.  Column ``$T_s$'' shows
+sequential execution time whereas column ``$T_p$'' shows parallel
+execution time. Column ``$T_s/T_p$'' shows the speedup or slowdown
+associated with parallel execution.   As usual, a ratio
+above 1x denotes speedup and a ratio below 1x denotes slowdown.
+
+\begin{figure}[h!]
+\footnotesize
+\centering
+\resizebox{.45\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+\emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
+\midrule%
+Medium & \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1.51m & 1.47m & 
+    \cellcolor{lightgray}1.01x\\%
+Medium &\Comment{ Apache }Flink& 11.79m & 2.57m & 4.59x\\%
+Long &\Comment{ Jenkins CI }Gerrit\Comment{ Plugin} & 51.19m & 40.31m &  1.26x\\%
+Medium &\Comment{ Spotify }Helios& 4.46m & 1.63m & 2.73x\\%  
+Medium &Javaslang& 2.18m & 1.82m & 1.19x\\%
+Medium &Jcabi\Comment{ GitHub} & 2.76m & 0.30m &
+    \cellcolor{lightgray}9.2x\\%
+Medium &\Comment{ Hazelcast }Jet& 8.26m & 3.67m & 2.25x\\%
+Long &\Comment{ Apache }Log4J2& 8.24m & 8.21m & \cellcolor{lightgray}1.00x\\%
+Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
+\midrule
+\textbf{average} &  &  &  & \avgSpeedup{}x\\
+\bottomrule%
+\end{tabular}}
+\caption{Speedup (or slowdown) of parallel execution ($T_p$) over
+  sequential execution ($T_s$).  Default parallel configuration of
+  Maven is used.  Abbreviation of project names appear in bold face
+  and highest slowdown/speedup appear in gray color.}
+\label{tab:speedup}
+\end{figure}
+
+
+Results indicate that, on average, parallel execution was
+\avgSpeedup{} times faster compared to sequential execution.  Three
+cases worth special attention: \CodeIn{Chaos}, \CodeIn{Jcabi} and
+\CodeIn{Log4J2}.  No significant speedup was observed in
+\CodeIn{Chaos}, a project with only three test classes, of which one
+monopolizes the bulk of test execution time.  This project uses
+configuration \ParClassSeqMeth{}, which runs test classes in parallel
+and test methods, declared in each class, sequentially.  Consequently,
+speedup cannot be obtained as the cost of the single expensive test
+class cannot be broken down with the selected configuration.  Although
+project \CodeIn{Jcabi} also uses configuration \ParClassSeqMeth{},
+results obtained are very different compared to \CodeIn{Chaos}.  The
+speedup observed in \CodeIn{Jcabi} was the highest amongst all
+projects.  This project contains test classes with a small number of
+test methods and several methods in those classes are time-consuming.
+As result, the CPUs available for testing are kept occupied for the
+most part during test execution.  Finally, we note that parallel
+execution in \CodeIn{Log4J2} was innefective.  We found that Maven
+invokes several test modules in this project but the test modules that
+dominate execution time run sequentially by default.
+
+%% The third, runs parallel configuration in
+%% \Fix{80\%} of the project modules, however, the test time is dominated
+%% by one of the sequentially running modules.  \Luis{$\leftarrow$ rework
+%%   this} \Fix{falar sobre o resultado geral dos speedups - elaborar
+%%   menor e maior speedup... acho que so vale a pena discutir quando
+%%   tiver conviccao dos 2 casos}
+
+\begin{center}
+\fbox{
+  \begin{minipage}{8cm}
+    \textit{Answering \numRQSpeedupOne{}:}~\emph{ The average speedup observed
+      with default configurations of parallelization was
+      \avgSpeedup{}x.}
+  \end{minipage}
+}
+\end{center}
+
+\begin{itemize}
+    \item \numRQSpeedupTwo{}. \textbf{\RQSpeedupTwo}
+\end{itemize}
+
+\begin{center}
+\fbox{
+  \begin{minipage}{8cm}
+    \textit{Answering \numRQSpeedupTwo{}:}~\emph{...}
+  \end{minipage}
+}
+\end{center}
+
+\subsection{Issues}
 \label{sec:rq6-tradeoffs}
 
 This dimension assesses the impact of using distinct parallel
@@ -956,7 +1084,7 @@ evaluated speedup in isolation, focused on projects configured to use
 parallelism by default.
 
 \begin{itemize}
-    \item \numRQF{}. \textbf{\RQF{}}
+    \item \numRQIssuesOne{}. \textbf{\RQIssuesOne{}}
 \end{itemize}
 
 
@@ -1102,109 +1230,11 @@ explain efficiency cutoff, JVM crashes and timeout}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
-\textit{Answering \numRQF{}:~\emph{\Jbc{summarize findings...}}}
+\textit{Answering \numRQIssuesOne{}:~\emph{\Jbc{summarize findings...}}}
 \end{minipage}
 }
 \end{center}
 
-\subsection{Speedups}
-\label{sec:rqD}
-
-\begin{itemize}
-    \item \numRQD{}. \textbf{\RQD}
-\end{itemize}
-
-To answer \numRQD{}, we considered \numProjectsPar{} subjects from our
-benchmark that use parallelization \emph{by default} when running
-tests.  In those projects, parallelization is active without passing
-any extra parameters.  Section~\ref{sec:rqC-1} describes in detail the
-methodology we used to find these subjects.
-%and
-%Section~\ref{seq:rq6-tradeoffs}, we verified that both
-%% executions produce the same outcome to eliminate noise from failing
-%% tests.  To compute the speedup, we divide the time obtained in the
-%% sequential execution by the time obtained from the default execution.
-%% For instance, if a project runs the tests sequentially in $10m$ and
-%% the same execution runs in $5m$ with parallelization enabled (default
-%% execution), the speedup is two.
-
-Figure~\ref{tab:speedup} summarizes results.  Lines are sorted by
-abbreviated project names, which appear in bold.  Columns
-``\emph{Group}'' and ``\emph{Name}'' indicate, respectively, the
-project group and the name of the subject.  Column ``$T_s$'' shows
-sequential execution time whereas column ``$T_p$'' shows parallel
-execution time. Column ``$T_s/T_p$'' shows the speedup or slowdown
-associated with parallel execution.   As usual, a ratio
-above 1x denotes speedup and a ratio below 1x denotes slowdown.
-
-\begin{figure}[h!]
-\footnotesize
-\centering
-\resizebox{.45\textwidth}{!}{%
-\begin{tabular}{llrrr}
-\toprule
-\emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
-\midrule%
-Medium & \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1.51m & 1.47m & 
-    \cellcolor{lightgray}1.01x\\%
-Medium &\Comment{ Apache }Flink& 11.79m & 2.57m & 4.59x\\%
-Long &\Comment{ Jenkins CI }Gerrit\Comment{ Plugin} & 51.19m & 40.31m &  1.26x\\%
-Medium &\Comment{ Spotify }Helios& 4.46m & 1.63m & 2.73x\\%  
-Medium &Javaslang& 2.18m & 1.82m & 1.19x\\%
-Medium &Jcabi\Comment{ GitHub} & 2.76m & 0.30m &
-    \cellcolor{lightgray}9.2x\\%
-Medium &\Comment{ Hazelcast }Jet& 8.26m & 3.67m & 2.25x\\%
-Long &\Comment{ Apache }Log4J2& 8.24m & 8.21m & \cellcolor{lightgray}1.00x\\%
-Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
-\midrule
-\textbf{average} &  &  &  & \avgSpeedup{}x\\
-\bottomrule%
-\end{tabular}}
-\caption{Speedup (or slowdown) of parallel execution ($T_p$) over
-  sequential execution ($T_s$).  Default parallel configuration of
-  Maven is used.  Abbreviation of project names appear in bold face
-  and highest slowdown/speedup appear in gray color.}
-\label{tab:speedup}
-\end{figure}
-
-
-Results indicate that, on average, parallel execution was
-\avgSpeedup{} times faster compared to sequential execution.  Three
-cases worth special attention: \CodeIn{Chaos}, \CodeIn{Jcabi} and
-\CodeIn{Log4J2}.  No significant speedup was observed in
-\CodeIn{Chaos}, a project with only three test classes, of which one
-monopolizes the bulk of test execution time.  This project uses
-configuration \ParClassSeqMeth{}, which runs test classes in parallel
-and test methods, declared in each class, sequentially.  Consequently,
-speedup cannot be obtained as the cost of the single expensive test
-class cannot be broken down with the selected configuration.  Although
-project \CodeIn{Jcabi} also uses configuration \ParClassSeqMeth{},
-results obtained are very different compared to \CodeIn{Chaos}.  The
-speedup observed in \CodeIn{Jcabi} was the highest amongst all
-projects.  This project contains test classes with a small number of
-test methods and several methods in those classes are time-consuming.
-As result, the CPUs available for testing are kept occupied for the
-most part during test execution.  Finally, we note that parallel
-execution in \CodeIn{Log4J2} was innefective.  We found that Maven
-invokes several test modules in this project but the test modules that
-dominate execution time run sequentially by default.
-
-%% The third, runs parallel configuration in
-%% \Fix{80\%} of the project modules, however, the test time is dominated
-%% by one of the sequentially running modules.  \Luis{$\leftarrow$ rework
-%%   this} \Fix{falar sobre o resultado geral dos speedups - elaborar
-%%   menor e maior speedup... acho que so vale a pena discutir quando
-%%   tiver conviccao dos 2 casos}
-
-\begin{center}
-\fbox{
-  \begin{minipage}{8cm}
-    \textit{Answering \numRQD{}:}~\emph{ The average speedup observed
-      with default configurations of parallelization was
-      \avgSpeedup{}x.}
-  \end{minipage}
-}
-\end{center}
 
 
 
