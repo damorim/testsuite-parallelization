@@ -33,8 +33,8 @@ infrastructures to running tests is a legitimate approach to mitigate
 the regression testing problem.  However, for projects with modest
  or inexistent budgets and yet relatively heavy testing workloads, this solution may
 not be economically viable.  For these cases, the use of commodity
-hardware (\eg{}, existing workstations), emerges as an attractive
-solution for running tests.  Furthermore, the proliferation of
+hardware (\eg{}, existing workstations) is an attractive
+solution for running tests.  The proliferation of
 multi-core CPUs and the increasing popularization of testing
 frameworks and build systems, which today provide mature support for
 parallelization, enable test execution speedups through increased CPU
@@ -58,37 +58,34 @@ parallelism to speed up test execution.
 %% \end{enumerate}
 
 This paper reports on an empirical study we conducted to analyze the
-usage and impact of low-level parallelization in speeding up testing
+usage and impact of low-level parallelization to speed up testing
 in open-source projects.  This is a relevant problem given the
 tremendous popularity of open-source development and regression
 testing research~\cite{yoo-harman-stvr2012}.  Note that
 parallelization is complementary to other approaches to mitigate
 testing costs such as (safe) test
 selection~\cite{Rothermel:1997:SER:248233.248262} and continuous
-integration~\cite{Saff:2003:RWD:951952.952340}.  The dimensions of
-analysis we considered in this study are (i) potential, (iii)
-adoption, and (iii) flakiness, (iv) speedups.
+integration~\cite{Saff:2003:RWD:951952.952340}.
 
-%% Each dimension
-%% focuses on one aspect of the study.
-
-The dimension \textbf{feasibility} measures the potential of
-parallelization to reduce testing costs.  In the limit,
-parallelization would be fruitless if all projects used short-running
-test suites or if the bulk of execution cost was dominated by a single
-test in the suite.  The dimension \textbf{adoption} evaluates how
-often existing open-source projects use parallelization schemes and
-how developers involved in costly projects (not using test suite
-parallelization) perceive this technology.  It is important to measure
-resistance of practicioners to the technology and to understand their
-reasons.  The dimension \textbf{issues} reports the observed problems
-associated with running tests in parallel.  For example, test
-flakiness, which is caused by interference on shared state from
-non-deterministic executions of test methods and classes.  Finally,
-the dimension \textbf{speedups} evaluates the observed impact of
+The dimensions of analysis we considered in this study are (i)
+potential, (iii) adoption, (iv) speedup, and (iii) issues.  The
+dimension \emph{feasibility} measures the potential of parallelization
+to reduce testing costs.  In the limit, parallelization would be
+fruitless if all projects used short-running test suites or if the
+execution cost was dominated by a single test case in the suite.  The
+dimension \emph{adoption} evaluates how often existing open-source
+projects use parallelization schemes and how developers involved in
+costly projects (not using test suite parallelization) perceive this
+technology.  It is important to measure resistance of practicioners to
+the technology and to understand their reasons.  The dimension
+\emph{speedups} evaluates the observed impact of
 parallelization\Comment{~---~when used in selected open-source
-  projects~---~} in running times.  We briefly summarize each of these
-dimensions in the following.
+  projects~---~} in running times.  Finally, the dimension
+\emph{issues} reports the observed problems associated with running
+tests in parallel.  For example, test flakiness, which is caused by
+interference on shared state from non-deterministic executions of test
+methods and classes.  We briefly summarize our findings in
+the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
 %% configurations is important to guide practitioners and future
@@ -111,43 +108,59 @@ dimensions in the following.
 %% eight virtual CPUs (four cores with two native threads each) and the
 %% default Maven configuration of each project.
 
-\vspace{1ex}\noindent\textbf{Feasibility.}~
-We selected \numSubjs{} popular Java projects from \github{}
-containing Maven build files~\cite{maven} to assess how prevalent
-long-running test suites are.  Section~\ref{sec:eval} details our
-methodology to select subjects and to isolate our experiments from
-environmental noise.  Results indicate that nearly
-\percentMedLongRunning{} of the projects take at least 1m to run their
-test suites and \percentLongRunning{} of the projects take at least 5m
-to run their suites.  Considering the \numMedLong{} projects in those
-two groups, the average execution time is \averageMedLongRunning{}.
-Results also show that individual tests are typically short-running,
-taking often less than half a second to run.  Furthermore, we found
-that only in rare cases few test cases monopolize execution cost
-associated with each test suite.  \emph{Overall, our results suggest
-  that test suite parallelization has the potential to optimize test
-  suites.}
+\vspace{1ex}\noindent\textbf{Feasibility.}~To assess how prevalent
+long-running test suites are we selected \numSubjs{} popular Java
+projects from \github{} containing Maven build files~\cite{maven}.
+Section~\ref{sec:eval} details our methodology to select subjects and
+to isolate our experiments from environmental noise.  Results indicate
+that nearly \percentMedLongRunning{} of the projects take at least 1m
+to run their test suites and \percentLongRunning{} of the projects
+take at least 5m to run their suites.  Considering the \numMedLong{}
+projects in those two groups, the average execution time of a test
+suite was \averageMedLongRunning{}.  Results also show that test cases
+are typically short-running, typically taking less than half a second
+to run.  Furthermore, we found that only in rare cases few test cases
+monopolize execution cost associated with each test suite.
+
 
 
 \vspace{1ex}\noindent\textbf{Adoption.}~ We considered two aspects in
 measuring technology adoption.  First, we measured usage of
 parallelism in open-source projects.  Then, we ran a survey with
-developers to understand the reasons that explain resistance to using
-the technology.  For the quantitative analysis we checked both
-statically (parsing build files) and dynamically (monitoring execution
-of build files) for the presence of parallelization.  Considering only
-those projects that take longer than a minute to run their test
-suites, we found that only \percentParallel{} of them use parallelism.
-When correcting this value with the feedback obtained a posteriori
-from developers, we realized that the proportion should be higher, of
+developers to understand the reasons that could explain resistance to
+using the technology.\Comment{ For the quantitative analysis we
+  checked both statically (parsing build files) and dynamically
+  (monitoring execution of build files) for the presence of
+  parallelization.}  Considering only those projects that take longer
+than a minute to run their test suites, we found that only
+\percentParallel{} of them use parallelism.  When correcting this
+value with the feedback obtained a posteriori from developers, we
+realized that the proportion should be higher, of
 \percentParallelUpdated{}.  For the qualitative analysis we surveyed
 developers from a selection of costly projects that did not use
-parallelization.  \emph{Results indicate that test suite
-  parallelization is underutilized and dealing with concurrency issues
-  related with parallelization (\eg{}, the extra work to organize test
-  suite to avoid concurrency errors) was the main barrier for
-  adoption.  Other reasons included availability of continuous
-  integration services and unfamiliarity with the technology.}
+parallelization.  Results indicate that test suite parallelization is
+underutilized.  Dealing with concurrency-related issues (\eg{}, the
+extra work to organize test suite to avoid concurrency errors) and the
+availability of continuous integration services were the most
+frequently answered reasons for not considering parallelization.
+
+%% \Mar{move to here} Intuitively, benefits are
+%% proportional to the cost reduction that parallelization brings.  In
+%% the limit, however, the overhead of spawning virtual machines or
+%% threads can even result in added cost.
+
+\vspace{1ex}\noindent\textbf{Speedups.}~We used two setups to measure
+execution speedups.  In one setup we measured the speedups obtained on
+projects that we knew a priori that ran their test suite in parallel
+by default.  We did not change parallel configurations on that setup.
+For comparison, we disabled parallel execution to obtain the running
+time of a sequential execution.  In the other setup, we evaluated how
+execution scales with the number of available cores in the machine.
+\Mar{need to repeat those!}\Fix{Considering the first setup, results
+  indicate that the average speedup of parallelization was
+  \avgSpeedup{}x.  Although we found cases with very high speedups
+  (\eg{}, 9.2x), we found some cases where speedups were
+  insignificant.}
 
 %% %%RQ3
 %% Given the high execution cost associated with a significant number of
@@ -188,22 +201,10 @@ parallelization.  \emph{Results indicate that test suite
   blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
   bla bla blabla bla bla blabla bla bla blabla bla bla bla}
 
-\vspace{1ex}\noindent\textbf{Speedups.}~
-%% \Mar{move to here} Intuitively, benefits are
-%% proportional to the cost reduction that parallelization brings.  In
-%% the limit, however, the overhead of spawning virtual machines or
-%% threads can even result in added cost.
-\Mar{...revise with scalability results...}
-As to avoid introduction of unintended noise when measuring time, we
-evaluated effectiveness on projects that we knew a priori ran their
-test suite in parallel by default.  Results indicate that the average
-speedup of parallelization was \avgSpeedup{}x.  Although we found
-cases with very high speedups (\eg{}, 9.2x), we found some cases where
-speedups were insignificant.  \emph{Overall, our results suggest that
-  it may not be obvious to achieve huge speedups with test suite
-  parallelization.}
 
-\Mar{write one or two lessons learned}
+\subsection{Implications}
+
+
 
 
 %% \Mar{missing connection. why parallelism?}  From these results we
