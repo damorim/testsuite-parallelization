@@ -29,7 +29,7 @@ each~\cite{kim-etal-fse2013}.
 At large organizations, the alternative of renting cloud
 services\footnote{List of popular hosting cloud services:
   \url{https://clutch.co/cloud}} or even building proprietary
-infrastructures to running tests is a legitimate approach to mitigate
+infrastructures for running tests is a legitimate approach to mitigate
 the regression testing problem.  However, for projects with modest
  or inexistent budgets and yet relatively heavy testing workloads, this solution may
 not be economically viable.  For these cases, the use of commodity
@@ -37,7 +37,7 @@ hardware (\eg{}, existing workstations) is an attractive
 solution for running tests.  The proliferation of
 multi-core CPUs and the increasing popularization of testing
 frameworks and build systems, which today provide mature support for
-parallelization, enable test execution speedups through increased CPU
+parallelization, enable\Comment{ test execution} speedups through increased CPU
 usage~(see Section~\ref{sec:modes}).  These two elements~---~demand
 for cost-effective test execution and supply of relatively inexpensive
 testing infrastructures~---~led us to investigate the usage of
@@ -58,14 +58,14 @@ parallelism to speed up test execution.
 %% \end{enumerate}
 
 This paper reports on an empirical study we conducted to analyze the
-usage and impact of low-level parallelization to speed up testing
-in open-source projects.  This is a relevant problem given the
-tremendous popularity of open-source development and regression
-testing research~\cite{yoo-harman-stvr2012}.  Note that
-parallelization is complementary to other approaches to mitigate
-testing costs such as (safe) test
-selection~\cite{Rothermel:1997:SER:248233.248262} and continuous
-integration~\cite{Saff:2003:RWD:951952.952340}.
+usage and impact of low-level parallelization to speed up testing in
+open-source projects.  This is a relevant problem given the tremendous
+popularity of open-source development and regression testing
+research~\cite{yoo-harman-stvr2012}.  Note that parallelization is
+complementary to other approaches to mitigate testing costs such as
+(safe) test
+selection~\cite{Rothermel:1997:SER:248233.248262,gligoric-etal-issta2015}
+and continuous integration~\cite{Saff:2003:RWD:951952.952340}.
 
 The dimensions of analysis we considered in this study are (i)
 potential, (iii) adoption, (iv) speedup, and (iii) issues.  The
@@ -81,11 +81,9 @@ the technology and to understand their reasons.  The dimension
 \emph{speedups} evaluates the observed impact of
 parallelization\Comment{~---~when used in selected open-source
   projects~---~} in running times.  Finally, the dimension
-\emph{issues} reports the observed problems associated with running
-tests in parallel.  For example, test flakiness, which is caused by
-interference on shared state from non-deterministic executions of test
-methods and classes.  We briefly summarize our findings in
-the following.
+\emph{issues} reports the observed problems in running tests in
+parallel (\eg{}, test flakiness~\cite{luo-etal-fse2014}).  We briefly
+summarize our findings in the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
 %% configurations is important to guide practitioners and future
@@ -151,8 +149,8 @@ frequently answered reasons for not considering parallelization.
 
 \vspace{1ex}\noindent\textbf{Speedups.}~We used two setups to measure
 execution speedups.  In one setup we measured the speedups obtained on
-projects that we knew a priori that ran their test suite in parallel
-by default.  We did not change parallel configurations on that setup.
+projects that we knew a priori ran their test suite in parallel by
+default.  We did not change parallel configurations on that setup.
 For comparison, we disabled parallel execution to obtain the running
 time of a sequential execution.  In the other setup, we evaluated how
 execution scales with the number of available cores in the machine.
@@ -160,7 +158,8 @@ execution scales with the number of available cores in the machine.
   indicate that the average speedup of parallelization was
   \avgSpeedup{}x.  Although we found cases with very high speedups
   (\eg{}, 9.2x), we found some cases where speedups were
-  insignificant.}
+  insignificant.}  Considering the second setup, results indicate that
+\Fix{...}
 
 %% %%RQ3
 %% Given the high execution cost associated with a significant number of
@@ -203,6 +202,8 @@ execution scales with the number of available cores in the machine.
 
 
 \subsection{Implications}
+
+\newpage
 
 
 
