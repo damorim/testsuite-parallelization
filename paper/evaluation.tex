@@ -619,18 +619,6 @@ project. For instance, if a project contains two modules using the
 same configuration, we counted only one occurrence.
 
 
-Figure~\ref{tab:freqmodes-dynamic} shows the projects we idendified
-where parallelism is enabled by default in Maven.  Column
-``\emph{Subject}'' indicates the name of the project, column
-``\emph{\# of modules}'' indicates the fraction of modules containing
-tests that use the configuration of parallelism mentioned in column
-``\emph{Mode}''.  We note that, considering these projects, the
-modules that do not use the configuration cited use the sequential
-configuration \Seq{}.  For example, six modules (=31-25) from Log4J2
-use sequential configuration.
-
-It came as a surprise the observation that
-no project used distinct configurations in their modules. Considering
 \begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
   \footnotesize
   %  \small
@@ -656,6 +644,18 @@ no project used distinct configurations in their modules. Considering
     default.}
     \label{tab:freqmodes-dynamic}
 \end{wrapfigure}
+Figure~\ref{tab:freqmodes-dynamic} shows the projects we idendified
+where parallelism is enabled by default in Maven.  Column
+``\emph{Subject}'' indicates the name of the project, column
+``\emph{\# of modules}'' indicates the fraction of modules containing
+tests that use the configuration of parallelism mentioned in column
+``\emph{Mode}''.  We note that, considering these projects, the
+modules that do not use the configuration cited use the sequential
+configuration \Seq{}.  For example, six modules (=31-25) from Log4J2
+use sequential configuration.
+
+It came as a surprise the observation that
+no project used distinct configurations in their modules. Considering
 our set of \numMedLong{} projects, we found that only
 \textbf{\numProjectsPar{}} of those projects had parallelism enabled
 by default, with only configurations \ParClassSeqMeth{},
@@ -929,16 +929,16 @@ practical adoption of parallelization (\numRQAdoptionOne{}).
 Considering question 3, the distribution of answers was as follows.  A
 total of \emailsA{} of the \emailsProjectsAnswered{} developers who
 answered the survey did not know that parallelism was available in
+Maven (option ``a''), \emailsB{} of developers mentioned that they did
+not use parallelism concerned with possible concurrency issues (option
+``b''), \emailsD{} of developers mentioned that continuous integration
+services sufficed to provide timely feedback while running only smoke
 \begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
     \centering
     \includegraphics[width=.18\textwidth]{plots/survey.pdf}
     \caption{\label{fig:rq5-answers}Summary of developer's answers to
       survey question~\ref{questionThree}.}
 \end{wrapfigure}
-Maven (option ``a''), \emailsB{} of developers mentioned that they did
-not use parallelism concerned with possible concurrency issues (option
-``b''), \emailsD{} of developers mentioned that continuous integration
-services sufficed to provide timely feedback while running only smoke
 tests (\ie{}, short-running tests) locally (option ``c'')\Comment{here
   I want to say that they use it for something like "non-blocking
   testing" while developing in a local machine}, and \emailsD{} of
@@ -946,8 +946,8 @@ developers who provided an alternative answer (option ``d'') mentioned
 that using parallelism was not worth the effort of preparing the test
 suites to take advantage of available processing power.  A total of
 \emailsNA{} of participants did not answer the last question of the
-survey.  Figure~\ref{fig:rq5-answers} shows a pie chart summarizing
-the distribution of answers.
+survey.  The pie chart in Figure~\ref{fig:rq5-answers} 
+summarizes the distribution of answers.
 
 \begin{center}
 \fbox{
