@@ -565,7 +565,7 @@ Figure~\ref{fig:scattercost} illustrates this correlation.
 
 The dimension adoption focuses on the usage of parallelism in
 open-source projects.  It evaluates (\numRQAdoptionOne) how often open-source
-projects use parallelization schemes and (\numRQSpeedupOne) how developers
+projects use parallelization schemes and (\numRQAdoptionTwo) how developers
 involved in costly projects, not using parallelization, perceive this
 technology.
 
@@ -1018,10 +1018,10 @@ Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
 \textbf{average} &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
 \end{tabular}}
-\caption{Speedup (or slowdown) of parallel execution ($T_p$) over
-  sequential execution ($T_s$).  Default parallel configuration of
-  Maven is used.  Highest slowdown/speedup appears in gray color.}
-\label{tab:speedup}
+\caption{\label{tab:speedup}Speedup (or slowdown) of parallel
+  execution ($T_p$) over sequential execution ($T_s$).  Default
+  parallel configuration of Maven is used.  Highest slowdown/speedup
+  appears in gray color.}
 \end{figure}
 
 Results indicate that, on average, parallel execution was
@@ -1065,6 +1065,27 @@ dominate execution time run sequentially by default.
 \begin{itemize}
     \item \numRQSpeedupTwo{}. \textbf{\RQSpeedupTwo}
 \end{itemize}
+
+\newcommand{\subjectScalability}{MapDB}
+
+This experiment evaluates the impact of making available to the build
+system a growing number of CPUs for testing.  For that reason, we used
+a \Fix{...describe machine...}  We focused on configuration \ForkSeq{}
+\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
+    \centering
+    \includegraphics[width=.2\textwidth]{R/scalability/scalability.pdf}
+    \caption{\label{fig:scalability}Scalability.}
+\end{wrapfigure}
+as the goal is to evaluate the impact of spawning a growing number of
+JVMs, running on different CPUs.  We selected the subject
+\subjectScalability{} in this experiment as it represents the case of
+a long-running test suite (see Figure~\ref{tab:speedup}) distributed
+across many test classes (\Fix{X} test classes for
+\subjectScalability{}).  Note that a test class is the smallest unit
+that can be used to spawn a test job on a JVM.
+
+Figure~\ref{fig:scalability} shows the reduction of running times as
+more CPUs contribute to the execution.  \Fix{elaborate...}
 
 \begin{center}
 \fbox{
