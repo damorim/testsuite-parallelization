@@ -1125,10 +1125,11 @@ parallelism by default.
 \newcommand{\subcol}{\subcolA{} & \subcolB{}}
 \newcommand{\entry}[2]{#1 & #2}
 
-\begin{figure*}[t]
+\begin{figure*}[t]  
 \centering
 \small
-\begin{tabular}{l|rr|rrrrrrrrrr}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l|rr|rr|rr|rr|rr|rr}
 \toprule
 \multirow{2}{*}{\emph{Subject (module)}} & \multicolumn{2}{c|}{\emph{\Seq}} &
     \colheader{\SeqClassParMeth} & \colheader{\ParClassSeqMeth} &
@@ -1137,7 +1138,7 @@ parallelism by default.
     & $T_\text{cost} $ & $\mathit{N}$ & \subcol{} & \subcol{} & \subcol{} & \subcol{}
     & \subcol{}\\%
 \midrule%
-Jankotek MapDB  & \entry{8.2m}{5324} & \entry{1.52x}{0\%} & \entry{2.73x}{0\%} & \entry{4.82x}{0.05\%}   & \entry{}{} & \entry{}{}\\%
+Jankotek MapDB  & \entry{8.2m}{5,324} & \entry{1.52x}{0\%} & \entry{2.73x}{0\%} & \entry{4.82x}{0.05\%}   & \entry{}{} & \entry{}{}\\%
 Stripe Java     & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \entry{3.31x}{7.31\%} & \entry{21.50x}{14.95\%} & \entry{}{} & \entry{}{}\\%
 
 Facebook Linkbench    & \entry{4.3m}{98}  & \entry{1.00x}{0\%} & \entry{1.65x}{1.02\%} & \entry{1.59x}{1.02\%} & \entry{}{} & \entry{}{}\\%
@@ -1145,10 +1146,22 @@ Facebook Linkbench    & \entry{4.3m}{98}  & \entry{1.00x}{0\%} & \entry{1.65x}{1
 AWS SDK Java (\CodeIn{core})  & \entry{3.7m}{847}  & \entry{1.95x}{2.24\%} & \entry{2.47x}{2.77\%} & \entry{3.70x}{4.01\%} & \entry{}{} & \entry{}{}\\%
 JCTools (\CodeIn{core})       & \entry{3.6m}{690}  & \entry{4.50x}{0\%} & \entry{3.60x}{0\%} & \entry{18.00x}{0\%} & \entry{}{} & \entry{}{}\\%
 
-GoogleCloud Dataflow Java (\CodeIn{sdk}) & \entry{1.6m}{3345}  & \entry{1.23x}{1.67\%} & \entry{2.67x}{1.05\%} & \entry{0.80x}{5.35\%} & \entry{}{} & \entry{}{}\\%
+GoogleCloud Dataflow Java (\CodeIn{sdk}) & \entry{1.6m}{3,345}  & \entry{1.23x}{1.67\%} & \entry{2.67x}{1.05\%} & \entry{0.80x}{5.35\%} & \entry{}{} & \entry{}{}\\%
 
-Javaslang (\CodeIn{core})     & \entry{1.1m}{17513}  & \entry{1.38x}{0\%} & \entry{1.83x}{0\%} & \entry{1.38x}{0\%} & \entry{}{} & \entry{}{}\\%
-4pr0n RipMe                   & \entry{1.1m}{54}  & \entry{0.94x}{0\%} & \entry{1.63x}{0\%} & \entry{1.63x}{0\%} & \entry{1.37x}{0\%} & \entry{1.42x}{0\%}\\%
+Javaslang (\CodeIn{core})     & \entry{1.1m}{17,513}  &
+\entry{1.38x}{0\%} & \entry{1.83x}{0\%} & \entry{1.38x}{0\%} &
+\entry{}{} & \entry{}{}\\ 
+
+RipMe                   & \entry{1.1m}{54}  & \entry{0.94x}{0\%}
+& \entry{1.63x}{0\%} & \entry{1.63x}{0\%} & \entry{1.37x}{0\%} &
+\entry{1.42x}{0\%}\\
+
+\midrule
+
+\textbf{Average}   & \entry{-}{-} & \entry{-}{-} & \entry{-}{-} & \entry{-}{-}
+& \entry{-}{-} & \entry{-}{-} \\%
+
+
 %%  & \entry{x.xm}{0}  & \entry{}{\%} & \entry{}{\%} & \entry{}{\%} & \entry{}{} & \entry{}{}\\%
 %%OpenMRS Core (\CodeIn{api})  & \entry{15.4m}{3436} & \blankentry{}        & \blankentry{}        & \blankentry{} & \entry{1.5x}{0\%} & \entry{1.7x}{0}\\%
 %%Apache Flume (\CodeIn{core}) &  \entry{7.7m}{392}  & \blankentry{}        & \blankentry{}        & \blankentry{}       & \entry{0.9x}{0\%} & \blankentry{} \\%
