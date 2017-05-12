@@ -11,10 +11,13 @@ proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
 example, to soundly select tests for execution,
 Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
 computes which tests have been impacted by changes.  A test is
-discarded for execution if it does not depend on any changed file.
+discarded for execution if it does not depend on any
+changed file dynamically reachable from execution.
+%% this may reveal/suggest identity.  wait for CR
+\Comment{
 Similar approach to regression test selection has been recently
 applied in the context of the GCC~\cite{gcc} configurable
-system~\cite{souto-damorim-jss}.
+system~\cite{souto-damorim-jss}.}
 
 \Fix{elaborate...}As another example, a recent paper from the
 automotive industry reported that test suites can take days to
