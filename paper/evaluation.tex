@@ -1081,7 +1081,7 @@ as the goal of this experiment is to evaluate the impact of spawning a
 growing number of JVMs, running on different CPUs.  Furthremore, we
 selected the subject \subjectScalability{} as it represents the case
 of a long-running test suite (see Figure~\ref{tab:speedup}) with test
-cases distributed across many test classes (\Fix{X} test classes for
+cases distributed across many test classes (194 test classes for
 \subjectScalability{}).  Note that a test class is the smallest unit
 that can be used to spawn a test job on a JVM and that we have no
 control over which test classes will be assigned to which JVM that the
@@ -1152,8 +1152,9 @@ Javaslang (\CodeIn{core})     & \entry{1.1m}{17,513}  & \entry{1.38x}{0\%} & \en
 
 RipMe                         & \entry{1.1m}{54}  & \entry{0.94x}{0\%} & \entry{1.63x}{0\%} & \entry{1.63x}{0\%} & \entry{1.37x}{0\%} & \entry{1.42x}{0\%}\\
 
-	JCabi Github                  & \entry{2.6m}{634} & \entry{2.1x}{0\%} & \entry{17.7x}{0\%} & \entry{28.8x}{0\%} & \entry{}{} & \entry{}{} \\
+JCabi Github                  & \entry{2.6m}{634} & \entry{2.1x}{0\%} & \entry{17.7x}{0\%} & \entry{28.8x}{0\%} & \entry{}{} & \entry{}{} \\
 
+	Moquette & \entry{3.5m}{x} & \entry{4.2x}{x} & \entry{2.9x}{} & \entry{13.5x}{} & \entry{}{} & \entry{}{} \\
 
 \midrule
 
