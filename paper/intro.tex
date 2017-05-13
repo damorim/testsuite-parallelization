@@ -196,11 +196,34 @@ indicate that parallel configurations that fork JVMs do not achieve
 speedups as high as configurations that parallelize test classes and
 methods, however they manifest much lower flakiness ratios.
 
-\vspace{1ex}\noindent\textbf{Potential Implications}...
+Our observations may trigger several actions:
 
+\begin{itemize}
+\item \emph{Incentivize forking.}~Forked JVMs manifest very low rates
+  of test flakiness.  Developers of projects with long-running test
+  suites should consider using that feature, which is available in
+  modern build systems today (\eg{}, Maven).
+\item \emph{Break test dependencies.}~Non-forked JVMs can achieve
+  impressive speedups at the expense of sometimes impressive rates of
+  flakiness.  Breaking test dependencies to avoid flakiness and take
+  full advantage of those options is advised for developers with
+  greater interest in efficiency.
+\item \emph{Refactor tests for load balancing.}~Forked JVMs scales
+  better with the number of cores when the test workload is balanced
+  across testing classes.  To balance the workload, automated
+  user-oblivious refactoring can help in scenarios where developers
+  are not willing to change test code but have access to machines with
+  a high number of cores.
+\item \emph{Improve debugging for build systems.}~While preparing our
+  experiments, we found scenarios\Comment{, related to test
+    parallelization,} where Maven's executions did not reflect
+  corresponding JUnit's executions. (Docker reproduction scripts
+  available.) Those issues can hinder developers from using parallel
+  testing. Better debugging infrastructure is important.
+\end{itemize}
 
-
-
+The artifacts we produced as results of this study are available from
+the following web page \webpage{}.
 
 %% \Mar{missing connection. why parallelism?}  From these results we
 %% investigated (2) how frequently the projects we considered use
@@ -233,4 +256,6 @@ methods, however they manifest much lower flakiness ratios.
 %%% TeX-master: "main"
 %%% End:
 %%  LocalWords:  jenkins API VMs datarace tradeoffs tradeoff Paretto
-%%  LocalWords:  schedulings posteriori priori bla blabla
+%%  LocalWords:  schedulings posteriori priori bla blabla Jcabi
+%%  LocalWords:  scalability parallelize Incentivize Refactor JUnit's
+%%  LocalWords:  refactoring
