@@ -642,7 +642,7 @@ configuration modes that appear in several modules of the same
 project. For instance, if a project contains two modules using the
 same configuration, we counted only one occurrence.
 
-Figure~\ref{tab:freqmodes-dynamic} shows the projects we idendified
+Figure~\ref{tab:freqmodes-dynamic} shows the projects we identified
 where parallelism is enabled by default in Maven.  Column
 ``\emph{Subject}'' indicates the name of the project, column
 ``\emph{\# of modules}'' indicates the fraction of modules containing
@@ -695,7 +695,7 @@ command line to enable parallelization (\eg, \CodeIn{mvn test
   -Dparallel.type=classesAndMethods}). To handle those case, we
 considered all possible values for the parameter (in this case,
 \CodeIn{\$\{parallel.type\}}).  It is also important to note that this
-approach is not immune to false negatives, which can ocurr when
+approach is not immune to false negatives, which can occur when
 \emph{pom.xml} files are encapsulated in jar files or downloaded from
 the network.  Consequently, this static checking is complementary to
 the dynamic checking, previously presented.
@@ -882,10 +882,10 @@ developers:
 Considering question 1, we confirmed that execution time was
 compatible with the results we reported in Section~\ref{sec:rqA}.
 Furthermore, \emailsCI{} of the participants indicated the use of
-Continuous Integration (CI) to run tests, with \emailsDistributed{} of
+Continuous Integration (CI) to run tests, with \emailsDiistributed{} of
 these participants reporting that test suites are modularized and
-those modules are tested independetly in CI servers through different
-parameters.  Those participants argumented that such practice helps to
+those modules are tested independently in CI servers through different
+parameters.  Those participants explained that such practice helps to
 reduce time to observe test failures, which is the goal of speeding up
 regression testing.  A total of \emailsLocal{} participants answered
 that they do run tests in their local machines.  Note, however, that
@@ -903,7 +903,7 @@ of our checks (static or dynamic) could detect presence of
 parallelism.  A closer look at these projects revealed that one of
 them contained a \emph{pom.xml} file encapsulated in a jar file
 (similar case as reported in Section~\ref{sec:rqC-2}), in one of the
-projects the particpant considered that distributed CI was a form of
+projects the participant considered that distributed CI was a form of
 parallelism, and in four projects the team preferred to implement
 parallelization instead of using existing features from the testing
 framework and the build system~---~in two projects the team
@@ -1039,7 +1039,7 @@ projects.  This project contains test classes with a small number of
 test methods and several methods in those classes are time-consuming.
 As result, the CPUs available for testing are kept occupied for the
 most part during test execution.  Finally, we note that parallel
-execution in \CodeIn{Log4J2} was innefective.  We found that Maven
+execution in \CodeIn{Log4J2} was ineffective.  We found that Maven
 invokes several test modules in this project but the test modules that
 dominate execution time run sequentially by default.
 
@@ -1262,7 +1262,7 @@ plugin~\cite{maven-dep} to build the project's classpath with the
 command \CodeIn{mvn dependency:build-classpath}. Once we have the
 classpath and the tests to run, we invoke our JUnit runner that runs
 the test classes with different parallel configurations at once. For
-the sequential execution, we ivonke the default JUnit test runner. For
+the sequential execution, we invoke the default JUnit test runner. For
 parallelism within a JVM (\ie, the configurations \SeqClassParMeth{},
 \ParClassSeqMeth{}, and \ParClassParMeth{}), we configured the JUnit
 runner with ParallelComputer~\cite{junit-parallel} that internally
@@ -1275,12 +1275,12 @@ limited our kernel to use only three cores and reserved one for
 OS-related processes.  To verify that our approach satisfies the
 purpose of this experiment, we executed some subjects on Maven and
 compared the performance with our artifacts and observed
-nonsignificant differences (a fraction of seconds in most cases).  To
-assure that our experiments terminate (recall tha deadlock or livelock
+insignificant differences (a fraction of seconds in most cases).  To
+assure that our experiments terminate (recall that deadlock or livelock
 could occur) we used the \CodeIn{timeout} command~\cite{timeout-cmd}
 configured to dispatch a \emph{kill} signal if test execution exceeds
 a given time limit. Finally, we saved each execution log and stack
-traces generated outputed from JUnit to collect the execution time,
+traces generated from JUnit to collect the execution time,
 the number of failing tests, and for reference to analyze and diagnose
 outliers in our results.
 
@@ -1393,7 +1393,16 @@ spawning and managing JVMs and threads.
 
 %%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
 %%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS
-%%  LocalWords:  framexleftmargin CPUs Tahr sysstat gh Vagrantfile
+%%  LocalWords:  framexleftmargin CPUs Tahr sysstat gh Vagrantfile FC
 %%  LocalWords:  javadoc isolcpus JUnit's JUnitCore Gligoric boxplots
 %%  LocalWords:  outliers apache uber chaperone facebookarchive AWS
-%%  LocalWords:  linkbench priori SDK GoogleCloud Moquette JVMs
+%%  LocalWords:  linkbench priori SDK GoogleCloud Moquette JVMs dir
+%%  LocalWords:  xml basicstyle boxpos numberstyle deletekeywords JVM
+%%  LocalWords:  uncompilable leftmargin quartile DskipTests forkMode
+%%  LocalWords:  threadCount forkCount lrr BounceStorage Flink Gerrit
+%%  LocalWords:  JenkinsCI Spotify Javaslang Jcabi Github Hazelcast
+%%  LocalWords:  Jankotek MapDB Dparallel classesAndMethods Mapstruct
+%%  LocalWords:  DataflowJavaSDK modularized JUnit llrrr lightgray rr
+%%  LocalWords:  GitHub amongst Xeon runtime Scalability Dataflow sdk
+%%  LocalWords:  JCTools RipMe classpath ParallelComputer livelock
+%%  LocalWords:  mapdb workflow XPath
