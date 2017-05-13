@@ -410,25 +410,36 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-Dealing with high testing costs is a long-standing problem in Software
-Engineering.  This is a particularly sensitive problem for
-limited-budget projects~---~open-source projects, in particular.
-Fortunately, today's availability of low-cost multi-core processors
-and testing infrastructures that build on such technology make it
-possible to reduce testing costs.
+Dealing with high testing costs remains an important problem in
+Software Engineering.  This paper reports our findings on the usage
+and impact of test execution parallelization in open-source projects.
 
-This paper reports our findings on the usage and impact of test
-execution parallelization in open-source projects. This is a relevant
-problem given the tremendous popularity of open-source development and
-regression testing research. Overall, considering a set of
-\numSubjs{} popular Java projects we analyzed, we found that
-\percentMedLongRunning{} of the projects contain costly test suites
-but parallelization features still seem underutilized in practice with
-the main reason being the fear of high cost in maintaining test suites
-for dealing with concurrency issues.  \Fix{Furthermore, we found that
-different modes of parallelism provide different tradeoffs between
-efficiency and precision, which is influenced by test flakiness caused
-by non-determinism.}
+Considering a set of \numSubjs{} popular Java projects we analyzed, we
+found that \percentMedLongRunning{} of the projects contain costly
+test suites but parallelization features still seem underutilized in
+practice~---~only \percentParallelUpdated{} of costly projects use
+parallelization.  The main reported reason for adoption resistance was
+the concern to deal with concurrency issues.  Results suggest that, on
+average, developers prefer high predictability than high performance
+in running tests.
+
+%% Different modes of
+%% parallelism provide different tradeoffs between efficiency and
+%% flakiness.  Overall, our results suggest that parallelization can
+%% speedup significantly
+
+%% This is a particularly sensitive problem for
+%% limited-budget projects~---~open-source projects, in particular.
+
+%% Fortunately, today's availability of low-cost multi-core processors
+%% and testing infrastructures that build on such technology make it
+%% possible to reduce testing costs.
+
+%%  This is a relevant
+%% problem given the tremendous popularity of open-source development and
+%% regression testing research. 
+
+
 
 This study brings to light the benefits and burdens of test suite
 parallelization to improve test efficiency. It provides
