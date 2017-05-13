@@ -68,7 +68,7 @@ selection~\cite{Rothermel:1997:SER:248233.248262,gligoric-etal-issta2015}
 and continuous integration~\cite{Saff:2003:RWD:951952.952340}.
 
 The dimensions of analysis we considered in this study are (i)
-potential, (iii) adoption, (iv) speedup, and (iii) issues.  The
+potential, (iii) adoption, (iv) speedup, and (iii) tradeoffs.  The
 dimension \emph{feasibility} measures the potential of parallelization
 to reduce testing costs.  In the limit, parallelization would be
 fruitless if all projects used short-running test suites or if the
@@ -81,9 +81,9 @@ the technology and to understand their reasons.  The dimension
 \emph{speedups} evaluates the observed impact of
 parallelization\Comment{~---~when used in selected open-source
   projects~---~} in running times.  Finally, the dimension
-\emph{issues} considers the problems in running tests in parallel
-(\eg{}, test flakiness~\cite{luo-etal-fse2014}).  We briefly summarize
-our findings in the following.
+\emph{tradeoffs} considers the problems in running tests in parallel,
+including test flakiness~\cite{luo-etal-fse2014}.  We briefly
+summarize our findings in the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
 %% configurations is important to guide practitioners and future
@@ -149,18 +149,18 @@ frequently answered reasons for not considering parallelization.
 
 \vspace{1ex}\noindent\emph{Speedups.}~We used two setups to measure
 execution speedups.  In one setup we measured the speedups obtained on
-projects that we knew a priori ran their test suite in parallel by
+projects that we knew a priori ran their test suites in parallel by
 default.  In the other setup, we evaluated how execution scales with
 the number of available cores in the machine.\Comment{We did not
   change parallel configurations on that setup.  For comparison, we
   disabled parallel execution to obtain the running time of a
   sequential execution.}  Considering the first setup, results
 indicate that the average speedup of parallelization was
-\avgSpeedup{}x.  Although we found cases with very high speedups (9.2x
-for project Jcabi), we found cases where speedups were not very
-significant.  Considering the scalability experiment, we noticed,
-perhaps as expected, that speedups are bounded by long-running test
-classes.
+\avgSpeedup{}x.  Although we found cases with very high speedups
+(\eg{}, 9.2x for project Jcabi), we found cases where speedups were
+not very significant.  Considering the scalability experiment, we
+noticed, perhaps as expected, that speedups are bounded by
+long-running test classes.
 
 %% %%RQ3
 %% Given the high execution cost associated with a significant number of
@@ -187,20 +187,14 @@ classes.
 %% tests sequentially within each process. \Mar{why 32-19 did not use
 %%   parallelization?}
 
-\vspace{1ex}\noindent\emph{Issues.}~
-\Fix{bla bla bla bla bla bla bla blabla bla bla blabla bla bla blabla
-  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
-  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
-  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
-  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
-  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
-  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
-  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
-  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
-  bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla
-  blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla
-  bla bla blabla bla bla blabla bla bla blabla bla bla bla}
-
+\vspace{1ex}\noindent\emph{Tradeoffs.}~Test flakiness is a central
+issue that can arise when running tests in parallel.  Dependent tests
+can be affected by different schedulings of test methods and classes.
+This dimension of the study measures the impact of different parallel
+configurations on test flakiness and speedup.  Overall, results
+indicate that parallel configurations that fork JVMs do not achieve
+speedups as high as configurations that parallelize test classes and
+methods, however they manifest much lower flakiness ratios.
 
 \vspace{1ex}\noindent\textbf{Potential Implications}...
 
