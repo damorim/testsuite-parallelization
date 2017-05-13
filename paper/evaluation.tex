@@ -1118,7 +1118,8 @@ parallelism by default.
 %% degree of concurrency increases by exploiting maximum CPU usage.
 
 %% Table header macros
-\newcommand{\subcolA}{$\Uparrow_\text{speed}$}
+% $\Uparrow_\text{speed}$
+\newcommand{\subcolA}{$\text{speedup}$}
 \newcommand{\subcolB}{$\%_\text{fail}$}
 \newcommand{\colheader}[1]{\multicolumn{2}{c}{\emph{#1}}}
 \newcommand{\blankentry}{\entry{-}{-}}
@@ -1128,14 +1129,14 @@ parallelism by default.
 \begin{figure*}[t]  
 \centering
 \small
-\setlength{\tabcolsep}{5pt}
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{l|rr|rr|rr|rr|rr|rr}
 \toprule
 \multirow{2}{*}{\emph{Subject (module)}} & \multicolumn{2}{c|}{\emph{\Seq}} &
     \colheader{\SeqClassParMeth} & \colheader{\ParClassSeqMeth} &
     \colheader{\ParClassParMeth} & \colheader{\ForkSeq} &
     \colheader{\ForkParMeth} \\ %\cline{2-12}
-    & $T_\text{cost} $ & $\mathit{N}$ & \subcol{} & \subcol{} & \subcol{} & \subcol{}
+    & $T$ & $\mathit{N}$ & \subcol{} & \subcol{} & \subcol{} & \subcol{}
     & \subcol{}\\%
 \midrule%
 AWS SDK Java (\CodeIn{core})  & \entry{3.7m}{847}  & \entry{1.95x}{2.24\%} & \entry{2.47x}{2.77\%} & \entry{3.70x}{4.01\%} & \entry{}{} & \entry{}{}\\%
@@ -1182,7 +1183,12 @@ Stripe Java     & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \entry{3.31x}{7.3
 
 \bottomrule%
 \end{tabular}
-\caption{\Fix{Tabela de eficiencia e flakiness}}
+\caption{Speedup versus Flakiness (\subcolB). Configuration
+  \emph{\Seq{}} denotes the comparison baseline, which runs tests
+  sequentially.  Columns $T$ and $N$ indicate time and number of
+  tests, respectively.  Other columns show speedup and percentage of
+  failing tests in different configurations, compared to
+  \emph{\Seq{}}.\Mar{Can you please add name of module for all subjects?}}
 \label{tab:rq6-table}
 \end{figure*}
 
