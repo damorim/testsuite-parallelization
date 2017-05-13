@@ -1,36 +1,22 @@
 \section{Threats to Validity}
 
-\newcommand{\QA}{QA}
-\newcommand{\dockerfile}{dockerfile}
-\newcommand{\SO}{StackOverflow}
-
 The main threats to validity of this study are the following.
 \textit{External Validity:} Generalization of our findings is limited
 to our selection of subjects, testing framework, and build system.  To
-mitigate that issues, we selected subjects according to an objective
+mitigate that issue, we selected subjects according to an objective
 criteria, described in Section~\ref{sec:subjects}.  It remains to
 evaluate the extent to which our observations would change when using
-different testing frameworks and build systems.  \Mar{Copied from
-  Fabrizio+Luis paper.  Use as reference...$\rightarrow$}
-\textit{Internal Validity:} Our results could be influenced by
-unintentional mistakes made by humans involved in this study.  For
-example, students were involved in a user study whereas developers
-manually categorized questions in difficulty levels and elaborated
-\dockerfile{}s.  All those tasks could introduce bias.  We used Card
-Sorting~\cite{lorr1983cluster} to mitigate the problem of incorrectly
-categorizing questions.  To make sure the scripts were correct,
-developers were instructed to strictly follow the instruction from
-\QA{} post preferred answers to reproduce corresponding problems.  We
-also encouraged developers to do their best to reproduce as many
-questions as possible.  As for the answer of students in the user
-study, we analyzed their answers carefully, comparing them with the
-solution prepared by the instructors.  It is important to note that
-all artifacts produced during this study are publicly available for
-scrutiny.  \textit{Construct Validity:} We considered a number of
-metrics in this study that could influence some of our
-interpretations.  For example, we used metrics of document similarity
-to assess how (dis)similar the \dockerfile{}s produced by developers
-are.  To mitigate the bias associated with metric selection we used
-multiple metrics and confirmed that the similarity was very high as to
-not compromise corresponding conclusions.
+different testing frameworks and build systems.  \textit{Internal
+  Validity:} Our results could be influenced by unintentional mistakes
+made by humans who interpreted survey data and implemented scripts to
+collect and analyze data. All those tasks could introduce bias.  To
+mitigate those threats, we worked in pairs as to increase chances of
+capturing unintentional mistakes.  \textit{Construct Validity:} We
+considered a number of metrics in this study that could influence some
+of our interpretations.  For example, we measured number of test cases
+per suite, distribution of test costs in a suite, time to run a suite,
+etc.  In principle, these metrics may not reflect the main problems
+associated with test efficiency.\Mar{...elaborate...}
 
+
+%%  LocalWords:  QA dockerfile StackOverflow
