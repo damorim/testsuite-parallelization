@@ -1070,22 +1070,22 @@ dominate execution time run sequentially by default.
 
 This experiment evaluates the impact of making available to the build
 system a growing number of CPUs for testing.  For that reason, we used
-a more poweful machine. \Fix{...describe machine...}  We focused on
-configuration \ForkSeq{}
+a machine with more cores compared to the one described in
+Section~\ref{sec:setup}.  We used a \Fix{...describe machine...}  This
+experiment uses configuration \ForkSeq{}
 \begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
     \centering
     \includegraphics[width=.2\textwidth]{R/scalability/scalability.pdf}
     \caption{\label{fig:scalability}Scalability.}
 \end{wrapfigure}
-as the goal of this experiment is to evaluate the impact of spawning a
-growing number of JVMs, running on different CPUs.  Furthremore, we
-selected the subject \subjectScalability{} as it represents the case
-of a long-running test suite (see Figure~\ref{tab:speedup}) with test
-cases distributed across many test classes (194 test classes for
-\subjectScalability{}).  Note that a test class is the smallest unit
-that can be used to spawn a test job on a JVM and that we have no
-control over which test classes will be assigned to which JVM that the
-build system forks.
+as the goal is to evaluate the impact on runtime of spawning a growing number of
+JVMs in different CPUs.  Furthremore, we selected subject
+\subjectScalability{} as it represents the case of a long-running test
+suite (see Figure~\ref{tab:speedup}) with test cases distributed
+across many test classes (194 test classes for \subjectScalability{}).
+Note that a test class is the smallest unit that can be used to spawn
+a test job on a JVM and that we have no control over which test
+classes will be assigned to which JVM that the build system forks.
 
 Figure~\ref{fig:scalability} shows the reduction of running times as
 more CPUs contribute to the execution.  \Fix{elaborate...}
