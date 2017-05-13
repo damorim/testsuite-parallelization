@@ -1080,21 +1080,30 @@ Tarr (64-bit version). This experiment uses configuration \emph{\ForkSeq{}}
     \caption{\label{fig:scalability}Scalability.}
 \end{wrapfigure}
 as the goal is to evaluate the impact on runtime of spawning a growing number of
-JVMs in different CPUs.  Furthremore, we selected subject
-\subjectScalability{} as it represents the case of a long-running test
+JVMs in different CPUs.  We selected subject
+\subjectScalability{} in this experiment as it represents the case of a long-running test
 suite (see Figure~\ref{tab:speedup}) with test cases distributed
 across many test classes (194 test classes for \subjectScalability{}).
 Note that a test class is the smallest unit that can be used to spawn
 a test job on a JVM and that we have no control over which test
 classes will be assigned to which JVM that the build system forks.
 
-Figure~\ref{fig:scalability} shows the reduction of running times as
-more CPUs contribute to the execution.  \Fix{elaborate...}
+Figure~\ref{fig:scalability} shows the reduction in running times as
+more CPUs contribute to the execution.  We ran this experiment for a
+growing number of cores 1, 3, ..., 39.  The plot shows results up to
+17 cores as it is clear the tendency.  We noticed that improvements
+are marginal after three cores, which is the basic setup we used in
+other experiments.  This saturation is justified by the presence of a
+single test class, \CodeIn{org.mapdb.WALTruncat}, containing 15 test
+cases that take over four minutes to run.
 
 \begin{center}
 \fbox{
   \begin{minipage}{8cm}
-    \textit{Answering \numRQSpeedupTwo{}:}~\emph{...}
+    \textit{Answering \numRQSpeedupTwo{}:}~\emph{Results suggest that
+      execution FC0 scales with additional cores but there is a bound
+      on the speedup one can get related to how well the test suite is
+      balanced across test classes.}
   \end{minipage}
 }
 \end{center}
