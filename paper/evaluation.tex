@@ -1101,12 +1101,18 @@ more CPUs contribute to the execution.  \Fix{elaborate...}
 
 \subsection{Tradeoffs}
 \label{sec:rq6-tradeoffs}
-
+\Jbc{Check $\rightarrow$}
 This dimension assesses the impact of using distinct parallel
-configurations on test flakiness (negative impact) and speedup
-(positive impact).  Furthermore, note that Section~\ref{sec:rqD}
-evaluated speedup in isolation, focused on projects configured to use
-parallelism by default.
+configurations on test flakiness (negative impact) and speedup We are
+interested in understanding how efficiency (\ie, testing cost) and
+flakiness (\ie, failing tests) are affected when we run a test suite
+with different parallel configurations.  Recall that increased
+resource contention obtained with parallelism can lead to concurrency
+issues such as data races.  Flakiness and speedup are contradictory
+forces that drive configuration selection.  (positive impact).
+Furthermore, note that Section~\ref{sec:rqD} evaluated speedup in
+isolation, focused on projects configured to use parallelism by
+default.
 
 \begin{itemize}
     \item \numRQIssuesOne{}. \textbf{\RQIssuesOne{}}
@@ -1154,14 +1160,9 @@ Moquette                      & \entry{3.7m}{169} & \entry{4.62x}{65.64\%} & \en
 RipMe                         & \entry{1.1m}{54}  & \entry{0.94x}{0\%} & \entry{1.63x}{0\%} & \entry{1.63x}{0\%} & \entry{1.37x}{0\%} & \entry{1.42x}{0\%}\\
 Stripe Java     & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \entry{3.31x}{7.31\%} & \entry{21.50x}{14.95\%} & \entry{}{} & \entry{}{}\\%
 
-
-
-
-
 \midrule
 
-\textbf{Average}   & \entry{-}{-} & \entry{-}{-} & \entry{-}{-} & \entry{-}{-}
-& \entry{-}{-} & \entry{-}{-} \\%
+\textbf{Average}   & \entry{-}{-} & \entry{-}{-} & \entry{-}{-} & \entry{-}{-} & \entry{-}{-} & \entry{-}{-} \\%
 
 
 %%  & \entry{x.xm}{0}  & \entry{}{\%} & \entry{}{\%} & \entry{}{\%} & \entry{}{} & \entry{}{}\\%
@@ -1193,72 +1194,98 @@ Stripe Java     & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \entry{3.31x}{7.3
 \label{tab:rq6-table}
 \end{figure*}
 
+
 To answer this research question, we conducted an experiment involving
-the six parallel configurations from Section~\ref{sec:modes}  and the
-top 10 long-running test modules from our sample set. The rationale
-for this selection criteria was to maximize the chances of observing
-speedup and flakiness, assuming that long-running tests also have many
-tests. Indeed, we confirmed that test suites in these projects contain
-at least 236 tests ($1,662.7$ in average). Also, we preferred to compare the
-effect of a configuration over a single test module for projects with
-multiple test modules.  Recall that large projects may contain several
-test modules, and these modules may contain distinct characteristics
-that could favor one configuration and not others; therefore, it would
-be necessary to check each module individually for a fair comparison.
-We are interested in understanding how efficiency (\ie, testing cost)
-and flakiness (\ie, failing tests) are affected when we run a test
-suite with different parallel configurations.  Recall that increased
-resource contention obtained with parallelism can lead to concurrency
-issues such as data races.  Flakiness and speedup are contradictory
-forces that drive configuration selection.  We used as a \emph{control
-group} (\ie, baseline) the sequential execution of each subject's
-tests. Notice that for measuring flakiness, we have to consider only
-tests that failed due to the concurrency in the parallel execution.
-For that reason, we re-executed the tests in sequence ten times and
-carefully verified that there are only passing tests in our baseline.
-We considered ten as the number of re-executions based on the approach
-used by Google reported in a previous work on test
-flakiness~\cite{luo-etal-fse2014}.  To obtain parallel configurations,
-we implemented a script that takes a subject and a configuration (\eg,
-\ForkSeq{}) as inputs, and the script outputs the modified version of
-the subject with the desired configuration. The workflow consists in
-copying the project directory to a new directory, finding all existing
-build files (\ie, \pomf{} files), and modifying all existing Maven
-Surefire configurations with new values for the parameters
-\CodeIn{parallel}, \CodeIn{forkCount}, and \CodeIn{threadCount} using
-an XPath~\cite{xpath} library to manipulate XML documents. For
-configurations with forked JVMs enabled (\ie, \ForkSeq{} and
-\ForkParMeth{}), we changed the \CodeIn{forkCount} with the value
-\CodeIn{1C} (\ie, one JVM per core).  To adjust the pool of threads
-for parallelism within a JVM, we changed the parameter
-\CodeIn{threadCount} with \Jbc{should we consider 2 as it is the
-number of native threads per core OR 6 as it represents 3 Cores * 2
-native threads?}.  To run the subjects and their respective variations
-(\ie, the modified versions according to the parallelism
-configuration), we used a similar approach as described in
-
-
-Figure~\ref{fig:mvn-execution} except that we added a timeout of one
-hour to run the tests. We used the \CodeIn{timeout}
-command~\cite{timeout-cmd} to monitor the execution, and we configured
-the command to dispatch a \emph{kill} signal if the test execution
-exceeds the time limit. We imposed this time constraint to avoid
-hanging indefinitely the experiment execution due to some thread
-contention that may occur (\eg, deadlock). Finally, we saved each
-execution log and XML test reports generated by Maven to collect the
-execution time, the number of failing tests, and for reference to
-analyze and diagnose outliers in our results. For efficiency, we
-reported the speedup (\ie, $\Uparrow_\text{speed} = T_{\text{s}} /
-T_{\text{p}}$) in average, and for flakiness, we reported the rate of
-failing tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$) in
-average.  Figure~\ref{tab:rq6-table} summarizes the obtained results
-ordered by the time cost (\ie, $T_\text{cost}$). \Fix{Remember to
-explain efficiency cutoff, JVM crashes and timeout}
-
-\Jbc{Lembrar que investigar o slowdown de Dataflow... os logs indicam que varios
-dos testes que quebraram tentavam fazer uma autenticacao em algum servico.
-Possivelmente o slowdown se deve ao tempo de resposta do servico quando
-a autentiticao falha}
+the six parallel configurations from Section~\ref{sec:modes}, and we
+randomly selected 10 subjects from the medium and long groups (\ie,
+tests suites that ran in at least one minute) identified in
+\numRQFeasibilityOne{}. \Jbc{Is this legit/acceptable/convincing?
+$\rightarrow$}The rationale for this criteria was to maximize the
+diversity of domains from the subjects, assuming these subjects have
+test suites with different characteristics (\eg, architectural design
+and rate of cpu/io-bound operations).
+\Comment{
+    The rationale for this selection criteria was to maximize the chances
+    of observing speedup and flakiness, assuming that long-running tests
+    also have many tests. Indeed, we confirmed that test suites in these
+    projects contain at least 236 tests ($1,662.7$ in average).
+}
+To compare flakiness and efficiency, we used the sequential execution
+of each subject's test suite as the \emph{control group} (\ie,
+baseline). Notice that with parallelism enabled, the number of failing
+tests may vary on different runs due to the non-deterministic
+scheduling of threads and processes.  For that reason, we re-executed
+the experiment and computed the average speedup and flakiness on each
+scenario. 
+In a first attempt of this experiment, we considered using Maven to
+run the subjects on the different parallel configurations. However, we
+noticed that some executions using parallelism within a JVM did not
+reflect the desired behavior although we carefully verified the
+library versions from the subjects tested to avoid compatibility
+issues.
+To make the experiment viable and obtain the parallel configurations,
+we implemented a script and a JUnit runner to emulate the effect of
+parallel configurations from Maven Surefire.
+Our script takes a list o tests classes to run as an input and outputs
+the results (\ie, number of test methods, failures, skips, and elapsed
+time) for each parallel configuration. Initially, we use an existing
+Maven log to identify the test classes to run, and we use the Maven
+dependency plugin~\cite{maven-dep} to build the project's classpath with
+the command \CodeIn{mvn dependency:build-classpath}. Once we have the
+classpath and the tests to run, we invoke our JUnit runner that runs
+the test classes with different parallel configurations at once. For
+the sequential execution, we ivonke the default JUnit test runner. For
+parallelism within a JVM (\ie, the configurations \SeqClassParMeth{},
+\ParClassSeqMeth{}, and \ParClassParMeth{}), we configured the JUnit
+runner with ParallelComputer~\cite{junit-parallel} that internally uses a pool of
+threads with cache to run test classes and methods. For the
+configurations with forked JVMs (\ie, \ForkSeq{} and \ForkParMeth{}),
+we have a queue of test classes and a pool of three threads that
+``consumes'' the next test class and spawns a JVM to run it.
+Recall that in our setup (see Section~\ref{sec:setup}), we limited our
+kernel to use only three cores and reserved one for OS-related
+processes.
+To verify that our approach satisfies the purpose of this experiment,
+we executed some subjects on Maven and compared the performance with
+our artifacts and observed nonsignificant differences (a fraction of
+seconds in most cases).
+\Comment{
+    To obtain parallel configurations, we implemented a script that
+    takes a subject and a configuration label as inputs (\eg
+    \CodeIn{mapdb "c0"}), and the script outputs the modified version
+    of the subject with the desired configuration. The workflow
+    consists in copying the project directory to a new directory,
+    finding all existing build files (\ie, \pomf{} files), and
+    modifying all existing Maven Surefire configurations with new
+    values for the parameters \CodeIn{parallel}, \CodeIn{forkCount},
+    and \CodeIn{threadCount} using an XPath~\cite{xpath} library to
+    manipulate XML documents. For configurations with forked JVMs
+    enabled (\ie, \ForkSeq{} and \ForkParMeth{}), we changed the
+    \CodeIn{forkCount} with the value \CodeIn{1C} (\ie, one JVM per
+    core).  To adjust the pool of threads for parallelism within a
+    JVM, we changed the parameter \CodeIn{threadCount} with
+    \Jbc{should we consider 2 as it is the number of native threads
+    per core OR 6 as it represents 3 Cores * 2 native threads?}.To run
+    the subjects and their respective variations (\ie, the modified
+    versions according to the parallelism configuration), we used a
+    similar approach as described in Figure~\ref{fig:mvn-execution}
+    except that...
+}
+Also, we used the \CodeIn{timeout} command~\cite{timeout-cmd} in our
+scripts to monitor the execution, and we configured the command to
+dispatch a \emph{kill} signal if the test execution exceeds a given
+time limit. We imposed this time constraint to avoid hanging
+indefinitely the experiment execution due to some thread contention
+that may occur (\eg, deadlock or livelock).  Finally, we saved each
+execution log and stack traces generated outputed from JUnit to
+collect the execution time, the number of failing tests, and for
+reference to analyze and diagnose outliers in our results.  For
+efficiency, we reported the speedup (\ie, $T_{\text{s}} /
+T_{\text{p}}$), and for flakiness, we reported the rate of failing
+tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
+Figure~\ref{tab:rq6-table} summarizes the obtained results ordered by
+subject's name. Values are reported in average \Fix{LEMBRAR DE MOSTRAR
+VALORES DE DESVIO PADRAO!}.
 
 %% \begin{figure}[h!]
 %% \centering
@@ -1284,6 +1311,12 @@ a autentiticao falha}
 %% \caption{\Fix{Tabela de flakiness}}
 %% \label{tab:rq6-flaky}
 %% \end{figure}
+
+
+\Jbc{Lembrar que investigar o slowdown de Dataflow... os logs indicam que varios
+dos testes que quebraram tentavam fazer uma autenticacao em algum servico.
+Possivelmente o slowdown se deve ao tempo de resposta do servico quando
+a autentiticao falha}
 
 \Fix{Elaborate results from efficiency}
 
