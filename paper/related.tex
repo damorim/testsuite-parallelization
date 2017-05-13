@@ -16,14 +16,17 @@ example, to soundly select tests for execution,
 Ekstazi~\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
 computes which tests have been impacted by changes.  A test is
 discarded for execution if it does not depend on any changed file
-dynamically reachable from execution. \Jbc{Elaborate...}
+dynamically reachable from execution. Although Ekstazi is focused on
+regression test selection, it highlights the importance of parallelism
+as a complement to test selection. In fact, as in their evaluation, we
+also discovered subjects with parallelism enabled by default.
 %% this may reveal/suggest identity.  wait for CR
 \Comment{
 Similar approach to regression test selection has been recently
 applied in the context of the GCC~\cite{gcc} configurable
 system~\cite{souto-damorim-jss}.}
-\Jbc{Acho que o trabalho de Luo et al~\cite{luo-etal-fse2014} que eh
-uma analise empirica de testes de flaky se relaciona com o nosso no
+The work of Luo et al~\cite{luo-etal-fse2014} reports and empirical
+analysis on test flakiness. \Jbc{se relaciona com o nosso no
 aspecto de falar dentre as demais categorias, sobre flakiness que se
 manifestam em situacoes de concorrencias. Este trabalho eh
 complementar ao nosso, uma vez que ele elabora as causas e solucoes
