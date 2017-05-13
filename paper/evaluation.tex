@@ -1101,18 +1101,19 @@ more CPUs contribute to the execution.  \Fix{elaborate...}
 
 \subsection{Tradeoffs}
 \label{sec:rq6-tradeoffs}
-\Jbc{Check $\rightarrow$}
+
+%%  We are
+%% interested in understanding how efficiency (\ie, testing cost) and
+%% flakiness (\ie, failing tests) are affected when we run a test suite
+%% with different parallel configurations.  
+
 This dimension assesses the impact of using distinct parallel
-configurations on test flakiness (negative impact) and speedup We are
-interested in understanding how efficiency (\ie, testing cost) and
-flakiness (\ie, failing tests) are affected when we run a test suite
-with different parallel configurations.  Recall that increased
+configurations on test flakiness and speedup.  Recall that increased
 resource contention obtained with parallelism can lead to concurrency
-issues such as data races.  Flakiness and speedup are contradictory
-forces that drive configuration selection.  (positive impact).
-Furthermore, note that Section~\ref{sec:rqD} evaluated speedup in
-isolation, focused on projects configured to use parallelism by
-default.
+issues such as data races that could interfere in results of dependent
+tests~\cite{luo-etal-fse2014,bell-etal-esecfse2015}.  Flakiness and
+speedup are contradictory forces that drive configuration selection.
+Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
 
 \begin{itemize}
     \item \numRQIssuesOne{}. \textbf{\RQIssuesOne{}}
@@ -1195,21 +1196,22 @@ Stripe Java                   & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \en
 \end{figure*}
 
 
-To answer this research question, we ran ten different subjects
-against all configurations described in Section~\ref{sec:modes} and
-compared their running times and rate of test flakiness.  We used the
-sequential execution (configuration \emph{\Seq{}}) associated with
-each project as the comparison baseline in this experiment.  We
-selected subjects from the medium and long groups from
-Section~\ref{sec:rqA} and further selected their longest test module
-for testing.  The rationale is to obtain a diverse set of subjects
-exposing a wide range of running times (range observed 1.1m-8.2m) and
-number of test cases (range observed 54-17,513) and yet be able to run
-the experiment in reasonable time.  We ran each project on each
-configuration with ten seeds.  Overall, we needed to reran test suites
-600 times, 60 times (10x6 configurations) on each project.  Given the
-low standard deviations observed in our measurements we consider ten
-seeds reasonable for this experiment.
+To answer this research question, we selected ten different subjects,
+ran their test suites against all configurations described in
+Section~\ref{sec:modes}, and compared their running times and rate of
+test flakiness.  We used the sequential execution (configuration
+\emph{\Seq{}}) associated with each project as the comparison baseline
+in this experiment.  We selected subjects from the medium and long
+groups from Section~\ref{sec:rqA} and further selected their longest
+test module for testing.  The rationale for this selection was to
+obtain a diverse set of subjects exposing a wide range of running
+times (range observed 1.1m-8.2m) and number of test cases (range
+observed 54-17,513) and yet be able to run the experiment in
+reasonable time.  We ran each project on each configuration with ten
+seeds.  Overall, we needed to reran test suites 600 times, 60 times
+(10x6 configurations) on each project.  Given the low standard
+deviations observed in our measurements we consider ten seeds
+reasonable for this experiment.
 
 %% \Jbc{Is this
 %%   legit/acceptable/convincing?  $\rightarrow$}The rationale for this
@@ -1231,71 +1233,74 @@ seeds reasonable for this experiment.
     projects contain at least 236 tests ($1,662.7$ in average).
 }
 
-\Mar{...estou aqui...}
+%% In a first attempt of this experiment, we considered using Maven to
+%% run the subjects on the different parallel configurations. However,
 
-In a first attempt of this experiment, we considered using Maven to
-run the subjects on the different parallel configurations. However, we
-noticed that some executions using parallelism within a JVM did not
-reflect the desired behavior although we carefully verified the
-library versions from the subjects tested to avoid compatibility
-issues.
-To make the experiment viable and obtain the parallel configurations,
-we implemented a script and a JUnit runner to emulate the effect of
+\noindent\textbf{JUnit.} It is worth mentioning that we used JUnit as
+opposed to Maven to run configurations \emph{C*}.  After carefully
+verifying library versions for compatibility issues and comparing
+results with JUnit's we observed that several of Maven's executions
+exposed problems (\eg{} timeouts).  These issues are documented in our
+website~\cite{ourwebpage} through Docker containers.  To address those
+issues we implemented basic JUnit runner reflecting the effects of
 parallel configurations from Maven Surefire.
-Our script takes a list o tests classes to run as an input and outputs
-the results (\ie, number of test methods, failures, skips, and elapsed
-time) for each parallel configuration. Initially, we use an existing
-Maven log to identify the test classes to run, and we use the Maven
-dependency plugin~\cite{maven-dep} to build the project's classpath with
-the command \CodeIn{mvn dependency:build-classpath}. Once we have the
+
+\Mar{estou aqui...}
+
+Our script takes a list
+o tests classes to run as an input and outputs the results (\ie,
+number of test methods, failures, skips, and elapsed time) for each
+parallel configuration. Initially, we use an existing Maven log to
+identify the test classes to run, and we use the Maven dependency
+plugin~\cite{maven-dep} to build the project's classpath with the
+command \CodeIn{mvn dependency:build-classpath}. Once we have the
 classpath and the tests to run, we invoke our JUnit runner that runs
 the test classes with different parallel configurations at once. For
 the sequential execution, we ivonke the default JUnit test runner. For
 parallelism within a JVM (\ie, the configurations \SeqClassParMeth{},
 \ParClassSeqMeth{}, and \ParClassParMeth{}), we configured the JUnit
-runner with ParallelComputer~\cite{junit-parallel} that internally uses a pool of
-threads with cache to run test classes and methods. For the
-configurations with forked JVMs (\ie, \ForkSeq{} and \ForkParMeth{}),
-we have a queue of test classes and a pool of three threads that
-``consumes'' the next test class and spawns a JVM to run it.
-Recall that in our setup (see Section~\ref{sec:setup}), we limited our
-kernel to use only three cores and reserved one for OS-related
-processes.
-To verify that our approach satisfies the purpose of this experiment,
-we executed some subjects on Maven and compared the performance with
-our artifacts and observed nonsignificant differences (a fraction of
-seconds in most cases).
-\Comment{
-    To obtain parallel configurations, we implemented a script that
-    takes a subject and a configuration label as inputs (\eg
-    \CodeIn{mapdb "c0"}), and the script outputs the modified version
-    of the subject with the desired configuration. The workflow
-    consists in copying the project directory to a new directory,
-    finding all existing build files (\ie, \pomf{} files), and
-    modifying all existing Maven Surefire configurations with new
-    values for the parameters \CodeIn{parallel}, \CodeIn{forkCount},
-    and \CodeIn{threadCount} using an XPath~\cite{xpath} library to
-    manipulate XML documents. For configurations with forked JVMs
-    enabled (\ie, \ForkSeq{} and \ForkParMeth{}), we changed the
-    \CodeIn{forkCount} with the value \CodeIn{1C} (\ie, one JVM per
-    core).  To adjust the pool of threads for parallelism within a
-    JVM, we changed the parameter \CodeIn{threadCount} with
-    \Jbc{should we consider 2 as it is the number of native threads
-    per core OR 6 as it represents 3 Cores * 2 native threads?}.To run
-    the subjects and their respective variations (\ie, the modified
-    versions according to the parallelism configuration), we used a
-    similar approach as described in Figure~\ref{fig:mvn-execution}
-    except that...
-}
-Also, we used the \CodeIn{timeout} command~\cite{timeout-cmd} in our
-scripts to monitor the execution, and we configured the command to
-dispatch a \emph{kill} signal if the test execution exceeds a given
-time limit. We imposed this time constraint to avoid hanging
-indefinitely the experiment execution due to some thread contention
-that may occur (\eg, deadlock or livelock).  Finally, we saved each
-execution log and stack traces generated outputed from JUnit to
-collect the execution time, the number of failing tests, and for
-reference to analyze and diagnose outliers in our results.  For
+runner with ParallelComputer~\cite{junit-parallel} that internally
+uses a pool of threads with cache to run test classes and methods. For
+the configurations with forked JVMs (\ie, \ForkSeq{} and
+\ForkParMeth{}), we have a queue of test classes and a pool of three
+threads that ``consumes'' the next test class and spawns a JVM to run
+it.  Recall that in our setup (see Section~\ref{sec:setup}), we
+limited our kernel to use only three cores and reserved one for
+OS-related processes.  To verify that our approach satisfies the
+purpose of this experiment, we executed some subjects on Maven and
+compared the performance with our artifacts and observed
+nonsignificant differences (a fraction of seconds in most cases).
+\Comment{ To obtain parallel configurations, we implemented a script
+  that takes a subject and a configuration label as inputs (\eg
+  \CodeIn{mapdb "c0"}), and the script outputs the modified version of
+  the subject with the desired configuration. The workflow consists in
+  copying the project directory to a new directory, finding all
+  existing build files (\ie, \pomf{} files), and modifying all
+  existing Maven Surefire configurations with new values for the
+  parameters \CodeIn{parallel}, \CodeIn{forkCount}, and
+  \CodeIn{threadCount} using an XPath~\cite{xpath} library to
+  manipulate XML documents. For configurations with forked JVMs
+  enabled (\ie, \ForkSeq{} and \ForkParMeth{}), we changed the
+  \CodeIn{forkCount} with the value \CodeIn{1C} (\ie, one JVM per
+  core).  To adjust the pool of threads for parallelism within a JVM,
+  we changed the parameter \CodeIn{threadCount} with \Jbc{should we
+    consider 2 as it is the number of native threads per core OR 6 as
+    it represents 3 Cores * 2 native threads?}.To run the subjects and
+  their respective variations (\ie, the modified versions according to
+  the parallelism configuration), we used a similar approach as
+  described in Figure~\ref{fig:mvn-execution} except that...  } Also,
+we used the \CodeIn{timeout} command~\cite{timeout-cmd} in our scripts
+to monitor the execution, and we configured the command to dispatch a
+\emph{kill} signal if the test execution exceeds a given time
+limit. We imposed this time constraint to avoid hanging indefinitely
+the experiment execution due to some thread contention that may occur
+(\eg, deadlock or livelock).  Finally, we saved each execution log and
+stack traces generated outputed from JUnit to collect the execution
+time, the number of failing tests, and for reference to analyze and
+diagnose outliers in our results.
+
+
+For
 efficiency, we reported the speedup (\ie, $T_{\text{s}} /
 T_{\text{p}}$), and for flakiness, we reported the rate of failing
 tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
