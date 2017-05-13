@@ -54,15 +54,14 @@ https://api.github.com/search/repositories?q=language:java
     paginated in descending order of stars.}
 \end{figure}
 
-After obtaining a list of
-potential projects, we filtered those containing a \pomf{} file in the
-root directory.  A Maven project may contain several sub-modules with
-multiple \pomf{} files.\Comment{  We based our methodology to select
-experimental subjects on other recent studies in testing and
-debugging~\cite{gligoric-etal-issta2015,perez-etal-icst2017}.}
-As of March 25th 2017, our search criteria returned \SubjectsGithub{}
+After obtaining a list of potential projects, we filtered those
+containing a \pomf{} file in the root directory.  A Maven project may
+contain several sub-modules with multiple \pomf{} files.\Comment{  We
+based our methodology to select experimental subjects on other recent
+studies in testing and
+debugging~\cite{gligoric-etal-issta2015,perez-etal-icst2017}.} As of
+March 25th 2017, our search criteria returned \SubjectsGithub{}
 subjects. Figure~\ref{fig:subjects} summarizes our sample set. 
-
 
 \begin{figure}[ht]
     \centering
@@ -84,7 +83,6 @@ We considered those projects but ignored their tests (using JUnit's
 \CodeIn{@Ignore} annotation) as to avoid measurement noise.  To detect
 those projects, we executed every test suite for three times.  Our
 final set of subjects consists of \numSubjs{} projects.
-
 
 \subsection{Setup and Replication}
 \label{sec:setup}
