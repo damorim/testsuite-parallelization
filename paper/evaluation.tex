@@ -66,9 +66,10 @@ subjects. Figure~\ref{fig:subjects} summarizes our sample set.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{plots/subjs.pdf}
-    \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular
-    projects hosted on \github{}. From this initial sample, we ignored
-    \SubjectsGithubNotMaven{} projects without Maven support and
+    \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular projects
+    hosted on \github{}. From this initial sample, we ignored
+    \SubjectsGithubNotMaven{} projects without Maven support,
+    \SubjectsGithubNotCompilable{} were unable to compile, and
     \SubjectsGithubNotTestable{} untestable projects\Comment{, and
     \SubjectsGithubFlaky{} projects with flaky tests}. We considered
     \numSubjs{} projects to conduct our study.}
@@ -76,10 +77,11 @@ subjects. Figure~\ref{fig:subjects} summarizes our sample set.
 
 From \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
 projects were not Maven or did not have a \pomf{} in the root
-directory, \SubjectsGithubNotTestable{} projects were untestable
-because of missing dependencies or incompatible testing environment.
-We also found \SubjectsGithubFlaky{} projects with ``flaky'' tests.
-We considered those projects but ignored their tests (using JUnit's
+directory, \SubjectsGithubNotCompilable{} were unable to compile due
+to missing dependencies, and \SubjectsGithubNotTestable{} projects
+were untestable due to incompatible testing environment.  We also
+found \SubjectsGithubFlaky{} projects with ``flaky'' tests.  We
+considered those projects but ignored their tests (using JUnit's
 \CodeIn{@Ignore} annotation) as to avoid measurement noise.  To detect
 those projects, we executed every test suite for three times.  Our
 final set of subjects consists of \numSubjs{} projects.
