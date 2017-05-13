@@ -78,13 +78,12 @@ subjects. Figure~\ref{fig:subjects} summarizes our sample set.
 From \SubjectsGithub{} downloaded projects, \SubjectsGithubNotMaven{}
 projects were not Maven or did not have a \pomf{} in the root
 directory, \SubjectsGithubNotTestable{} projects were untestable
-because of missing dependencies or incompatible testing environment,
-for example, and \SubjectsGithubFlaky{} projects were ``flaky''.
-\Jbc{Check if this is ok $\rightarrow$} We executed each project's
-test suite for three times to identify projects containing flaky tests
-and ignored these tests (\ie, using the \CodeIn{@Ignore} annotation
-from JUnit) to avoid introducing noise in our experiments.  Our final
-set of subjects consists of \numSubjs{} projects.
+because of missing dependencies or incompatible testing environment.
+We also found \SubjectsGithubFlaky{} projects with ``flaky'' tests.
+We considered those projects but ignored their tests (using JUnit's
+\CodeIn{@Ignore} annotation) as to avoid measurement noise.  To detect
+those projects, we executed every test suite for three times.  Our
+final set of subjects consists of \numSubjs{} projects.
 
 
 \subsection{Setup and Replication}
