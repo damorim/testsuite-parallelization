@@ -1146,7 +1146,7 @@ Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
 \begin{figure*}[t]  
 \centering
 \small
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{2pt}
 \begin{tabular}{l|rr|rr|rr|rr|rr|rr}
 \toprule
 \multirow{2}{*}{\emph{Subject}} & \multicolumn{2}{c|}{\emph{\Seq}} &
@@ -1200,7 +1200,7 @@ Stripe Java                   & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \en
   sequentially.  Columns $T$ and $N$ indicate time and number of
   tests, respectively.  Other columns show speedup and percentage of
   failing tests in different configurations, compared to
-  \emph{\Seq{}}.\Mar{Can you please add name of module for all subjects?}}
+  \emph{\Seq{}}.}
 \label{tab:rq6-table}
 \end{figure*}
 
@@ -1321,11 +1321,35 @@ outliers in our results.
 %% T_{\text{p}}$), and for flakiness, we reported the rate of failing
 %% tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
 
-\Mar{estou aqui...}
+Figure~\ref{tab:rq6-table} summarizes results ordered by subject's
+name. Recall that we only executed one module for each subject.
+Values are averaged across multiple executions.  We did not report
+standard deviations as they are very small in all cases.  Considering
+flakiness, results show that 0\% of flakiness have been reported in 26
+of the 60 combinations analyzed (43\% of the total) and that for seven
+of the ten projects 0\% flakiness was reported in at least one of the
+configurations.  The projects with flakiness in all configurations
+were \CodeIn{AWS SDK}, \CodeIn{GoogleCloud}, and \CodeIn{Moquette}.
+It is worth highlighting the unfortunate case of \CodeIn{Moquette},
+which manifested more than 20\% flaky tests in every configuration.
+Considering time, it is noticeable from the averages, perhaps as
+expected, an increasing speedup from configuration
+\emph{\SeqClassParMeth} to \emph{\ParClassParMeth} and from
+configuration \emph{\ForkSeq} to \emph{\ForkParMeth}.  It is also
+worth mentioning that some combinations manifested slowdown instead of
+speedup.  Recall that parallel execution introduces the overhead of
+spawning and managing JVMs and threads.
 
-Figure~\ref{tab:rq6-table} summarizes the obtained results ordered by
-subject's name. Values are reported in average \Fix{LEMBRAR DE MOSTRAR
-  VALORES DE DESVIO PADRAO!}.
+\begin{center}
+\fbox{
+\begin{minipage}{8cm}
+\textit{Answering \numRQIssuesOne{}:~Overall results indicate that the
+  test suites of 70\% of the projects we analyzed could be run in
+  parallel without manifesting any flaky tests.  In some of these
+  cases, speedups were significant, ranging from 1x to 28.8x.}
+\end{minipage}
+}
+\end{center}
 
 %% \begin{figure}[h!]
 %% \centering
@@ -1353,28 +1377,22 @@ subject's name. Values are reported in average \Fix{LEMBRAR DE MOSTRAR
 %% \end{figure}
 
 
-\Jbc{Lembrar que investigar o slowdown de Dataflow... os logs indicam que varios
-dos testes que quebraram tentavam fazer uma autenticacao em algum servico.
-Possivelmente o slowdown se deve ao tempo de resposta do servico quando
-a autentiticao falha}
+%% \Jbc{Lembrar que investigar o slowdown de Dataflow... os logs indicam que varios
+%% dos testes que quebraram tentavam fazer uma autenticacao em algum servico.
+%% Possivelmente o slowdown se deve ao tempo de resposta do servico quando
+%% a autentiticao falha}
 
-\Fix{Elaborate results from efficiency}
+%% \Fix{Elaborate results from efficiency}
 
-\Fix{Elaborate results from flakiness}
+%% \Fix{Elaborate results from flakiness}
 
-\Fix{highlight special cases}
+%% \Fix{highlight special cases}
 
-\begin{center}
-\fbox{
-\begin{minipage}{8cm}
-\textit{Answering \numRQIssuesOne{}:~\emph{\Jbc{summarize findings...}}}
-\end{minipage}
-}
-\end{center}
+
 
 %%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
 %%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS
 %%  LocalWords:  framexleftmargin CPUs Tahr sysstat gh Vagrantfile
 %%  LocalWords:  javadoc isolcpus JUnit's JUnitCore Gligoric boxplots
-%%  LocalWords:  outliers apache uber chaperone facebookarchive
-%%  LocalWords:  linkbench priori
+%%  LocalWords:  outliers apache uber chaperone facebookarchive AWS
+%%  LocalWords:  linkbench priori SDK GoogleCloud Moquette JVMs
