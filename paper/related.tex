@@ -4,7 +4,7 @@ Researchers and practitioners have been shedding light to the to the
 demand of techniques for optimizing test execution. For instance, a
 recent paper from the automotive industry reported that test suites
 can take days to run~\cite{artl-etal-icst2015}.  There are different
-aspects to consider and when dealing with the challenge of reducing
+aspects to consider when dealing with the challenge of reducing
 test cost. 
 Research has focused mostly on test suite minimization,
 prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
@@ -18,9 +18,10 @@ computes which tests have been impacted by changes.  A test is
 discarded for execution if it does not depend on any changed file
 dynamically reachable from execution. Although Ekstazi is focused on
 regression test selection, it highlights the importance of parallelism
-as a complement to test selection. In fact, as in their evaluation, we
-also discovered subjects with parallelism enabled by default.
-%% this may reveal/suggest identity.  wait for CR
+as a complement to test selection.  In fact, as in their evaluation, we
+also discovered subjects with parallelism enabled by default.  Test
+suite parallelization is complementary to regression testing techniques.
+
 \Comment{
 Similar approach to regression test selection has been recently
 applied in the context of the GCC~\cite{gcc} configurable
