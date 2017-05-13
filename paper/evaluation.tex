@@ -1195,28 +1195,44 @@ Stripe Java                   & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \en
 \end{figure*}
 
 
-To answer this research question, we conducted an experiment involving
-the six parallel configurations from Section~\ref{sec:modes}, and we
-randomly selected 10 subjects from the medium and long groups (\ie,
-tests suites that ran in at least one minute) identified in
-\numRQFeasibilityOne{}. \Jbc{Is this legit/acceptable/convincing?
-$\rightarrow$}The rationale for this criteria was to maximize the
-diversity of domains from the subjects, assuming these subjects have
-test suites with different characteristics (\eg, architectural design
-and rate of cpu/io-bound operations).
+To answer this research question, we ran ten different subjects
+against all configurations described in Section~\ref{sec:modes} and
+compared their running times and rate of test flakiness.  We used the
+sequential execution (configuration \emph{\Seq{}}) associated with
+each project as the comparison baseline in this experiment.  We
+selected subjects from the medium and long groups from
+Section~\ref{sec:rqA} and further selected their longest test module
+for testing.  The rationale is to obtain a diverse set of subjects
+exposing a wide range of running times (range observed 1.1m-8.2m) and
+number of test cases (range observed 54-17,513) and yet be able to run
+the experiment in reasonable time.  We ran each project on each
+configuration with ten seeds.  Overall, we needed to reran test suites
+600 times, 60 times (10x6 configurations) on each project.  Given the
+low standard deviations observed in our measurements we consider ten
+seeds reasonable for this experiment.
+
+%% \Jbc{Is this
+%%   legit/acceptable/convincing?  $\rightarrow$}The rationale for this
+%% criteria was to maximize the diversity of domains from the subjects,
+%% assuming these subjects have test suites with different
+%% characteristics (\eg, architectural design and rate of cpu/io-bound
+%% operations).
+
+%% Notice that with parallelism enabled, the
+%% number of failing tests may vary on different runs due to the
+%% non-deterministic scheduling of threads and processes.  For that
+%% reason, we re-executed the experiment and computed the average speedup
+%% and flakiness on each scenario.
+
 \Comment{
     The rationale for this selection criteria was to maximize the chances
     of observing speedup and flakiness, assuming that long-running tests
     also have many tests. Indeed, we confirmed that test suites in these
     projects contain at least 236 tests ($1,662.7$ in average).
 }
-To compare flakiness and efficiency, we used the sequential execution
-of each subject's test suite as the \emph{control group} (\ie,
-baseline). Notice that with parallelism enabled, the number of failing
-tests may vary on different runs due to the non-deterministic
-scheduling of threads and processes.  For that reason, we re-executed
-the experiment and computed the average speedup and flakiness on each
-scenario. 
+
+\Mar{...estou aqui...}
+
 In a first attempt of this experiment, we considered using Maven to
 run the subjects on the different parallel configurations. However, we
 noticed that some executions using parallelism within a JVM did not
