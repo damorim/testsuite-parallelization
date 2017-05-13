@@ -1245,22 +1245,18 @@ reasonable for this experiment.
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
 
-\noindent\textbf{JUnit.} It is worth mentioning that we used JUnit as
-opposed to Maven to run configurations \emph{C*}.  After carefully
-verifying library versions for compatibility issues and comparing
-results with JUnit's we observed that several of Maven's executions
-exposed problems (\eg{} timeouts).  These issues are documented in our
-website~\cite{ourwebpage} through Docker containers.  To address those
-issues we implemented basic JUnit runner reflecting the effects of
-parallel configurations from Maven Surefire.
-
-\Mar{estou aqui...}
-
-Our script takes a list
-o tests classes to run as an input and outputs the results (\ie,
-number of test methods, failures, skips, and elapsed time) for each
-parallel configuration. Initially, we use an existing Maven log to
-identify the test classes to run, and we use the Maven dependency
+It is worth mentioning that we used JUnit as opposed to Maven to run
+configurations \emph{C*}.  After carefully verifying library versions
+for compatibility issues and comparing results with JUnit's we
+observed that several of Maven's executions exposed problems.  For
+example, Maven incorrectly counts the number of test cases executed
+for some cases where test flakiness are observed.  These issues are
+categorized and documented on our website~\cite{ourwebpage} with
+Docker containers (for reproduction).  To address those issues we
+implemented basic JUnit test runners (one for each \emph{C*}
+configuration), reflecting the effects of parallel configurations from
+Maven Surefire.  To write those runners we used Maven log files to
+identify test classes to run and used the Maven dependency
 plugin~\cite{maven-dep} to build the project's classpath with the
 command \CodeIn{mvn dependency:build-classpath}. Once we have the
 classpath and the tests to run, we invoke our JUnit runner that runs
@@ -1278,7 +1274,26 @@ limited our kernel to use only three cores and reserved one for
 OS-related processes.  To verify that our approach satisfies the
 purpose of this experiment, we executed some subjects on Maven and
 compared the performance with our artifacts and observed
-nonsignificant differences (a fraction of seconds in most cases).
+nonsignificant differences (a fraction of seconds in most cases).  To
+assure that our experiments terminate (recall tha deadlock or livelock
+could occur) we used the \CodeIn{timeout} command~\cite{timeout-cmd}
+configured to dispatch a \emph{kill} signal if test execution exceeds
+a given time limit. Finally, we saved each execution log and stack
+traces generated outputed from JUnit to collect the execution time,
+the number of failing tests, and for reference to analyze and diagnose
+outliers in our results.
+
+%% \Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
+%% jvm - maven surefire nao tratava algumas exceptions que aconteciam na
+%% execucao do teste, (3) timeout}
+
+%% The script we implemented to measure time and flakiness takes a list
+%% of tests classes to run as input and outputs the results (\ie, number
+%% of test methods, failures, skips, and elapsed time) for each parallel
+%% configuration.
+
+
+
 \Comment{ To obtain parallel configurations, we implemented a script
   that takes a subject and a configuration label as inputs (\eg
   \CodeIn{mapdb "c0"}), and the script outputs the modified version of
@@ -1297,25 +1312,20 @@ nonsignificant differences (a fraction of seconds in most cases).
     it represents 3 Cores * 2 native threads?}.To run the subjects and
   their respective variations (\ie, the modified versions according to
   the parallelism configuration), we used a similar approach as
-  described in Figure~\ref{fig:mvn-execution} except that...  } Also,
-we used the \CodeIn{timeout} command~\cite{timeout-cmd} in our scripts
-to monitor the execution, and we configured the command to dispatch a
-\emph{kill} signal if the test execution exceeds a given time
-limit. We imposed this time constraint to avoid hanging indefinitely
-the experiment execution due to some thread contention that may occur
-(\eg, deadlock or livelock).  Finally, we saved each execution log and
-stack traces generated outputed from JUnit to collect the execution
-time, the number of failing tests, and for reference to analyze and
-diagnose outliers in our results.
+  described in Figure~\ref{fig:mvn-execution} except that...  }
 
 
-For
-efficiency, we reported the speedup (\ie, $T_{\text{s}} /
-T_{\text{p}}$), and for flakiness, we reported the rate of failing
-tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
+
+
+%% For efficiency, we reported the speedup (\ie, $T_{\text{s}} /
+%% T_{\text{p}}$), and for flakiness, we reported the rate of failing
+%% tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
+
+\Mar{estou aqui...}
+
 Figure~\ref{tab:rq6-table} summarizes the obtained results ordered by
 subject's name. Values are reported in average \Fix{LEMBRAR DE MOSTRAR
-VALORES DE DESVIO PADRAO!}.
+  VALORES DE DESVIO PADRAO!}.
 
 %% \begin{figure}[h!]
 %% \centering
@@ -1353,10 +1363,6 @@ a autentiticao falha}
 \Fix{Elaborate results from flakiness}
 
 \Fix{highlight special cases}
-
-\Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
-jvm - maven surefire nao tratava algumas exceptions que aconteciam na
-execucao do teste, (3) timeout}
 
 \begin{center}
 \fbox{
