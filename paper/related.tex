@@ -1,24 +1,36 @@
 \section{Related Work}
 \label{sec:related}
-
-Several approaches have been proposed in the literature to optimize
-regression testing.  Research has focused mostly on test suite
-minimization, prioritization, reduction, and
-selection~\cite{yoo-harman-stvr2012}.  Most of these techniques are
-unsound (\ie{}, they do not guarantee that fault-revealing tests will
-be selected), however, more recently, sound techniques have been
+Researchers and practitioners have been shedding light to the to the
+demand of techniques for optimizing test execution. For instance, a
+recent paper from the automotive industry reported that test suites
+can take days to run~\cite{artl-etal-icst2015}.  There are different
+aspects to consider and when dealing with the challenge of reducing
+test cost. 
+Research has focused mostly on test suite minimization,
+prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
+Most of these techniques are unsound (\ie{}, they do not guarantee
+that fault-revealing tests will be selected), however, more recently,
+sound techniques have been
 proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
 example, to soundly select tests for execution,
-Ekstazi\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
+Ekstazi~\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
 computes which tests have been impacted by changes.  A test is
-discarded for execution if it does not depend on any
-changed file dynamically reachable from execution.
+discarded for execution if it does not depend on any changed file
+dynamically reachable from execution. \Jbc{Elaborate...}
 %% this may reveal/suggest identity.  wait for CR
 \Comment{
 Similar approach to regression test selection has been recently
 applied in the context of the GCC~\cite{gcc} configurable
 system~\cite{souto-damorim-jss}.}
-
-\Fix{elaborate...}As another example, a recent paper from the
-automotive industry reported that test suites can take days to
-run~\cite{artl-etal-icst2015}.
+\Jbc{Acho que o trabalho de Luo et al~\cite{luo-etal-fse2014} que eh
+uma analise empirica de testes de flaky se relaciona com o nosso no
+aspecto de falar dentre as demais categorias, sobre flakiness que se
+manifestam em situacoes de concorrencias. Este trabalho eh
+complementar ao nosso, uma vez que ele elabora as causas e solucoes
+para algumas falhas que se manifestaram em concorrencia.
+concorrencias.
+O Trabalho de Hilton et al~\cite{hilton-etal-ase2016}, embora tenha
+como objetivo entender o uso de CI, mostra que existe uma demanda em
+acelerar o build e execucao de testes em servidores de integracao
+    continua
+}
