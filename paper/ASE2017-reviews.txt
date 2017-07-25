@@ -1,0 +1,322 @@
+Dear Jeanderson, Luís and Marcelo,
+
+Thank you for your submission to the 32nd IEEE/ACM International
+Conference on Automated Software Engineering (ASE 2017). We are
+pleased to inform you that your paper
+
+"Test suite parallelization in open-source projects: a study on its
+usage and impact"
+
+has been accepted for inclusion in the main program of ASE 2017 in the
+paper category
+
+"Technical Research paper".
+
+Congratulations!
+
+This year, the ASE conference received a record number of 388
+submissions. Of these, 367 entered the reviewing process (314
+technical papers, 8 experience papers, and 45 new ideas papers). Each
+paper has been reviewed and discussed by three or more program
+committee / expert review panel members, two of whom (at least) being
+program committee members. At the ASE Program Committee meeting in
+Santa Barbara on July 8-9, 2017, the program committee has made the
+following acceptance decisions:
+
+- 88 contributions accepted, out of which 25 are conditional accepted
+  (acceptance rate up to 24%);
+
+- 65 technical papers accepted, out of which 13 are conditionally
+  accepted (acceptance rate up to 21%);
+    
+- 2 experience papers accepted (25% acceptance rate);
+
+- 10 new idea papers, one of which conditionally accepted (acceptance
+  rate up to 22%);
+    
+- 11 technical papers conditionally accepted as new idea papers.
+
+The reviews of your paper are enclosed. Please consider them carefully
+when preparing the camera-ready version of your paper. The submission
+deadline for your camera-ready paper is *September 9, 2017*. No
+extensions will be given.  You will soon be contacted by Conference
+Publishing with the ASE 2017 Author Kit.  Furthermore, please keep in
+mind that each accepted paper must have at least one author registered
+*at professional member rate* for the conference by *September 9,
+2017*, and that at least one author must attend the conference to
+present the paper in person. Failing to present the paper at the
+conference will result in the removal of your paper from the IEEE
+Digital Library.
+
+
+ASE 2017 will take place in Urbana Champaign, Illinois, USA from
+October 30 to November 3, 2017. For details on the conference and the
+venue, see the conference website at:
+
+ http://www.ase2017.org
+
+Also, please note that submissions to ASE 2017 workshops are still
+open.  Please have a look at http://ase2017.org/workshops
+
+We look forward to seeing the final version of your paper and your
+presentation at ASE 2017!
+
+Sincerely,
+
+Massimiliano Di Penta and Tien N. Nguyen
+ASE 2017 Program Committee Co-Chairs
+
+*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=
+
+          >>> Summary of discussion leader <<<
+
+The discussion was not long, and everyone agrees on the contributions
+of the paper and believes this work can provide practical guidelines
+for software developers and testers.
+
+Meanwhile, here are the main issues that the reviewers would like the
+authors to discuss and/or address to further improve this work:
+
+- Many studied projects typically have relatively small testing time
+  (5 min).
+
+- Some experimental results are as expected, and it would be great if
+  the paper
+  can clearly clarify how the findings can be helpful in practice
+
+- 1/3 of the projects have failed tests, can this be resolved to make
+  the results
+  more precise?
+
+*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=
+
+First reviewer's review:
+
+          >>> Summary of the submission <<<
+
+Modern build systems such as maven provide harnessing to make parallel
+test execution possible with little effort. Given the cost of running
+large test suites and the existence of easy parallelism, this paper
+asks if and if not (why not) are developers of open source projects
+using parallelism. It studies four dimension, feasibility, adoption,
+speedup and tradeoffs with respect to flakiness. It studies 83 open
+source projects of varying sizes and focuses on those with longer
+running test suites. Key findings include that less than 20% of
+developers use parallelism, but that speedups of 4x can be obtained
+when used. Developers most often do not use parallelism because it is
+a bother to implement and flakiness, while an issue with parallelism
+was under 30% across all types of parallelism evaluated.
+
+          >>> Evaluation <<<
+
+This is a very well written paper and a carefully described study. The
+results are not unexpected. It is not surprising to me that developers
+don’t want to bother writing parallel tests given that most test
+suites take minutes rather than hours. But I still think the study has
+value and the results may be useful for our community. I can see this
+being used for a lot of follow up work. One study design decision made
+that I did not like was the decision to drop those projects that do
+use parallelism from the developer surveys. I believe that you could
+have asked them why they chose the particular approach they chose, and
+why parallelism in general. That might have rounded out the study.
+=======================
+
+Strengths
++ well described study
++ uses real projects and re-runs the tests in various settings
++ provides a comprehensive look at the use of parallelism in open
+source project
+
+Weaknesses
+
+- most of the projects have relatively short test suite run times
+(less than a minute). Even the longer running ones are not what I
+would consider deal breakers. This could bias the study
+
+=======================
+
+- In the intro the paper mentions that only 8.7% of projects take at
+  least 5m to run. This is relatively low (percentage wise and even
+  time wise. It is what the data shows, but it doesn’t really motivate
+  me to keep reading. Perhaps you might qualify what the longer run
+  times are and why those should be reduced
+
+- RQ2 – How is time distributed
+
+- Page 5 – RQ2 – It says that two tests take ~40m. Do you mean 4m?
+  This is the medium data set which is capped at 5mins
+
+- RQ3 – The paper combines medium and long test cases and tells us how
+  many use parallelism but doesn’t break this out for the
+  reader. Which categories are the tests in Figure 9 (I think that
+  should be a table by the way) and what categories do the 11 of 83
+  fall into? If they are all in large versus mixed that would provide
+  more information for the reader. I would suspect that the <5 min
+  category would use less parallelism
+
+- Page 7 (RQ4). In total 38 developer replied but we discarded 3
+  (35). Figure 10 uses 36 as its total. There are 36 projects so is
+  Figure 10 using the projects or developers? Maybe just a type
+  somewhere.
+
+- RQ4 – I was disappointed that you discarded the 11 projects that do
+  use parallelism. I would have liked to know what the real motivation
+  to use it was (i.e. because I can, because of time constraints…) and
+  how much effort was required
+
+- RQ6 – the boxplots show a significant reduction between 3 and 5
+  cores. The text says that after 3 the gain is marginal. I guess it
+  depends what is marginal, but it looks significant on the graph
+
+- In RQ7 you mention C*. This is not found in section II so I am not
+  sure what C* is.
+
+*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*
+
+Second reviewer's review:
+
+          >>> Summary of the submission <<<
+
+Test execution in practice can be extremely time consuming. The paper
+reports an empirical study on test suite parallelization in
+open-source projects. The reported study starts from 685 popular
+Github projects that satisfy the search criteria, and finally studies
+390 of them. The study first shows that nearly 21% of the studied
+projects take at least one minute to run. Then, the study investigates
+the adoption of test suite parallelization in practice and finds that
+only 18.1% of the medium- and long-running test suites use
+parallelization. Furthermore, the paper also includes an qualitative
+study to investigate the reason why test suite parallelization is
+underutilized. Finally, the paper measures the effectiveness and costs
+(e.g., leading to flaky tests) of test suite parallelization.
+
+          >>> Evaluation <<<
+
+Strengths:
+
++ Investigating an important problem
++ Extensive study on real-world Github projects
++ A number of experimental findings revealed
+
+Weakness:
+
+- Some experimental results are as expected, and it is not clear how
+  the findings can be helpful in practice
+- Presentation can be further refined
+
+The problem of speeding up regression testing is extremely important
+as modern software systems can accumulate a large number of tests
+during software evolution. The testing strategy studied by the paper,
+i.e., test suite parallelization, is widely used to speed up
+regression testing. Therefore, the paper presents a timely study on an
+important problem and can potentially help with regression testing in
+practice.
+
+The study was performed on a large number of real-world Github
+projects. I liked the subject collection description. The clear
+description of the steps to select the studied projects not only
+allows others to reproduce the experimental study, but also shows the
+authors' efforts in avoiding subject selection bias.
+
+Both the quantitative and qualitative studies on the selected subjects
+reveal various findings. The experimental results show that the test
+suites for 70% of the analyzed projects could be run parallel without
+manifesting any flaky tests, and the speedup can be significant, e.g.,
+ranking from 1X to 28.8X. Such findings show the promising future of
+applying test suite parallelization in practice, and can potentially
+encourage more developers in doing so.
+
+Although I liked the study and believe the experimental findings can
+be practical. Some of the findings are not surprising and can be
+inferred from common intuition. For example, the RQ6 shows that
+execution of FC0 scales with additional cores but there is a
+bound. Actually, the trend can be inferred from normal trend of
+running programs over multi-cores. For another example, RQ4 of the
+paper shows that the extra work to organize test suites to safely
+explore concurrency is the principal reason for developers not
+investing in parallelism. This is also as expected, it is also not
+clear how this finding can be helpful in practice.
+
+Some presentation issues:
+
+It is not clear how the x axis of Figure 7 is plotted, e.g., in
+which order are those x-axis values ranked?
+
+In RQ7, it is not clear how the studied 10 projects are selected? Are
+they selected randomly? How do the results look like for other
+projects?
+
+Page 5, "We found that 21% of the 390 projects we analyzed take at
+least 3 minutes." --> It should be "... at least 1 minute".
+
+*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*
+
+Third reviewer's review:
+
+          >>> Summary of the submission <<<
+
+Test parallelization is an effective technique to speed up test
+executions and improve software development. This work conducted an
+empirical study to explore the usage, impact, and challenges of test
+suite parallelization in open-source projects. A non-trivial
+large-scale dataset includes 390 open source projects is created for
+the empirical study. Solid experiments and a case study were conducted
+to explore the status of parallelization of test suite in open-source
+community. Interesting and important findings about test
+parallelization are reported regarding the feasibility and adoption of
+parallelization, and potential benefits and risks of parallelization.
+
+          >>> Evaluation <<<
+
+I generally like this paper. It studies an important problem of test
+parallelization. The evaluation covers many aspects including adoption
+for practicality, which I really appreciate.
+
+Given that a small fraction (8.7%) of the projects take at least 5m to
+run test suites, and the average speedup is 4.4, it seems to suggest
+that typically it reduces testing time from 5 min to a couple of
+minutes. It doesn't seem to be a big deal. It would be fantastic if
+the authors can collaborate with industry to study how this could
+significantly reduce testing time. I believe large software companies
+like Google and Microsoft have tests that takes much much longer to
+run.
+
+For RQ1, all the tests from the 390 projects were run to collect the
+time cost of test suites. However, there are test failures for 140 out
+of the 390 projects, which may lead to inaccurate time cost for these
+140 projects, because a test failure could shrink the time cost of a
+test case significantly.  Among the 140 projects, how many tests
+failed on average? And what is the potential impact on the statistics
+shown in Figure 6?
+
+The paper focused on studying a subset of parallelization techniques
+(Maven and JUnit) which may not accurately represent the global state
+of industry. While the authors had automated most of the experiments,
+it adds a threat: the scripts may have false negatives at detecting
+parallelism, and the default Maven test command may not execute all
+test cases.
+
+The term a "flaky" test is not defined in the paper. The introduction
+cited a previous paper that contains the definition [15] but a
+sentence or two is needed.
+
+The paper decided to enable hyper-threading on the CPU as a part of
+the evaluation, where each core has two threads. The problem is that
+hyper-threading does not provide 2x the improvement on execution time,
+and often it is more like 20%-30% improvement per core. This means the
+speedup beyond the number of physical cores will diminish quickly due
+to shared resources. However, this is a minor issue that does not
+impact the results since the execution time does not improve beyond
+five cores, which is well below the number of physical cores. It will
+be interesting to see if other factors may affect the execution time
+of test cases (e.g., disk IO and network transfer).
+
+PROS and CONS:
++ studies an important problem of of test parallelization
++ good evaluation results
++ well written
+- studied projects typically have relatively small testing time (5
+min).
+- threats to validity: 1/3 of the projects have failed tests
+
+*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*
