@@ -1066,28 +1066,29 @@ dominate execution time run sequentially by default.
 
 \newcommand{\subjectScalability}{MapDB}
 
-This experiment evaluates the impact of making available to the build
-system a growing number of CPUs for testing.  For that reason, we used
-a machine with more cores compared to the one described in
+This experiment evaluates the impact of making a growing number of
+CPUs for testing available to the build system.  For that reason, we
+used a machine with more cores compared to the one described in
 Section~\ref{sec:setup}.  We used a Xeon E5-2660v2 (2.20GHz) Intel
 processor machine with 80 virtual CPUs (40 cores with two native
 threads each) and 256GB of memory, running Ubuntu 14.04 LTS Trusty
-Tahr (64-bit version). This experiment uses configuration \emph{\ForkSeq{}}
-as the goal is to evaluate the impact on runtime of spawning a growing number of
-JVMs in different CPUs.  We selected subject
-\subjectScalability{} in this experiment as it represents the case of a long-running test
-suite (see Figure~\ref{tab:speedup}) with test cases distributed
-across many test classes (194 test classes for \subjectScalability{}).
-Note that a test class is the smallest unit that can be used to spawn
-a test job on a JVM and that we have no control over which test
-classes will be assigned to which JVM that the build system forks.
-
-%\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=.35\textwidth]{R/scalability/scalability.pdf}
-    \caption{\label{fig:scalability}Scalability.}
-\end{figure}
+Tahr (64-bit version). This experiment uses configuration
+\emph{\ForkSeq{}} as the goal is to evaluate the impact on runtime of
+\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth  
+  %\begin{figure}[h]
+  \centering
+  \includegraphics[width=.25\textwidth]{R/scalability/scalability.pdf}
+  \caption{\label{fig:scalability}Scalability.}
+  %\end{figure}
+%  \vspace{-1ex}    
+\end{wrapfigure}
+spawning a growing number of JVMs in different CPUs.  We selected
+subject \subjectScalability{} in this experiment as it represents the
+case of a long-running test suite (see Figure~\ref{tab:speedup}) with
+test cases distributed across many test classes~--~194.  Note that a
+test class is the smallest unit that can be used to spawn a test job
+on a JVM and that we have no control over which test classes will be
+assigned to which JVM that the build system forks.
 
 Figure~\ref{fig:scalability} shows the reduction in running times as
 more CPUs contribute to the execution.  We ran this experiment for a
@@ -1097,6 +1098,7 @@ are marginal after three cores, which is the basic setup we used in
 other experiments.  This saturation is justified by the presence of a
 single test class, \CodeIn{org.mapdb.WALTruncat}, containing 15 test
 cases that take over two minutes to run.
+
 
 \begin{center}
 \fbox{
@@ -1246,48 +1248,44 @@ reasonable for this experiment.
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
 
-It is worth mentioning that we used \Jbc{custom} JUnit \Jbc{runners}
-as opposed to Maven to run \Comment{configurations \emph{C*}}test
-suites with different parallel configurations (see
-Section~\ref{sec:modes})\Jbc{$\leftarrow$ Reviewer 1 was confused with
-the notation \emph{C*} AND the original sentence was not accurate to
-this paragraph}.
-After carefully verifying library versions
-for compatibility issues and comparing results with JUnit's we
-observed that several of Maven's executions exposed problems.  For
-example, Maven incorrectly counts the number of test cases executed
-for some cases where test flakiness are observed.  These issues are
-categorized and documented on our website~\cite{ourwebpage} with
-Docker containers (for reproduction).  To address those issues we
-implemented basic JUnit test runners (one for each \Jbc{parallel}
-configuration), reflecting the effects of parallel configurations from
-Maven Surefire.  To write those runners we used Maven log files to
-identify test classes to run and used the Maven dependency
-plugin~\cite{maven-dep} to build the project's classpath with the
-command \CodeIn{mvn dependency:build-classpath}. Once we have the
-classpath and the tests to run, we invoke our JUnit runner that runs
-the test classes with different parallel configurations at once. For
-the sequential execution, we invoke the default JUnit test runner. For
-parallelism within a JVM (\ie, the configurations \SeqClassParMeth{},
-\ParClassSeqMeth{}, and \ParClassParMeth{}), we configured the JUnit
-runner with ParallelComputer~\cite{junit-parallel} that internally
-uses a pool of threads with cache to run test classes and methods. For
-the configurations with forked JVMs (\ie, \ForkSeq{} and
-\ForkParMeth{}), we have a queue of test classes and a pool of three
-threads that ``consumes'' the next test class and spawns a JVM to run
-it.  Recall that in our setup (see Section~\ref{sec:setup}), we
-limited our kernel to use only three cores and reserved one for
-OS-related processes.  To verify that our approach satisfies the
-purpose of this experiment, we executed some subjects on Maven and
-compared the performance with our artifacts and observed
-insignificant differences (a fraction of seconds in most cases).  To
-assure that our experiments terminate (recall that deadlock or livelock
-could occur) we used the \CodeIn{timeout} command~\cite{timeout-cmd}
-configured to dispatch a \emph{kill} signal if test execution exceeds
-a given time limit. Finally, we saved each execution log and stack
-traces generated from JUnit to collect the execution time,
-the number of failing tests, and for reference to analyze and diagnose
-outliers in our results.
+It is worth mentioning that we used custom JUnit runners as opposed to
+Maven to run \Comment{configurations \emph{C*}}test suites with
+different parallel configurations (see Section~\ref{sec:modes}).
+After carefully checking library versions for compatibility issues and
+comparing results with JUnit's we observed that several of Maven's
+executions exposed problems.  For example, Maven incorrectly counts
+the number of test cases executed for some cases where test flakiness
+are observed.  These issues are categorized and documented on our
+website~\cite{ourwebpage} with Docker containers (for reproduction).
+To address those issues we implemented basic JUnit test runners (one
+for each parallel configuration), reflecting the effects of parallel
+configurations from Maven Surefire.  To write those runners we used
+Maven log files to identify test classes to run and used the Maven
+dependency plugin~\cite{maven-dep} to build the project's classpath
+with the command \CodeIn{mvn dependency:build-classpath}. Once we have
+the classpath and the tests to run, we invoke our JUnit runner that
+runs the test classes with different parallel configurations at
+once. For the sequential execution, we invoke the default JUnit test
+runner. For parallelism within a JVM (\ie, the configurations
+\SeqClassParMeth{}, \ParClassSeqMeth{}, and \ParClassParMeth{}), we
+configured the JUnit runner with
+ParallelComputer~\cite{junit-parallel} that internally uses a pool of
+threads with cache to run test classes and methods. For the
+configurations with forked JVMs (\ie, \ForkSeq{} and \ForkParMeth{}),
+we have a queue of test classes and a pool of three threads that
+``consumes'' the next test class and spawns a JVM to run it.  Recall
+that in our setup (see Section~\ref{sec:setup}), we limited our kernel
+to use only three cores and reserved one for OS-related processes.  To
+verify that our approach satisfies the purpose of this experiment, we
+executed some subjects on Maven and compared the performance with our
+artifacts and observed insignificant differences (a fraction of
+seconds in most cases).  To assure that our experiments terminate
+(recall that deadlock or livelock could occur) we used the
+\CodeIn{timeout} command~\cite{timeout-cmd} configured to dispatch a
+\emph{kill} signal if test execution exceeds a given time
+limit. Finally, we saved each execution log and stack traces generated
+from JUnit to collect the execution time, the number of failing tests,
+and for reference to analyze and diagnose outliers in our results.
 
 %% \Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
 %% jvm - maven surefire nao tratava algumas exceptions que aconteciam na
