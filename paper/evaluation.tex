@@ -1246,15 +1246,20 @@ reasonable for this experiment.
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
 
-It is worth mentioning that we used JUnit as opposed to Maven to run
-configurations \emph{C*}.  After carefully verifying library versions
+It is worth mentioning that we used \Jbc{custom} JUnit \Jbc{runners}
+as opposed to Maven to run \Comment{configurations \emph{C*}}test
+suites with different parallel configurations (see
+Section~\ref{sec:modes})\Jbc{$\leftarrow$ Reviewer 1 was confused with
+the notation \emph{C*} AND the original sentence was not accurate to
+this paragraph}.
+After carefully verifying library versions
 for compatibility issues and comparing results with JUnit's we
 observed that several of Maven's executions exposed problems.  For
 example, Maven incorrectly counts the number of test cases executed
 for some cases where test flakiness are observed.  These issues are
 categorized and documented on our website~\cite{ourwebpage} with
 Docker containers (for reproduction).  To address those issues we
-implemented basic JUnit test runners (one for each \emph{C*}
+implemented basic JUnit test runners (one for each \Jbc{parallel}
 configuration), reflecting the effects of parallel configurations from
 Maven Surefire.  To write those runners we used Maven log files to
 identify test classes to run and used the Maven dependency
