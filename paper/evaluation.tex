@@ -610,39 +610,39 @@ contains a module with the parameter
 of the parameter \CodeIn{parallel}.  If the parameter
 \CodeIn{parallel} is set to \CodeIn{methods} the detected mode will be
 \ForkParMeth{}.  Large projects may contain several test suites
-distributed on different Maven modules potentially using different
-configurations.  For those cases, we collected the Maven output from
-each module discarding duplicates as to avoid inflating counts for
-\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
+\begin{wraptable}{r}{0pt}%0.525\linewidth
   \footnotesize
   %  \small
   \centering
   \setlength{\tabcolsep}{2.5pt}
 %    \resizebox{.48\textwidth}{!}{%
-    \begin{tabular}{lrr}
+    \begin{tabular}{llcr}
         \toprule
-        \emph{Subject} & \emph{\# of modules} & \emph{Mode}\\%
+        \multirow{2}{*}{\emph{Group}} & \multirow{2}{*}{\emph{Subject}} & \emph{\# of} & \multirow{2}{*}{\emph{Mode}}\\%
+                                      &                                 & \emph{modules} &\\%
         \midrule%
-        \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1/1 &  \ParClassSeqMeth{}\\%
-        \Comment{Apache }Flink & 74/74 & \ForkSeq{} \\%        
-        \Comment{JenkinsCI }Gerrit\Comment{ Trigger Plugin} & 1/1 & \ForkSeq{}\\%
-        \Comment{Spotify }Helios & 8/8 & \ForkSeq{}\\%
-        Javaslang & 3/3 & \ParClassParMeth{}\\%
-        Jcabi\Comment{ Github} & 1/1 & \ParClassParMeth{}\\%        
-        \Comment{Hazelcast }Jet & 7/14 & \ForkSeq{}\\%
-        \Comment{Apache Logging }Log4J2 & 25/31 & \ForkSeq{}\\%
-        \Comment{Jankotek }MapDB & 1/1 & \ParClassParMeth{}\\%        
+        Medium & \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1/1 & \ParClassSeqMeth{}\\%
+        Medium & \Comment{Apache }Flink & 74/74 & \ForkSeq{} \\%
+        Long & \Comment{JenkinsCI }Gerrit\Comment{ Trigger Plugin} & 1/1 & \ForkSeq{}\\%
+        Medium & \Comment{Spotify }Helios & 8/8 & \ForkSeq{}\\%
+        Medium & Javaslang & 3/3 & \ParClassParMeth{}\\%
+        Medium & Jcabi\Comment{ Github} & 1/1 & \ParClassParMeth{}\\%
+        Medium & \Comment{Hazelcast }Jet & 7/14 & \ForkSeq{}\\%
+        Long & \Comment{Apache Logging }Log4J2 & 25/31 & \ForkSeq{}\\%
+        Long & \Comment{Jankotek }MapDB & 1/1 & \ParClassParMeth{}\\%
         \bottomrule%
     \end{tabular}
     \caption{Subjects with parallel test execution enabled by
     default.}
     \label{tab:freqmodes-dynamic}
-\end{wrapfigure}
+\end{wraptable}
+distributed on different Maven modules potentially using different
+configurations.  For those cases, we collected the Maven output from
+each module discarding duplicates as to avoid inflating counts for
 configuration modes that appear in several modules of the same
 project. For instance, if a project contains two modules using the
 same configuration, we counted only one occurrence.
-
-Figure~\ref{tab:freqmodes-dynamic} shows the projects we identified
+Table~\ref{tab:freqmodes-dynamic} shows the projects we identified
 where parallelism is enabled by default in Maven.  Column
 ``\emph{Subject}'' indicates the name of the project, column
 ``\emph{\# of modules}'' indicates the fraction of modules containing
@@ -702,7 +702,7 @@ the dynamic checking, previously presented.
 
 Overall, we found, using this methodology, ten projects that use
 parallelism.  Compared to the set of projects listed in
-Figure~\ref{tab:speedup}, we found two new projects, namely:
+Table~\ref{tab:speedup}, we found two new projects, namely:
 \CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
 configuration C3) and \CodeIn{Mapstruct} (using configuration
 \ForkSeq{}).  Curiously, we also found that project \CodeIn{Jcabi} was
@@ -969,7 +969,7 @@ summarizes the distribution of answers.
 
 To answer \numRQSpeedupOne{}, we considered the \numProjectsPar{}
 subjects from our benchmark that use parallelization \emph{by default}
-(see Figure~\ref{tab:freqmodes-dynamic}).  We compared running times
+(see Table~\ref{tab:freqmodes-dynamic}).  We compared running times
 with parallelization~---~configured by project owners~---~and without
 parallelization.
 
@@ -985,7 +985,7 @@ parallelization.
 %% the same execution runs in $5m$ with parallelization enabled (default
 %% execution), the speedup is two.
 
-Figure~\ref{tab:speedup} summarizes results.  Lines are sorted by
+Table~\ref{tab:speedup} summarizes results.  Lines are sorted by
 project names.  Columns ``\emph{Group}'' and
 ``\emph{Name}'' indicate, respectively, the group and the name of the
 subject.  Column ``$T_s$'' shows sequential execution time and column
@@ -993,7 +993,7 @@ subject.  Column ``$T_s$'' shows sequential execution time and column
 speedup or slowdown.  As usual, a ratio above 1x denotes speedup
 and a ratio below 1x denotes slowdown.
 
-\begin{figure}[h!]
+\begin{table}[h!]
 \centering
 \resizebox{.41\textwidth}{!}{%
   \scriptsize
@@ -1020,7 +1020,7 @@ Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
   execution ($T_p$) over sequential execution ($T_s$).  Default
   parallel configuration of Maven is used.  Highest slowdown/speedup
   appears in gray color.}
-\end{figure}
+\end{table}
 
 Results indicate that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.  Three
@@ -1084,7 +1084,7 @@ Tahr (64-bit version). This experiment uses configuration
 \end{wrapfigure}
 spawning a growing number of JVMs in different CPUs.  We selected
 subject \subjectScalability{} in this experiment as it represents the
-case of a long-running test suite (see Figure~\ref{tab:speedup}) with
+case of a long-running test suite (see Table~\ref{tab:speedup}) with
 test cases distributed across many test classes~--~194.  Note that a
 test class is the smallest unit that can be used to spawn a test job
 on a JVM and that we have no control over which test classes will be
@@ -1146,7 +1146,7 @@ Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
 \newcommand{\subcol}{\subcolA{} & \subcolB{}}
 \newcommand{\entry}[2]{#1 & #2}
 
-\begin{figure*}[t]  
+\begin{table*}[t]
 \centering
 \small
 \setlength{\tabcolsep}{2pt}
@@ -1205,8 +1205,7 @@ Stripe Java                   & \entry{4.3m}{302}  & \entry{4.78x}{6.31\%} & \en
   failing tests in different configurations, compared to
   \emph{\Seq{}}.}
 \label{tab:rq6-table}
-\end{figure*}
-
+\end{table*}
 
 To answer this research question, we selected ten different subjects,
 ran their test suites against all configurations described in
@@ -1325,7 +1324,7 @@ and for reference to analyze and diagnose outliers in our results.
 %% T_{\text{p}}$), and for flakiness, we reported the rate of failing
 %% tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
 
-Figure~\ref{tab:rq6-table} summarizes results ordered by subject's
+Table~\ref{tab:rq6-table} summarizes results ordered by subject's
 name. Recall that we only executed one module for each subject.
 Values are averaged across multiple executions.  We did not report
 standard deviations as they are very small in all cases.  Considering
