@@ -245,7 +245,7 @@ analyses) that could interfere in our time measurements.  To address
 that potential issue, we inspected Maven execution logs from a sample
 including a hundred projects prior to running the script from
 Figure~\ref{fig:mvn-execution}.  The tasks we found were ignored from
-execution (lines 1-3).  Furthermore, to avoid noise from operating
+execution (lines 1-4).  Furthermore, to avoid noise from operating
 system events, we configured our workstation to run only essential
 services.  The machine was dedicated to our experiments and we
 accessed it via SSH. In addition, we configured the \CodeIn{isolcpus}
@@ -258,18 +258,18 @@ measurements were fair, we compared timings corresponding to the
 sequential execution of tests using Maven with that obtained with
 JUnit's default \CodeIn{JUnitCore} runner, invoked from the command
 line.  Results were very close.
+\Jbc{This is not true for projects running tests in parallel by defaut.
+Recall from RQ3 that some projects run tests in parallel by default.
+How should we address this?}
 
-The main loop (lines 5-11) of the script in
+The main loop (lines 6-15) of the script in
 Figure~\ref{fig:mvn-execution} iterates over the list of subjects and
 invokes Maven multiple times\Comment{ to isolate cost of running
-  tests} (lines 7-9).  It first compiles the source and test files
-(line 7), make all dependencies available locally (line 8), and then
-runs the tests in offline mode as to skip the package update task,
-enabled by default (line 9). After execution, we used a regular
-expression on the output log to extract elapsed time (line 10).
-
-%% We executed each project's test suite for
-%% \Fix{5} times through Maven and directly through JUnit each project
+tests} (lines 8-11).  It first makes all dependencies available locally
+(line 8), compiles the source and test files (line 9), and then runs
+the tests in offline mode as to skip the package update task, enabled
+by default (line 11). After execution, we used a regular expression on
+the output log to extract the elapsed time (line 12-14).
 
 \input{codes/evaluation}
 
@@ -332,7 +332,7 @@ to complete, as can be observed from the outliers (dots) in the plot.
 It is important to note that we under-estimated cost in our
 experiments for two main reasons.  First, some tests may finish
 earlier than expected due to the observed test failures in some of the
-revisions we downloaded.  From the \numSubjs{} testable projects,
+revisions we downloaded. From the \numSubjs{} testable projects,
 \numSubjsPass{} successfully executed all tests and \numSubjsFail{}
 reported some test failures.  Second, some projects may omit
 long-running tests on their default execution. For instance, the
@@ -387,8 +387,6 @@ test method is the smallest working unit in test frameworks.
 %%   to huge projects as those from Google~\cite{google-tap,google-ci}
 %%   and Microsoft~\cite{prasad-shulte-ieee-microsoft-ci}.}
 
-
-
 %% For the case
 %% where cost is distributed more evenly across test cases, one expects
 %% that speedups will be a function of the number of cores.
@@ -421,7 +419,8 @@ test method is the smallest working unit in test frameworks.
     %%   \end{tabular}
     %%   \caption{\label{fig:sd}Standard deviation ($\sigma$) of test case running times.}
     %% \end{subfigure}
-    \caption{\label{fig:time-distributions}Time distributions.}%
+    \caption{\label{fig:time-distributions}Time distributions. X-axis
+        denote projects appearing in arbitrary order.}%
 \end{figure}
 
 \sloppy Figures~\ref{fig:longtcost} and~\ref{fig:medtcost} show the
