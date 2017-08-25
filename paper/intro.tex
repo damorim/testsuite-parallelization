@@ -81,9 +81,21 @@ the technology and to understand their reasons.  The dimension
 \emph{speedups} evaluates the observed impact of
 parallelization\Comment{~---~when used in selected open-source
   projects~---~} in running times.  Finally, the dimension
-\emph{tradeoffs} considers the problems in running tests in parallel,
-including test flakiness~\cite{luo-etal-fse2014}.  We briefly
-summarize our findings in the following.
+\emph{tradeoffs} considers the problems in running tests in parallel.
+\Fix{
+Non-deterministic outcome for
+For tests that change the state of a shared resources (\eg, file or
+in-memory collection), data races are likely to occurr. 
+
+Data races are likely to occurr in a multithread execution as 
+different threare favors data races when Some tests may produce non-deterministic
+outcomes in a multithreaded ex when
+executed in 
+including test flakiness~\cite{luo-etal-fse2014}. A test case with
+non-deterministic outcome is also known as ``flaky test''.  are
+known as test with non-deterministic outcome and
+}
+We briefly summarize our findings in the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
 %% configurations is important to guide practitioners and future

@@ -1,42 +1,28 @@
 % \newcommand{\finalVersion} % Uncomment this line to generate a
 % production ready pdf
-
 \ifdefined\finalVersion
-    \newcommand{\LineComment}[3]{}
+  \newcommand{\LineComment}[3]{}
 \else
-    \newcommand{\LineComment}[3]{\textbf{[[#1}{\color{#2} #3}\textbf{]]}}
+  \newcommand{\LineComment}[3]{\textbf{[[#1}{\color{#2} #3}\textbf{]]}}
 \fi
 
-\newcommand{\pef}{PEF}
-%% please, do not italicize ``i.e.'' and ``e.g.'' - Marcelo
-\newcommand{\ie}{i.e.}
-\newcommand{\eg}{e.g.}
-\newcommand{\etal}{et al.}
-\newcommand{\Comment}[1]{}
-\newcommand{\CodeIn}[1]{{\small\texttt{#1}}}
-
+%% Review macros
 \newcommand{\Fix}[1]{\LineComment{}{red}{#1}}
 \newcommand{\Jbc}[1]{\LineComment{Jean: }{orange}{#1}}
 \newcommand{\Luis}[1]{\LineComment{Luis: }{darkblue}{#1}}
 \newcommand{\Mar}[1]{\LineComment{Marcelo: }{darkgreen}{#1}}
 
-%% use this macros
-\newcommand{\github}{Github} %% change consistently
-\newcommand{\pomf}{\emph{pom.xml}} %% change consistently
+%% Terms
+\newcommand{\pef}{PEF}
+\newcommand{\ie}{i.e.}
+\newcommand{\eg}{e.g.}
+\newcommand{\etal}{et al.}
+\newcommand{\Comment}[1]{}
+\newcommand{\CodeIn}[1]{{\small\texttt{#1}}}
+\newcommand{\github}{Github}
+\newcommand{\pomf}{\emph{pom.xml}}
 
-%% Evaluation macros
-
-%% SUBJECTS
-\newcommand{\SubjectsGithub}{813}
-\newcommand{\SubjectsGithubNotMaven}{\Fix{48}}
-\newcommand{\SubjectsGithubNotTestable}{\Fix{132}}
-\newcommand{\SubjectsGithubFlaky}{\Fix{16}}
-\newcommand{\numSubjs}{390}
-\newcommand{\numSubjsShort}{307}
-\newcommand{\numSubjsMed}{49}
-\newcommand{\numSubjsLong}{34}
-
-%% CONFIGURATION MODES
+%% Configuration modes
 \newcommand{\Seq}{C0}
 \newcommand{\SeqClassParMeth}{C1}
 \newcommand{\ParClassSeqMeth}{C2}
@@ -45,7 +31,21 @@
 \newcommand{\ForkSeq}{\Fork{}\Seq{}}
 \newcommand{\ForkParMeth}{\Fork{}\SeqClassParMeth{}}
 
+%% Evaluation macros
+
+%% Subject Selection
+\newcommand{\SubjectsReruns}{three}
+\newcommand{\SubjectsGithub}{813}
+\newcommand{\SubjectsGithubNotMaven}{\Fix{48}}
+\newcommand{\SubjectsGithubNotTestable}{\Fix{132}}
+\newcommand{\SubjectsGithubFlaky}{\Fix{16}}
+\newcommand{\numSubjs}{\Fix{390}}
+
 %% RQ1
+\newcommand{\numSubjsShort}{307}
+\newcommand{\numSubjsMed}{49}
+\newcommand{\numSubjsLong}{34}
+
 \newcommand{\medg}{medium}
 \newcommand{\longg}{long}
 \newcommand{\shortg}{short}
