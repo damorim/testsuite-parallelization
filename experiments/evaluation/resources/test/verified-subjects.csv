@@ -1,3 +1,0 @@
-SUBJECT,URL,REV,BUILDER,COMPILED
-demo-cpu-intense,https://github.com/jeandersonbc/demo-cpu-intense,e82dc7bb5b51dbd81bb2f592d17897219ce66bcd,Maven,true
-demo-io-intense,https://github.com/jeandersonbc/demo-io-intense,5569886276f263d74d1db8280ba049abc1b93687,Maven,true
