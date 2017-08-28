@@ -82,19 +82,17 @@ the technology and to understand their reasons.  The dimension
 parallelization\Comment{~---~when used in selected open-source
   projects~---~} in running times.  Finally, the dimension
 \emph{tradeoffs} considers the problems in running tests in parallel.
-\Fix{
-Non-deterministic outcome for
-For tests that change the state of a shared resources (\eg, file or
-in-memory collection), data races are likely to occurr. 
-
-Data races are likely to occurr in a multithread execution as 
-different threare favors data races when Some tests may produce non-deterministic
-outcomes in a multithreaded ex when
-executed in 
-including test flakiness~\cite{luo-etal-fse2014}. A test case with
-non-deterministic outcome is also known as ``flaky test''.  are
-known as test with non-deterministic outcome and
-}
+\Jbc{
+In practice, some test suites may not be prepared for a multithreaded
+execution.
+For instance, developers may unconsciously create tests assuming an
+specific order of execution.
+While parallelism may speed up tests, in those cases,
+tests may yield non-deterministic results due to data races.
+In general, a test that either pass or fail under the same conditions
+is known as a ``flaky test''~\cite{luo-etal-fse2014}. It is important
+to measure the presence of test flakiness and the trade-offs to
+overcome this issue.}
 We briefly summarize our findings in the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
