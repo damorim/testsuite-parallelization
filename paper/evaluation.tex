@@ -69,11 +69,17 @@ From these \SubjectsGithub{} downloaded projects,
 \pomf{} in the root directory and \SubjectsGithubNotTestable{}
 projects were unable to test due to incompatible environment (\eg,
 missing required web browser or database management system).
-In addition, we identified \SubjectsGithubFlaky{} projects with flaky
-tests.
-As some of our experiments consist in running tests in a multithreaded
-configuration, we ignored these projects as it would be impractical
-for us to identify whether a test failed due to a race condition.
+In addition, we identified \SubjectsGithubFlaky{} projects with
+non-deterministic test results.
+In general, a test that either pass or fail under the same circumstances
+is known as a ``flaky test''~\cite{luo-etal-fse2014}.
+\Comment{While there are several causes that may introduce randomness on test
+results, our concern is on flakiness caused by
+parallel execution.}
+As some of our experiments consist in running tests on different
+threads, we ignored these projects as it would be impractical
+to identify whether a test failed due to a race condition or some
+other source of flakiness.
 Our final set of subjects consists of \numSubjs{} projects.
 Figure~\ref{fig:subjects} summarizes our sample set.
 

@@ -81,18 +81,8 @@ the technology and to understand their reasons.  The dimension
 \emph{speedups} evaluates the observed impact of
 parallelization\Comment{~---~when used in selected open-source
   projects~---~} in running times.  Finally, the dimension
-\emph{tradeoffs} considers the problems in running tests in parallel.
-\Jbc{
-In practice, some test suites may not be prepared for a multithreaded
-execution.
-For instance, developers may unconsciously create tests assuming an
-specific order of execution.
-While parallelism may speed up tests, in those cases,
-tests may yield non-deterministic results due to data races.
-In general, a test that either pass or fail under the same conditions
-is known as a ``flaky test''~\cite{luo-etal-fse2014}. It is important
-to measure the presence of test flakiness and the trade-offs to
-overcome this issue.}
+\emph{tradeoffs} considers the problems in running tests in parallel,
+including test flakiness~\cite{luo-etal-fse2014}.
 We briefly summarize our findings in the following.
 
 %% Discovering Pareto-efficient~\cite{hwang-masud-1979}
