@@ -6,6 +6,8 @@ recent paper from the automotive industry reported that test suites
 can take days to run~\cite{artl-etal-icst2015}.  There are different
 aspects to consider when dealing with the challenge of reducing
 test cost. 
+
+\textbf{Test selection vs. parallelism:}
 Research has focused mostly on test suite minimization,
 prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
 Most of these techniques are unsound (\ie{}, they do not guarantee
@@ -23,6 +25,22 @@ also discovered subjects with parallelism enabled by default.  Test
 suite parallelization is complementary to regression testing
 techniques.
 
+\textbf{Usage of massively parallel hardware:}
+Previous research investigated the feasibility of testing embedded
+software on \emph{Graphics Processing Units} (GPUs) as an alternative
+to multicore CPUs~\cite{rajan-etal-ase2014}.
+The \emph{Simple Instruction Multiple Data} (SIMD) architecture of
+modern GPUs allows to run the same test case with different test data
+over several threads.
+Although benchmarks indicate far superior performance over traditional
+multicore CPUs, existing GPU programming-models (\eg,
+CUDA~\cite{cuda}, and OpenCL~\cite{opencl}) are compatible only with a
+subset of the C/C++ language.
+Recent work proposed a compiler-assisted approach to make programs
+compatible to the relying programming
+model~\cite{yaneva-etal-issta2017}; however, \Jbc{Justify they are out
+of scope for our subjects...}.
+
 \Fix{Please:
   (i) consider categorizing related work in sections  
   (ii) list papers that need to be discussed
@@ -31,6 +49,8 @@ techniques.
   }
 
 \Comment{
+Running
+tests incompatible complex test suites on GPUs remains a challenge.
 \Comment{
 Similar approach to regression test selection has been recently
 applied in the context of the GCC~\cite{gcc} configurable
