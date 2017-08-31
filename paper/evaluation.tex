@@ -339,17 +339,21 @@ experiments for two main reasons.  First, some tests may finish
 earlier than expected due to the observed test failures in some of the
 revisions we downloaded. From the \numSubjs{} testable projects,
 \numSubjsPass{} successfully executed all tests and \numSubjsFail{}
-reported some test failures.  Second, some projects may omit
-long-running tests on their default execution. For instance, the
-project \CodeIn{apache.maven-surefire} runs all unit tests in a few
-seconds.  According to our criteria, this project is to be classified
-as \shortg{} but a closer look reveals that only smoke tests are run
-by default in this project.  Time-consuming integration and system
-tests are only accessible via custom parameters, which we do not
-handle in our experimental setup.  We enabled such parameters for this
-specific project and observed that testing time goes to nearly 30
-minutes.  For simplicity, we considered only the tests executed by
-default.
+reported some test failures.
+\Jbc{
+From these \numSubjsFail{} subjects, 67 projects have less than 10\%
+of failing tests.
+}
+Second, some projects may omit long-running tests on their default
+execution. For instance, the project \CodeIn{apache.maven-surefire}
+runs all unit tests in a few seconds.  According to our criteria, this
+project is to be classified as \shortg{} but a closer look reveals
+that only smoke tests are run by default in this project.
+Time-consuming integration and system tests are only accessible via
+custom parameters, which we do not handle in our experimental setup.
+We enabled such parameters for this specific project and observed that
+testing time goes to nearly 30 minutes.  For simplicity, we considered
+only the tests executed by default.
 
 \vspace{1ex}
 \begin{center}
@@ -358,7 +362,7 @@ default.
     \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
       time-consuming test suites are relatively frequent in
       open-source projects.  We found that \percentMedLongRunning{} of
-      the \numSubjs{} projects we analyzed (\ie{}, over 1 in every 5
+      the \numSubjs{} projects we analyzed (\ie{}, over 1 in every 6
       projects) take at least 1 minute to run and
       \percentLongRunning{} take at least 5 minutes to run.\Comment{
         (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}
