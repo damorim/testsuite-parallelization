@@ -450,9 +450,9 @@ which take nearly 11s to run, four which takes in average 3m to run, and two of
 which take $\sim$8m to run.  For this project, 98.4\% of the
 execution cost is dominated by 20\% of the tests; without these
 two costly tests this project would have been classified as
-short-running.  A closer inspection in the data indicates that the
-project \CodeIn{uber\_chaperone} was a corner case; we did not find
-other projects with such extreme time monopolization profile.
+short-running.
+We did not find other projects with such extreme time monopolization
+profile.
 Project \CodeIn{facebookarchive\_linkbench} is also classified as
 long-running and has the second highest value of $\sigma$.
 For this project, however, cost is distributed more smoothly across 98
@@ -479,11 +479,11 @@ the tests running faster.
 %\Mar{$\leftarrow$ show stats to indicate discrimination of
 %  two distributions}
 
-Figure~\ref{fig:time-distributions} showed that the average median
-times were similar for \medg{} and \longg{}-running test suites.
-Results indicate that the difference in overall running times of
-projects in those groups was mainly justified by the number of test
-cases as opposed to the individual costs of test cases.
+Figure~\ref{fig:time-distributions} shows that the average median
+times are similar for \medg{} and \longg{}-running test suites.
+The difference in overall running times of projects in those groups
+is mainly justified by the number of test cases as opposed to the
+individual costs of test cases.
 Figure~\ref{fig:size-testsuites} shows the difference in the
 distribution of test suite sizes across groups.  This figure indicates
 that long projects, albeit having a wider inter-quartile range (middle
@@ -492,7 +492,7 @@ median and much higher average number of test cases.  Furthermore, we
 noted a strong positive correlation between running time and number of
 test on projects in the \longg{} group.  Considering the \medg{}
 group, the correlation between these two variables was weak.
-Figure~\ref{fig:scattercost} illustrates this correlation.
+Figure~\ref{fig:scattercost} illustrates this regression line.
 
 %% however, weak in
 %% the suggesting that saving time in this group with test suite
@@ -508,9 +508,10 @@ Figure~\ref{fig:scattercost} illustrates this correlation.
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
-    \textit{Answering \numRQFeasibilityTwo{}:}~\emph{Overall, results indicate that
-    projects with a very small number of tests monopolizing end-to-end
-    execution time were rare.}
+  \textit{Answering \numRQFeasibilityTwo{}:}~\emph{Overall, results indicate that
+  projects with a very small number of tests monopolizing end-to-end
+  execution time were rare. Time most often is distribuited evenly
+  across test cases.}
 \end{minipage}
 }
 \end{center}
