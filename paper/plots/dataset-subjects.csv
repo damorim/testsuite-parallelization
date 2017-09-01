@@ -1,0 +1,5 @@
+type,value
+Flaky,13
+Not Maven,48
+Untestable,237
+Testable,533
