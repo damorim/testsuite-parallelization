@@ -80,6 +80,10 @@ As some of our experiments consist in running tests on different
 threads, we ignored these projects as it would be impractical
 to identify whether a test failed due to a race condition or some
 other source of flakiness.
+\Jbc{From the \SubjectsGithubConsistant{} projects with
+deterministic results, we eliminated \SubjectsGithubTooManyFailures{}
+projects with more than \SuiteFailingThreshold{} of tests failing to
+reduce bias in our dataset.}
 Our final set of subjects consists of \numSubjs{} projects.
 Figure~\ref{fig:subjects} summarizes our sample set.
 
@@ -89,8 +93,10 @@ Figure~\ref{fig:subjects} summarizes our sample set.
   \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular projects
   hosted on \github{}. From this initial sample, we ignored
   \SubjectsGithubNotMaven{} projects without Maven support,
-  \SubjectsGithubNotTestable{} projects unable to test, and
-  \SubjectsGithubFlaky{} projects with flaky tests. We considered
+  \SubjectsGithubNotTestable{} projects unable to test,
+  \SubjectsGithubFlaky{} projects with flaky tests, and
+  \SubjectsGithubTooManyFailures{} projects had at least
+  \SuiteFailingThreshold{} of failing tests. We considered
   \numSubjs{} projects to conduct our study.}
 \end{figure}
 
@@ -230,8 +236,6 @@ of analysis we presented in Section~\ref{sec:intro}.
 %%\newcommand{\RQAdoptionTwo}{How often developers use the parallelism features
 %%from build systems to improve runtime performance?}
 
-
-
 \subsection{Feasibility}
 \label{sec:rqA}
 \label{sec:rqB}
@@ -310,8 +314,6 @@ to complete, as can be observed from the outliers (dots) in the plot.
 %% 25 minutes but has outliers that require more than 50 minutes to
 %% execute.
 
-
-
 \begin{figure}[ht]
     \centering
     \begin{subfigure}{0.182\textwidth}
@@ -335,16 +337,8 @@ to complete, as can be observed from the outliers (dots) in the plot.
 %% test failures in the revision we downloaded.
 
 It is important to note that we under-estimated cost in our
-experiments for two main reasons.  First, some tests may finish
-earlier than expected due to the observed test failures in some of the
-revisions we downloaded. From the \numSubjs{} testable projects,
-\numSubjsPass{} successfully executed all tests and \numSubjsFail{}
-reported some test failures.
-\Jbc{
-From these \numSubjsFail{} subjects, 67 projects have less than 10\%
-of failing tests.
-}
-Second, some projects may omit long-running tests on their default
+experiments for one main reason.
+Some projects may omit long-running tests on their default
 execution. For instance, the project \CodeIn{apache.maven-surefire}
 runs all unit tests in a few seconds.  According to our criteria, this
 project is to be classified as \shortg{} but a closer look reveals
@@ -354,7 +348,15 @@ custom parameters, which we do not handle in our experimental setup.
 We enabled such parameters for this specific project and observed that
 testing time goes to nearly 30 minutes.  For simplicity, we considered
 only the tests executed by default.
-
+\Jbc{
+Although failing tests may introduce noise in our measurements, we
+carefully eliminated subjects with more than \SuiteFailingThreshold{} of
+test failures. 
+From the \numSubjs{} testable projects, \numSubjsPass{} successfully
+executed all tests and \numSubjsFail{} reported some test failure.
+Furthermore, from these \numSubjsFail{} subjects, only 11 subjects
+have more than 5\% of failing tests (7.3\% in average).
+}
 \vspace{1ex}
 \begin{center}
 \fbox{
@@ -362,7 +364,7 @@ only the tests executed by default.
     \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
       time-consuming test suites are relatively frequent in
       open-source projects.  We found that \percentMedLongRunning{} of
-      the \numSubjs{} projects we analyzed (\ie{}, over 1 in every 6
+      the \numSubjs{} projects we analyzed (\ie{}, over 1 in every 5
       projects) take at least 1 minute to run and
       \percentLongRunning{} take at least 5 minutes to run.\Comment{
         (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}

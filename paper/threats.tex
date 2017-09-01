@@ -7,6 +7,13 @@ mitigate that issue, we selected subjects according to an objective
 criteria, described in Section~\ref{sec:subjects}.  It remains to
 evaluate the extent to which our observations would change when using
 different testing frameworks and build systems.
+\Jbc{Also, some of the selected subjects contain failing tests. Test
+failures may shrink the expected running due to an early termination
+or even inflate the running time (\eg, test waiting indefinitely for
+an unavailable resources). To mitigate this threat, we filtered
+projects with at least 90\% of the tests passing. Only 17\% of our
+subjects have failing tests. We carefully inspected our rawdata to
+ensure that there is no failing test inflating our results.}
 \textit{Internal Validity:} Our results could be influenced by
 unintentional mistakes made by humans who interpreted survey data and
 implemented scripts and code to collect and analyze data.
