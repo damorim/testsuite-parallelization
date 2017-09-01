@@ -7,7 +7,7 @@ can take days to run~\cite{artl-etal-icst2015}.  There are different
 aspects to consider when dealing with the challenge of reducing
 test cost. 
 
-\textbf{Test selection vs. parallelism:}
+\textit{Test Selection vs. Parallelism:}
 Research has focused mostly on test suite minimization,
 prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
 Most of these techniques are unsound (\ie{}, they do not guarantee
@@ -25,11 +25,12 @@ also discovered subjects with parallelism enabled by default.  Test
 suite parallelization is complementary to regression testing
 techniques.
 
-\textbf{Usage of massively parallel hardware:}
+\Jbc{
+\textit{Usage of massively parallel hardware:}
 Previous research investigated the feasibility of testing embedded
-software on \emph{Graphics Processing Units} (GPUs) as an alternative
+software on Graphics Processing Units (GPUs) as an alternative
 to multicore CPUs~\cite{rajan-etal-ase2014}.
-The \emph{Simple Instruction Multiple Data} (SIMD) architecture of
+The Simple Instruction Multiple Data (SIMD) architecture of
 modern GPUs allows running the same test case with different test data
 over several threads.
 Although benchmarks indicate far superior performance over traditional
@@ -38,33 +39,25 @@ CUDA~\cite{cuda}, and OpenCL~\cite{opencl}) are compatible only with a
 subset of the C/C++ language.
 Recent work proposed a compiler-assisted approach to make programs
 compatible with the relying programming
-model~\cite{yaneva-etal-issta2017}; however, \Jbc{Justify they are out
+model~\cite{yaneva-etal-issta2017}; however, }\Jbc{...Justify they are out
 of scope for our subjects...}.
 
+\Jbc{Missing work about testing in the cloud and Jon Bell}
+
+\Comment{
 \Fix{Please:
   (i) consider categorizing related work in sections  
   (ii) list papers that need to be discussed
   (iii) discuss papers that use multi-execution (SIMD cpus like GPUs)
   to speedup testing
   }
-
-\Comment{
-Running
-tests incompatible complex test suites on GPUs remains a challenge.
+}
 \Comment{
 Similar approach to regression test selection has been recently
 applied in the context of the GCC~\cite{gcc} configurable
-system~\cite{souto-damorim-jss}.}
-The work of Luo et al~\cite{luo-etal-fse2014} reports and empirical
-analysis on test flakiness. \Jbc{se relaciona com o nosso no
-aspecto de falar dentre as demais categorias, sobre flakiness que se
-manifestam em situacoes de concorrencias. Este trabalho eh
-complementar ao nosso, uma vez que ele elabora as causas e solucoes
-para algumas falhas que se manifestaram em concorrencia.
-concorrencias.
+system~\cite{souto-damorim-jss}.
 O Trabalho de Hilton et al~\cite{hilton-etal-ase2016}, embora tenha
 como objetivo entender o uso de CI, mostra que existe uma demanda em
 acelerar o build e execucao de testes em servidores de integracao
     continua
-}
 }
