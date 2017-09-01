@@ -27,8 +27,7 @@ tests under 10m, Groupon used a cluster of 4 computers with 24 cores
 each~\cite{kim-etal-fse2013}.
 
 At large organizations, the alternative of renting cloud
-services\footnote{List of popular hosting cloud services:
-  \url{https://clutch.co/cloud}} or even building proprietary
+services~\cite{cloud-services} or even building proprietary
 infrastructures for running tests is a legitimate approach to mitigate
 the regression testing problem.  However, for projects with modest
  or nonexistent budgets and yet relatively heavy testing workloads, this solution may
@@ -112,8 +111,8 @@ projects from \github{} containing Maven build files~\cite{maven}.
 Section~\ref{sec:eval} details our methodology to select subjects and
 to isolate our experiments from environmental noise.  Results indicate
 that nearly \percentMedLongRunning{} of the projects take at least 1m
-to run their test suites and \percentLongRunning{} of the projects
-take at least 5m to run their suites.  Considering the \numMedLong{}
+to run and \percentLongRunning{} of the projects
+take at least 5m to run.  Considering the \numMedLong{}
 projects in those two groups, the average execution time of a test
 suite was \averageMedLongRunning{}.  Results also show that test cases
 are typically short-running, typically taking less than half a second
@@ -198,6 +197,7 @@ methods, however they manifest much lower flakiness ratios.
 
 Our observations may trigger multiple actions:
 
+\setlist[itemize]{leftmargin=1.1em}
 \begin{itemize}
 \item \emph{Incentivize forking.}~Forked JVMs manifest very low rates
   of test flakiness.  Developers of projects with long-running test
@@ -208,12 +208,11 @@ Our observations may trigger multiple actions:
   flakiness.  Breaking test dependencies to avoid flakiness and take
   full advantage of those options is advised for developers with
   greater interest in efficiency.
-\item \emph{Refactor tests for load balancing.}~Forked JVMs scales
+\item \emph{Refactor tests for load balancing.}~Forked JVMs scale
   better with the number of cores when the test workload is balanced
-  across testing classes.  To balance the workload, automated
-  user-oblivious refactoring can help in scenarios where developers
-  are not willing to change test code but have access to machines with
-  a high number of cores.
+  across testing classes.  Automated refactoring could help balance
+  the workload in scenarios where developers are not willing to change
+  test code but have access to machines with a high number of cores.
 \item \emph{Improve debugging for build systems.}~While preparing our
   experiments, we found scenarios\Comment{, related to test
     parallelization,} where Maven's executions did not reflect
