@@ -85,7 +85,7 @@ Figure~\ref{fig:subjects} summarizes our sample set.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.25\textwidth]{plots/subjs.pdf}
+  \includegraphics[width=0.25\textwidth]{results/piechart-subjs.pdf}
   \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular projects
   hosted on \github{}. From this initial sample, we ignored
   \SubjectsGithubNotMaven{} projects without Maven support,
@@ -316,13 +316,13 @@ to complete, as can be observed from the outliers (dots) in the plot.
     \centering
     \begin{subfigure}{0.182\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{plots/barplot-timecost.pdf}
+        \includegraphics[width=\textwidth]{results/barplot-timecost.pdf}
         \caption{\label{fig:rq1-barplot}}
     \end{subfigure}%
     ~
     \begin{subfigure}{0.25\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{plots/boxplot-timecost.pdf}
+        \includegraphics[width=\textwidth]{results/boxplot-timecost.pdf}
         \caption{\label{fig:rq1-boxplot}}
     \end{subfigure}%
     \caption{(a) Subjects grouped by time cost ($t$): short run ($t <
@@ -406,13 +406,13 @@ test method is the smallest working unit in test frameworks.
     \centering
     \begin{subfigure}{0.47\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{plots/testcost-long.pdf}
+      \includegraphics[width=\textwidth]{results/testcost-long.pdf}
       \caption{\label{fig:longtcost}Long group.}
     \end{subfigure}\\
     \vspace{2ex}
     \begin{subfigure}{0.47\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{plots/testcost-medium.pdf}
+      \includegraphics[width=\textwidth]{results/testcost-medium.pdf}
       \caption{\label{fig:medtcost}Medium group.}
     \end{subfigure}
     %% \vspace{2ex}
@@ -461,13 +461,13 @@ the tests running faster.
   \centering
   \begin{subfigure}{0.15\textwidth}
     \centering
-    \includegraphics[width=.85\textwidth]{plots/boxplots-testcases.pdf}
+    \includegraphics[width=.85\textwidth]{results/boxplots-testcases.pdf}
     \caption{\label{fig:size-testsuites}Size of test suites.}
   \end{subfigure}
   ~
   \begin{subfigure}{0.3\textwidth}
     \centering
-    \includegraphics[width=.95\textwidth]{plots/scatter-testcost.pdf}
+    \includegraphics[width=.95\textwidth]{results/scatter-testcost.pdf}
     \caption{\label{fig:scattercost}Size versus running time of
       test suites.}
   \end{subfigure}
@@ -674,7 +674,7 @@ Maven process.  That decision could prevent execution of particular
 test modules.
 %\begin{figure}[h!]
 %    \centering
-%    \includegraphics[width=0.32\textwidth]{plots/barplot-modes-dynamic.pdf}
+%    \includegraphics[width=0.32\textwidth]{results/barplot-modes-dynamic.pdf}
 %    \caption{\label{fig:freqmodes-dynamic}\Fix{fix
 %    caption}Distribution of parallel modes identified dynamically in a
 %    subset of \numProjectsPar{} projects.  A project may have support
@@ -823,7 +823,7 @@ the union of the two subject sets.
 %% \Fix{Missing conclusion: Fork the most used configuration}
 %% \begin{figure}[h!]
 %%     \centering
-%%     \includegraphics[width=0.32\textwidth]{plots/barplot-modes-static.pdf}
+%%     \includegraphics[width=0.32\textwidth]{results/barplot-modes-static.pdf}
 %% 	\caption{\label{fig:freqmodes-static}\Luis{This is wrong, it
 %% 	should be \textbf{CF0} instead of \textbf{CL0}}Distribution of parallel modes
 %%     identified statically in a subset of \numProjectsPar{} projects.
@@ -942,7 +942,7 @@ not use parallelism concerned with possible concurrency issues (option
 services sufficed to provide timely feedback while running only smoke
 \begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
     \centering
-    \includegraphics[width=.18\textwidth]{plots/survey.pdf}
+    \includegraphics[width=.18\textwidth]{results/survey.pdf}
     \caption{\label{fig:rq5-answers}Summary of developer's answers to
       survey question~\ref{questionThree}.}
 \end{wrapfigure}
