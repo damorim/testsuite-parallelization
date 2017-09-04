@@ -633,15 +633,28 @@ of the parameter \CodeIn{parallel}.  If the parameter
         \multirow{2}{*}{\emph{Group}} & \multirow{2}{*}{\emph{Subject}} & \emph{\# of} & \multirow{2}{*}{\emph{Mode}}\\%
                                       &                                 & \emph{modules} &\\%
         \midrule%
-        Medium & \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1/1 & \ParClassSeqMeth{}\\%
-        Medium & \Comment{Apache }Flink & 74/74 & \ForkSeq{} \\%
-        Long & \Comment{JenkinsCI }Gerrit\Comment{ Trigger Plugin} & 1/1 & \ForkSeq{}\\%
-        Medium & \Comment{Spotify }Helios & 8/8 & \ForkSeq{}\\%
-        Medium & Javaslang & 3/3 & \ParClassParMeth{}\\%
-        Medium & Jcabi\Comment{ Github} & 1/1 & \ParClassParMeth{}\\%
-        Medium & \Comment{Hazelcast }Jet & 7/14 & \ForkSeq{}\\%
-        Long & \Comment{Apache Logging }Log4J2 & 25/31 & \ForkSeq{}\\%
-        Long & \Comment{Jankotek }MapDB & 1/1 & \ParClassParMeth{}\\%
+%%      Medium & \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1/1 & \ParClassSeqMeth{}\\%
+%%      Medium & \Comment{Apache }Flink & 74/74 & \ForkSeq{} \\%
+%%      Long & \Comment{JenkinsCI }Gerrit\Comment{ Trigger Plugin} & 1/1 & \ForkSeq{}\\%
+%%      Medium & \Comment{Spotify }Helios & 8/8 & \ForkSeq{}\\%
+%%      Medium & Javaslang & 3/3 & \ParClassParMeth{}\\%
+%%      Medium & Jcabi\Comment{ Github} & 1/1 & \ParClassParMeth{}\\%
+%%      Medium & \Comment{Hazelcast }Jet & 7/14 & \ForkSeq{}\\%
+%%      Long & \Comment{Apache Logging }Log4J2 & 25/31 & \ForkSeq{}\\%
+%%      Long & \Comment{Jankotek }MapDB & 1/1 & \ParClassParMeth{}\\%
+        Medium & Californium & 2/20 & C2\\%
+        Medium & Chaos & 1/1 & C2\\%
+        Long & \Comment{apache} Flink & 66/74 & FC0\\%
+        Long & \Comment{apache logging-}Log4J2 & 25/28 & FC0\\%
+        Long & \Comment{javaslang }Javaslang & 3/3 & C3\\%
+        Medium & Jcabi \Comment{jcabi-github} & 1/1 & C3\\%
+        Long & \Comment{hazelcast hazelcast-}Jet & 6/7 & FC0\\%
+        Long & \Comment{apache} Mahout & 8/9 & FC0\\%
+        Long & \Comment{jankotek} MapDB & 1/1 & C3\\%
+        Medium & \Comment{apache} OpenNLP & 4/4 & FC0\\%
+        Medium & \Comment{yegor256} Rultor & 1/1 & C3\\%
+        Medium & \Comment{yegor256} Takes & 1/1 & C3\\%
+        Long & \Comment{vavr-io} Vavr & 3/3 & C3\\%
         \bottomrule%
     \end{tabular}
     \caption{Subjects with parallel test execution enabled by
@@ -661,7 +674,7 @@ where parallelism is enabled by default in Maven.  Column
 tests that use the configuration of parallelism mentioned in column
 ``\emph{Mode}''.  We note that, considering these projects, the
 modules that do not use the configuration cited use the sequential
-configuration \Seq{}.  For example, six modules (=31-25) from Log4J2
+configuration \Seq{}.  For example, three modules (=28-25) from Log4J2
 use sequential configuration.
 
 It came as a surprise the observation that
@@ -675,21 +688,6 @@ cases.  Note that these results under-approximate real usage of
 parallelism as we used default parameters in our scripts to spawn the
 Maven process.  That decision could prevent execution of particular
 test modules.
-%\begin{figure}[h!]
-%    \centering
-%    \includegraphics[width=0.32\textwidth]{results/barplot-modes-dynamic.pdf}
-%    \caption{\label{fig:freqmodes-dynamic}\Fix{fix
-%    caption}Distribution of parallel modes identified dynamically in a
-%    subset of \numProjectsPar{} projects.  A project may have support
-%    to more than one parallel mode. Also, a project may run only a
-%    subset tests in parallel by default.}
-%\end{figure}
-
-%% Recall that some projects can use parallel execution that is only
-%% activated when developers pass certain parameters to the build
-%% process. For instance, it is possible to create in Maven multiple
-%% configurations in the same build file and select dynamically which one
-%% should be used.  
 
 \subsubsection{Static checking}
 \label{sec:rqC-2}
@@ -711,28 +709,31 @@ approach is not immune to false negatives, which can occur when
 \emph{pom.xml} files are encapsulated in jar files or downloaded from
 the network.  Consequently, this static checking is complementary to
 the dynamic checking, previously presented.
-
-Overall, we found, using this methodology, ten projects that use
-parallelism.  Compared to the set of projects listed in
-Table~\ref{tab:speedup}, we found two new projects, namely:
+Overall, we found, using this methodology, \numProjectsParStatic{}
+projects that use parallelism.
+Compared to the set of projects listed in
+Table~\ref{tab:freqmodes-dynamic}, we found four new projects, namely:
 \CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
-configuration C3) and \CodeIn{Mapstruct} (using configuration
-\ForkSeq{}).  Curiously, we also found that project \CodeIn{Jcabi} was
-not detected using this methodology.  That happened because this
-project loads its \emph{pom.xml} file from a jar file that we did not
-check.  Considering the static and dynamic methods together, we found
-a total of 11 distinct projects using parallelism, corresponding to
-the union of the two subject sets.
+configuration C3), \CodeIn{Mapstruct} (using configuration
+\ForkSeq{}), \CodeIn{T-SNE-Java} (using configuration \ForkSeq), and
+\CodeIn{Urbanairship Datacube} (using configuration \ParClassParMeth).
+Curiously, we also found that project \CodeIn{Jcabi}, \CodeIn{Rultor},
+and \CodeIn{Takes} were not detected using this methodology.
+That happened because these projects loaded a \emph{pom.xml} file from
+a jar file that we did not check.  Considering the static and dynamic
+methods together, we found a total of \numProjectsParTotal{} distinct
+projects using parallelism, corresponding to the union of the two
+subject sets.
 
 \vspace{1ex}
 \begin{center}
 \fbox{
-  \begin{minipage}{8cm}
-      \textit{Answering \numRQAdoptionOne{}:}~\emph{Results indicate that test
-        suite parallelization is underused.  Overall, only
-        \percentParallel{} of costly projects (11 out of \numMedLong)
-        use parallelism.}
-  \end{minipage}
+\begin{minipage}{8cm}
+  \textit{Answering \numRQAdoptionOne{}:}~\emph{Results indicate that test
+    suite parallelization is underused.  Overall, only
+    \percentParallel{} of costly projects (\numProjectsParTotal{} out of \numMedLong)
+    use parallelism.}
+\end{minipage}
 }
 \end{center}
 \vspace{1ex}
