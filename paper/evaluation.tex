@@ -917,19 +917,19 @@ and a ratio below 1x denotes slowdown.
 \toprule
 \emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
 \midrule%
-Medium & Californium & \Fix{Xm} & \Fix{Xm} & \Fix{Yx}\\%
-Medium & \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1.51m & 1.47m & \cellcolor{lightgray}1.01x\\%
+Medium & Californium & 1.45m & 1.40m & 1.04x\\%
+Medium & \Comment{BounceStorage} Chaos\Comment{ HTTP Proxy} & 1.51m & 1.47m & \cellcolor{lightgray}1.03x\\%
 Medium &\Comment{ Apache }Flink& 11.79m & 2.57m & 4.59x\\%
 Long &\Comment{ Apache }Log4J2& 8.24m & 8.21m & \cellcolor{lightgray}1.00x\\%
-Medium &Javaslang& 2.18m & 1.82m & 1.19x\\%
-Medium &Jcabi\Comment{ GitHub} & 2.76m & 0.30m & \cellcolor{lightgray}9.2x\\%
+Medium &Javaslang& 2.18m & 1.82m & 1.20x\\%
+Medium &Jcabi\Comment{ GitHub} & 2.76m & 0.30m & 9.20x\\%
 Long &\Comment{ Hazelcast }Jet& 8.26m & 3.67m & 2.25x\\%
-Long & \Comment{apache} Mahout & \Fix{Xm} & \Fix{Xm} & \Fix{Yx}\\%
+Long & \Comment{apache} Mahout & 27.38m & 18.15m & 1.51x\\%
 Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
-Medium & \Comment{apache} OpenNLP & \Fix{Xm} & \Fix{Xm} & \Fix{Yx}\\%
-Medium & \Comment{yegor256} Rultor & \Fix{Xm} & \Fix{Xm} & \Fix{Yx}\\%
-Medium & \Comment{yegor256} Takes & \Fix{Xm} & \Fix{Xm} & \Fix{Yx}\\%
-Long & \Comment{vavr-io} Vavr & \Fix{Xm} & \Fix{Xm} & \Fix{Yx}\\%
+Medium & \Comment{apache} OpenNLP & 1.30m & 0.55m & 2.36x\\%
+Medium & \Comment{yegor256} Rultor & 2.30m & 0.27m & 8.52x\\%
+Medium & \Comment{yegor256} Takes & 2.00m & 0.19m & \cellcolor{lightgray}10.53x\\%
+Long & \Comment{vavr-io} Vavr & 3.26m & 2.25m & 1.45x\\%
 \midrule
 \textbf{average} &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
@@ -942,21 +942,21 @@ Long & \Comment{vavr-io} Vavr & \Fix{Xm} & \Fix{Xm} & \Fix{Yx}\\%
 
 Results indicate that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.  Three
-cases worth special attention: \CodeIn{Chaos}, \CodeIn{Jcabi} and
+cases worth special attention: \CodeIn{Chaos}, \CodeIn{Takes} and
 \CodeIn{Log4J2}.  No significant speedup was observed in
 \CodeIn{Chaos}, a project with only three test classes, of which one
 monopolizes the bulk of test execution time.  This project uses
 configuration \ParClassSeqMeth{}, which runs test classes in parallel
 and test methods, declared in each class, sequentially.  Consequently,
 speedup cannot be obtained as the cost of the single expensive test
-class cannot be broken down with the selected configuration.  Although
-project \CodeIn{Jcabi} also uses configuration \ParClassSeqMeth{},
+class cannot be broken down with the selected configuration. \Fix{Although
+project \CodeIn{Takes} also uses configuration \ParClassParMeth{},
 results obtained are very different compared to \CodeIn{Chaos}.  The
 speedup observed in \CodeIn{Jcabi} was the highest amongst all
 projects.  This project contains test classes with a small number of
 test methods and several methods in those classes are time-consuming.
 As result, the CPUs available for testing are kept occupied for the
-most part during test execution.  Finally, we note that parallel
+most part during test execution.} Finally, we note that parallel
 execution in \CodeIn{Log4J2} was ineffective.  We found that Maven
 invokes several test modules in this project but the test modules that
 dominate execution time run sequentially by default.
