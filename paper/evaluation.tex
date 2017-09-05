@@ -111,7 +111,7 @@ threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
 subjects, Java 8, and Maven 3.3.9 to build and test subjects. We used
 Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3} to process the
 data and generate plots.  All source artifacts are publicly available
-for replication (on our website~\cite{ourwebpage})\Comment{ at \Fix{create gh-pages}}.  This
+for replication (on our website~\cite{ourwebpage}).  This
 includes supporting scripts (\eg, the script that test subjects and
 generates raw analysis data) and the full list of projects. \Comment{,
   and a \emph{Vagrantfile} to emulate our hardware and all software
@@ -949,17 +949,19 @@ monopolizes the bulk of test execution time.  This project uses
 configuration \ParClassSeqMeth{}, which runs test classes in parallel
 and test methods, declared in each class, sequentially.  Consequently,
 speedup cannot be obtained as the cost of the single expensive test
-class cannot be broken down with the selected configuration. \Fix{Although
-project \CodeIn{Takes} also uses configuration \ParClassParMeth{},
-results obtained are very different compared to \CodeIn{Chaos}.  The
-speedup observed in \CodeIn{Jcabi} was the highest amongst all
-projects.  This project contains test classes with a small number of
-test methods and several methods in those classes are time-consuming.
+class cannot be broken down with the selected configuration.
+\Jbc{
+On the other hand, the speedup observed in project \CodeIn{Takes} was
+the highest amongst all projects. This subject uses configuration
+\ParClassParMeth{} and contains 419 test methods distributed nearly
+equally among 148 test classes with a small number of test methods.
+Furthermore, several methods in those classes are time-consuming.
 As result, the CPUs available for testing are kept occupied for the
-most part during test execution.} Finally, we note that parallel
-execution in \CodeIn{Log4J2} was ineffective.  We found that Maven
-invokes several test modules in this project but the test modules that
-dominate execution time run sequentially by default.
+most part during test execution.}
+Finally, we note that parallel execution in \CodeIn{Log4J2} was
+ineffective.  We found that Maven invokes several test modules in this
+project but the test modules that dominate execution time run
+sequentially by default.
 
 %% The third, runs parallel configuration in
 %% \Fix{80\%} of the project modules, however, the test time is dominated
@@ -973,7 +975,10 @@ dominate execution time run sequentially by default.
   \begin{minipage}{8cm}
     \textit{Answering \numRQSpeedupOne{}:}~\emph{Considering the
       machine setup we used, the average speedup observed with default
-      configurations of parallelization was \avgSpeedup{}x.}
+      configurations of parallelization was \avgSpeedup{}x.
+      \Jbc{The design of the test suite impacts the speedup obtained
+      in a given parallel configuration.}
+      }
   \end{minipage}
 }
 \end{center}
