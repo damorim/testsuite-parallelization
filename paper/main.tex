@@ -395,10 +395,15 @@ Pernambuco, Brazil\\
 % in the abstract
 \begin{abstract}
 Dealing with high testing costs remains an important problem in
-Software Engineering.  This paper reports our findings on the usage
-and impact of test execution parallelization in open-source projects.
-Cost-effective multicore CPUs, as well as testing frameworks and build
-systems to capitalize on them, are widely available today.
+Software Engineering.  Test suite parallelization is an important
+approach to address this problem.  This paper reports our findings on
+the usage and impact of test suite parallelization in open-source
+projects.\Comment{ This study brings to light the benefits and burdens
+  of that approach.} It provides recommendations to practicioners and
+tool developers to speed up test execution.
+
+%% Testing frameworks and build systems that capitalize on cost-effective
+%% multicore CPUs are widely available today.
 
 Considering a set of \numSubjs{} popular Java projects we analyzed, we
 found that \percentMedLongRunning{} of the projects contain costly
@@ -425,12 +430,6 @@ in running tests.
 %% problem given the tremendous popularity of open-source development and
 %% regression testing research. 
 
-
-
-This study brings to light the benefits and burdens of test suite
-parallelization to improve test efficiency. It provides
-recommendations to practicioners and developers of new techniques and
-tools aiming to speed up test execution with parallelization.
 
 %% We observed that (i) projects with costly test suites ocur in nearly
 %% one in every four projects, (ii) cost is relatively evenly distributed
