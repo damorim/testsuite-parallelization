@@ -1,13 +1,14 @@
 \section{Related Work}
 \label{sec:related}
-Researchers and practitioners have been shedding light to the to the
-demand of techniques for optimizing test execution. For instance, a
-recent paper from the automotive industry reported that test suites
-can take days to run~\cite{artl-etal-icst2015}.  There are different
-aspects to consider when dealing with the challenge of reducing
-test cost. 
+Researchers and practitioners have been shedding light to the demand
+of techniques for optimizing test execution.
 
-\textit{Test Selection vs. Parallelism:}
+%% For instance, a recent paper from the automotive industry reported
+%% that test suites can take days to run~\cite{artl-etal-icst2015}.
+%% There are different aspects to consider when dealing with the
+%% challenge of reducing test cost.
+
+\textit{Test Selection:}
 Research has focused mostly on test suite minimization,
 prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
 Most of these techniques are unsound (\ie{}, they do not guarantee
@@ -25,22 +26,22 @@ also discovered subjects with parallelism enabled by default.  Test
 suite parallelization is complementary to regression testing
 techniques.
 
-\Jbc{
-\textit{Usage of massively parallel hardware:}
-Previous research investigated the feasibility of testing embedded
-software on Graphics Processing Units (GPUs) as an alternative
-to multicore CPUs~\cite{rajan-etal-ase2014}.
-The Simple Instruction Multiple Data (SIMD) architecture of
-modern GPUs allows running the same test case with different test data
-over several threads.
-Although benchmarks indicate far superior performance over traditional
-multicore CPUs, existing GPU programming-models (\eg,
-CUDA~\cite{cuda}, and OpenCL~\cite{opencl}) are compatible only with a
-subset of the C/C++ language.
-Recent work proposed a compiler-assisted approach to make programs
-compatible with the relying programming
-model~\cite{yaneva-etal-issta2017}; however, }\Jbc{...Justify they are out
-of scope for our subjects...}.
+%% \textit{Usage of massively parallel hardware:}
+\textit{Hardware level parallelization:} Previous research
+investigated the feasibility of testing embedded software on Graphics
+Processing Units (GPUs) as an alternative to multicore
+CPUs~\cite{rajan-etal-ase2014}.  The Simple Instruction Multiple Data
+(SIMD) architecture of modern GPUs allows running the same test case
+with different test data over several threads.  Although benchmarks
+indicate far superior performance over traditional multicore CPUs.
+%% , existing GPU programming-models (\eg{}, CUDA~\cite{cuda}, and
+%% OpenCL~\cite{opencl}) are compatible only with a subset of the C/C++
+%% language.
+Recent work proposed a compiler-assisted approach to make
+programs compatible with the relying programming
+model~\cite{yaneva-etal-issta2017};
+
+\Jbc{...Justify they are out of scope for our subjects...}.
 
 \Jbc{Missing work about testing in the cloud and Jon Bell}
 
