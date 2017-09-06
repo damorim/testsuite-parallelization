@@ -66,13 +66,13 @@ subjects.
 
 From these \SubjectsGithub{} downloaded projects,
 \SubjectsGithubNotMaven{} projects were not Maven or did not have a
-\pomf{} in the root directory and \SubjectsGithubNotTestable{}
-projects were unable to test due to incompatible environment (\eg,
-missing required web browser or database management system).
+\pomf{} in the root directory, and we were unable to test
+\SubjectsGithubNotTestable{} projects  due to incompatible environment
+(\eg, missing required web browser or database management system).
 In addition, we identified \SubjectsGithubFlaky{} projects with
-non-deterministic test results.
-In general, a test that either pass or fail under the same circumstances
-is known as a ``flaky test''~\cite{luo-etal-fse2014}.
+``flaky tests''~\cite{luo-etal-fse2014}.
+In general, a ``flaky test'' is a test that either pass or fail under
+the same circumstances leading to non-deterministic results.
 \Comment{While there are several causes that may introduce randomness on test
 results, our concern is on flakiness caused by
 parallel execution.}
@@ -89,11 +89,11 @@ Figure~\ref{fig:subjects} summarizes our sample set.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.25\textwidth]{results/piechart-subjs.pdf}
+  \includegraphics[width=0.27\textwidth]{results/piechart-subjs.pdf}
   \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular projects
   hosted on \github{}. From this initial sample, we ignored
   \SubjectsGithubNotMaven{} projects without Maven support,
-  \SubjectsGithubNotTestable{} projects unable to test,
+  \SubjectsGithubNotTestable{} with missing dependencies,
   \SubjectsGithubFlaky{} projects with flaky tests, and
   \SubjectsGithubTooManyFailures{} projects had at least
   \SuiteFailingThreshold{} of failing tests. We considered
@@ -106,16 +106,15 @@ Figure~\ref{fig:subjects} summarizes our sample set.
 To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
 processor machine with eight virtual CPUs (four cores with two native
 threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
-(64-bit version).  Software settings include \Comment{the Linux
-  \emph{sysstat} package to measure performance, }git to fetch
-subjects, Java 8, and Maven 3.3.9 to build and test subjects. We used
-Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3} to process the
-data and generate plots.  All source artifacts are publicly available
-for replication (on our website~\cite{ourwebpage}).  This
-includes supporting scripts (\eg, the script that test subjects and
-generates raw analysis data) and the full list of projects. \Comment{,
-  and a \emph{Vagrantfile} to emulate our hardware and all software
-  dependencies.}
+(64-bit version).  Software settings include Git, Java 8, and Maven
+3.3.9.
+We used Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3} to
+process test results and generate plots.  All source artifacts are
+publicly available for replication on our website~\cite{ourwebpage}.
+This includes supporting scripts (\eg, the script that test subjects
+and generates raw analysis data) and the full list of projects.
+\Comment{, and a \emph{Vagrantfile} to emulate our hardware and all
+software dependencies.}
 
 
 \section{Evaluation}
@@ -251,15 +250,17 @@ Figure~\ref{fig:subjects}.  Figure~\ref{fig:mvn-execution} illustrates
 the script we used to measure time.
 
 We took the following actions to isolate our environment from
-measurement noise.  First, we observed that some test tasks called
-test-unrelated tasks (\eg, \emph{javadoc} generation and static
-analyses) that could interfere in our time measurements.  To address
-that potential issue, we inspected Maven execution logs from a sample
-including a hundred projects prior to running the script from
-Figure~\ref{fig:mvn-execution}.  The tasks we found were ignored from
-execution (lines 1-4).  Furthermore, to avoid noise from operating
-system events, we configured our workstation to run only essential
-services.  The machine was dedicated to our experiments and we
+measurement noise.
+First, we observed that some test tasks called test-unrelated tasks
+(\eg, \emph{javadoc} generation and static analyses) that could
+interfere in our time measurements.
+To address that potential issue, we inspected Maven execution logs
+from a sample including a hundred projects prior to running the script
+from Figure~\ref{fig:mvn-execution}.
+The tasks we found were ignored from execution (lines 1-4).
+Furthermore, to avoid noise from unrelated OS events, we configured
+our workstation to only run essential services.
+The machine was dedicated to our experiments and we
 accessed it via SSH. In addition, we configured the \CodeIn{isolcpus}
 option from the Linux Kernel \cite{linux-kernel} to isolate six
 virtual CPUs to run our experiments, leaving the remaining CPUs to run
@@ -286,25 +287,29 @@ We ran the test suite for each subject three times, reporting averaged
 execution times in three ranges: tests that run within a minute
 (\shortg{} group), tests that run in one to five minutes (\medg{}
 group), and tests that run in five or more minutes (\longg{}
-group). We followed a similar methodology to group projects by time as
+group).
+\Comment{We followed a similar methodology to group projects by time as
 Gligoric~\etal{}~\cite{gligoric-etal-issta2015} in their work on
-regression test selection.\Comment{ and added the \medg{} group due to
-  the variability of the time cost from subjects out of the \shortg{}
-  group} Figure~\ref{fig:rq1-barplot} shows the number of projects in
+regression test selection.}
+\Comment{ and added the \medg{} group due to the variability of the
+time cost from subjects out of the \shortg{} group}
+Figure~\ref{fig:rq1-barplot} shows the number of projects in
 each group.  As expected, \longg{} and \medg{} projects do not occur
 as frequently as \shortg{} projects.  However, they do occur in
 relatively high numbers.
 
-Figure~\ref{fig:rq1-boxplot} shows cost distribution of test suites in
-each group as boxplots.  Note that the y-ranges are different.  The
-distribution associated with the \shortg{} group is the most
+Figure~\ref{fig:rq1-boxplot} shows as boxplots distribution of cost of
+test suites in each group.
+Note that the y-ranges are different.
+The distribution associated with the \shortg{} group is the most
 unbalanced (right skewed)\Comment{ with outliers closed to the \medg{}
-  group}.  The test suites in this group ran in 15 or less seconds for
+group}.
+The test suites in this group ran in 15 or less seconds for
 over 75\% of the cases.  Such scenarios constitute the majority of the
 cases we analyzed.  Considering the groups \medg{} and \longg{},
 however, we found many costly executions.  Nearly 75\% of the projects
-from the \medg{} group take over 3.5 minutes to run and nearly 75\% of
-the projects from the \longg{} group take $\sim$20 minutes to run.  We
+from the \medg{} group take 3.5 or more minutes to run and nearly 75\% of
+the projects from the \longg{} group took $\sim$20 minutes to run.  We
 found cases in the \longg{} group were execution takes over 50 minutes
 to complete, as can be observed from the outliers (dots) in the plot.
 
@@ -341,7 +346,7 @@ experiments for one main reason.
 Some projects may omit long-running tests on their default
 execution. For instance, the project \CodeIn{apache.maven-surefire}
 runs all unit tests in a few seconds.  According to our criteria, this
-project is to be classified as \shortg{} but a closer look reveals
+project is classified as \shortg{} but a closer look reveals
 that only smoke tests are run by default in this project.
 Time-consuming integration and system tests are only accessible via
 custom parameters, which we do not handle in our experimental setup.
@@ -364,7 +369,7 @@ have more than 5\% of failing tests (7.3\% in average).
     \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
       time-consuming test suites are relatively frequent in
       open-source projects.  We found that \percentMedLongRunning{} of
-      the \numSubjs{} projects we analyzed (\ie{}, over 1 in every 5
+      the \numSubjs{} projects we analyzed (\ie{}, nearly 1 in every 4
       projects) take at least 1 minute to run and
       \percentLongRunning{} take at least 5 minutes to run.\Comment{
         (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}
@@ -446,7 +451,7 @@ cases of CPU monopolization.  For example, the highest value of
 $\sigma$ occurred in \CodeIn{uber\_chaperone}, a project from the
 \longg{} group.  This project contains only 26 tests, 17 of which take
 less than 0.5s to run, one of which takes nearly 3s to run, two of
-which take nearly 11s to run, four which takes in average 3m to run, and two of
+which take nearly 11s to run, four of which takes on average 3m to run, and two of
 which take $\sim$8m to run.  For this project, 98.4\% of the
 execution cost is dominated by 20\% of the tests; without these
 two costly tests this project would have been classified as
@@ -481,9 +486,8 @@ the tests running faster.
 
 Figure~\ref{fig:time-distributions} shows that the average median
 times are similar for \medg{} and \longg{}-running test suites.
-The difference in overall running times of projects in those groups
-is mainly justified by the number of test cases as opposed to the
-individual costs of test cases.
+The difference in overall running times is mainly justified by the
+number of test cases as opposed to the individual costs of test cases.
 Figure~\ref{fig:size-testsuites} shows the difference in the
 distribution of test suite sizes across groups.  This figure indicates
 that long projects, albeit having a wider inter-quartile range (middle
