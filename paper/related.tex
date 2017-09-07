@@ -8,42 +8,55 @@ of techniques for optimizing test execution.
 %% There are different aspects to consider when dealing with the
 %% challenge of reducing test cost.
 
-\textit{Test Selection:}
-Research has focused mostly on test suite minimization,
-prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
-Most of these techniques are unsound (\ie{}, they do not guarantee
-that fault-revealing tests will be selected), however, more recently,
-sound techniques have been
-proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}.  For
-example, to soundly select tests for execution,
-Ekstazi~\cite{ekstazi-web,gligoric-etal-issta2015} conservatively
-computes which tests have been impacted by changes.  A test is
+\textit{Test selection:} Research has focused mostly on test suite
+minimization, prioritization, reduction, and
+selection~\cite{yoo-harman-stvr2012}.  \Fix{...} Most of these
+techniques are unsoud (\ie{}, they do not guarantee that
+fault-revealing tests will be selected), however, more recently, sound
+techniques have been
+proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}. Recent work
+for test selection introduced
+Ekstazi~\cite{ekstazi-web,gligoric-etal-issta2015} that conservatively
+computes which tests have been impacted by file changes.  A test is
 discarded for execution if it does not depend on any changed file
 dynamically reachable from execution. Although Ekstazi is focused on
 regression test selection, it highlights the importance of parallelism
-as a complement to test selection.  In fact, as in their evaluation, we
-also discovered subjects with parallelism enabled by default.  Test
-suite parallelization is complementary to regression testing
+as a complement to test selection.  In fact, as in their evaluation,
+we also discovered subjects with parallelism enabled by default.
+Test suite parallelization is complementary to regression testing
 techniques.
+\Luis{maybe we should create another division for test acceleration}
+Bell et al.\Fix{ref} introduced ElectricTest, a tool for detecting
+data dependencies between real world tests. A technique was introduced
+to observe global resources read and write between tests, instead of
+executing every possible permutation of all tests to detect data
+dependencies. Dependency detection can be combined with test suite
+parallelization to efficiently accelerate test execution.
 
 %% \textit{Usage of massively parallel hardware:}
-\textit{Hardware level parallelization:} Previous research
+\textit{Hardware level massive parallelization:} Previous research
 investigated the feasibility of testing embedded software on Graphics
 Processing Units (GPUs) as an alternative to multicore
 CPUs~\cite{rajan-etal-ase2014}.  The Simple Instruction Multiple Data
 (SIMD) architecture of modern GPUs allows running the same test case
 with different test data over several threads.  Although benchmarks
-indicate far superior performance over traditional multicore CPUs.
-%% , existing GPU programming-models (\eg{}, CUDA~\cite{cuda}, and
+indicate far superior performance over traditional multicore CPUs,
+there are severe limitations. Control-flow branching in source code
+can impact performance negatively while violating the lock-step
+execution during the divergence of instructions~\cite{rajan-etal-ase2014}
+%% existing GPU programming-models (\eg{}, CUDA~\cite{cuda}, and
 %% OpenCL~\cite{opencl}) are compatible only with a subset of the C/C++
 %% language.
-Recent work proposed a compiler-assisted approach to make
-programs compatible with the relying programming
-model~\cite{yaneva-etal-issta2017};
-
+Recent work proposed a compiler-assisted approach to make programs
+compatible with the relying programming-model used by
+GPUs to parallelize tests~\cite{yaneva-etal-issta2017}.
 \Jbc{...Justify they are out of scope for our subjects...}.
 
-\Jbc{Missing work about testing in the cloud and Jon Bell}
+\textit{Continuous integration services:}
+Recent work showed us that Continuous Integration Services are widely
+used and improve the productivity~\Fix{ref ref ref}. 
+
+%% \Jbc{Missing work about testing in the cloud and Jon Bell}
 
 \Comment{
 \Fix{Please:
