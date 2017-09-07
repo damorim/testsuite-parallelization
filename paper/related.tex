@@ -11,7 +11,7 @@ of techniques for optimizing test execution.
 \textit{Test Selection:} Research has focused mostly on test suite
 minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012}.  \Fix{...} Most of these
-techniques are unsound (\ie{}, they do not guarantee that
+techniques are unsoud (\ie{}, they do not guarantee that
 fault-revealing tests will be selected), however, more recently, sound
 techniques have been
 proposed~\cite{gligoric-etal-issta2015,soetens-etal-2016}. Recent work
@@ -36,18 +36,19 @@ with different test data over several threads.  Although benchmarks
 indicate far superior performance over traditional multicore CPUs,
 there are severe limitations. Control-flow branching in source code
 can impact performance negatively while violating the lock-step
-execution during the divergence of instructions~\cite{rajan-etal-ase2017}
+execution during the divergence of instructions~\cite{rajan-etal-ase2014}
 %% existing GPU programming-models (\eg{}, CUDA~\cite{cuda}, and
 %% OpenCL~\cite{opencl}) are compatible only with a subset of the C/C++
 %% language.
-Recent work proposed a compiler-assisted approach to make
-programs compatible with the relying programming
-model~\cite{yaneva-etal-issta2017}.
+Recent work proposed a compiler-assisted approach to make programs
+compatible with the relying programming-model used by
+GPUs to parallelize tests~\cite{yaneva-etal-issta2017}.
 
 \Jbc{...Justify they are out of scope for our subjects...}.
 
-\textit{Cloud based build tools:}
-
+\textit{Continuous integration services:}
+Recent work showed us that Continuous Integration Services are widely
+used and improve the productivity~\Fix{ref ref ref}. 
 
 %% \Jbc{Missing work about testing in the cloud and Jon Bell}
 
