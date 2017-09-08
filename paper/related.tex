@@ -9,22 +9,23 @@ We discuss most related work in the following.
 %% There are different aspects to consider when dealing with the
 %% challenge of reducing test cost.
 
-%\textit{Test selection:}
-Regression testing research has focused
-mostly on test suite minimization, prioritization, reduction, and
+%ekstazi-web,
+Regression testing research has focused mostly on test suite
+minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012,soetens-etal-2016}.  Most of these
 techniques are unsoud (\ie{}, they do not guarantee that
 fault-revealing tests will be considered for testing).  The test
-selection technique Ekstazi~\cite{ekstazi-web,gligoric-etal-issta2015}
-is an example of a sound regression testing technique. It
-conservatively computes which tests have been impacted by file
-changes.  A test is discarded for execution if it does not depend on
-any changed file dynamically reachable from execution.\Comment{ Curiously
-Ekstazi's evaluation discovered subjects with parallelism enabled by
-default.} \c{C}elik~\etal{}~\cite{celik-etal-fse2017} recently extended
-Ekstazi to track files accessed outside JVM boundaries.  Important to
-note that regression testing techniques, including test selection, is
-complementary to test suite parallelization.
+selection technique
+Ekstazi~\cite{gligoric-etal-issta2015,celik-etal-fse2017} is an
+example of a sound regression testing technique. It conservatively
+computes which tests have been impacted by file changes.  A test is
+discarded for execution if it does not depend on any changed file
+dynamically reachable from execution.\Comment{ Curiously Ekstazi's
+  evaluation discovered subjects with parallelism enabled by
+  default.}\Comment{ \c{C}elik~\etal{}~\cite{} recently extended
+  Ekstazi to track files accessed outside JVM boundaries.} Important
+to note that regression testing techniques, including test selection,
+is complementary to test suite parallelization.
 
 %\Luis{maybe we should create another division for test acceleration}
 
@@ -39,23 +40,26 @@ unrestricted test suite parallelization.
 %% \textit{Usage of massively parallel hardware:}
 %\textit{Hardware level massive parallelization:}
 
-The use of the Simple Instruction Multiple Data (SIMD) design has been
-previoulsy explored to accelerate test
+The use of the Single Instruction Multiple Data (SIMD) design has been
+previoulsy explored in research to accelerate test
 execution~\cite{damorim-etal-issta2007,damorim-etal-tse2008,kim-etal-issre2012,nguyen-etal-icse2014,rajan-etal-ase2014,sen-etal-fse2015,yaneva-etal-issta2017}. The
-SIMD architecture, as implemented in modern GPUs for instance, allows
+SIMD architecture, as implemented in modern GPUs, for instance, allows
 the execution of a given instruction simultaneously against multiple
-data.  For that reason, in principle, a test could be ran
-simulteneously against multiple inputs.  Recent
-work~\cite{rajan-etal-ase2014,yaneva-etal-issta2017} explored the
-feasibility of testing embedded software using GPUs.  Although
-benchmarks indicate superior performance compared to traditional
-multicore CPUs, the use of the technology in broader settings is
-unfortunately limited. For example, execution of more general programs
-can violate SIMD's lock-step assumption on the control-flow of threads
-affecting negatively performance. In contrast to the datasets used in
-those papers, often each test is associated with a single input
-(instead of many).  Furthermore, handling complex data is challenging
-in SIMD~\cite{damorim-etal-issta2007,damorim-etal-tse2008}.
+data.  For that reason, in principle, one test could be ran
+simulteneously against multiple inputs provided that multiple test
+inputs exist associated to that one test.  Recent
+work~\cite{rajan-etal-ase2014,yaneva-etal-issta2017} explored that
+idea to speedup test execution of embedded software using graphic
+cards. Although benchmarks indicate superior performance compared to
+traditional multicore CPUs, the use of the technology in broader
+settings is limited. For example, execution of more general programs
+can violate the SIMD's lock-step assumption on the control-flow of
+threads.  This violation would affect negatively performance.
+Furthermore, handling complex data is challenging in
+SIMD~\cite{damorim-etal-issta2007,damorim-etal-tse2008}.  The approach
+is promising when multiple input vectors exist for each test and the
+testing code heavily manipulates scalar data types.  The datasets used
+in those papers satisfied those constraints.
 
 
 %% existing GPU programming-models (\eg{}, CUDA~\cite{cuda}, and
