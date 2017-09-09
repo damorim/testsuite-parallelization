@@ -10,7 +10,7 @@ update was on or after January 1st, 2016, and (4) the \emph{readme}
 file contains the string \emph{mvn}.  We focused on Java for its
 popularity.  Although there is no clearcut limit on the number of
 \github{} stars~\cite{github-stars} to define relevant projects, we
-observed that 100 was enough to eliminate trivial subjects. The third
+observed that one hundred stars was enough to eliminate trivial subjects. The third
 criteria serves to skip projects without recent activity. The fourth
 criteria is an approximation to find Maven projects.\Comment{ The
   rationale is that if the string \emph{mvn} exists in the
@@ -20,12 +20,14 @@ Java projects.  Important to highlight that, as of now, the
 \github{}'s search API can only reflect contents from repository
 statistics (\eg, number of forks, main programming language); it does
 not provide a feature to search for projects containing certain files
-in the dir structure (\eg{}, \emph{pom.xml}).
+(\eg{}, \emph{pom.xml}) in the directory structure.
 Figure~\ref{fig:subject-query} illustrates the query to the \github{}
-API as an HTTP request.  
+API as an HTTP request.   The result set is sorted
+in descending order of stars.
+
 
 \vspace{1ex}
-\begin{figure}[h!]
+\begin{figure}[t!]
 \centering
 \scriptsize
 \lstset{
@@ -36,45 +38,45 @@ API as an HTTP request.
 }
 \begin{lstlisting}
 https://api.github.com/search/repositories?q=language:java
-        +stars:>=100+pushed:>=2016+mvn%20in:readme
-        &sort=stars
+ +stars:>=100+pushed:>=2016+mvn%20in:readme&sort=stars
 \end{lstlisting}
   \caption{\label{fig:subject-query} Query to the \github{} API for
-  projects with the following criteria: (1) Java, (2) at least 100
-  stars, (3) updated on January 1st, 2016 (or later), (4) contains
-  the string \emph{mvn} in the \emph{readme} file. Output is
-  paginated in descending order of stars.}
+  projects that (1) use Java, (2) contains at least 100
+  stars, (3) has been updated on January 1st, 2016 (or later), (4) contains
+  the string \emph{mvn} in the \emph{readme} file.}
+  \vspace{-5ex}  
 \end{figure}
 
-After obtaining a list of potential projects, we filtered those
-containing a \pomf{} file in the root directory.  A Maven project may
-contain several sub-modules with multiple \pomf{} files.
-To avoid introducing noise in our experiments, for each project, we
-executed the tests \SubjectsReruns{} times to filter projects with
-deterministic outcome.
-As of August 25th 2017, our search criteria returned \SubjectsGithub{}
+We used the following methodology to select projects for
+analysis. After obtaining the list of potential projects from GitHub, we filtered those
+containing a \pomf{} file in the root directory.\Comment{  A Maven project may
+contain several sub-modules with multiple \pomf{} files.}
+Then, considering this set of Maven projects, we
+executed the tests for \SubjectsReruns{} times to discard those projects with
+issues
+in the build file and nondeterministic results observed from sequential executions.
+As of August 25th 2017, our search criteria returned a total of \SubjectsGithub{}
 subjects.
-
-From these \SubjectsGithub{} downloaded projects,
+From this set of projects,
 \SubjectsGithubNotMaven{} projects were not Maven or did not have a
-\pomf{} in the root directory, and we were unable to test
-\SubjectsGithubNotTestable{} projects  due to incompatible environment
-(\eg, missing required web browser or database management system).
-In addition, we identified \SubjectsGithubFlaky{} projects with
-``flaky tests''~\cite{luo-etal-fse2014}.
-In general, a ``flaky test'' is a test that either pass or fail under
+\pomf{} in the root directory, 
+\SubjectsGithubNotTestable{} projects were not considered because of
+environment incompatibility
+(\eg, missing\Comment{ required web browser or database management system}~DBMS),
+\SubjectsGithubFlaky{} projects were discarded because of
+``flaky tests''~\cite{luo-etal-fse2014}. A ``flaky'' test is a test that passes or fails under
 the same circumstances leading to non-deterministic results.
-As some of our experiments consist in running tests on different
+As some of our experiments consist of running tests on different
 threads, we ignored these projects as it would be impractical
 to identify whether a test failed due to a race condition or some
 other source of flakiness.
-From the \SubjectsGithubConsistant{} projects with
+From the remaining \SubjectsGithubConsistant{} projects with
 deterministic results, we eliminated \SubjectsGithubTooManyFailures{}
-projects with more than \SuiteFailingThreshold{} of tests failing to
-reduce bias in our dataset.
-We ignored failing tests with JUnit's
-\CodeIn{@Ignore} annotation on the remaining projects.
-Our final set of subjects consists of \numSubjs{} projects.
+projects with \SuiteFailingThreshold{} or more failing tests as to
+reduce bias. For the
+remaining projects with failing tests, we used the JUnit's
+\CodeIn{@Ignore} annotation to ignore failing tests.
+Our final set of subjects contains \numSubjs{} projects.
 Figure~\ref{fig:subjects} summarizes our sample set.
 
 \begin{figure}[ht]
@@ -88,22 +90,22 @@ Figure~\ref{fig:subjects} summarizes our sample set.
   \SubjectsGithubTooManyFailures{} projects had at least
   \SuiteFailingThreshold{} of failing tests. We considered
   \numSubjs{} projects to conduct our study.}
-  \vspace{-2ex}
+  \vspace{-1ex}
 \end{figure}
 
-\subsection{Setup and Replication}
+%\subsection{Setup and Replication}
 \label{sec:setup}
 
 To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
 processor machine with eight virtual CPUs (four cores with two native
 threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
-(64-bit version).  Software settings include Git, Java 8, and Maven
-3.3.9.
-We used Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3} to
-process test results and generate plots.  All source artifacts are
+(64-bit version).  We used\Comment{ Git,} Java 8 and Maven
+3.3.9 to build projects and run test suites. To
+process test results and generate plots
+we used Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3}.  All source artifacts are
 publicly available for replication on our website~\cite{ourwebpage}.
-This includes supporting scripts (\eg, the script that test subjects
-and generates raw analysis data) and the full list of projects.
+This includes supporting scripts\Comment{ (\eg, the scripts to run the tests
+and generate raw analysis data)} and the full list of projects.
 
 \section{Evaluation}
 \label{sec:eval}
@@ -160,7 +162,7 @@ of analysis we presented in Section~\ref{sec:intro}.
 
 %% Feasibility
 \newcommand{\numRQFeasibilityOne}{RQ1}
-\newcommand{\RQFeasibilityOne}{How prevalent is the occurence of time-consuming
+\newcommand{\RQFeasibilityOne}{How prevalent are time-consuming
   test suites\Comment{ in open-source projects}?}
 
 \newcommand{\numRQFeasibilityTwo}{RQ2}
@@ -229,8 +231,8 @@ of analysis we presented in Section~\ref{sec:intro}.
   \item \numRQFeasibilityOne{}. \textbf{\RQFeasibilityOne}
 \end{itemize}
 
-To evaluate prevalence of projects with costly test suites, we
-considered the \numSubjs{} testable subjects from
+To evaluate prevalence of projects with time-consuming test suites, we
+considered the \numSubjs{} projects, appearing in 
 Figure~\ref{fig:subjects}.  Figure~\ref{fig:mvn-execution} illustrates
 the script we used to measure time.
 
@@ -243,8 +245,8 @@ To address that potential issue, we inspected Maven execution logs
 from a sample including a hundred projects prior to running the script
 from Figure~\ref{fig:mvn-execution}.
 The tasks we found were ignored from execution (lines 1-4).
-Furthermore, to avoid noise from unrelated OS events, we configured
-our workstation to only run essential services.
+Furthermore, we configured
+our workstation to only run essential services as to avoid noise from unrelated OS events.
 The machine was dedicated to our experiments and we
 accessed it via SSH. In addition, we configured the \CodeIn{isolcpus}
 option from the Linux Kernel \cite{linux-kernel} to isolate six
@@ -256,7 +258,6 @@ measurements were fair, we compared timings corresponding to the
 sequential execution of tests using Maven with that obtained with
 JUnit's default \CodeIn{JUnitCore} runner, invoked from the command
 line.  Results were very close.
-
 The main loop (lines 6-15) of the script in
 Figure~\ref{fig:mvn-execution} iterates over the list of subjects and
 invokes Maven multiple times\Comment{ to isolate cost of running
@@ -267,37 +268,34 @@ by default (line 11). After execution, we used a regular expression on
 the output log to extract the elapsed time (line 12-14).
 
 \input{codes/evaluation}
-\vspace{-1ex}
 
-We ran the test suite for each subject three times, reporting averaged
-execution times in three ranges: tests that run within a minute
-(\shortg{} group), tests that run in one to five minutes (\medg{}
-group), and tests that run in five or more minutes (\longg{}
-group).
 \Comment{We followed a similar methodology to group projects by time as
 Gligoric~\etal{}~\cite{gligoric-etal-issta2015} in their work on
 regression test selection.}
 \Comment{ and added the \medg{} group due to the variability of the
 time cost from subjects out of the \shortg{} group}
-Figure~\ref{fig:rq1-barplot} shows the number of projects in
+
+We ran the test suite for each subject three times, reporting averaged
+execution times in three ranges: tests that run within a minute
+(\shortg{}), tests that run in one to five minutes (\medg{}), and
+tests that run in five or more minutes (\longg{}). Figure~\ref{fig:rq1-barplot} shows the number of projects in
 each group.  As expected, \longg{} and \medg{} projects do not occur
 as frequently as \shortg{} projects.  However, they do occur in
 relatively high numbers.
-
-Figure~\ref{fig:rq1-boxplot} shows as boxplots distribution of cost of
-test suites in each group.
+Figure~\ref{fig:rq1-boxplot} shows the distribution of execution time of
+test suites in each of these groups.
 Note that the y-ranges are different.
 The distribution associated with the \shortg{} group is the most
 unbalanced (right skewed)\Comment{ with outliers closed to the \medg{}
 group}.
 The test suites in this group ran in 15 or less seconds for
-over 75\% of the cases.  Such scenarios constitute the majority of the
-cases we analyzed.  Considering the groups \medg{} and \longg{},
+over 75\% of the cases.\Comment{  Such scenarios constitute the majority of the
+cases we analyzed.} Considering the groups \medg{} and \longg{},
 however, we found many costly executions.  Nearly 75\% of the projects
 from the \medg{} group take 3.5 or more minutes to run and nearly 75\% of
-the projects from the \longg{} group took $\sim$20 minutes to run.  We
-found cases in the \longg{} group were execution takes over 50 minutes
-to complete, as can be observed from the outliers (dots) in the plot.
+the projects from the \longg{} group take $\sim$20 minutes to run.  We
+found cases in the \longg{} group were execution takes more than 50 minutes
+to complete, as can be observed from the outliers in the boxplot.
 
 \begin{figure}[ht]
   \centering
@@ -312,20 +310,20 @@ to complete, as can be observed from the outliers (dots) in the plot.
     \includegraphics[width=\textwidth]{results/boxplot-timecost.pdf}
     \caption{\label{fig:rq1-boxplot}}
   \end{subfigure}%
-  \caption{(a) Subjects grouped by time cost ($t$): short run ($t <
-  1m$), medium run ($1m \le t < 5m$), and long run ($5m \le t$); (b)
-  Distribution of time cost by group.}
-  \vspace{-3ex}
+  \caption{(a)\Comment{ Testing time grouped by time cost ($t$): short run
+    ($t<1m$), medium run ($1m \le t < 5m$), and long run ($5m \le{}
+    t$);}~Number of projects in each cost group and
+    (b)~Distribution of running times per cost group.}
+  \vspace{-1ex}
 \end{figure}
 
-It is important to note that we under-estimated cost in our
-experiments for one main reason.
-Some projects may omit long-running tests on their default
-execution. For instance, the project \CodeIn{apache.maven-surefire}
+It is important to note that we under-estimated running times as we missed test modules not enabled for
+execution in the root \emph{pom.xml}.\Comment{Some projects may omit long-running tests on their default
+execution.} For instance, the project \CodeIn{apache.maven-surefire}
 runs all unit tests in a few seconds.  According to our criteria, this
 project is classified as \shortg{} but a closer look reveals
-that only smoke tests are run by default in this project.
-Time-consuming integration and system tests are only accessible via
+that only smoke tests are executed in this project by default.
+In this project, integration and system tests, which take longer to run, are only accessible via
 custom parameters, which we do not handle in our experimental setup.
 We enabled such parameters for this specific project and observed that
 testing time goes to nearly 30 minutes.  For simplicity, we considered
@@ -337,8 +335,8 @@ test failures.
 }
 From the \numSubjs{} testable projects, \numSubjsPass{} successfully
 executed all tests and \numSubjsFail{} reported some test failure.
-Furthermore, from these \numSubjsFail{} subjects, only 11 subjects
-have more than 5\% of failing tests (7.3\% in average).
+From these \numSubjsFail{} subjects, only 11 subjects
+have more than 5\% of failing tests (7.3\% on average).
 \begin{center}
 \vspace{1ex}
 \fbox{
@@ -348,7 +346,7 @@ have more than 5\% of failing tests (7.3\% in average).
     open-source projects.  We found that \percentMedLongRunning{} of
     the \numSubjs{} projects we analyzed (\ie{}, nearly 1 in every 4
     projects) take at least 1 minute to run and
-    \percentLongRunning{} take at least 5 minutes to run.\Comment{
+    \percentLongRunning{} of them take at least 5 minutes to run.\Comment{
       (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}
 \end{minipage}
 }
@@ -359,11 +357,18 @@ have more than 5\% of failing tests (7.3\% in average).
   \item \numRQFeasibilityTwo. \textbf{\RQFeasibilityTwo}
 \end{itemize}
 
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
+  \caption{\label{fig:time-distributions}Distribution of test case time per project.}%
+  \vspace{-3ex}
+\end{figure}
+
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon, accounting to nearly \percentMedLongRunning{} of the
 \numSubjs{} projects we analyzed.  Research question \numRQFeasibilityTwo{}
-measures the distribution of test costs in test suites as to estimate
-potential of obtaining speedups with parallelization.  In
+measures the distribution of test costs in test suites.\Comment{ as to estimate
+potential of obtaining speedups with parallelization.}  In
 the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
@@ -382,24 +387,14 @@ test method is the smallest working unit in test frameworks.
 %% These contradictory forces, pushing number of tests and cost
 %% of each test up and down, make prediction of effectiveness challenging.
 Figure~\ref{fig:time-distributions} shows the time distribution of
-individual test cases per project (x-axis denote projects appearing in
-arbitrary order).
-We observed that the average median value of execution cost for a
-test was relatively small (dashed horizontal red lines), namely 0.08s
-for \medg{} projects and 0.16s for \longg{} projects.
-The standard deviations associated with each distribution were
+individual test cases per project.
+We observed that the average median times (see dashed horizontal red
+lines) were small, namely 0.08s
+for \medg{} projects and 0.16s for \longg{} projects, and the standard deviations associated with each distribution were
 relatively low.\Comment{ Figure~\ref{fig:sd} shows the number of
-projects within specific ranges of $\sigma$ values.}  We noted a small
-number of cases of CPU monopolization.
-
-\begin{figure}[t!]
-  \centering
-  \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
-  \caption{\label{fig:time-distributions}Time distributions per projects.}%
-  \vspace{-3ex}
-\end{figure}
-
-For example, the highest value of $\sigma$ occurred in
+  projects within specific ranges of $\sigma$ values.} High values of
+$\sigma$ are indicative of CPU monopolization. We found only a small number
+of those. The highest value of $\sigma$ occurred in
 \CodeIn{uber\_chaperone}, a project from the \longg{} group.
 This project contains only 26 tests, 17 of which take less than 0.5s
 to run, one of which takes nearly 3s to run, two of which take nearly
@@ -415,20 +410,23 @@ long-running and has the second highest value of $\sigma$.
 For this project, however, cost is distributed more smoothly across 98
 tests, of which 8 (8.1\%) take more than 1s to run with the rest of
 the tests running faster.
-Figure~\ref{fig:time-distributions} shows that the average median
-times are similar for \medg{} and \longg{}-running test suites.
-The difference in overall running times is mainly justified by the
-number of test cases as opposed to the individual costs of test cases.
 
 Figure~\ref{fig:size-testsuites} shows the difference in the
 distribution of test suite sizes across groups.  This figure indicates
-that long projects, have a higher median and much higher average
+that long projects have a higher median and much higher average
 number of test cases.
 Furthermore, we noted a strong positive correlation between running
 time and number of test on projects in the \longg{} group.
 Considering the \medg{} group, the correlation between these two
 variables was weak.
-Figure~\ref{fig:scattercost} illustrates this regression line.
+Figure~\ref{fig:scattercost} illustrates the regression lines between
+these the variables test suite cost and number of test cases.
+To sum, we observed that for projects with long-running test suites
+running time is typically
+justified by the number of test cases as opposed to the cost of individual test cases.
+
+%% Figure~\ref{fig:time-distributions} shows that the average median
+%% times are similar for \medg{} and \longg{}-running test suites.
 
 \begin{center}
 \fbox{
@@ -446,7 +444,7 @@ Figure~\ref{fig:scattercost} illustrates this regression line.
     \includegraphics[width=.9\textwidth]{results/boxplots-testcases.pdf}
     \caption{\label{fig:size-testsuites}}
   \end{subfigure}
-  \hfill
+  \hspace{3ex}
   \begin{subfigure}{0.28\textwidth}
     \centering
     \includegraphics[width=.9\textwidth]{results/scatter-testcost.pdf}
@@ -552,7 +550,7 @@ depends either on (1) the parameter \CodeIn{parallel} to define the
 parallelism mode within a JVM followed by the parameter
 \CodeIn{threadCount} or (2) the parameter
 \CodeIn{forkCount}\footnote{This parameter is named \CodeIn{forkMode}
-  in old versions of Maven Surefire} to define the number of forked
+  in old versions of Maven Surefire.} to define the number of forked
 JVMs.  As such, we captured, for each project, all related key-value
 pairs of Maven parameters and mapped those pairs to one of the
 possible parallelization modes.  For instance, if a given project
