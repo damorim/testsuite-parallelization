@@ -294,7 +294,7 @@ cases we analyzed.} Considering the groups \medg{} and \longg{},
 however, we found many costly executions.  Nearly 75\% of the projects
 from the \medg{} group take 3.5 or more minutes to run and nearly 75\% of
 the projects from the \longg{} group take $\sim$20 minutes to run.  We
-found cases in the \longg{} group were execution takes over 50 minutes
+found cases in the \longg{} group were execution takes more than 50 minutes
 to complete, as can be observed from the outliers in the boxplot.
 
 \begin{figure}[ht]
@@ -357,11 +357,18 @@ have more than 5\% of failing tests (7.3\% on average).
   \item \numRQFeasibilityTwo. \textbf{\RQFeasibilityTwo}
 \end{itemize}
 
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
+  \caption{\label{fig:time-distributions}Distribution of test case time per project.}%
+  \vspace{-3ex}
+\end{figure}
+
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon, accounting to nearly \percentMedLongRunning{} of the
 \numSubjs{} projects we analyzed.  Research question \numRQFeasibilityTwo{}
-measures the distribution of test costs in test suites as to estimate
-potential of obtaining speedups with parallelization.  In
+measures the distribution of test costs in test suites.\Comment{ as to estimate
+potential of obtaining speedups with parallelization.}  In
 the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
@@ -380,24 +387,14 @@ test method is the smallest working unit in test frameworks.
 %% These contradictory forces, pushing number of tests and cost
 %% of each test up and down, make prediction of effectiveness challenging.
 Figure~\ref{fig:time-distributions} shows the time distribution of
-individual test cases per project (x-axis denote projects appearing in
-arbitrary order).
-We observed that the average median value of execution cost for a
-test was relatively small (dashed horizontal red lines), namely 0.08s
-for \medg{} projects and 0.16s for \longg{} projects.
-The standard deviations associated with each distribution were
+individual test cases per project.
+We observed that the average median times (see dashed horizontal red
+lines) were small, namely 0.08s
+for \medg{} projects and 0.16s for \longg{} projects, and the standard deviations associated with each distribution were
 relatively low.\Comment{ Figure~\ref{fig:sd} shows the number of
-projects within specific ranges of $\sigma$ values.}  We noted a small
-number of cases of CPU monopolization.
-
-\begin{figure}[t!]
-  \centering
-  \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
-  \caption{\label{fig:time-distributions}Time distributions per projects.}%
-  \vspace{-3ex}
-\end{figure}
-
-For example, the highest value of $\sigma$ occurred in
+  projects within specific ranges of $\sigma$ values.} High values of
+$\sigma$ are indicative of CPU monopolization. We found only a small number
+of those. The highest value of $\sigma$ occurred in
 \CodeIn{uber\_chaperone}, a project from the \longg{} group.
 This project contains only 26 tests, 17 of which take less than 0.5s
 to run, one of which takes nearly 3s to run, two of which take nearly
@@ -413,20 +410,23 @@ long-running and has the second highest value of $\sigma$.
 For this project, however, cost is distributed more smoothly across 98
 tests, of which 8 (8.1\%) take more than 1s to run with the rest of
 the tests running faster.
-Figure~\ref{fig:time-distributions} shows that the average median
-times are similar for \medg{} and \longg{}-running test suites.
-The difference in overall running times is mainly justified by the
-number of test cases as opposed to the individual costs of test cases.
 
 Figure~\ref{fig:size-testsuites} shows the difference in the
 distribution of test suite sizes across groups.  This figure indicates
-that long projects, have a higher median and much higher average
+that long projects have a higher median and much higher average
 number of test cases.
 Furthermore, we noted a strong positive correlation between running
 time and number of test on projects in the \longg{} group.
 Considering the \medg{} group, the correlation between these two
 variables was weak.
-Figure~\ref{fig:scattercost} illustrates this regression line.
+Figure~\ref{fig:scattercost} illustrates the regression lines between
+these the variables test suite cost and number of test cases.
+To sum, we observed that for projects with long-running test suites
+running time is typically
+justified by the number of test cases as opposed to the cost of individual test cases.
+
+%% Figure~\ref{fig:time-distributions} shows that the average median
+%% times are similar for \medg{} and \longg{}-running test suites.
 
 \begin{center}
 \fbox{
@@ -444,7 +444,7 @@ Figure~\ref{fig:scattercost} illustrates this regression line.
     \includegraphics[width=.9\textwidth]{results/boxplots-testcases.pdf}
     \caption{\label{fig:size-testsuites}}
   \end{subfigure}
-  \hfill
+  \hspace{3ex}
   \begin{subfigure}{0.28\textwidth}
     \centering
     \includegraphics[width=.9\textwidth]{results/scatter-testcost.pdf}
@@ -550,7 +550,7 @@ depends either on (1) the parameter \CodeIn{parallel} to define the
 parallelism mode within a JVM followed by the parameter
 \CodeIn{threadCount} or (2) the parameter
 \CodeIn{forkCount}\footnote{This parameter is named \CodeIn{forkMode}
-  in old versions of Maven Surefire} to define the number of forked
+  in old versions of Maven Surefire.} to define the number of forked
 JVMs.  As such, we captured, for each project, all related key-value
 pairs of Maven parameters and mapped those pairs to one of the
 possible parallelization modes.  For instance, if a given project
