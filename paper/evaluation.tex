@@ -90,22 +90,22 @@ Figure~\ref{fig:subjects} summarizes our sample set.
   \SubjectsGithubTooManyFailures{} projects had at least
   \SuiteFailingThreshold{} of failing tests. We considered
   \numSubjs{} projects to conduct our study.}
-  \vspace{-2ex}
+  \vspace{-1ex}
 \end{figure}
 
-\subsection{Setup and Replication}
+%\subsection{Setup and Replication}
 \label{sec:setup}
 
 To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
 processor machine with eight virtual CPUs (four cores with two native
 threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
-(64-bit version).  Software settings include Git, Java 8, and Maven
-3.3.9.
-We used Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3} to
-process test results and generate plots.  All source artifacts are
+(64-bit version).  We used\Comment{ Git,} Java 8 and Maven
+3.3.9 to build projects and run test suites. To
+process test results and generate plots
+we used Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3}.  All source artifacts are
 publicly available for replication on our website~\cite{ourwebpage}.
-This includes supporting scripts (\eg, the script that test subjects
-and generates raw analysis data) and the full list of projects.
+This includes supporting scripts\Comment{ (\eg, the scripts to run the tests
+and generate raw analysis data)} and the full list of projects.
 
 \section{Evaluation}
 \label{sec:eval}
