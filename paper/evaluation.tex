@@ -1022,7 +1022,6 @@ experiment.
 %% 
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
-\Jbc{Parei aqui}
 It is worth mentioning that we used custom JUnit runners as opposed to
 Maven to run test suites with different parallel configurations (see
 Section~\ref{sec:modes}).
@@ -1031,36 +1030,36 @@ comparing results with JUnit's we observed that several of Maven's
 executions exposed problems.  For example, Maven incorrectly counts
 the number of test cases executed for some cases where test flakiness
 are observed.  These issues are categorized and documented on our
-website~\cite{ourwebpage} with Docker containers (for reproduction).
+website~\cite{ourwebpage} and can be reproduced with our scripts.
 To address those issues we implemented basic JUnit test runners (one
 for each parallel configuration), reflecting the effects of parallel
 configurations from Maven Surefire.  To write those runners we used
 Maven log files to identify test classes to run and used the Maven
 dependency plugin~\cite{maven-dep} to build the project's classpath
-with the command \CodeIn{mvn dependency:build-classpath}. Once we have
-the classpath and the tests to run, we invoke our JUnit runner that
-runs the test classes with different parallel configurations at
-once. For the sequential execution, we invoke the default JUnit test
-runner. For parallelism within a JVM (\ie, the configurations
+with the command \CodeIn{mvn dependency:build-classpath}.
+Once we have the classpath and the tests to run, we invoke our JUnit
+custom runner to run the test classes with different parallel
+configurations. For the sequential execution, we invoke the
+default JUnit test runner.
+\Fix{
+For parallelism within a JVM (\ie, the configurations
 \SeqClassParMeth{}, \ParClassSeqMeth{}, and \ParClassParMeth{}), we
 configured the JUnit runner with
 ParallelComputer~\cite{junit-parallel} that internally uses a pool of
 threads with cache to run test classes and methods. For the
 configurations with forked JVMs (\ie, \ForkSeq{} and \ForkParMeth{}),
 we have a queue of test classes and a pool of three threads that
-``consumes'' the next test class and spawns a JVM to run it.  Recall
-that in our setup (see Section~\ref{sec:setup}), we limited our kernel
-to use only three cores and reserved one for OS-related processes.  To
-verify that our approach satisfies the purpose of this experiment, we
-executed some subjects on Maven and compared the performance with our
-artifacts and observed insignificant differences (a fraction of
-seconds in most cases).  To assure that our experiments terminate
-(recall that deadlock or livelock could occur) we used the
-\CodeIn{timeout} command~\cite{timeout-cmd} configured to dispatch a
-\emph{kill} signal if test execution exceeds a given time
-limit. Finally, we saved each execution log and stack traces generated
-from JUnit to collect the execution time, the number of failing tests,
-and for reference to analyze and diagnose outliers in our results.
+``consumes'' the next test class and spawns a JVM to run it.}
+Recall that in our setup (see Section~\ref{sec:setup}), we limited our
+kernel to use only three cores and reserved one for OS-related
+processes.  To assure that our experiments terminate (recall that
+deadlock or livelock could occur) we used the \CodeIn{timeout}
+command~\cite{timeout-cmd} configured to dispatch a \emph{kill} signal
+if test execution exceeds a given time limit. Finally, we saved each
+execution log and stack traces generated from JUnit to collect the
+execution time, the number of failing tests, and to diagnose outliers
+in our results.
+\Jbc{Parei aqui}
 %% \Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
 %% jvm - maven surefire nao tratava algumas exceptions que aconteciam na
 %% execucao do teste, (3) timeout}
