@@ -655,19 +655,21 @@ Considering the static and dynamic methods together, we found a total
 of \numProjectsParTotal{} distinct projects using parallelism,
 corresponding to the union of the two subject sets.
 
+\vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
   \textit{Answering \numRQAdoptionOne{}:}~\emph{Results indicate that test
-    suite parallelization is underused.  Overall, only
-    \percentParallel{} of costly projects (\numProjectsParTotal{} out of \numMedLong)
-    use parallelism.}
+  suite parallelization is underused.  Overall, only
+  \percentParallel{} of costly projects (\numProjectsParTotal{} out of \numMedLong)
+  use parallelism.}
 \end{minipage}
 }
 \end{center}
+\vspace{1ex}
 
 \begin{itemize}
-	\item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
+  \item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
 \end{itemize}
 
 To answer this research question we surveyed developers involved in a
@@ -771,9 +773,9 @@ Maven (option ``a''), \emailsB{} of developers mentioned that they did
 not use parallelism concerned with possible concurrency issues (option
 ``b''), \emailsD{} of developers mentioned that continuous integration
 services sufficed to provide timely feedback while running only smoke
-\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
+\begin{wrapfigure}{r}{0.15\textwidth}
     \centering
-    \includegraphics[width=.18\textwidth]{results/survey.pdf}
+    \includegraphics[width=.15\textwidth]{results/survey.pdf}
     \caption{\label{fig:rq5-answers}Summary of developer's answers to
       survey question~\ref{questionThree}.}
 \end{wrapfigure}
@@ -788,7 +790,7 @@ survey.  The pie chart in Figure~\ref{fig:rq5-answers}
 summarizes the distribution of answers.
 
 \begin{center}
-\vspace{-1ex}
+\vspace{1ex}
 \fbox{
 \begin{minipage}{8cm}
   \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
@@ -938,14 +940,14 @@ assigned to which JVM that the build system forks.
 Figure~\ref{fig:scalability} shows the reduction in running times as
 more CPUs contribute to the execution.
 We ran this experiment for a growing number of cores 1, 3, ..., 39. 
+The plot shows results up to 17 cores as it is clear the tendency.
+We noticed that improvements are marginal after three cores, which is
 \begin{wrapfigure}{r}{0.23\textwidth}
   \vspace{-1ex}
   \includegraphics[width=0.23\textwidth]{R/scalability/scalability.pdf}
   \caption{\label{fig:scalability}Scalability.}
   \vspace{-2ex}
 \end{wrapfigure}
-The plot shows results up to 17 cores as it is clear the tendency.
-We noticed that improvements are marginal after three cores, which is
 the basic setup we used in other experiments.
 This saturation is justified by the presence of a single test class,
 \CodeIn{org.mapdb.WALTruncat}, containing 15 test cases that take over
