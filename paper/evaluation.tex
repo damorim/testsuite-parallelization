@@ -381,58 +381,40 @@ potential of obtaining speedups with parallelization.  In
 the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
-
 %% However, avoiding
 %% frequent context switches is another factor to consider.  For example,
 %% assuming there are at least two CPUs available for execution, cost can
 %% be cut in half if two tests in a large test suite dominate execution
 %% time and these tests are assigned to different CPUs.
-
 %% It is therefore important to
 %% speedup regressing testing in open-source projects.\Comment{not only
 %%   to huge projects as those from Google~\cite{google-tap,google-ci}
 %%   and Microsoft~\cite{prasad-shulte-ieee-microsoft-ci}.}
-
 %% For the case
 %% where cost is distributed more evenly across test cases, one expects
 %% that speedups will be a function of the number of cores.
 %% These contradictory forces, pushing number of tests and cost
 %% of each test up and down, make prediction of effectiveness challenging.
 
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}{0.47\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{results/testcost-long.pdf}
-      \caption{\label{fig:longtcost}Long group.}
-    \end{subfigure}\\
-    \vspace{2ex}
-    \begin{subfigure}{0.47\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{results/testcost-medium.pdf}
-      \caption{\label{fig:medtcost}Medium group.}
-    \end{subfigure}
-    \caption{\label{fig:time-distributions}Time distributions. X-axis
-        denote projects appearing in arbitrary order.}%
-\end{figure}
-
-\sloppy Figures~\ref{fig:longtcost} and~\ref{fig:medtcost} show the
-time distribution of individual test cases per project.  We observed
-that the average median value of execution cost for a test was
-relatively small (dashed horizontal red lines), namely 0.31s for
-\medg{} projects and 0.23s for \longg{} projects.  The standard
-deviations associated with each distribution were relatively
-low.\Comment{ Figure~\ref{fig:sd} shows the number of projects within
-  specific ranges of $\sigma$ values.}  We noted a small number of
-cases of CPU monopolization.  For example, the highest value of
-$\sigma$ occurred in \CodeIn{uber\_chaperone}, a project from the
-\longg{} group.  This project contains only 26 tests, 17 of which take
-less than 0.5s to run, one of which takes nearly 3s to run, two of
-which take nearly 11s to run, four of which takes on average 3m to run, and two of
-which take $\sim$8m to run.  For this project, 98.4\% of the
-execution cost is dominated by 20\% of the tests; without these
-two costly tests this project would have been classified as
-short-running.
+Figure~\ref{fig:time-distributions} shows the time distribution of
+individual test cases per project (x-axis denote projects appearing in
+arbitrary order).
+We observed that the average median value of execution cost for a
+test was relatively small (dashed horizontal red lines), namely 0.08s
+for \medg{} projects and 0.16s for \longg{} projects.
+The standard deviations associated with each distribution were
+relatively low.\Comment{ Figure~\ref{fig:sd} shows the number of
+projects within specific ranges of $\sigma$ values.}  We noted a small
+number of cases of CPU monopolization.
+For example, the highest value of $\sigma$ occurred in
+\CodeIn{uber\_chaperone}, a project from the \longg{} group.
+This project contains only 26 tests, 17 of which take less than 0.5s
+to run, one of which takes nearly 3s to run, two of which take nearly
+11s to run, four of which takes on average 3m to run, and two of which
+take $\sim$8m to run.
+For this project, 98.4\% of the execution cost is dominated by 20\% of
+the tests; without these two costly tests this project would have been
+classified as short-running.
 We did not find other projects with such extreme time monopolization
 profile.
 Project \CodeIn{facebookarchive\_linkbench} is also classified as
@@ -441,7 +423,12 @@ For this project, however, cost is distributed more smoothly across 98
 tests, of which 8 (8.1\%) take more than 1s to run with the rest of
 the tests running faster.
 
-\begin{figure}[t]
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
+  \caption{\label{fig:time-distributions}Time distributions per projects.}%
+\end{figure}
+\begin{figure}[t!]
   \centering
   \begin{subfigure}{0.15\textwidth}
     \centering
@@ -455,10 +442,9 @@ the tests running faster.
     \caption{\label{fig:scattercost}Size versus running time of
       test suites.}
   \end{subfigure}
-  \caption{\label{fig:time-versus-size}Relating size and time.}%
-  \vspace{-3ex}
+  \caption{\label{fig:time-versus-size}Relating size and time.
+  }%
 \end{figure}
-
 Figure~\ref{fig:time-distributions} shows that the average median
 times are similar for \medg{} and \longg{}-running test suites.
 The difference in overall running times is mainly justified by the
@@ -608,6 +594,8 @@ cases.  Note that these results under-approximate real usage of
 parallelism as we used default parameters in our scripts to spawn the
 Maven process.  That decision could prevent execution of particular
 test modules.
+Table~\ref{tab:freqmodes-dynamic} shows the \numProjectsPar{} projects
+we identified where parallelism is enabled by default in Maven.
 \begin{wraptable}{r}{0pt}%0.525\linewidth
   \footnotesize
   \centering
@@ -637,8 +625,6 @@ test modules.
     \label{tab:freqmodes-dynamic}
     \vspace{-1ex}
 \end{wraptable}
-Table~\ref{tab:freqmodes-dynamic} shows the \numProjectsPar{} projects
-we identified where parallelism is enabled by default in Maven.
 Column ``\emph{Subject}'' indicates the name of the project, column
 ``\emph{\# of modules}'' indicates the fraction of modules containing
 tests that use the configuration of parallelism mentioned in column
@@ -963,20 +949,18 @@ assigned to which JVM that the build system forks.
 Figure~\ref{fig:scalability} shows the reduction in running times as
 more CPUs contribute to the execution.
 We ran this experiment for a growing number of cores 1, 3, ..., 39. 
-\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth  \centering
-  \includegraphics[width=.25\textwidth]{R/scalability/scalability.pdf}
-  \caption{\label{fig:scalability}Scalability.}
-  \vspace{-1ex}
-\end{wrapfigure}
 The plot shows results up to 17 cores as it is clear the tendency.
 We noticed that improvements are marginal after three cores, which is
 the basic setup we used in other experiments.
+\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth  \centering
+  \includegraphics[width=.25\textwidth]{R/scalability/scalability.pdf}
+  \caption{\label{fig:scalability}Scalability.}
+\end{wrapfigure}
 This saturation is justified by the presence of a single test class,
 \CodeIn{org.mapdb.WALTruncat}, containing 15 test cases that take over
 two minutes to run.
 
 \begin{center}
-\vspace{1ex}
 \fbox{
   \begin{minipage}{8cm}
     \textit{Answering \numRQSpeedupTwo{}:}~\emph{Results suggest that
