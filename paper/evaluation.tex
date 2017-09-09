@@ -1041,25 +1041,23 @@ Once we have the classpath and the tests to run, we invoke our JUnit
 custom runner to run the test classes with different parallel
 configurations. For the sequential execution, we invoke the
 default JUnit test runner.
-\Fix{
 For parallelism within a JVM (\ie, the configurations
 \SeqClassParMeth{}, \ParClassSeqMeth{}, and \ParClassParMeth{}), we
 configured the JUnit runner with
-ParallelComputer~\cite{junit-parallel} that internally uses a pool of
-threads with cache to run test classes and methods. For the
-configurations with forked JVMs (\ie, \ForkSeq{} and \ForkParMeth{}),
-we have a queue of test classes and a pool of three threads that
-``consumes'' the next test class and spawns a JVM to run it.}
+ParallelComputer~\cite{junit-parallel}.
+For the configurations with forked JVMs (\ie, \ForkSeq{} and
+\ForkParMeth{}), we spawn a JVM with our JUnit custom runner to
+execute a test class in an individual process. We configured this
+experiment to run at most three JVMs in parallel.
 Recall that in our setup (see Section~\ref{sec:setup}), we limited our
 kernel to use only three cores and reserved one for OS-related
-processes.  To assure that our experiments terminate (recall that
+processes.  To ensure that our experiments terminate (recall that
 deadlock or livelock could occur) we used the \CodeIn{timeout}
 command~\cite{timeout-cmd} configured to dispatch a \emph{kill} signal
-if test execution exceeds a given time limit. Finally, we saved each
+if test execution exceeds a given time limit. Finally, we save each
 execution log and stack traces generated from JUnit to collect the
 execution time, the number of failing tests, and to diagnose outliers
 in our results.
-\Jbc{Parei aqui}
 %% \Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
 %% jvm - maven surefire nao tratava algumas exceptions que aconteciam na
 %% execucao do teste, (3) timeout}
@@ -1089,7 +1087,7 @@ in our results.
 %% For efficiency, we reported the speedup (\ie, $T_{\text{s}} /
 %% T_{\text{p}}$), and for flakiness, we reported the rate of failing
 %% tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
-
+\Jbc{Falta atualizar essa discussao....
 Table~\ref{tab:rq6-table} summarizes results ordered by subject's
 name. Recall that we only executed one module for each subject.
 Values are averaged across multiple executions.  We did not report
@@ -1108,6 +1106,7 @@ configuration \emph{\ForkSeq} to \emph{\ForkParMeth}.  It is also
 worth mentioning that some combinations manifested slowdown instead of
 speedup.  Recall that parallel execution introduces the overhead of
 spawning and managing JVMs and threads.
+}
 
 \begin{center}
 \fbox{
