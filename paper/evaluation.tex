@@ -54,7 +54,7 @@ contain several sub-modules with multiple \pomf{} files.}
 Then, considering this set of Maven projects, we
 executed the tests for \SubjectsReruns{} times to discard those projects with
 issues
-in the build file and nondeterministic results observed from sequential executions.
+in the build file and non-deterministic results observed from sequential executions.
 As of August 25th 2017, our search criteria returned a total of \SubjectsGithub{}
 subjects.
 From this set of projects,
@@ -433,7 +433,7 @@ justified by the number of test cases as opposed to the cost of individual test 
 \begin{minipage}{8cm}
   \textit{Answering \numRQFeasibilityTwo{}:}~\emph{Overall, results indicate that
   projects with a very small number of tests monopolizing end-to-end
-  execution time were rare. Time most often is distribuited evenly
+  execution time were rare. Time most often is distributed evenly
   across test cases.}
 \end{minipage}
 }
@@ -522,13 +522,11 @@ using parallelization, perceive this technology.
     \item \numRQAdoptionOne. \textbf{\RQAdoptionOne{}}
 \end{itemize}
 
-To answer \numRQAdoptionOne{}, we selected all projects from the \medg{} and
-\longg{} groups, \ie, projects that ran in at least one minute.  This
-set includes \numMedLong{} projects (see Section~\ref{sec:rqA}).  We
-looked for dynamic and static manifestations of parallelism.
-
-%% The
-%% following section report results for each of these cases.
+To answer \numRQAdoptionOne{} we used projects from the \medg{} and
+\longg{} groups where parallelization can be more helpful. We used a
+dynamic and a static approach to find manifestations of
+parallelism. We discuss results obtained with these complementary
+approaches in the following.
 
 \vspace{1ex}
 \subsubsection{Dynamic checking}
@@ -566,27 +564,17 @@ each module discarding duplicates as to avoid inflating counts for
 configuration modes that appear in several modules of the same
 project. For instance, if a project contains two modules using the
 same configuration, we counted only one occurrence.
-It came as a surprise the observation that
-no project used distinct configurations in their modules. Considering
+Considering
 our set of \numMedLong{} projects, we found that only
 \numProjectsPar{} of those projects had parallelism enabled
 by default, with only configurations \ParClassSeqMeth{},
-\ParClassParMeth{}, and \ForkSeq{} being used.  Configurations
+\ParClassParMeth{}, and \ForkSeq{} being used. Configurations
 \ParClassParMeth{} and \ForkSeq{} were the most popular among these
-cases.  Note that these results under-approximate real usage of
+cases. Note that these results under-approximate real usage of
 parallelism as we used default parameters in our scripts to spawn the
 Maven process.  That decision could prevent execution of particular
-test modules.
-Table~\ref{tab:freqmodes-dynamic} shows the \numProjectsPar{} projects
-we identified where parallelism is enabled by default in Maven.
-Column ``\emph{Subject}'' indicates the name of the project, column
-``\emph{\# of modules}'' indicates the fraction of modules containing
-tests that use the configuration of parallelism mentioned in column
-``\emph{Mode}''.
-We note that, considering these projects, the modules that do not use
-the configuration cited use the sequential configuration \Seq{}.
-For example, three modules (=28-25) from Log4J2 use sequential
-configuration.
+test modules. Table~\ref{tab:freqmodes-dynamic} shows the
+\numProjectsPar{} projects we identified where parallelism is enabled by default in Maven.
 \begin{wraptable}{r}{0pt}%0.525\linewidth
   \footnotesize
   \centering
@@ -614,13 +602,23 @@ configuration.
     \caption{Subjects with parallel test execution enabled by
     default.}
     \label{tab:freqmodes-dynamic}
-    \vspace{-1ex}
+%    \vspace{-1ex}
 \end{wraptable}
+Column ``\emph{Subject}'' indicates the name of the project, column
+``\emph{\# of modules}'' indicates the fraction of modules containing
+tests that use the configuration of parallelism mentioned in column
+``\emph{Mode}''.
+We note that, considering these projects, the modules that do not use
+the configuration cited use the sequential configuration \Seq{}.
+For example, three modules (=28-25) from Log4J2 use sequential
+configuration. It came as a surprise the observation that
+no project used distinct configurations in their modules. 
 
 \subsubsection{Static checking}
 \label{sec:rqC-2}
-As our previous approach cannot detect parallelism in non-default
-configurations, we also looked for indication of parallelism in build
+Given that the dynamic approach cannot detect parallelism manifested
+through the default
+configuration of projects, we also searched for indications of parallelism in build
 files\Comment{ in the same sample set of \numMedLong{} projects}.  We
 parsed all \emph{pom.xml} files under the project's directory and used
 the same approach as in our previous analysis to classify
@@ -635,10 +633,9 @@ considered all possible values for the parameter (in this case,
 \CodeIn{\$\{parallel.type\}}).  It is also important to note that this
 approach is not immune to false negatives, which can occur when
 \emph{pom.xml} files are encapsulated in jar files or files downloaded from
-the network.  Consequently, this static checking is complementary to
-the dynamic checking, previously presented.
-
-This methodology founds \numProjectsParStatic{} projects.
+the network.  Consequently, this approach complements the
+the dynamic approach. Overall, we found \numProjectsParStatic{}
+projects manifesting parallelism with this approach.
 Compared to the set of projects listed in
 Table~\ref{tab:freqmodes-dynamic}, we found four new projects, namely:
 \CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
@@ -648,7 +645,7 @@ configuration \ParClassParMeth), \CodeIn{Mapstruct} (using configuration
 Curiously, we also found that project \CodeIn{Jcabi}, \CodeIn{Rultor},
 and \CodeIn{Takes} were not detected using this methodology.
 That happened because these projects loaded a \emph{pom.xml} file from
-a jar file that we did not check.
+a jar file that we missed.
 Considering the static and dynamic methods together, we found a total
 of \numProjectsParTotal{} distinct projects using parallelism,
 corresponding to the union of the two subject sets.
@@ -688,7 +685,9 @@ total, \emailsAnswered{} developers replied but we discarded
 \emailsFalseAnswers{} replies with subjective answers.  Considering
 projects covered by the answers, a total of \emailsProjectsAnswered{}
 projects (\percEmailsProjectsAnswered{} of the total) were represented
-in those replies.  Note that multiple developers on each project
+in those replies. \Luis{In one specific case, one developer worked in
+  multiple projects, and we consider it as a different answer.}
+Note that multiple developers on each project
 received emails.  We sent the following set of questions to
 developers:
 
@@ -1140,5 +1139,7 @@ spawning and managing JVMs and threads.
 %%  LocalWords:  Jankotek MapDB Dparallel classesAndMethods Mapstruct
 %%  LocalWords:  DataflowJavaSDK modularized JUnit llrrr lightgray rr
 %%  LocalWords:  GitHub amongst Xeon runtime Scalability Dataflow sdk
-%%  LocalWords:  JCTools RipMe classpath ParallelComputer livelock
-%%  LocalWords:  mapdb workflow XPath
+%%  LocalWords:  JCTools RipMe classpath ParallelComputer livelock io
+%%  LocalWords:  mapdb workflow XPath boxplot llcr javaslang jcabi
+%%  LocalWords:  github hazelcast jankotek OpenNLP yegor Rultor vavr
+%%  LocalWords:  Vavr SNE Urbanairship Datacube
