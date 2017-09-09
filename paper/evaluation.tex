@@ -918,24 +918,25 @@ most part during test execution.
 \newcommand{\subjectScalability}{MapDB}
 
 This experiment evaluates the impact of making a growing number of
-CPUs for testing available to the build system.  For that reason, we
-used a machine with more cores compared to the one described in
+CPUs available to the build system for testing.  For this reason, we
+used a different machine, with more cores, compared to the one described in
 Section~\ref{sec:setup}.  We used a Xeon E5-2660v2 (2.20GHz) Intel
 processor machine with 80 virtual CPUs (40 cores with two native
 threads each) and 256GB of memory, running Ubuntu 14.04 LTS Trusty
-Tahr (64-bit version). This experiment uses configuration
-spawning a growing number of JVMs in different CPUs.  We selected
+Tahr (64-bit version). This experiment
+spawns a growing number of JVMs in different CPUs, using parallel
+configuration \emph{\ForkSeq{}}. We selected
 subject \subjectScalability{} in this experiment as it represents the
 case of a long-running test suite (see Table~\ref{tab:speedup}) with
-test cases distributed across many test classes~--~194.  Note that a
-\emph{\ForkSeq{}} as the goal is to evaluate the impact on runtime of
-test class is the smallest unit that can be used to spawn a test job
+test cases distributed across many test classes~--~194.  
+Recall that a test class is the smallest unit that can be used to spawn a test job
 on a JVM and that we have no control over which test classes will be
 assigned to which JVM that the build system forks.
 Figure~\ref{fig:scalability} shows the reduction in running times as
 more CPUs contribute to the execution.
 We ran this experiment for a growing number of cores 1, 3, ..., 39. 
-The plot shows results up to 17 cores as it is clear the tendency.
+The plot omits results beyond 17 cores as the tendency for higher
+values is clear.
 We noticed that improvements are marginal after three cores, which is
 \begin{wrapfigure}{r}{0.23\textwidth}
   \vspace{-1ex}
@@ -953,7 +954,7 @@ two minutes to run.
   \begin{minipage}{8cm}
     \textit{Answering \numRQSpeedupTwo{}:}~\emph{Results suggest that
       execution FC0 scales with additional cores but there is a bound
-      on the speedup one can get related to how well the test suite is
+      on the speedup that one can get related to how well the test suite is
       balanced across test classes.}
   \end{minipage}
 }
