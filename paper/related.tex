@@ -61,7 +61,6 @@ is promising when multiple input vectors exist for each test and the
 testing code heavily manipulates scalar data types.  The datasets used
 in those papers satisfied those constraints.
 
-
 %% existing GPU programming-models (\eg{}, CUDA~\cite{cuda}, and
 %% OpenCL~\cite{opencl}) are compatible only with a subset of the C/C++
 %% language.
@@ -72,14 +71,21 @@ in those papers satisfied those constraints.
 
 \Mar{can you complete this AND add text on high-level paralellism?}
 
+High-level parallelism \Fix{...}
+CUT~\cite{gambi-etal-issta2017} is a tool to automatically parallelize
+unit tests across a distributed environment. \Fix{...}
+CUT allows the developer to control resource allocation, and deal with
+the project specific test dependencies.
+Important to note that high-level parallelism techniques is
+complementary to test suite parallelization.
+
+
 Continuous Integration Services are widely used by the open-source
 community~\cite{hilton-etal-ase2016,vasilescu-etal-fse2015}. Travis
 CI~\cite{travis} is an example of one of these services. Recent work
 by Hilton~\etal{}~\cite{hilton-etal-ase2016} showed that there is a
 high acceptance rate for CI services. The average build time for those
 projects using CI is under $\sim$8.3 min~\cite{hilton-etal-ase2016}. 
-
-%% \Jbc{Missing work about testing in the cloud and Jon Bell}
 
 \Comment{
 \Fix{Please:
