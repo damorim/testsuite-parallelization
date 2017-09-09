@@ -970,12 +970,14 @@ two minutes to run.
 %% with different parallel configurations.  
 
 This dimension assesses the impact of using distinct parallel
-configurations on test flakiness and speedup.  Recall that increased
-resource contention obtained with parallelism can lead to concurrency
-issues such as data races that could interfere in results of dependent
+configurations on test flakiness and speedup.  Increased parallelism
+can increase resource contention leading to concurrency issues such as
+data races across dependent
 tests~\cite{luo-etal-fse2014,bell-etal-esecfse2015}.  Flakiness and
-speedup are contradictory forces that drive configuration selection.
-Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
+speedup are contradictory forces that could influence the decision of
+practitioners about which parallel configuration should be used for
+testing.  Note that Section~\ref{sec:rqD} evaluated speedup in
+isolation.
 
 \begin{itemize}
   \item \numRQIssuesOne{}. \textbf{\RQIssuesOne{}}
@@ -991,10 +993,11 @@ Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
 To answer this research question, we selected 15 different subjects,
 ran their test suites against all configurations described in
 Section~\ref{sec:modes}, and compared their running times and rate of
-test flakiness.  We used the sequential execution associated with each
-project as the comparison baseline in this experiment.  We sorted the
-subjects by decreasing order of execution time and selected the first
-15 projects that uses JUnit 4.7 or later.  The rationale for this
+test flakiness.  We used the sequential execution configuration,
+\emph{\Seq{}}, as the comparison baseline in this experiment.  To
+select subjects, we sorted projects whose test suites run in 1m or
+more by decreasing order of execution time and selected the first
+fifteen projects that use JUnit 4.7 or later.  The rationale for this
 criteria is to ensure compatibility with parallel configuration since
 older versions of JUnit does not support parallel testing.  We ran
 each project on each configuration for \SubjectsReruns{} times.
@@ -1022,41 +1025,49 @@ experiment.
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
 It is worth mentioning that we used custom JUnit runners as opposed to
-Maven to run test suites with different parallel configurations (see
-Section~\ref{sec:modes}).
-After carefully checking library versions for compatibility issues and
-comparing results with JUnit's we observed that several of Maven's
-executions exposed problems.  For example, Maven incorrectly counts
-the number of test cases executed for some cases where test flakiness
-are observed.  These issues are categorized and documented on our
-website~\cite{ourwebpage} and can be reproduced with our scripts.
-To address those issues we implemented basic JUnit test runners (one
-for each parallel configuration), reflecting the effects of parallel
-configurations from Maven Surefire.  To write those runners we used
-Maven log files to identify test classes to run and used the Maven
-dependency plugin~\cite{maven-dep} to build the project's classpath
-with the command \CodeIn{mvn dependency:build-classpath}.
-Once we have the classpath and the tests to run, we invoke our JUnit
-custom runner to run the test classes with different parallel
-configurations. For the sequential execution, we invoke the
-default JUnit test runner.
-For parallelism within a JVM (\ie, the configurations
-\SeqClassParMeth{}, \ParClassSeqMeth{}, and \ParClassParMeth{}), we
-configured the JUnit runner with
-ParallelComputer~\cite{junit-parallel}.
-For the configurations with forked JVMs (\ie, \ForkSeq{} and
-\ForkParMeth{}), we spawn a JVM with our JUnit custom runner to
-execute a test class in an individual process. We configured this
-experiment to run at most three JVMs in parallel.
-Recall that in our setup (see Section~\ref{sec:setup}), we limited our
-kernel to use only three cores and reserved one for OS-related
-processes.  To ensure that our experiments terminate (recall that
-deadlock or livelock could occur) we used the \CodeIn{timeout}
+Maven to run the test suites with different parallel configurations
+(see Section~\ref{sec:modes}).  After carefully checking library
+versions for compatibility issues and comparing results with JUnit's
+we observed that several of Maven's executions exposed problems.  For
+example, Maven incorrectly counts the number of test cases executed
+for some cases where test flakiness are observed. These issues are
+categorized and documented on our website~\cite{ourwebpage} and can be
+reproduced with our scripts.  To address those issues we implemented
+custom test runners for configurations \emph{\SeqClassParMeth{}},
+\emph{\ParClassSeqMeth{}}, and \emph{\ParClassParMeth{}} and
+implemented a bash script that coordinates the creation of JVMs and
+invokes corresponding custom runners for configurations
+\emph{\ForkSeq{}} and \emph{\ForkParMeth{}}.  As to faithfully reflect
+Maven's behavior in our scripts, we carefully analyzed the source
+code~\cite{maven-surefire-source} of the Maven Surefire plugin. We
+implemented test runners using the ParallelComputer class from
+JUnit~\cite{junit-parallel}.  
+
+%% For the sequential execution, we invoke the
+%% default JUnit test runner.
+%% For parallel execution with forked JVMs\Comment{ (\ie, \emph{\ForkSeq{}} and
+%% \emph{\ForkParMeth{}})}, we wrote bash scripts to spawn a JVM with our
+%% custom runner, mentioned above, to
+%% execute a test class in an individual process. 
+
+We used Maven log files to identify test classes to run and used the
+Maven dependency plugin~\cite{maven-dep} to build the project's
+classpath (with the command \CodeIn{mvn dependency:build-classpath}).
+Once we find the tests suite to run and the corresponding classpath,
+we invoke the test runners mentioned above on them.  We configured
+this experiment to run at most three JVMs in parallel.  Recall that in
+our setup (see Section~\ref{sec:setup}), we limited our kernel to use
+only three cores and reserved one core for OS-related processes.  To
+ensure that our experiments terminate (recall that deadlock or
+livelock could occur) we used the \CodeIn{timeout}
 command~\cite{timeout-cmd} configured to dispatch a \emph{kill} signal
 if test execution exceeds a given time limit. Finally, we save each
 execution log and stack traces generated from JUnit to collect the
 execution time, the number of failing tests, and to diagnose outliers
 in our results.
+
+
+
 %% \Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
 %% jvm - maven surefire nao tratava algumas exceptions que aconteciam na
 %% execucao do teste, (3) timeout}
