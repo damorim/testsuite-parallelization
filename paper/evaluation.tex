@@ -80,10 +80,12 @@ As some of our experiments consist in running tests on different
 threads, we ignored these projects as it would be impractical
 to identify whether a test failed due to a race condition or some
 other source of flakiness.
-\Jbc{From the \SubjectsGithubConsistant{} projects with
+From the \SubjectsGithubConsistant{} projects with
 deterministic results, we eliminated \SubjectsGithubTooManyFailures{}
 projects with more than \SuiteFailingThreshold{} of tests failing to
-reduce bias in our dataset.}
+reduce bias in our dataset.
+We ignored failing tests with JUnit's
+\CodeIn{@Ignore} annotation on the remaining projects.
 Our final set of subjects consists of \numSubjs{} projects.
 Figure~\ref{fig:subjects} summarizes our sample set.
 
@@ -353,15 +355,15 @@ custom parameters, which we do not handle in our experimental setup.
 We enabled such parameters for this specific project and observed that
 testing time goes to nearly 30 minutes.  For simplicity, we considered
 only the tests executed by default.
-\Jbc{
+\Comment{
 Although failing tests may introduce noise in our measurements, we
 carefully eliminated subjects with more than \SuiteFailingThreshold{} of
 test failures. 
+}
 From the \numSubjs{} testable projects, \numSubjsPass{} successfully
 executed all tests and \numSubjsFail{} reported some test failure.
 Furthermore, from these \numSubjsFail{} subjects, only 11 subjects
 have more than 5\% of failing tests (7.3\% in average).
-}
 \vspace{1ex}
 \begin{center}
 \fbox{
@@ -387,7 +389,7 @@ Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon, accounting to nearly \percentMedLongRunning{} of the
 \numSubjs{} projects we analyzed.  Research question \numRQFeasibilityTwo{}
 measures the distribution of test costs in test suites as to estimate
-(lack of) potential of obtaining speedups with parallelization.  In
+potential of obtaining speedups with parallelization.  In
 the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
@@ -422,19 +424,6 @@ test method is the smallest working unit in test frameworks.
       \includegraphics[width=\textwidth]{results/testcost-medium.pdf}
       \caption{\label{fig:medtcost}Medium group.}
     \end{subfigure}
-    %% \vspace{2ex}
-    %% \begin{subfigure}{0.5\textwidth}
-    %%   \centering
-    %%   \begin{tabular}{rrrr}
-    %%     \toprule
-    %%     & $\sigma\leq1$ & $1<\sigma\leq5$ & $\sigma\ge5$ \\
-    %%     \midrule    
-    %%     Long   &  7 & 15 & 12 \\
-    %%     Medium & 22 & 19 & 7 \\
-    %%     \bottomrule
-    %%   \end{tabular}
-    %%   \caption{\label{fig:sd}Standard deviation ($\sigma$) of test case running times.}
-    %% \end{subfigure}
     \caption{\label{fig:time-distributions}Time distributions. X-axis
         denote projects appearing in arbitrary order.}%
 \end{figure}
@@ -578,12 +567,12 @@ Figure~\ref{fig:scattercost} illustrates this regression line.
 \label{sec:rqC}
 \label{sec:rqE}
 
-The dimension adoption focuses on the usage of parallelism in
-open-source projects.  It evaluates (\numRQAdoptionOne) how often open-source
-projects use parallelization schemes and (\numRQAdoptionTwo) how developers
-involved in costly projects, not using parallelization, perceive this
-technology.
-
+%% Commented as we don't follow this pattern on the other RQs
+\Comment{
+Adoption concerns with the popularity of  parallelization schemes and
+(\numRQAdoptionTwo) how developers involved in costly projects, not
+using parallelization, perceive this technology.
+}
 \begin{itemize}
     \item \numRQAdoptionOne. \textbf{\RQAdoptionOne{}}
 \end{itemize}
@@ -606,7 +595,7 @@ Maven parameters.  To that end, we used the option~\CodeIn{-X} to
 produce debug output and the option~\CodeIn{-DskipTests} to skip
 execution of tests.  We skipped execution of tests as we observed from
 sampling that only bootstrapping the Maven process suffices to infer
-which parallel configuration modes it will use to actually run the
+which parallel configuration modes it uses to run the
 tests.  It is also important to point that we used the default
 configurations specified in the project.  We inferred parallel
 configurations by searching for certain configuration parameters in
@@ -671,20 +660,10 @@ each module discarding duplicates as to avoid inflating counts for
 configuration modes that appear in several modules of the same
 project. For instance, if a project contains two modules using the
 same configuration, we counted only one occurrence.
-Table~\ref{tab:freqmodes-dynamic} shows the projects we identified
-where parallelism is enabled by default in Maven.  Column
-``\emph{Subject}'' indicates the name of the project, column
-``\emph{\# of modules}'' indicates the fraction of modules containing
-tests that use the configuration of parallelism mentioned in column
-``\emph{Mode}''.  We note that, considering these projects, the
-modules that do not use the configuration cited use the sequential
-configuration \Seq{}.  For example, three modules (=28-25) from Log4J2
-use sequential configuration.
-
 It came as a surprise the observation that
 no project used distinct configurations in their modules. Considering
 our set of \numMedLong{} projects, we found that only
-\textbf{\numProjectsPar{}} of those projects had parallelism enabled
+\numProjectsPar{} of those projects had parallelism enabled
 by default, with only configurations \ParClassSeqMeth{},
 \ParClassParMeth{}, and \ForkSeq{} being used.  Configurations
 \ParClassParMeth{} and \ForkSeq{} were the most popular among these
@@ -693,10 +672,21 @@ parallelism as we used default parameters in our scripts to spawn the
 Maven process.  That decision could prevent execution of particular
 test modules.
 
+Table~\ref{tab:freqmodes-dynamic} shows the \numProjectsPar{} projects
+we identified where parallelism is enabled by default in Maven.
+Column ``\emph{Subject}'' indicates the name of the project, column
+``\emph{\# of modules}'' indicates the fraction of modules containing
+tests that use the configuration of parallelism mentioned in column
+``\emph{Mode}''.
+We note that, considering these projects, the modules that do not use
+the configuration cited use the sequential configuration \Seq{}.
+For example, three modules (=28-25) from Log4J2 use sequential
+configuration.
+
 \subsubsection{Static checking}
 \label{sec:rqC-2}
-Given the inherent limitation of dynamic monitoring to find evidence
-of parallelism, we also looked for indication of parallelism in build
+As our previous approach cannot detect parallelism in non-default
+configurations, we also looked for indication of parallelism in build
 files\Comment{ in the same sample set of \numMedLong{} projects}.  We
 parsed all \emph{pom.xml} files under the project's directory and used
 the same approach as in our previous analysis to classify
@@ -706,15 +696,14 @@ the input (\eg,
 \CodeIn{<parallel>\$\{parallel.type\}</parallel>}). For these
 projects, the tester needs to provide additional parameters in the
 command line to enable parallelization (\eg, \CodeIn{mvn test
-  -Dparallel.type=classesAndMethods}). To handle those case, we
+  -Dparallel.type=classesAndMethods}). To handle those cases, we
 considered all possible values for the parameter (in this case,
 \CodeIn{\$\{parallel.type\}}).  It is also important to note that this
 approach is not immune to false negatives, which can occur when
-\emph{pom.xml} files are encapsulated in jar files or downloaded from
+\emph{pom.xml} files are encapsulated in jar files or files downloaded from
 the network.  Consequently, this static checking is complementary to
 the dynamic checking, previously presented.
-Overall, we found, using this methodology, \numProjectsParStatic{}
-projects that use parallelism.
+This methodology founds \numProjectsParStatic{} projects.
 Compared to the set of projects listed in
 Table~\ref{tab:freqmodes-dynamic}, we found four new projects, namely:
 \CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
@@ -780,7 +769,6 @@ developers:
   \item Some other reason. Please elaborate.
   \end{enumerate}
 \end{enumerate}
-
 %% \begin{enumerate}
 %% 	\item How long does it take for test to run in your
 %%		environment?
@@ -813,7 +801,6 @@ CI does not preclude low-level parallelization.  For example,
 installations of open-source CI tools (\eg{}, Jenkins~\cite{jenkins})
 in dedicated servers would benefit from running tests faster through
 low-level test suite parallelization.
-
 % \emailsNotDescribed{} developers did not described their environment.
 
 Considering question 2, the answers we collected indicated, to our
@@ -834,12 +821,10 @@ distributed CI cases), the usage of parallelization increases from
 \percentParallel{} to \percentParallelUpdated{}.  We do not consider
 this change significant enough to modify our conclusion about
 practical adoption of parallelization (\numRQAdoptionOne{}).
-
 %% , one runs a manually created Thread to run some
 %% tests, and the other runs in parallel by using Java 8 collection
 %% streams, that allows the developers to iterate over a list in
 %% parallel.
-
 %% did not confirmed, however,
 %% the developers confirmed the need of an extra parameter at the command
 %% line to execute in parallel.
@@ -869,14 +854,14 @@ summarizes the distribution of answers.
 
 \begin{center}
 \fbox{
-	\begin{minipage}{8cm}
-	  \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
-       with concurrency issues (\ie{}, the extra work to organize test
-       suite to safely explore concurrency) was the principal reason
-       for developers not investing in parallelism.  Other reasons
-       included availability of continuous integration services and
-       unfamiliarity with the technology.}
-	\end{minipage}
+\begin{minipage}{8cm}
+  \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
+    with concurrency issues (\ie{}, the extra work to organize test
+    suite to safely explore concurrency) was the principal reason
+    for developers not investing in parallelism.  Other reasons
+    included availability of continuous integration services and
+    unfamiliarity with the technology.}
+\end{minipage}
 }
 \end{center}
 
