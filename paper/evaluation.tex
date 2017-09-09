@@ -1003,8 +1003,8 @@ older versions of JUnit does not support parallel testing.  We ran
 each project on each configuration for \SubjectsReruns{} times.
 Overall, we needed to reran test suites 270 times, 18 times (3x6
 configurations) on each project.  Given the low standard deviations
-observed in our measurements and the aggregated time cost of 270 test
-executions, we consider \SubjectsReruns{} reruns reasonable for this
+observed in our measurements\Comment{ and the aggregated time cost of 270 test
+executions}, we considered \SubjectsReruns{} reruns reasonable for this
 experiment.
 %% \Jbc{Is this
 %%   legit/acceptable/convincing?  $\rightarrow$}The rationale for this
@@ -1024,23 +1024,24 @@ experiment.
 %% 
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
+
 It is worth mentioning that we used custom JUnit runners as opposed to
 Maven to run the test suites with different parallel configurations
 (see Section~\ref{sec:modes}).  After carefully checking library
 versions for compatibility issues and comparing results with JUnit's
 we observed that several of Maven's executions exposed problems.  For
 example, Maven incorrectly counts the number of test cases executed
-for some cases where test flakiness are observed. These issues are
+for some of the cases where test flakiness are observed. These issues are
 categorized and documented on our website~\cite{ourwebpage} and can be
 reproduced with our scripts.  To address those issues we implemented
 custom test runners for configurations \emph{\SeqClassParMeth{}},
-\emph{\ParClassSeqMeth{}}, and \emph{\ParClassParMeth{}} and
+\emph{\ParClassSeqMeth{}}, and \emph{\ParClassParMeth{}} and,  for configurations
+\emph{\ForkSeq{}} and \emph{\ForkParMeth{}}, we
 implemented a bash script that coordinates the creation of JVMs and
-invokes corresponding custom runners for configurations
-\emph{\ForkSeq{}} and \emph{\ForkParMeth{}}.  As to faithfully reflect
+invokes corresponding custom runners.  As to faithfully reflect
 Maven's behavior in our scripts, we carefully analyzed the source
 code~\cite{maven-surefire-source} of the Maven Surefire plugin. We
-implemented test runners using the ParallelComputer class from
+implemented test runners using the \CodeIn{ParallelComputer} class from
 JUnit~\cite{junit-parallel}.  
 
 %% For the sequential execution, we invoke the
