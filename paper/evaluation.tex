@@ -990,22 +990,22 @@ Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
 
 \input{flakiness-speedup-table}
 
-To answer this research question, we selected ten different subjects,
+To answer this research question, we selected 20 different subjects,
 ran their test suites against all configurations described in
 Section~\ref{sec:modes}, and compared their running times and rate of
-test flakiness.  We used the sequential execution (configuration
-\emph{\Seq{}}) associated with each project as the comparison baseline
-in this experiment.  We selected subjects from the medium and long
-groups from Section~\ref{sec:rqA} and further selected their longest
-test module for testing.  The rationale for this selection was to
-obtain a diverse set of subjects exposing a wide range of running
-times (range observed 1.1m-8.2m) and number of test cases (range
-observed 54-17,513) and yet be able to run the experiment in
-reasonable time.  We ran each project on each configuration with ten
-seeds.  Overall, we needed to reran test suites 600 times, 60 times
-(10x6 configurations) on each project.  Given the low standard
-deviations observed in our measurements we consider ten seeds
-reasonable for this experiment.
+test flakiness.
+We used the sequential execution associated with each project as the
+comparison baseline in this experiment.
+We sorted the subjects by decreasing order of execution time and
+selected the first 20 projects that uses JUnit 4.7 or later.
+The rationale for this criteria was to ensure compatibility with
+parallel configuration since older versions of JUnit does not support
+parallel testing.
+We ran each project on each configuration for 10 times with with ten seeds.
+Overall, we needed to reran test suites 600 times, 60 times (10x6
+configurations) on each project.
+Given the low standard deviations observed in our measurements we
+consider ten seeds reasonable for this experiment.
 %% \Jbc{Is this
 %%   legit/acceptable/convincing?  $\rightarrow$}The rationale for this
 %% criteria was to maximize the diversity of domains from the subjects,
@@ -1024,10 +1024,9 @@ reasonable for this experiment.
 %% 
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
-
 It is worth mentioning that we used custom JUnit runners as opposed to
-Maven to run \Comment{configurations \emph{C*}}test suites with
-different parallel configurations (see Section~\ref{sec:modes}).
+Maven to run test suites with different parallel configurations (see
+Section~\ref{sec:modes}).
 After carefully checking library versions for compatibility issues and
 comparing results with JUnit's we observed that several of Maven's
 executions exposed problems.  For example, Maven incorrectly counts
