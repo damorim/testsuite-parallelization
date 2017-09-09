@@ -1,15 +1,6 @@
 \section{Objects of Analysis}
 \label{sec:subjects}
 
-%% We evaluated the characteristics of test suites in open-source
-%% development from a sample set of Java projects from \github{}.  We are
-%% interested to evaluate non-trivial test suites from popular projects
-%% that are in activity.
-
-%% , which is used on
-%% \github{} to indicate appreciation of a user to a
-%% project~\cite{github-stars},
-
 We used \github{}'s search API~\cite{githubsearch} to identify
 projects that satisfy the following criteria: (1) the primary language
 is Java\footnote{In case of projects in multiple languages, the
@@ -38,10 +29,10 @@ API as an HTTP request.
 \centering
 \scriptsize
 \lstset{
-    escapeinside={@}{@},
-    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
-    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    deletekeywords={true}
+  escapeinside={@}{@},
+  numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+  basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+  deletekeywords={true}
 }
 \begin{lstlisting}
 https://api.github.com/search/repositories?q=language:java
@@ -73,17 +64,16 @@ In addition, we identified \SubjectsGithubFlaky{} projects with
 ``flaky tests''~\cite{luo-etal-fse2014}.
 In general, a ``flaky test'' is a test that either pass or fail under
 the same circumstances leading to non-deterministic results.
-\Comment{While there are several causes that may introduce randomness on test
-results, our concern is on flakiness caused by
-parallel execution.}
 As some of our experiments consist in running tests on different
 threads, we ignored these projects as it would be impractical
 to identify whether a test failed due to a race condition or some
 other source of flakiness.
-\Jbc{From the \SubjectsGithubConsistant{} projects with
+From the \SubjectsGithubConsistant{} projects with
 deterministic results, we eliminated \SubjectsGithubTooManyFailures{}
 projects with more than \SuiteFailingThreshold{} of tests failing to
-reduce bias in our dataset.}
+reduce bias in our dataset.
+We ignored failing tests with JUnit's
+\CodeIn{@Ignore} annotation on the remaining projects.
 Our final set of subjects consists of \numSubjs{} projects.
 Figure~\ref{fig:subjects} summarizes our sample set.
 
@@ -98,6 +88,7 @@ Figure~\ref{fig:subjects} summarizes our sample set.
   \SubjectsGithubTooManyFailures{} projects had at least
   \SuiteFailingThreshold{} of failing tests. We considered
   \numSubjs{} projects to conduct our study.}
+  \vspace{-2ex}
 \end{figure}
 
 \subsection{Setup and Replication}
@@ -113,9 +104,6 @@ process test results and generate plots.  All source artifacts are
 publicly available for replication on our website~\cite{ourwebpage}.
 This includes supporting scripts (\eg, the script that test subjects
 and generates raw analysis data) and the full list of projects.
-\Comment{, and a \emph{Vagrantfile} to emulate our hardware and all
-software dependencies.}
-
 
 \section{Evaluation}
 \label{sec:eval}
@@ -170,7 +158,6 @@ software dependencies.}
 We pose the following research questions, organized by the dimensions
 of analysis we presented in Section~\ref{sec:intro}.
 
-
 %% Feasibility
 \newcommand{\numRQFeasibilityOne}{RQ1}
 \newcommand{\RQFeasibilityOne}{How prevalent is the occurence of time-consuming
@@ -201,7 +188,6 @@ of analysis we presented in Section~\ref{sec:intro}.
 \newcommand{\numRQIssuesOne}{RQ7}
 \newcommand{\RQIssuesOne}{How parallel execution configurations affect testing
   costs and flakiness?}
-
 
 \setlist[itemize]{leftmargin=1em}
 \begin{itemize}
@@ -240,9 +226,8 @@ of analysis we presented in Section~\ref{sec:intro}.
 \label{sec:rqB}
 
 \begin{itemize}
-    \item \numRQFeasibilityOne{}. \textbf{\RQFeasibilityOne}
+  \item \numRQFeasibilityOne{}. \textbf{\RQFeasibilityOne}
 \end{itemize}
-%\Jbc{The following steps may change $\rightarrow$}
 
 To evaluate prevalence of projects with costly test suites, we
 considered the \numSubjs{} testable subjects from
@@ -282,6 +267,7 @@ by default (line 11). After execution, we used a regular expression on
 the output log to extract the elapsed time (line 12-14).
 
 \input{codes/evaluation}
+\vspace{-1ex}
 
 We ran the test suite for each subject three times, reporting averaged
 execution times in three ranges: tests that run within a minute
@@ -313,33 +299,24 @@ the projects from the \longg{} group took $\sim$20 minutes to run.  We
 found cases in the \longg{} group were execution takes over 50 minutes
 to complete, as can be observed from the outliers (dots) in the plot.
 
-%% the median from the
-%% \medg{} group is nearly two minutes and most of the subjects run in
-%% less than four minutes; most of the \longg{} group runs in less than
-%% 25 minutes but has outliers that require more than 50 minutes to
-%% execute.
-
 \begin{figure}[ht]
+  \centering
+  \begin{subfigure}{0.182\textwidth}
     \centering
-    \begin{subfigure}{0.182\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{results/barplot-timecost.pdf}
-        \caption{\label{fig:rq1-barplot}}
-    \end{subfigure}%
-    ~
-    \begin{subfigure}{0.25\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{results/boxplot-timecost.pdf}
-        \caption{\label{fig:rq1-boxplot}}
-    \end{subfigure}%
-    \caption{(a) Subjects grouped by time cost ($t$): short run ($t <
-    1m$), medium run ($1m \le t < 5m$), and long run ($5m \le t$); (b)
-    Distribution of time cost by group.}
+    \includegraphics[width=\textwidth]{results/barplot-timecost.pdf}
+    \caption{\label{fig:rq1-barplot}}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}{0.25\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{results/boxplot-timecost.pdf}
+    \caption{\label{fig:rq1-boxplot}}
+  \end{subfigure}%
+  \caption{(a) Subjects grouped by time cost ($t$): short run ($t <
+  1m$), medium run ($1m \le t < 5m$), and long run ($5m \le t$); (b)
+  Distribution of time cost by group.}
+  \vspace{-3ex}
 \end{figure}
-
-%% Figure~\ref{fig:rq1-barplot} is a lower bound estimation of cost
-%% because some tests may finish earlier than expected due to existing
-%% test failures in the revision we downloaded.
 
 It is important to note that we under-estimated cost in our
 experiments for one main reason.
@@ -353,109 +330,84 @@ custom parameters, which we do not handle in our experimental setup.
 We enabled such parameters for this specific project and observed that
 testing time goes to nearly 30 minutes.  For simplicity, we considered
 only the tests executed by default.
-\Jbc{
+\Comment{
 Although failing tests may introduce noise in our measurements, we
 carefully eliminated subjects with more than \SuiteFailingThreshold{} of
 test failures. 
+}
 From the \numSubjs{} testable projects, \numSubjsPass{} successfully
 executed all tests and \numSubjsFail{} reported some test failure.
 Furthermore, from these \numSubjsFail{} subjects, only 11 subjects
 have more than 5\% of failing tests (7.3\% in average).
-}
-\vspace{1ex}
 \begin{center}
+\vspace{1ex}
 \fbox{
 \begin{minipage}{8cm}
-    \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
-      time-consuming test suites are relatively frequent in
-      open-source projects.  We found that \percentMedLongRunning{} of
-      the \numSubjs{} projects we analyzed (\ie{}, nearly 1 in every 4
-      projects) take at least 1 minute to run and
-      \percentLongRunning{} take at least 5 minutes to run.\Comment{
-        (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}
+  \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
+    time-consuming test suites are relatively frequent in
+    open-source projects.  We found that \percentMedLongRunning{} of
+    the \numSubjs{} projects we analyzed (\ie{}, nearly 1 in every 4
+    projects) take at least 1 minute to run and
+    \percentLongRunning{} take at least 5 minutes to run.\Comment{
+      (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}
 \end{minipage}
 }
-\end{center}
 \vspace{1ex}
-
+\end{center}
 
 \begin{itemize}
-    \item \numRQFeasibilityTwo. \textbf{\RQFeasibilityTwo}
+  \item \numRQFeasibilityTwo. \textbf{\RQFeasibilityTwo}
 \end{itemize}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
 not uncommon, accounting to nearly \percentMedLongRunning{} of the
 \numSubjs{} projects we analyzed.  Research question \numRQFeasibilityTwo{}
 measures the distribution of test costs in test suites as to estimate
-(lack of) potential of obtaining speedups with parallelization.  In
+potential of obtaining speedups with parallelization.  In
 the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
-
 %% However, avoiding
 %% frequent context switches is another factor to consider.  For example,
 %% assuming there are at least two CPUs available for execution, cost can
 %% be cut in half if two tests in a large test suite dominate execution
 %% time and these tests are assigned to different CPUs.
-
 %% It is therefore important to
 %% speedup regressing testing in open-source projects.\Comment{not only
 %%   to huge projects as those from Google~\cite{google-tap,google-ci}
 %%   and Microsoft~\cite{prasad-shulte-ieee-microsoft-ci}.}
-
 %% For the case
 %% where cost is distributed more evenly across test cases, one expects
 %% that speedups will be a function of the number of cores.
 %% These contradictory forces, pushing number of tests and cost
 %% of each test up and down, make prediction of effectiveness challenging.
+Figure~\ref{fig:time-distributions} shows the time distribution of
+individual test cases per project (x-axis denote projects appearing in
+arbitrary order).
+We observed that the average median value of execution cost for a
+test was relatively small (dashed horizontal red lines), namely 0.08s
+for \medg{} projects and 0.16s for \longg{} projects.
+The standard deviations associated with each distribution were
+relatively low.\Comment{ Figure~\ref{fig:sd} shows the number of
+projects within specific ranges of $\sigma$ values.}  We noted a small
+number of cases of CPU monopolization.
 
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}{0.47\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{results/testcost-long.pdf}
-      \caption{\label{fig:longtcost}Long group.}
-    \end{subfigure}\\
-    \vspace{2ex}
-    \begin{subfigure}{0.47\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{results/testcost-medium.pdf}
-      \caption{\label{fig:medtcost}Medium group.}
-    \end{subfigure}
-    %% \vspace{2ex}
-    %% \begin{subfigure}{0.5\textwidth}
-    %%   \centering
-    %%   \begin{tabular}{rrrr}
-    %%     \toprule
-    %%     & $\sigma\leq1$ & $1<\sigma\leq5$ & $\sigma\ge5$ \\
-    %%     \midrule    
-    %%     Long   &  7 & 15 & 12 \\
-    %%     Medium & 22 & 19 & 7 \\
-    %%     \bottomrule
-    %%   \end{tabular}
-    %%   \caption{\label{fig:sd}Standard deviation ($\sigma$) of test case running times.}
-    %% \end{subfigure}
-    \caption{\label{fig:time-distributions}Time distributions. X-axis
-        denote projects appearing in arbitrary order.}%
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
+  \caption{\label{fig:time-distributions}Time distributions per projects.}%
+  \vspace{-3ex}
 \end{figure}
 
-\sloppy Figures~\ref{fig:longtcost} and~\ref{fig:medtcost} show the
-time distribution of individual test cases per project.  We observed
-that the average median value of execution cost for a test was
-relatively small (dashed horizontal red lines), namely 0.31s for
-\medg{} projects and 0.23s for \longg{} projects.  The standard
-deviations associated with each distribution were relatively
-low.\Comment{ Figure~\ref{fig:sd} shows the number of projects within
-  specific ranges of $\sigma$ values.}  We noted a small number of
-cases of CPU monopolization.  For example, the highest value of
-$\sigma$ occurred in \CodeIn{uber\_chaperone}, a project from the
-\longg{} group.  This project contains only 26 tests, 17 of which take
-less than 0.5s to run, one of which takes nearly 3s to run, two of
-which take nearly 11s to run, four of which takes on average 3m to run, and two of
-which take $\sim$8m to run.  For this project, 98.4\% of the
-execution cost is dominated by 20\% of the tests; without these
-two costly tests this project would have been classified as
-short-running.
+For example, the highest value of $\sigma$ occurred in
+\CodeIn{uber\_chaperone}, a project from the \longg{} group.
+This project contains only 26 tests, 17 of which take less than 0.5s
+to run, one of which takes nearly 3s to run, two of which take nearly
+11s to run, four of which takes on average 3m to run, and two of which
+take $\sim$8m to run.
+For this project, 98.4\% of the execution cost is dominated by 20\% of
+the tests; without these two costly tests this project would have been
+classified as short-running.
 We did not find other projects with such extreme time monopolization
 profile.
 Project \CodeIn{facebookarchive\_linkbench} is also classified as
@@ -463,52 +415,21 @@ long-running and has the second highest value of $\sigma$.
 For this project, however, cost is distributed more smoothly across 98
 tests, of which 8 (8.1\%) take more than 1s to run with the rest of
 the tests running faster.
-
-\begin{figure}[t]
-  \centering
-  \begin{subfigure}{0.15\textwidth}
-    \centering
-    \includegraphics[width=.85\textwidth]{results/boxplots-testcases.pdf}
-    \caption{\label{fig:size-testsuites}Size of test suites.}
-  \end{subfigure}
-  ~
-  \begin{subfigure}{0.3\textwidth}
-    \centering
-    \includegraphics[width=.95\textwidth]{results/scatter-testcost.pdf}
-    \caption{\label{fig:scattercost}Size versus running time of
-      test suites.}
-  \end{subfigure}
-  \caption{\label{fig:time-versus-size}Relating size and time.}%
-\end{figure}
-
-%\Mar{$\leftarrow$ show stats to indicate discrimination of
-%  two distributions}
-
 Figure~\ref{fig:time-distributions} shows that the average median
 times are similar for \medg{} and \longg{}-running test suites.
 The difference in overall running times is mainly justified by the
 number of test cases as opposed to the individual costs of test cases.
+
 Figure~\ref{fig:size-testsuites} shows the difference in the
 distribution of test suite sizes across groups.  This figure indicates
-that long projects, albeit having a wider inter-quartile range (middle
-50\% projects in this group are less predictable), have a higher
-median and much higher average number of test cases.  Furthermore, we
-noted a strong positive correlation between running time and number of
-test on projects in the \longg{} group.  Considering the \medg{}
-group, the correlation between these two variables was weak.
+that long projects, have a higher median and much higher average
+number of test cases.
+Furthermore, we noted a strong positive correlation between running
+time and number of test on projects in the \longg{} group.
+Considering the \medg{} group, the correlation between these two
+variables was weak.
 Figure~\ref{fig:scattercost} illustrates this regression line.
 
-%% however, weak in
-%% the suggesting that saving time in this group with test suite
-%% parallelization may be more challenging as relatively fewer tests
-%% dominate overall execution time.  Figure~\ref{fig:scattercost} shows
-%% these results.
-
-%% This 
-%% indication that it is more beneficial to parallelize long projects as
-%% cost is spread across many
-
-\vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -518,8 +439,23 @@ Figure~\ref{fig:scattercost} illustrates this regression line.
   across test cases.}
 \end{minipage}
 }
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}{0.13\textwidth}
+    \centering
+    \includegraphics[width=.9\textwidth]{results/boxplots-testcases.pdf}
+    \caption{\label{fig:size-testsuites}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.28\textwidth}
+    \centering
+    \includegraphics[width=.9\textwidth]{results/scatter-testcost.pdf}
+    \caption{\label{fig:scattercost}}
+  \end{subfigure}
+  \caption{\label{fig:time-versus-size}(a) Size of test suites; (b)
+    Size versus running time of test suites.}%
+\end{figure}
 \end{center}
-\vspace{1ex}
 
 %% We are interested to know whether
 %% most of the execution cost of a subject is dominated by a small subset
@@ -578,12 +514,12 @@ Figure~\ref{fig:scattercost} illustrates this regression line.
 \label{sec:rqC}
 \label{sec:rqE}
 
-The dimension adoption focuses on the usage of parallelism in
-open-source projects.  It evaluates (\numRQAdoptionOne) how often open-source
-projects use parallelization schemes and (\numRQAdoptionTwo) how developers
-involved in costly projects, not using parallelization, perceive this
-technology.
-
+%% Commented as we don't follow this pattern on the other RQs
+\Comment{
+Adoption concerns with the popularity of  parallelization schemes and
+(\numRQAdoptionTwo) how developers involved in costly projects, not
+using parallelization, perceive this technology.
+}
 \begin{itemize}
     \item \numRQAdoptionOne. \textbf{\RQAdoptionOne{}}
 \end{itemize}
@@ -606,7 +542,7 @@ Maven parameters.  To that end, we used the option~\CodeIn{-X} to
 produce debug output and the option~\CodeIn{-DskipTests} to skip
 execution of tests.  We skipped execution of tests as we observed from
 sampling that only bootstrapping the Maven process suffices to infer
-which parallel configuration modes it will use to actually run the
+which parallel configuration modes it uses to run the
 tests.  It is also important to point that we used the default
 configurations specified in the project.  We inferred parallel
 configurations by searching for certain configuration parameters in
@@ -626,26 +562,42 @@ contains a module with the parameter
 of the parameter \CodeIn{parallel}.  If the parameter
 \CodeIn{parallel} is set to \CodeIn{methods} the detected mode will be
 \ForkParMeth{}.  Large projects may contain several test suites
+distributed on different Maven modules potentially using different
+configurations.  For those cases, we collected the Maven output from
+each module discarding duplicates as to avoid inflating counts for
+configuration modes that appear in several modules of the same
+project. For instance, if a project contains two modules using the
+same configuration, we counted only one occurrence.
+It came as a surprise the observation that
+no project used distinct configurations in their modules. Considering
+our set of \numMedLong{} projects, we found that only
+\numProjectsPar{} of those projects had parallelism enabled
+by default, with only configurations \ParClassSeqMeth{},
+\ParClassParMeth{}, and \ForkSeq{} being used.  Configurations
+\ParClassParMeth{} and \ForkSeq{} were the most popular among these
+cases.  Note that these results under-approximate real usage of
+parallelism as we used default parameters in our scripts to spawn the
+Maven process.  That decision could prevent execution of particular
+test modules.
+Table~\ref{tab:freqmodes-dynamic} shows the \numProjectsPar{} projects
+we identified where parallelism is enabled by default in Maven.
+Column ``\emph{Subject}'' indicates the name of the project, column
+``\emph{\# of modules}'' indicates the fraction of modules containing
+tests that use the configuration of parallelism mentioned in column
+``\emph{Mode}''.
+We note that, considering these projects, the modules that do not use
+the configuration cited use the sequential configuration \Seq{}.
+For example, three modules (=28-25) from Log4J2 use sequential
+configuration.
 \begin{wraptable}{r}{0pt}%0.525\linewidth
   \footnotesize
-  %  \small
   \centering
   \setlength{\tabcolsep}{2.5pt}
-%    \resizebox{.48\textwidth}{!}{%
     \begin{tabular}{llcr}
         \toprule
         \multirow{2}{*}{\emph{Group}} & \multirow{2}{*}{\emph{Subject}} & \emph{\# of} & \multirow{2}{*}{\emph{Mode}}\\%
                                       &                                 & \emph{modules} &\\%
         \midrule%
-%%      Medium & \Comment{BounceStorage }Chaos\Comment{ HTTP Proxy} & 1/1 & \ParClassSeqMeth{}\\%
-%%      Medium & \Comment{Apache }Flink & 74/74 & \ForkSeq{} \\%
-%%      Long & \Comment{JenkinsCI }Gerrit\Comment{ Trigger Plugin} & 1/1 & \ForkSeq{}\\%
-%%      Medium & \Comment{Spotify }Helios & 8/8 & \ForkSeq{}\\%
-%%      Medium & Javaslang & 3/3 & \ParClassParMeth{}\\%
-%%      Medium & Jcabi\Comment{ Github} & 1/1 & \ParClassParMeth{}\\%
-%%      Medium & \Comment{Hazelcast }Jet & 7/14 & \ForkSeq{}\\%
-%%      Long & \Comment{Apache Logging }Log4J2 & 25/31 & \ForkSeq{}\\%
-%%      Long & \Comment{Jankotek }MapDB & 1/1 & \ParClassParMeth{}\\%
         Medium & Californium & 2/20 & C2\\%
         Medium & Chaos & 1/1 & C2\\%
         Long & \Comment{apache} Flink & 66/74 & FC0\\%
@@ -664,39 +616,13 @@ of the parameter \CodeIn{parallel}.  If the parameter
     \caption{Subjects with parallel test execution enabled by
     default.}
     \label{tab:freqmodes-dynamic}
+    \vspace{-1ex}
 \end{wraptable}
-distributed on different Maven modules potentially using different
-configurations.  For those cases, we collected the Maven output from
-each module discarding duplicates as to avoid inflating counts for
-configuration modes that appear in several modules of the same
-project. For instance, if a project contains two modules using the
-same configuration, we counted only one occurrence.
-Table~\ref{tab:freqmodes-dynamic} shows the projects we identified
-where parallelism is enabled by default in Maven.  Column
-``\emph{Subject}'' indicates the name of the project, column
-``\emph{\# of modules}'' indicates the fraction of modules containing
-tests that use the configuration of parallelism mentioned in column
-``\emph{Mode}''.  We note that, considering these projects, the
-modules that do not use the configuration cited use the sequential
-configuration \Seq{}.  For example, three modules (=28-25) from Log4J2
-use sequential configuration.
-
-It came as a surprise the observation that
-no project used distinct configurations in their modules. Considering
-our set of \numMedLong{} projects, we found that only
-\textbf{\numProjectsPar{}} of those projects had parallelism enabled
-by default, with only configurations \ParClassSeqMeth{},
-\ParClassParMeth{}, and \ForkSeq{} being used.  Configurations
-\ParClassParMeth{} and \ForkSeq{} were the most popular among these
-cases.  Note that these results under-approximate real usage of
-parallelism as we used default parameters in our scripts to spawn the
-Maven process.  That decision could prevent execution of particular
-test modules.
 
 \subsubsection{Static checking}
 \label{sec:rqC-2}
-Given the inherent limitation of dynamic monitoring to find evidence
-of parallelism, we also looked for indication of parallelism in build
+As our previous approach cannot detect parallelism in non-default
+configurations, we also looked for indication of parallelism in build
 files\Comment{ in the same sample set of \numMedLong{} projects}.  We
 parsed all \emph{pom.xml} files under the project's directory and used
 the same approach as in our previous analysis to classify
@@ -706,15 +632,15 @@ the input (\eg,
 \CodeIn{<parallel>\$\{parallel.type\}</parallel>}). For these
 projects, the tester needs to provide additional parameters in the
 command line to enable parallelization (\eg, \CodeIn{mvn test
-  -Dparallel.type=classesAndMethods}). To handle those case, we
+  -Dparallel.type=classesAndMethods}). To handle those cases, we
 considered all possible values for the parameter (in this case,
 \CodeIn{\$\{parallel.type\}}).  It is also important to note that this
 approach is not immune to false negatives, which can occur when
-\emph{pom.xml} files are encapsulated in jar files or downloaded from
+\emph{pom.xml} files are encapsulated in jar files or files downloaded from
 the network.  Consequently, this static checking is complementary to
 the dynamic checking, previously presented.
-Overall, we found, using this methodology, \numProjectsParStatic{}
-projects that use parallelism.
+
+This methodology founds \numProjectsParStatic{} projects.
 Compared to the set of projects listed in
 Table~\ref{tab:freqmodes-dynamic}, we found four new projects, namely:
 \CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
@@ -724,26 +650,26 @@ configuration \ParClassParMeth), \CodeIn{Mapstruct} (using configuration
 Curiously, we also found that project \CodeIn{Jcabi}, \CodeIn{Rultor},
 and \CodeIn{Takes} were not detected using this methodology.
 That happened because these projects loaded a \emph{pom.xml} file from
-a jar file that we did not check.  Considering the static and dynamic
-methods together, we found a total of \numProjectsParTotal{} distinct
-projects using parallelism, corresponding to the union of the two
-subject sets.
+a jar file that we did not check.
+Considering the static and dynamic methods together, we found a total
+of \numProjectsParTotal{} distinct projects using parallelism,
+corresponding to the union of the two subject sets.
 
 \vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
   \textit{Answering \numRQAdoptionOne{}:}~\emph{Results indicate that test
-    suite parallelization is underused.  Overall, only
-    \percentParallel{} of costly projects (\numProjectsParTotal{} out of \numMedLong)
-    use parallelism.}
+  suite parallelization is underused.  Overall, only
+  \percentParallel{} of costly projects (\numProjectsParTotal{} out of \numMedLong)
+  use parallelism.}
 \end{minipage}
 }
 \end{center}
 \vspace{1ex}
 
 \begin{itemize}
-	\item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
+  \item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
 \end{itemize}
 
 To answer this research question we surveyed developers involved in a
@@ -780,7 +706,6 @@ developers:
   \item Some other reason. Please elaborate.
   \end{enumerate}
 \end{enumerate}
-
 %% \begin{enumerate}
 %% 	\item How long does it take for test to run in your
 %%		environment?
@@ -813,7 +738,6 @@ CI does not preclude low-level parallelization.  For example,
 installations of open-source CI tools (\eg{}, Jenkins~\cite{jenkins})
 in dedicated servers would benefit from running tests faster through
 low-level test suite parallelization.
-
 % \emailsNotDescribed{} developers did not described their environment.
 
 Considering question 2, the answers we collected indicated, to our
@@ -834,12 +758,10 @@ distributed CI cases), the usage of parallelization increases from
 \percentParallel{} to \percentParallelUpdated{}.  We do not consider
 this change significant enough to modify our conclusion about
 practical adoption of parallelization (\numRQAdoptionOne{}).
-
 %% , one runs a manually created Thread to run some
 %% tests, and the other runs in parallel by using Java 8 collection
 %% streams, that allows the developers to iterate over a list in
 %% parallel.
-
 %% did not confirmed, however,
 %% the developers confirmed the need of an extra parameter at the command
 %% line to execute in parallel.
@@ -851,9 +773,9 @@ Maven (option ``a''), \emailsB{} of developers mentioned that they did
 not use parallelism concerned with possible concurrency issues (option
 ``b''), \emailsD{} of developers mentioned that continuous integration
 services sufficed to provide timely feedback while running only smoke
-\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth
+\begin{wrapfigure}{r}{0.15\textwidth}
     \centering
-    \includegraphics[width=.18\textwidth]{results/survey.pdf}
+    \includegraphics[width=.15\textwidth]{results/survey.pdf}
     \caption{\label{fig:rq5-answers}Summary of developer's answers to
       survey question~\ref{questionThree}.}
 \end{wrapfigure}
@@ -868,16 +790,18 @@ survey.  The pie chart in Figure~\ref{fig:rq5-answers}
 summarizes the distribution of answers.
 
 \begin{center}
+\vspace{1ex}
 \fbox{
-	\begin{minipage}{8cm}
-	  \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
-       with concurrency issues (\ie{}, the extra work to organize test
-       suite to safely explore concurrency) was the principal reason
-       for developers not investing in parallelism.  Other reasons
-       included availability of continuous integration services and
-       unfamiliarity with the technology.}
-	\end{minipage}
+\begin{minipage}{8cm}
+  \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
+    with concurrency issues (\ie{}, the extra work to organize test
+    suite to safely explore concurrency) was the principal reason
+    for developers not investing in parallelism.  Other reasons
+    included availability of continuous integration services and
+    unfamiliarity with the technology.}
+\end{minipage}
 }
+\vspace{1ex}
 \end{center}
 
 \subsection{Speedups}
@@ -890,7 +814,7 @@ summarizes the distribution of answers.
 To answer \numRQSpeedupOne{}, we considered the \numProjectsPar{}
 subjects from our benchmark that use parallelization \emph{by default}
 (see Table~\ref{tab:freqmodes-dynamic}).  We compared running times
-with parallelization~---~configured by project owners~---~and without
+with parallelization~---~configured by project owners and without
 parallelization.
 
 %% In those projects, parallelization is active without
@@ -905,15 +829,30 @@ parallelization.
 %% the same execution runs in $5m$ with parallelization enabled (default
 %% execution), the speedup is two.
 
-Table~\ref{tab:speedup} summarizes results.  Lines are sorted by
-project names.  Columns ``\emph{Group}'' and
-``\emph{Name}'' indicate, respectively, the group and the name of the
-subject.  Column ``$T_s$'' shows sequential execution time and column
-``$T_p$'' shows parallel execution time. Column ``$T_s/T_p$'' shows
-speedup or slowdown.  As usual, a ratio above 1x denotes speedup
-and a ratio below 1x denotes slowdown.
+Table~\ref{tab:speedup} summarizes results.
+Lines are sorted by project names.
+Columns ``\emph{Group}'' and ``\emph{Name}'' indicate, respectively,
+the group and the name of the subject.
+Column ``$T_s$'' shows sequential execution time and column ``$T_p$''
+shows parallel execution time.
+Column ``$T_s/T_p$'' shows speedup or slowdown.
+As usual, a ratio above 1x indicates speedup and a ratio below 1x
+indicates slowdown.
 
-\begin{table}[h!]
+Results show that, on average, parallel execution was
+\avgSpeedup{} times faster compared to sequential execution.
+Three cases worth special attention: \CodeIn{Log4J2}, \CodeIn{Chaos},
+and \CodeIn{Takes}.
+We note that parallel execution in \CodeIn{Log4J2} was
+ineffective.  We found that Maven invokes several test modules in this
+project but the test modules that dominate execution time run
+sequentially by default. This was also the case of the highlighted
+project \CodeIn{Californium}.
+No significant speedup was observed in \CodeIn{Chaos}, a project with
+only three test classes, of which one monopolizes the bulk of test
+execution time.
+
+\begin{table}[ht!]
 \centering
 \resizebox{.41\textwidth}{!}{%
   \scriptsize
@@ -921,7 +860,7 @@ and a ratio below 1x denotes slowdown.
 \toprule
 \emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
 \midrule%
-Medium & Californium & 1.45m & 1.40m & 1.04x\\%
+Medium & Californium & 1.45m & 1.40m & \cellcolor{lightgray}1.04x\\%
 Medium & \Comment{BounceStorage} Chaos\Comment{ HTTP Proxy} & 1.51m & 1.47m & \cellcolor{lightgray}1.03x\\%
 Medium &\Comment{ Apache }Flink& 11.79m & 2.57m & 4.59x\\%
 Long &\Comment{ Apache }Log4J2& 8.24m & 8.21m & \cellcolor{lightgray}1.00x\\%
@@ -937,35 +876,26 @@ Long & \Comment{vavr-io} Vavr & 3.26m & 2.25m & 1.45x\\%
 \midrule
 \textbf{average} &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
+\vspace{-5ex}
 \end{tabular}}
 \caption{\label{tab:speedup}Speedup (or slowdown) of parallel
   execution ($T_p$) over sequential execution ($T_s$).  Default
   parallel configuration of Maven is used.  Highest slowdown/speedup
   appears in gray color.}
 \end{table}
-
-Results indicate that, on average, parallel execution was
-\avgSpeedup{} times faster compared to sequential execution.  Three
-cases worth special attention: \CodeIn{Chaos}, \CodeIn{Takes} and
-\CodeIn{Log4J2}.  No significant speedup was observed in
-\CodeIn{Chaos}, a project with only three test classes, of which one
-monopolizes the bulk of test execution time.  This project uses
-configuration \ParClassSeqMeth{}, which runs test classes in parallel
-and test methods, declared in each class, sequentially.  Consequently,
-speedup cannot be obtained as the cost of the single expensive test
-class cannot be broken down with the selected configuration.
-\Jbc{
-On the other hand, the speedup observed in project \CodeIn{Takes} was
+This project uses configuration \ParClassSeqMeth{}, which runs test
+classes in parallel but runs test methods, declared in each class,
+sequentially.
+Consequently, speedup cannot be obtained as the cost of the single
+expensive test class cannot be broken down with the selected
+configuration.
+Finally, the speedup observed in project \CodeIn{Takes} was
 the highest amongst all projects. This subject uses configuration
 \ParClassParMeth{} and contains 419 test methods distributed nearly
 equally among 148 test classes with a small number of test methods.
 Furthermore, several methods in those classes are time-consuming.
 As result, the CPUs available for testing are kept occupied for the
-most part during test execution.}
-Finally, we note that parallel execution in \CodeIn{Log4J2} was
-ineffective.  We found that Maven invokes several test modules in this
-project but the test modules that dominate execution time run
-sequentially by default.
+most part during test execution.
 
 %% The third, runs parallel configuration in
 %% \Fix{80\%} of the project modules, however, the test time is dominated
@@ -973,8 +903,8 @@ sequentially by default.
 %%   this} \Fix{falar sobre o resultado geral dos speedups - elaborar
 %%   menor e maior speedup... acho que so vale a pena discutir quando
 %%   tiver conviccao dos 2 casos}
-
 \begin{center}
+\vspace{1ex}
 \fbox{
   \begin{minipage}{8cm}
     \textit{Answering \numRQSpeedupOne{}:}~\emph{Considering the
@@ -983,6 +913,7 @@ sequentially by default.
       }
   \end{minipage}
 }
+\vspace{1ex}
 \end{center}
 
 \begin{itemize}
@@ -998,32 +929,29 @@ Section~\ref{sec:setup}.  We used a Xeon E5-2660v2 (2.20GHz) Intel
 processor machine with 80 virtual CPUs (40 cores with two native
 threads each) and 256GB of memory, running Ubuntu 14.04 LTS Trusty
 Tahr (64-bit version). This experiment uses configuration
-\emph{\ForkSeq{}} as the goal is to evaluate the impact on runtime of
-\begin{wrapfigure}{r}[0pt]{0pt}%0.525\linewidth  
-  %\begin{figure}[h]
-  \centering
-  \includegraphics[width=.25\textwidth]{R/scalability/scalability.pdf}
-  \caption{\label{fig:scalability}Scalability.}
-  %\end{figure}
-%  \vspace{-1ex}    
-\end{wrapfigure}
 spawning a growing number of JVMs in different CPUs.  We selected
 subject \subjectScalability{} in this experiment as it represents the
 case of a long-running test suite (see Table~\ref{tab:speedup}) with
 test cases distributed across many test classes~--~194.  Note that a
+\emph{\ForkSeq{}} as the goal is to evaluate the impact on runtime of
 test class is the smallest unit that can be used to spawn a test job
 on a JVM and that we have no control over which test classes will be
 assigned to which JVM that the build system forks.
-
 Figure~\ref{fig:scalability} shows the reduction in running times as
-more CPUs contribute to the execution.  We ran this experiment for a
-growing number of cores 1, 3, ..., 39.  The plot shows results up to
-17 cores as it is clear the tendency.  We noticed that improvements
-are marginal after three cores, which is the basic setup we used in
-other experiments.  This saturation is justified by the presence of a
-single test class, \CodeIn{org.mapdb.WALTruncat}, containing 15 test
-cases that take over two minutes to run.
-
+more CPUs contribute to the execution.
+We ran this experiment for a growing number of cores 1, 3, ..., 39. 
+The plot shows results up to 17 cores as it is clear the tendency.
+We noticed that improvements are marginal after three cores, which is
+\begin{wrapfigure}{r}{0.23\textwidth}
+  \vspace{-1ex}
+  \includegraphics[width=0.23\textwidth]{R/scalability/scalability.pdf}
+  \caption{\label{fig:scalability}Scalability.}
+  \vspace{-2ex}
+\end{wrapfigure}
+the basic setup we used in other experiments.
+This saturation is justified by the presence of a single test class,
+\CodeIn{org.mapdb.WALTruncat}, containing 15 test cases that take over
+two minutes to run.
 
 \begin{center}
 \fbox{
@@ -1034,6 +962,7 @@ cases that take over two minutes to run.
       balanced across test classes.}
   \end{minipage}
 }
+\vspace{1ex}
 \end{center}
 
 \subsection{Tradeoffs}
@@ -1053,9 +982,8 @@ speedup are contradictory forces that drive configuration selection.
 Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
 
 \begin{itemize}
-    \item \numRQIssuesOne{}. \textbf{\RQIssuesOne{}}
+  \item \numRQIssuesOne{}. \textbf{\RQIssuesOne{}}
 \end{itemize}
-
 
 %% The intuition is that efficiency and flakiness are inversely
 %% proportional in some cases: if too many tests depends on the state of
@@ -1080,27 +1008,22 @@ seeds.  Overall, we needed to reran test suites 600 times, 60 times
 (10x6 configurations) on each project.  Given the low standard
 deviations observed in our measurements we consider ten seeds
 reasonable for this experiment.
-
 %% \Jbc{Is this
 %%   legit/acceptable/convincing?  $\rightarrow$}The rationale for this
 %% criteria was to maximize the diversity of domains from the subjects,
 %% assuming these subjects have test suites with different
 %% characteristics (\eg, architectural design and rate of cpu/io-bound
 %% operations).
-
 %% Notice that with parallelism enabled, the
 %% number of failing tests may vary on different runs due to the
 %% non-deterministic scheduling of threads and processes.  For that
 %% reason, we re-executed the experiment and computed the average speedup
 %% and flakiness on each scenario.
-
-\Comment{
-    The rationale for this selection criteria was to maximize the chances
-    of observing speedup and flakiness, assuming that long-running tests
-    also have many tests. Indeed, we confirmed that test suites in these
-    projects contain at least 236 tests ($1,662.7$ in average).
-}
-
+%%    The rationale for this selection criteria was to maximize the chances
+%%    of observing speedup and flakiness, assuming that long-running tests
+%%    also have many tests. Indeed, we confirmed that test suites in these
+%%    projects contain at least 236 tests ($1,662.7$ in average).
+%% 
 %% In a first attempt of this experiment, we considered using Maven to
 %% run the subjects on the different parallel configurations. However,
 
@@ -1142,41 +1065,32 @@ seconds in most cases).  To assure that our experiments terminate
 limit. Finally, we saved each execution log and stack traces generated
 from JUnit to collect the execution time, the number of failing tests,
 and for reference to analyze and diagnose outliers in our results.
-
 %% \Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
 %% jvm - maven surefire nao tratava algumas exceptions que aconteciam na
 %% execucao do teste, (3) timeout}
-
 %% The script we implemented to measure time and flakiness takes a list
 %% of tests classes to run as input and outputs the results (\ie, number
 %% of test methods, failures, skips, and elapsed time) for each parallel
 %% configuration.
-
-
-
-\Comment{ To obtain parallel configurations, we implemented a script
-  that takes a subject and a configuration label as inputs (\eg
-  \CodeIn{mapdb "c0"}), and the script outputs the modified version of
-  the subject with the desired configuration. The workflow consists in
-  copying the project directory to a new directory, finding all
-  existing build files (\ie, \pomf{} files), and modifying all
-  existing Maven Surefire configurations with new values for the
-  parameters \CodeIn{parallel}, \CodeIn{forkCount}, and
-  \CodeIn{threadCount} using an XPath~\cite{xpath} library to
-  manipulate XML documents. For configurations with forked JVMs
-  enabled (\ie, \ForkSeq{} and \ForkParMeth{}), we changed the
-  \CodeIn{forkCount} with the value \CodeIn{1C} (\ie, one JVM per
-  core).  To adjust the pool of threads for parallelism within a JVM,
-  we changed the parameter \CodeIn{threadCount} with \Jbc{should we
-    consider 2 as it is the number of native threads per core OR 6 as
-    it represents 3 Cores * 2 native threads?}.To run the subjects and
-  their respective variations (\ie, the modified versions according to
-  the parallelism configuration), we used a similar approach as
-  described in Figure~\ref{fig:mvn-execution} except that...  }
-
-
-
-
+%%\Comment{ To obtain parallel configurations, we implemented a script
+%%  that takes a subject and a configuration label as inputs (\eg
+%%  \CodeIn{mapdb "c0"}), and the script outputs the modified version of
+%%  the subject with the desired configuration. The workflow consists in
+%%  copying the project directory to a new directory, finding all
+%%  existing build files (\ie, \pomf{} files), and modifying all
+%%  existing Maven Surefire configurations with new values for the
+%%  parameters \CodeIn{parallel}, \CodeIn{forkCount}, and
+%%  \CodeIn{threadCount} using an XPath~\cite{xpath} library to
+%%  manipulate XML documents. For configurations with forked JVMs
+%%  enabled (\ie, \ForkSeq{} and \ForkParMeth{}), we changed the
+%%  \CodeIn{forkCount} with the value \CodeIn{1C} (\ie, one JVM per
+%%  core).  To adjust the pool of threads for parallelism within a JVM,
+%%  we changed the parameter \CodeIn{threadCount} with \Jbc{should we
+%%    consider 2 as it is the number of native threads per core OR 6 as
+%%    it represents 3 Cores * 2 native threads?}.To run the subjects and
+%%  their respective variations (\ie, the modified versions according to
+%%  the parallelism configuration), we used a similar approach as
+%%  described in Figure~\ref{fig:mvn-execution} except that...  }
 %% For efficiency, we reported the speedup (\ie, $T_{\text{s}} /
 %% T_{\text{p}}$), and for flakiness, we reported the rate of failing
 %% tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
@@ -1211,44 +1125,10 @@ spawning and managing JVMs and threads.
 }
 \end{center}
 
-%% \begin{figure}[h!]
-%% \centering
-%% \resizebox{.48\textwidth}{!}{%
-%% \begin{tabular}{lcrrrrr}
-%% \toprule
-%% \emph{Subject} & \emph{\# of tests} & \emph{\SeqClassParMeth{}} & \emph{\ParClassSeqMeth{}} & \emph{\ParClassParMeth{}} & \emph{\ForkSeq{}} & \emph{\ForkParMeth{}}\\%
-%% \midrule%
-%% Linkedin Pinot & 356 & - & - & - & - & -\\%
-%% %% Jenkins CI Github Plugin & - & - & - & - & 0\% & -\\%
-%% %% Kite SDK & - & - & - & - & - & -\\%
-%% %% \Fix{!?} Apache Giraph & 327 & - & - & - & - & -\\%
-%% %% OpenMRS Core & - & - & - & - & - & -\\%
-%% %% Jenkins CI Docker Workflow Plugin & - & - & - & - & 0\% & -\\%
-%% %% \Fix{Flaky} Apache Eagle & - & - & - & - & - & -\\%
-%% %%Geotools & 7701 & - & - & - & - & -\\%
-%% %%Kuromoji & 672 & - & - & - & - & -\\%
-%% %%Atomix & 99 & - & - & - & - & -\\%
-%% %%\Fix{Snazy OHC} & - & - & - & - & - & -\\%
-%% %%\Fix{RoaringBitmap} & - & - & - & - & - & -\\%
-%% \bottomrule%
-%% \end{tabular}}
-%% \caption{\Fix{Tabela de flakiness}}
-%% \label{tab:rq6-flaky}
-%% \end{figure}
-
-
 %% \Jbc{Lembrar que investigar o slowdown de Dataflow... os logs indicam que varios
 %% dos testes que quebraram tentavam fazer uma autenticacao em algum servico.
 %% Possivelmente o slowdown se deve ao tempo de resposta do servico quando
 %% a autentiticao falha}
-
-%% \Fix{Elaborate results from efficiency}
-
-%% \Fix{Elaborate results from flakiness}
-
-%% \Fix{highlight special cases}
-
-
 
 %%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
 %%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS

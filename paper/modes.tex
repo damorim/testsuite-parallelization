@@ -1,24 +1,23 @@
 \section{Parallel Execution of Test Suites}
 \label{sec:modes}
 
-Figure~\ref{fig:levels} illustrates the different levels where
+Figure~\ref{fig:levels} illustrates different levels where
 parallelism in test execution can be obtained.
 The highest level indicates
 parallelism obtained through different machines on the
 network.  For instance, using virtual machines from a cloud service to
+\begin{wrapfigure}{r}{0.15\textwidth}  
+  \centering
+  %  \includegraphics[width=0.35\textwidth]{figs/parallel-levels.pdf}    
+  \includegraphics[width=0.08\textwidth]{figs/parallel-levels-short.pdf}  
+  \caption{\label{fig:levels}Levels of parallelism.}
+  \vspace{-2ex}
+\end{wrapfigure}
 distribute test execution.  The lowest levels denote parallelism
 obtained within a single machine.  These levels are complementary:
 the lowest levels leverage the computing power of server
 nodes whereas the highest level leverages the aggregate processing
-power of the farm.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.35\textwidth]{figs/parallel-levels.pdf}
-  \vspace{-1ex}
-  \caption{\label{fig:levels}Levels of parallelism.}
-\end{figure}
-
+power of a network of machines.
 This paper focuses on low-level parallelism, where computation can be
 offloaded at different CPUs within a machine and at different threads
 within each CPU.  This form of parallelism is enabled through build
@@ -28,7 +27,7 @@ of testing frameworks provide today support for parallel test
 execution (e.g., JUnit~\cite{junit-org}, TestNG~\cite{testng}, and
 NUnit~\cite{nunit}) as to benefit from the available power of popular multi-core processors.
 In the following, we elaborate relevant features of testing frameworks
-and build systems.  We focused on Java, Maven, and JUnit but the
+and build systems for parallelization.  We focused on Java, Maven, and JUnit but the
 discussion can be generalized to other language and tools.
 
 \subsection{Testing Frameworks}
@@ -52,8 +51,9 @@ framework (\eg{}, JUnit).
     test classes concurrently, but running test methods sequentially.
 \item
     \textbf{Parallel classes; Parallel methods
-      (\ParClassParMeth).}~This configuration corresponds to the
-    combination of \SeqClassParMeth{} and \ParClassSeqMeth{}.  
+      (\ParClassParMeth).}~This configuration runs test classes and
+    methods concurrently.\Comment{corresponds to the
+    combination of \SeqClassParMeth{} and \ParClassSeqMeth{}.  }
 \end{itemize}
 
 %% The configuration \Seq{} is a proper fit for short-running test suites
@@ -66,10 +66,10 @@ framework (\eg{}, JUnit).
 
 Notice that an important aspect in deciding which configuration to use
 (or in designing new test suites) is the possibility of race
-conditions on shared data during execution.  Data sharing can occur
-through state that is reachable from statically-declared variables in
+conditions on shared data during execution.  Data sharing can occur,
+for example, through state that is reachable from statically-declared variables in
 the program or through variables declared within the scope of the test
-class~\cite{luo-etal-fse2014}.  Considering data race avoidance,
+class or even through resources available on the file system and the network~\cite{luo-etal-fse2014}.  Considering data race avoidance,
 configuration \SeqClassParMeth{} is preferable over \ParClassSeqMeth{}
 when it is clear that test methods in a class do not manipulate shared
 state, which can be challenging to
@@ -85,10 +85,8 @@ class.
 \subsection{Build Systems}
 \label{sec:builder}
 
-
 %% The build system can spawn multiple JVMs, each running on its own OS
 %% process on a given CPU and handling a partition of the test set.
-
 Forking OS processes to run test jobs is the basic mechanism of build
 systems to obtain parallelism at the machine space (see
 Figure~\ref{fig:levels}).  For Java-based build systems, such as Maven
@@ -99,15 +97,15 @@ shows the choices to control parallelism through the build system
 
 \begin{itemize}
 \item
-    \textbf{Forked JVMs with sequential methods (\ForkSeq).}~The build
-    system spawns multiple JVMs with this configuration, assigning a
-    partition of the set of test classes to each JVM.  Test methods
-    run sequentially within each JVM.
+  \textbf{Forked JVMs with sequential methods (\ForkSeq).}~The build
+  system spawns multiple JVMs with this configuration, assigning a
+  partition of the set of test classes to each JVM.  Test classes and methods
+  run sequentially within each JVM.
 \item
-    \textbf{Forked JVMs with parallel methods (\ForkParMeth).}~With
-    this configuration, the build system forks multiple JVMs, as
-    \ForkSeq{} does.  However, it runs tests concurrently, as
-    \SeqClassParMeth{} does.
+  \textbf{Forked JVMs with parallel methods (\ForkParMeth).}~With
+  this configuration, the build system forks multiple JVMs, as
+  \ForkSeq{} does, but it runs test methods concurrently, as
+  \SeqClassParMeth{} does.
 \end{itemize}
 
 %% In the configuration \ForkSeq{}, each spawned
@@ -125,40 +123,32 @@ used to attenuate the potentially high cost of spawning new JVM
 processes on every test class (if reuse is enabled) and also to
 achieve test isolation (if reuse is disabled).
 
-
 %% \Mar{$\leftarrow$Are you sure about this?
 %%   It seems silly.  Maybe, the rationale is to ``keep design
 %%   simple''.}\Jbc{I'm sure. in addition to keep design simple, I feel
 %%   like this was initially conceived to run tests in isolation}
-
 %% \Mar{$\leftarrow$confirma?  se sim, pode mostrar isto na
 %%   configuracao abaixo?}\Jbc{added...}
-
 %%We are unaware of other build system capable of running multiple
 %%classes at time within a forked process.
-
 %%  to
 %% define tasks related to the project building and these tasks are
 %% performed several plugins.This file
 %% contains defintions of tasks, which are implemented by a collection of
 %% plugins.
-
-
-
 %% \Jbc{falar do surefire e explicar a
 %% configuracao ilustrada - Surefire levanta uma JVM por core e cria uma
 %% pool de 5 threads em cada JVM para executar testes em paralelo.}
-
 \begin{figure}[h!]
 \centering
 \scriptsize
 \lstset{
-    escapeinside={@}{@},
-    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
-    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    morekeywords={parallel, threadCount, perCoreThreadCount,
-    forkCount, reuseForks},
-    deletekeywords={true}
+  escapeinside={@}{@},
+  numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+  basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+  morekeywords={parallel, threadCount, perCoreThreadCount,
+  forkCount, reuseForks},
+  deletekeywords={true}
 }
 \begin{lstlisting}
 <plugin>
@@ -172,8 +162,9 @@ achieve test isolation (if reuse is disabled).
     </configuration>
 </plugin>
 \end{lstlisting}
-    \caption{\label{fig:surefire} Configuration \ForkParMeth{} on Maven.}
+  \caption{\label{fig:surefire} Configuration \ForkParMeth{} on Maven.}
 \end{figure}
+\vspace{-2ex}
 
 \subsubsection*{Example}~Figure~\ref{fig:surefire} shows a
 fragment of a Maven configuration file, known as \pomf{}, highlighting
