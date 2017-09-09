@@ -989,21 +989,19 @@ Note that Section~\ref{sec:rqD} evaluated speedup in isolation.
 
 \input{flakiness-speedup-table}
 
-To answer this research question, we selected 20 different subjects,
+To answer this research question, we selected 15 different subjects,
 ran their test suites against all configurations described in
 Section~\ref{sec:modes}, and compared their running times and rate of
-test flakiness.
-We used the sequential execution associated with each project as the
-comparison baseline in this experiment.
-We sorted the subjects by decreasing order of execution time and
-selected the first 20 projects that uses JUnit 4.7 or later.
-The rationale for this criteria is to ensure compatibility with
-parallel configuration since older versions of JUnit does not support
-parallel testing.
-We ran each project on each configuration for \SubjectsReruns{} times.
-Overall, we needed to reran test suites 360 times, 18 times (3x6
+test flakiness.  We used the sequential execution associated with each
+project as the comparison baseline in this experiment.  We sorted the
+subjects by decreasing order of execution time and selected the first
+15 projects that uses JUnit 4.7 or later.  The rationale for this
+criteria is to ensure compatibility with parallel configuration since
+older versions of JUnit does not support parallel testing.  We ran
+each project on each configuration for \SubjectsReruns{} times.
+Overall, we needed to reran test suites 270 times, 18 times (3x6
 configurations) on each project.  Given the low standard deviations
-observed in our measurements and the aggregated time cost of 360 test
+observed in our measurements and the aggregated time cost of 270 test
 executions, we consider \SubjectsReruns{} reruns reasonable for this
 experiment.
 %% \Jbc{Is this
