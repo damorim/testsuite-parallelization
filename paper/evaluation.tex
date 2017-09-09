@@ -807,12 +807,6 @@ summarizes the distribution of answers.
     \item \numRQSpeedupOne{}. \textbf{\RQSpeedupOne}
 \end{itemize}
 
-To answer \numRQSpeedupOne{}, we considered the \numProjectsPar{}
-subjects from our benchmark that use parallelization \emph{by default}
-(see Table~\ref{tab:freqmodes-dynamic}).  We compared running times
-with parallelization~---~configured by project owners and without
-parallelization.
-
 %% In those projects, parallelization is active without
 %% passing any extra parameters.  Section~\ref{sec:rqC-1} describes in
 %% detail the methodology we used to find these subjects.
@@ -825,30 +819,22 @@ parallelization.
 %% the same execution runs in $5m$ with parallelization enabled (default
 %% execution), the speedup is two.
 
+To answer \numRQSpeedupOne{}, we considered the \numProjectsPar{}
+subjects from our benchmark that use parallelization \emph{by default}
+(see Table~\ref{tab:freqmodes-dynamic}).  We compared running times
+of test suites with enabled parallelization, as configured by project
+developers, and without parallelization.
 Table~\ref{tab:speedup} summarizes results.
 Lines are sorted by project names.
-Columns ``\emph{Group}'' and ``\emph{Name}'' indicate, respectively,
-the group and the name of the subject.
+Columns ``\emph{Group}'' and ``\emph{Subject}'' indicate, respectively,
+the cost group and the name of the project.
 Column ``$T_s$'' shows sequential execution time and column ``$T_p$''
 shows parallel execution time.
 Column ``$T_s/T_p$'' shows speedup or slowdown.
 As usual, a ratio above 1x indicates speedup and a ratio below 1x
 indicates slowdown.
 
-Results show that, on average, parallel execution was
-\avgSpeedup{} times faster compared to sequential execution.
-Three cases worth special attention: \CodeIn{Log4J2}, \CodeIn{Chaos},
-and \CodeIn{Takes}.
-We note that parallel execution in \CodeIn{Log4J2} was
-ineffective.  We found that Maven invokes several test modules in this
-project but the test modules that dominate execution time run
-sequentially by default. This was also the case of the highlighted
-project \CodeIn{Californium}.
-No significant speedup was observed in \CodeIn{Chaos}, a project with
-only three test classes, of which one monopolizes the bulk of test
-execution time.
-
-\begin{table}[ht!]
+\begin{table}[t!]
 \centering
 \resizebox{.41\textwidth}{!}{%
   \scriptsize
@@ -879,6 +865,19 @@ Long & \Comment{vavr-io} Vavr & 3.26m & 2.25m & 1.45x\\%
   parallel configuration of Maven is used.  Highest slowdown/speedup
   appears in gray color.}
 \end{table}
+
+Results show that, on average, parallel execution was
+\avgSpeedup{} times faster compared to sequential execution.
+Three cases worth special attention: \CodeIn{Log4J2}, \CodeIn{Chaos},
+and \CodeIn{Takes}.
+We note that parallel execution in \CodeIn{Log4J2} was
+ineffective.  We found that Maven invokes several test modules in this
+project but the test modules that dominate execution time run
+sequentially by default. This was also the case for the highlighted
+project \CodeIn{Californium}.
+No significant speedup was observed in \CodeIn{Chaos}, a project with
+only three test classes, of which one monopolizes the bulk of test
+execution time.
 This project uses configuration \ParClassSeqMeth{}, which runs test
 classes in parallel but runs test methods, declared in each class,
 sequentially.
