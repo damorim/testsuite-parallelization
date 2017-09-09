@@ -8,24 +8,27 @@ mitigate that issue, we selected subjects according to an objective
 criteria, described in Section~\ref{sec:subjects}.  It remains to
 evaluate the extent to which our observations would change when using
 different testing frameworks and build systems.
-\Jbc{Also, some of the selected subjects contain failing tests. Test
-failures may shrink the expected running due to an early termination
-or even inflate the running time (\eg, test waiting indefinitely for
-an unavailable resources). To mitigate this threat, we filtered
-projects with at least 90\% of the tests passing. Only 17\% of our
-subjects have failing tests. We carefully inspected our rawdata to
-ensure that there is no failing test inflating our results.}
+Also, some of the selected subjects contain failing tests. Test
+failures may reduce the testing time due to early termination
+or even inflate the time (\eg, test waiting indefinitely for
+an unavailable resources).
+To mitigate this threat, we eliminated subjects with flaky tests and
+filtered projects with at least 90\% of the tests passing.
+Only 17\% of our subjects have failing tests.
+We carefully inspected our rawdata to identify and ignore these
+failures with JUnit's \CodeIn{@Ignore} annotation.
 
 \textit{Internal Validity:} Our results could be influenced by
 unintentional mistakes made by humans who interpreted survey data and
-implemented scripts and code to collect and analyze data.
+implemented scripts and code to collect and analyze the data.
 For example, we developed JUnit runners to reproduce Maven's parallel
 configurations and implemented several scripts to automate our
 experiments (\eg, run tests and detect parallelism enabled by default
 in the subjects).
-All those tasks could introduce bias in our results.
-To mitigate those threats, we worked in pairs as to increase chances
-of capturing unintentional mistakes.
+All those tasks could bias our results.
+To mitigate those threats, the first two authors of this paper
+validated/inspected each other to increase chances of capturing
+unintentional mistakes.
 
 \textit{Construct Validity:} We considered a number of metrics in this
 study that could influence some of our interpretations.  For example,
