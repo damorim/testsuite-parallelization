@@ -574,35 +574,35 @@ parallelism as we used default parameters in our scripts to spawn the
 Maven process.  That decision could prevent execution of particular
 test modules. Table~\ref{tab:freqmodes-dynamic} shows the
 \numProjectsPar{} projects we identified where parallelism is enabled by default in Maven.
-\begin{wraptable}{r}{0pt}%0.525\linewidth
 
-  \footnotesize
-  \centering
-  \setlength{\tabcolsep}{2.5pt}
-    \begin{tabular}{llcr}
-        \toprule
-        \multirow{2}{*}{\emph{Group}} & \multirow{2}{*}{\emph{Subject}} & \emph{\# of} & \multirow{2}{*}{\emph{Mode}}\\%
-                                      &                                 & \emph{modules} &\\%
-        \midrule%
-        Medium & Californium & 2/20 & C2\\%
-        Medium & Chaos & 1/1 & C2\\%
-        Long & \Comment{apache} Flink & 66/74 & FC0\\%
-        Long & \Comment{apache logging-}Log4J2 & 25/28 & FC0\\%
-        Long & \Comment{javaslang }Javaslang & 3/3 & C3\\%
-        Medium & Jcabi \Comment{jcabi-github} & 1/1 & C3\\%
-        Long & \Comment{hazelcast hazelcast-}Jet & 6/7 & FC0\\%
-        Long & \Comment{apache} Mahout & 8/9 & FC0\\%
-        Long & \Comment{jankotek} MapDB & 1/1 & C3\\%
-        Medium & \Comment{apache} OpenNLP & 4/4 & FC0\\%
-        Medium & \Comment{yegor256} Rultor & 1/1 & C3\\%
-        Medium & \Comment{yegor256} Takes & 1/1 & C3\\%
-        Long & \Comment{vavr-io} Vavr & 3/3 & C3\\%
-        \bottomrule%
-    \end{tabular}
-    \caption{Subjects with parallel test execution enabled by default.}
-    \label{tab:freqmodes-dynamic}
-%    \vspace{-1ex}
-\end{wraptable}
+\begin{wraptable}{r}{5cm}
+\caption{Subjects with parallel test execution enabled by default.}
+\label{tab:freqmodes-dynamic}
+\footnotesize
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llcr}
+\toprule
+\multirow{2}{*}{\emph{Group}} & \multirow{2}{*}{\emph{Subject}} & \emph{\# of} & \multirow{2}{*}{\emph{Mode}}\\%
+   & & \emph{modules} &\\%
+\midrule%
+Medium & Californium & 2/20 & C2\\%
+Medium & Chaos & 1/1 & C2\\%
+Long & \Comment{apache} Flink & 66/74 & FC0\\%
+Long & \Comment{apache logging-}Log4J2 & 25/28 & FC0\\%
+Long & \Comment{javaslang }Javaslang & 3/3 & C3\\%
+Medium & Jcabi \Comment{jcabi-github} & 1/1 & C3\\%
+Long & \Comment{hazelcast hazelcast-}Jet & 6/7 & FC0\\%
+Long & \Comment{apache} Mahout & 8/9 & FC0\\%
+Long & \Comment{jankotek} MapDB & 1/1 & C3\\%
+Medium & \Comment{apache} OpenNLP & 4/4 & FC0\\%
+Medium & \Comment{yegor256} Rultor & 1/1 & C3\\%
+Medium & \Comment{yegor256} Takes & 1/1 & C3\\%
+Long & \Comment{vavr-io} Vavr & 3/3 & C3\\%
+\bottomrule%
+\end{tabular}
+%  \vspace{-1ex}
+ \end{wraptable}
 Column ``\emph{Subject}'' indicates the name of the project, column
 ``\emph{\# of modules}'' indicates the fraction of modules containing
 tests that use the configuration of parallelism mentioned in column
