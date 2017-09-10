@@ -82,7 +82,7 @@ are targeted to extremely large scale code and test bases, the same
 ideas can be applied to handle the build process of large, albeit not
 as large, projects.  For example,
 Gambi~\etal{}~\cite{gambi-etal-issta2017} recently proposed CUT, a
-tool to automatically parallelize unit tests on the cloud. CUT allows
+tool to automatically parallelize JUnit tests on the cloud. The tool allows
 the developer to control resource allocation and deal with the project
 specific test dependencies.  Note that test suite parallelization is
 complementary to these high-level parallelism schemes.
@@ -91,10 +91,12 @@ Continuous Integration (CI) services, such as Travis CI~\cite{travis},
 are becoming widely used in the open-source
 community~\cite{hilton-etal-ase2016,vasilescu-etal-fse2015}. Accelerating
 time to run tests in CI is important as to reduce the period between
-test report updates.  Test failures are more common in CI compared to
-an overnight run or a local run, for instance.  This can happen
-because of semantic merge conflicts~\cite{brun-etal-fse11}, for
-instance.  As such effect can impact developer's perception and
+test report updates.  Module-level regression
+testing~\cite{vasic-etal-fse2017}, for example, can be helpful in that
+setting. It is important to note that test failures are more common in
+CI compared to an overnight run or a local run, for instance.  This
+can happen because of semantic merge conflicts~\cite{brun-etal-fse11},
+for instance.  As such effect can impact developer's perception and
 tolerance towards failures, we are curious to know if developers would
 be willing to receive more frequent test reports at the expense of
 potentially increasing failure rates due to flakiness caused by
@@ -120,5 +122,5 @@ acelerar o build e execucao de testes em servidores de integracao
 }
 
 %%  LocalWords:  Ekstazi Ekstazi's elik JVM parallelization SIMD GPUs
-%%  LocalWords:  ElectricTest parallelizing multicore CPUs SIMD's
-%%  LocalWords:  datasets Gambi parallelize
+%%  LocalWords:  ElectricTest parallelizing multicore CPUs SIMD's GCC
+%%  LocalWords:  datasets Gambi parallelize JUnit
