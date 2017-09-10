@@ -13,7 +13,7 @@ We discuss most related work in the following.
 Regression testing research has focused mostly on test suite
 minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012,soetens-etal-2016}.  Most of these
-techniques are unsoud (\ie{}, they do not guarantee that
+techniques are unsound (\ie{}, they do not guarantee that
 fault-revealing tests will be considered for testing).  The test
 selection technique
 Ekstazi~\cite{gligoric-etal-issta2015,celik-etal-fse2017} is an
@@ -41,12 +41,12 @@ unrestricted test suite parallelization.
 %\textit{Hardware level massive parallelization:}
 
 The use of the Single Instruction Multiple Data (SIMD) design has been
-previoulsy explored in research to accelerate test
+previously explored in research to accelerate test
 execution~\cite{damorim-etal-issta2007,damorim-etal-tse2008,kim-etal-issre2012,nguyen-etal-icse2014,rajan-etal-ase2014,sen-etal-fse2015,yaneva-etal-issta2017}. The
 SIMD architecture, as implemented in modern GPUs, for instance, allows
 the execution of a given instruction simultaneously against multiple
 data.  For that reason, in principle, one test could be ran
-simulteneously against multiple inputs provided that multiple test
+simultaneously against multiple inputs provided that multiple test
 inputs exist associated to that one test.  Recent
 work~\cite{rajan-etal-ase2014,yaneva-etal-issta2017} explored that
 idea to speedup test execution of embedded software using graphic
@@ -69,23 +69,37 @@ in those papers satisfied those constraints.
 %% GPUs to parallelize tests~\cite{}.
 %% \Jbc{...Justify they are out of scope for our subjects...}.
 
-\Mar{can you complete this AND add text on high-level paralellism?}
+\Mar{Luis, por favor, revise$\rightarrow$}
 
-High-level parallelism \Fix{...}
-CUT~\cite{gambi-etal-issta2017} is a tool to automatically parallelize
-unit tests across a distributed environment. \Fix{...}
-CUT allows the developer to control resource allocation, and deal with
-the project specific test dependencies.
-Important to note that high-level parallelism techniques is
-complementary to test suite parallelization.
+Google~\cite{google-tap,google-ci} and
+Microsoft~\cite{prasad-shulte-ieee-microsoft-ci} have been creating
+distributed infrastructures to efficiently build massive amounts of
+code and run massive amounts of tests.  Those scenarios bring
+different and challenging problems such as deciding when to trigger
+the build under multiple file
+updates~\cite{memon-etal-icse17}. Although such distributed systems
+are targeted to extremely large scale code and test bases, the same
+ideas can be applied to handle the build process of large, albeit not
+as large, projects.  For example,
+Gambi~\etal{}~\cite{gambi-etal-issta2017} recently proposed CUT, a
+tool to automatically parallelize unit tests on the cloud. CUT allows
+the developer to control resource allocation and deal with the project
+specific test dependencies.  Note that test suite parallelization is
+complementary to these high-level parallelism schemes.
 
+Continuous Integration (CI) services, such as Travis CI~\cite{travis},
+are becoming widely used in the open-source
+community~\cite{hilton-etal-ase2016,vasilescu-etal-fse2015}. Accelerating
+time to run tests in CI is important as to reduce the period between
+test report updates.  Test failures are more common in CI compared to
+an overnight run or a local run, for instance.  This can happen
+because of semantic merge conflicts~\cite{brun-etal-fse11}, for
+instance.  As such effect can impact developer's perception and
+tolerance towards failures, we are curious to know if developers would
+be willing to receive more frequent test reports at the expense of
+potentially increasing failure rates due to flakiness caused by
+parallelism.
 
-Continuous Integration Services are widely used by the open-source
-community~\cite{hilton-etal-ase2016,vasilescu-etal-fse2015}. Travis
-CI~\cite{travis} is an example of one of these services. Recent work
-by Hilton~\etal{}~\cite{hilton-etal-ase2016} showed that there is a
-high acceptance rate for CI services. The average build time for those
-projects using CI is under $\sim$8.3 min~\cite{hilton-etal-ase2016}. 
 
 \Comment{
 \Fix{Please:
@@ -99,8 +113,12 @@ projects using CI is under $\sim$8.3 min~\cite{hilton-etal-ase2016}.
 Similar approach to regression test selection has been recently
 applied in the context of the GCC~\cite{gcc} configurable
 system~\cite{souto-damorim-jss}.
-O Trabalho de Hilton et al~\cite{hilton-etal-ase2016}, embora tenha
+O Trabalho de Hilton ext al~\cite{hilton-etal-ase2016}, embora tenha
 como objetivo entender o uso de CI, mostra que existe uma demanda em
 acelerar o build e execucao de testes em servidores de integracao
     continua
 }
+
+%%  LocalWords:  Ekstazi Ekstazi's elik JVM parallelization SIMD GPUs
+%%  LocalWords:  ElectricTest parallelizing multicore CPUs SIMD's
+%%  LocalWords:  datasets Gambi parallelize
