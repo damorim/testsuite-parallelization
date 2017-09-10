@@ -25,6 +25,7 @@ data.Rproj
 *.fls
 *main.pdf
 *.out
+*main.txt
 
 # Temporary text files
 *.swp
