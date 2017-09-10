@@ -11,6 +11,13 @@
 \centering
 \small
 \setlength{\tabcolsep}{2pt}
+\vspace{2mm}
+\caption{Speedup versus Flakiness (\subcolB). Configuration
+  \emph{\Seq{}} denotes the comparison baseline, which runs tests
+  sequentially.  Columns $T$ and $N$ indicate time and number of
+  tests, respectively.  Other columns show speedup and percentage of
+  failing tests in different configurations, compared to
+  \emph{\Seq{}}.}
 \begin{tabular}{l|rr|rr|rr|rr|rr|rr}
 \toprule
 \multirow{2}{*}{\emph{Subject}} & \multicolumn{2}{c|}{\emph{\Seq}} &
@@ -42,7 +49,7 @@ Urban Airship Datacube & 8.3m & 36 & 1.9x & 25.0\% & 4.7x & 44.4\% & 1.9x & 25.0
 %%Graphaware Neo4J Timetree & 2.1m & 163 & 1.9x & 62.0\% & 3.4x & 73.6\% & 1.9x & 62.6\% & 1.0x & 0\% & 2.1x & 61.3\%\\%
 %%Walkmod & 1.1m & 141 & 6.3x & 69.5\% & 1.6x & 39.7\% & 2.0x & 66.7\% & 1.1x & 0.0\% & 6.4x & 64.5\%\\%
 \midrule
-Average & 4.0m & 1,006.6 & 7.6x & 20.3\% &  3.5x & 11.7\%  & 12.7x  & 24.3\% & 1.9x & 2.1\% & 4.2x & 12.2\%\\%
+average & 4.0m & 1,006.6 & 7.6x & 20.3\% &  3.5x & 11.7\%  & 12.7x  & 24.3\% & 1.9x & 2.1\% & 4.2x & 12.2\%\\%
 
 
 
@@ -66,12 +73,6 @@ Average & 4.0m & 1,006.6 & 7.6x & 20.3\% &  3.5x & 11.7\%  & 12.7x  & 24.3\% & 1
 
 \bottomrule%
 \end{tabular}
-\caption{Speedup versus Flakiness (\subcolB). Configuration
-  \emph{\Seq{}} denotes the comparison baseline, which runs tests
-  sequentially.  Columns $T$ and $N$ indicate time and number of
-  tests, respectively.  Other columns show speedup and percentage of
-  failing tests in different configurations, compared to
-  \emph{\Seq{}}.}
 \label{tab:rq6-table}
-%\vspace{-1ex}
+\vspace{-2ex}
 \end{table*}

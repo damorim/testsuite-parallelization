@@ -25,17 +25,16 @@ Figure~\ref{fig:subject-query} illustrates the query to the \github{}
 API as an HTTP request.   The result set is sorted
 in descending order of stars.
 
-
-\vspace{1ex}
 \begin{figure}[t!]
 \centering
 \scriptsize
 \lstset{
-  escapeinside={@}{@},
-  numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
-  basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-  deletekeywords={true}
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    showstringspaces=false
 }
+\vspace{2mm}
 \begin{lstlisting}
 https://api.github.com/search/repositories?q=language:java
  +stars:>=100+pushed:>=2016+mvn%20in:readme&sort=stars
@@ -576,6 +575,7 @@ Maven process.  That decision could prevent execution of particular
 test modules. Table~\ref{tab:freqmodes-dynamic} shows the
 \numProjectsPar{} projects we identified where parallelism is enabled by default in Maven.
 \begin{wraptable}{r}{0pt}%0.525\linewidth
+
   \footnotesize
   \centering
   \setlength{\tabcolsep}{2.5pt}
@@ -599,8 +599,7 @@ test modules. Table~\ref{tab:freqmodes-dynamic} shows the
         Long & \Comment{vavr-io} Vavr & 3/3 & C3\\%
         \bottomrule%
     \end{tabular}
-    \caption{Subjects with parallel test execution enabled by
-    default.}
+    \caption{Subjects with parallel test execution enabled by default.}
     \label{tab:freqmodes-dynamic}
 %    \vspace{-1ex}
 \end{wraptable}
@@ -837,6 +836,12 @@ indicates slowdown.
 
 \begin{table}[t!]
 \centering
+\vspace{2mm}
+\caption{
+\label{tab:speedup}
+Speedup (or slowdown) of parallel execution ($T_p$)
+over sequential execution ($T_s$).  Default parallel configuration of
+Maven is used.  Highest slowdown/speedup appears in gray color.}
 \resizebox{.41\textwidth}{!}{%
   \scriptsize
 \begin{tabular}{llrrr}
@@ -859,12 +864,8 @@ Long & \Comment{vavr-io} Vavr & 3.26m & 2.25m & 1.45x\\%
 \midrule
 \textbf{average} &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
-\vspace{-5ex}
 \end{tabular}}
-\caption{\label{tab:speedup}Speedup (or slowdown) of parallel
-  execution ($T_p$) over sequential execution ($T_s$).  Default
-  parallel configuration of Maven is used.  Highest slowdown/speedup
-  appears in gray color.}
+\vspace{-4ex}
 \end{table}
 
 Results show that, on average, parallel execution was
