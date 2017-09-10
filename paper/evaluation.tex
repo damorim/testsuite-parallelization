@@ -1099,38 +1099,48 @@ in our results.
 %% For efficiency, we reported the speedup (\ie, $T_{\text{s}} /
 %% T_{\text{p}}$), and for flakiness, we reported the rate of failing
 %% tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
-Table~\ref{tab:rq6-table} summarizes results ordered by subject's
-name.
-Values are averaged across multiple executions.  We did not report
-standard deviations as they are very small in all cases.  Considering
-flakiness, we inspected a sample of 1000 logs to identify the causes
-of flakiness manifested in 45 executions. Most of the cases occurred
-by a race condition: approximately 97.5\% of the failures were caused
-by a null reference and 1.6\% were caused by concurrent access of
-unsyncronized data structures. More precisely, the manifested
-exceptions were \CodeIn{ConcurrentModificationException} (0.8\%),
-\CodeIn{NoSuchElementException} (0.7\%), and
-\CodeIn{ArrayIndexOutOfBoundsException} (0.7\%).  In addition, we
-identified 0.9\% cases of file dependencies manifested on
-\CodeIn{EOFException} (0.2\%),
-\CodeIn{FileSystemAlreadyExistsException} (0.2\%), and
-\CodeIn{BufferOverflowException} (0.4\%).
-The projects with flakiness in all configurations were \CodeIn{AWS
-SDK}, \CodeIn{GoogleCloud}, and \CodeIn{Moquette}.  It is worth
-highlighting the unfortunate case of \CodeIn{Moquette}, which
-manifested more than 20\% flaky tests in every configuration.
-Considering time, it is noticeable from the averages, perhaps as
-expected, an increasing speedup from configuration
-\emph{\SeqClassParMeth} to \emph{\ParClassParMeth} and from
-configuration \emph{\ForkSeq} to \emph{\ForkParMeth}.
-It is also worth mentioning that some combinations manifested slowdown
-instead of speedup.
-Recall that parallel execution introduces the overhead of
-spawning and managing JVMs and threads.
-Overall, results show that 0\% of flakiness have been reported in 30
-of the 75 (=5x15) parallelism combinations analyzed (40\% of the
-total) and that for 11 of the 15 projects 0\% flakiness was
-reported in at least one of the configurations.
+
+\sloppy Table~\ref{tab:rq6-table} summarizes results ordered by
+subject's name.  Values are averaged across multiple executions.  We
+did not report standard deviations as they are very small in all
+cases.  As to identify the potential causes of flakiness, we inspected
+the exceptions reported in execution logs. We found that, in most
+of the cases, flakiness was caused by race conditions: approximately
+97.5\% of the failures were caused by a \CodeInF{null} dereference and 1.6\% were
+caused by concurrent access on unsynchronized data structures.\Comment{
+  More precisely, the manifested exceptions were
+  \CodeInF{ConcurrentModificationException} (0.8\%),
+  \CodeInF{NoSuchElementException} (0.7\%), and
+  \CodeInF{ArrayIndexOutOfBoundsException} (0.7\%).}  Cases of likely
+broken test dependencies were not as prevalent as race conditions
+(0.8\% of the total): \CodeInF{EOFException} (0.2\%),
+\CodeInF{FileSystemAlreadyExistsException} (0.2\%), and
+\CodeInF{BufferOverflowException} (0.4\%). Results suggest that
+anticipating race conditions to schedule test executions would have
+higher impact compared to breaking test dependencies using a tool such
+as TestElectric~\cite{bell-etal-esecfse2015}.
+
+The projects with flakiness
+in all configurations were \CodeIn{AWS SDK}, \CodeIn{GoogleCloud}, and
+\CodeIn{Moquette}.  It is worth highlighting the unfortunate case of
+\CodeIn{Moquette}, which manifested more than 20\% flaky tests in
+every configuration.  Considering time, it is noticeable from the
+averages, perhaps as expected, an increasing speedup from
+configuration \emph{\SeqClassParMeth} to \emph{\ParClassParMeth} and
+from configuration \emph{\ForkSeq} to \emph{\ForkParMeth}.  It is also
+worth mentioning that some combinations manifested slowdown instead of
+speedup.  Recall that parallel execution introduces the overhead of
+spawning and managing JVMs and threads.  Overall, results show that
+0\% of flakiness have been reported in 30 of the 75 (=5x15)
+pairs of project and configuration we analyzed (40\% of the total).
+In for 4 of the 15 projects flakiness was not manifested in 
+any combination pairs.  We noticed with some surprise that the average speedup of
+configuration \emph{\SeqClassParMeth} was higher compared to
+\emph{\ForkParMeth} indicating that it is not always the case that
+using more CPUs pays off. Important to note that the cost of spawning
+new JVMs can be significant in \emph{\ForkParMeth}.
+
+
 
 \begin{center}
 \fbox{
@@ -1164,4 +1174,9 @@ reported in at least one of the configurations.
 %%  LocalWords:  JCTools RipMe classpath ParallelComputer livelock io
 %%  LocalWords:  mapdb workflow XPath boxplot llcr javaslang jcabi
 %%  LocalWords:  github hazelcast jankotek OpenNLP yegor Rultor vavr
-%%  LocalWords:  Vavr SNE Urbanairship Datacube
+%%  LocalWords:  Vavr SNE Urbanairship Datacube dereference
+%%  LocalWords:  unsynchronized ConcurrentModificationException
+%%  LocalWords:  NoSuchElementException EOFException TestElectric
+%%  LocalWords:  ArrayIndexOutOfBoundsException
+%%  LocalWords:  FileSystemAlreadyExistsException
+%%  LocalWords:  BufferOverflowException
