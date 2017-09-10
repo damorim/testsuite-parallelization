@@ -264,8 +264,8 @@ invokes Maven multiple times\Comment{ to isolate cost of running
 tests} (lines 8-11).  It first makes all dependencies available locally
 (line 8), compiles the source and test files (line 9), and then runs
 the tests in offline mode as to skip the package update task, enabled
-by default (line 11). After execution, we used a regular expression on
-the output log to extract the elapsed time (line 12-14).
+by default (line 11). After that, we used a regular expression on
+the output log to find elapsed times (line 12-14).
 
 \input{codes/evaluation}
 
