@@ -55,6 +55,9 @@
 %% ICSME style: https://icsme2017.github.io/cfp/formatting-instructions.html
 \documentclass[conference]{IEEEtran}
 
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+
 % Some/most Computer Society conferences require the compsoc mode option,
 % but others may want the standard conference format.
 %
@@ -336,6 +339,7 @@
   \parsep0pt plus0pt
   \parskip0pt\topsep0pt}
 
+\usepackage{flushend}
 \begin{document}
 %
 % paper title
@@ -500,7 +504,6 @@ partially supported by CNPq grants 457756/2014-4 and 203981/2014-6.
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-
 
 \balance
 \bibliographystyle{plain}
