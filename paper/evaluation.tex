@@ -1,160 +1,19 @@
-\section{Objects of Analysis}
-\label{sec:subjects}
-
-We used \github{}'s search API~\cite{githubsearch} to identify
-projects that satisfy the following criteria: (1) the primary language
-is Java\footnote{In case of projects in multiple languages, the
-  \github{} API considers the predominant language as the primary
-  language.}, (2) the project has at least 100 stars, (3) the latest
-update was on or after January 1st, 2016, and (4) the \emph{readme}
-file contains the string \emph{mvn}.  We focused on Java for its
-popularity.  Although there is no clearcut limit on the number of
-\github{} stars~\cite{github-stars} to define relevant projects, we
-observed that one hundred stars was enough to eliminate trivial subjects. The third
-criteria serves to skip projects without recent activity. The fourth
-criteria is an approximation to find Maven projects.\Comment{ The
-  rationale is that if the string \emph{mvn} exists in the
-  \emph{readme} file, it may represent a Maven call (\eg, to compile
-or to test the project).} We focused on Maven for its popularity on
-Java projects.  Important to highlight that, as of now, the
-\github{}'s search API can only reflect contents from repository
-statistics (\eg, number of forks, main programming language); it does
-not provide a feature to search for projects containing certain files
-(\eg{}, \emph{pom.xml}) in the directory structure.
-Figure~\ref{fig:subject-query} illustrates the query to the \github{}
-API as an HTTP request.   The result set is sorted
-in descending order of stars.
-
-\begin{figure}[t!]
-\centering
-\scriptsize
-\lstset{
-    escapeinside={@}{@},
-    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
-    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
-    showstringspaces=false
-}
-\vspace{2mm}
-\begin{lstlisting}
-https://api.github.com/search/repositories?q=language:java
- +stars:>=100+pushed:>=2016+mvn%20in:readme&sort=stars
-\end{lstlisting}
-  \caption{\label{fig:subject-query} Query to the \github{} API for
-  projects that (1) use Java, (2) contains at least 100
-  stars, (3) has been updated on January 1st, 2016 (or later), (4) contains
-  the string \emph{mvn} in the \emph{readme} file.}
-  \vspace{-5ex}  
-\end{figure}
-
-We used the following methodology to select projects for
-analysis. After obtaining the list of potential projects from GitHub, we filtered those
-containing a \pomf{} file in the root directory.\Comment{  A Maven project may
-contain several sub-modules with multiple \pomf{} files.}
-Then, considering this set of Maven projects, we
-executed the tests for \SubjectsReruns{} times to discard those projects with
-issues
-in the build file and non-deterministic results observed from sequential executions.
-As of August 25th 2017, our search criteria returned a total of \SubjectsGithub{}
-subjects.
-From this set of projects,
-\SubjectsGithubNotMaven{} projects were not Maven or did not have a
-\pomf{} in the root directory, 
-\SubjectsGithubNotTestable{} projects were not considered because of
-environment incompatibility
-(\eg, missing\Comment{ required web browser or database management system}~DBMS),
-\SubjectsGithubFlaky{} projects were discarded because of
-``flaky tests''~\cite{luo-etal-fse2014}. A ``flaky'' test is a test that passes or fails under
-the same circumstances leading to non-deterministic results.
-As some of our experiments consist of running tests on different
-threads, we ignored these projects as it would be impractical
-to identify whether a test failed due to a race condition or some
-other source of flakiness.
-From the remaining \SubjectsGithubConsistant{} projects with
-deterministic results, we eliminated \SubjectsGithubTooManyFailures{}
-projects with \SuiteFailingThreshold{} or more failing tests as to
-reduce bias. For the
-remaining projects with failing tests, we used the JUnit's
-\CodeIn{@Ignore} annotation to ignore failing tests.
-Our final set of subjects contains \numSubjs{} projects.
-Figure~\ref{fig:subjects} summarizes our sample set.
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.27\textwidth]{results/piechart-subjs.pdf}
-  \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular projects
-  hosted on \github{}. From this initial sample, we ignored
-  \SubjectsGithubNotMaven{} projects without Maven support,
-  \SubjectsGithubNotTestable{} with missing dependencies,
-  \SubjectsGithubFlaky{} projects with flaky tests, and
-  \SubjectsGithubTooManyFailures{} projects had at least
-  \SuiteFailingThreshold{} of failing tests. We considered
-  \numSubjs{} projects to conduct our study.}
-  \vspace{-1ex}
-\end{figure}
-
-%\subsection{Setup and Replication}
+\section{Setup and Replication}
 \label{sec:setup}
 
-To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel
-processor machine with eight virtual CPUs (four cores with two native
-threads each) and 16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr
-(64-bit version).  We used\Comment{ Git,} Java 8 and Maven
-3.3.9 to build projects and run test suites. To
-process test results and generate plots
-we used Python\Comment{ 3.4}, Bash, R and Ruby\Comment{ 2.3}.  All source artifacts are
-publicly available for replication on our website~\cite{ourwebpage}.
-This includes supporting scripts\Comment{ (\eg, the scripts to run the tests
-and generate raw analysis data)} and the full list of projects.
+To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel processor
+machine with eight virtual CPUs (four cores with two native threads each) and
+16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr (64-bit version).  We
+used\Comment{ Git,} Java 8 and Maven 3.3.9 to build projects and run test
+suites. To process test results and generate plots we used Python\Comment{ 3.4},
+Bash, R and Ruby\Comment{ 2.3}.  All source artifacts are publicly available for
+replication on our website~\cite{ourwebpage}.  This includes supporting
+scripts\Comment{ (\eg, the scripts to run the tests and generate raw analysis
+data)} and the full list of projects.
+
 
 \section{Evaluation}
 \label{sec:eval}
-
-%% We are interested in understanding the prevalence of time-consuming
-%% test suites and main sources of execution cost. We want to understand
-%% how the execution cost is distributed on test cases within a test
-%% suite and how developers approach test execution. Based on that, we
-%% study parallelization of testing frameworks and build systems.  More
-%% precisely, we investigate how prevalent test parallelization is, the
-%% potential for improving execution cost, issues of flakiness that
-%% hinders the use of parallelization, and how to address those issues.
-%% More specifically, we pose the following research questions:
-
-%% The first research question addresses the prevalence of long-running
-%% test suites. We are interested to know if costly test suites are
-%% common in open-source projects.  The second research question
-%% addresses the relationship of test cases and the overall execution
-%% cost: we are interested to investigate how the execution time is
-%% distributed among test cases.  In the third research question, we
-%% investigate if developers consider low-level parallelism features
-%% available out-of-the-box to amortize test execution (see
-%% Section~\ref{sec:modes}). In addition, we want to identify what
-%% configurations are often used and why they are more popular (if any).
-%% The fourth research question addresses the impact of low-level
-%% parallelism on test execution from projects in our sample set. We want
-%% to identify subjects that already use test parallelization and compare
-%% their performance in contrast to sequential execution. In addition, we
-%% are interested in evaluating the performance of sequential test suites
-%% with different parallelization settings.
-%% Finally, the fifth research question discusses the limitations and
-%% insights to overcome the pitfalls of parallelization.
-
-%% \Comment{
-%%     \Fix{distribution of execution time per test case. For each subject
-%%     identified in the first research question, we investigate how
-%%     balanced is the cost of the test suite in contrast to the cost of
-%%     test cases and if there are subjects where the time cost is mostly
-%%     dominated by a small fraction of test cases.} \Fix{The third research
-%%     question addresses the distribution of regression tests according
-%%     to the use of computational resources.  We are interested in
-%%     investigating if regression test suites are CPU intensive and if there
-%%     are opportunities to improve performance. The RQ4 addresses}
-%%     \Fix{...elaborate...}
-
-%%     The rationale is that if the time cost of a regression test is equally
-%%     distributed among test cases, the execution cost could be potentially
-%%     improved by running tests in parallel (in contrast to the scenario
-%%     where only one test case dominates most of the execution time).
-%% }
 
 We pose the following research questions, organized by the dimensions
 of analysis we presented in Section~\ref{sec:intro}.
@@ -213,15 +72,6 @@ of analysis we presented in Section~\ref{sec:intro}.
   \end{itemize}
 \end{itemize}
 
-%%\newcommand{\RQFeasibilityTwo}{What is the distribution of CPU and IO bound
-%%regression test suites from the sample set?}
-%%
-%%\newcommand{\RQAdoptionOne}{How uniformly distributed is the execution time
-%%across test cases in costly projects?}
-%%
-%%\newcommand{\RQAdoptionTwo}{How often developers use the parallelism features
-%%from build systems to improve runtime performance?}
-
 \subsection{Feasibility}
 \label{sec:rqA}
 \label{sec:rqB}
@@ -268,6 +118,22 @@ the output log to find elapsed times (line 12-14).
 
 \input{codes/evaluation}
 
+\begin{figure}[ht]%
+  \centering
+  \subfigure[\label{fig:rq1-barplot}]{
+  \includegraphics[height=4cm,width=3cm]{results/barplot-timecost.pdf}
+  }
+  \qquad
+  \subfigure[\label{fig:rq1-boxplot}]{
+    \includegraphics[height=4cm,width=4.2cm]{results/boxplot-timecost.pdf}
+  }%
+  \caption{(a)\Comment{ Testing time grouped by time cost ($t$): short run
+    ($t<1m$), medium run ($1m \le t < 5m$), and long run ($5m \le{}
+    t$);}~Number of projects in each cost group and
+    (b)~Distribution of running times per cost group.}
+\vspace{-5mm}
+\end{figure}
+
 \Comment{We followed a similar methodology to group projects by time as
 Gligoric~\etal{}~\cite{gligoric-etal-issta2015} in their work on
 regression test selection.}
@@ -296,26 +162,6 @@ the projects from the \longg{} group take $\sim$20 minutes to run.  We
 found cases in the \longg{} group were execution takes more than 50 minutes
 to complete, as can be observed from the outliers in the boxplot.
 
-\begin{figure}[ht]
-  \centering
-  \begin{subfigure}{0.182\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{results/barplot-timecost.pdf}
-    \caption{\label{fig:rq1-barplot}}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}{0.25\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{results/boxplot-timecost.pdf}
-    \caption{\label{fig:rq1-boxplot}}
-  \end{subfigure}%
-  \caption{(a)\Comment{ Testing time grouped by time cost ($t$): short run
-    ($t<1m$), medium run ($1m \le t < 5m$), and long run ($5m \le{}
-    t$);}~Number of projects in each cost group and
-    (b)~Distribution of running times per cost group.}
-  \vspace{-1ex}
-\end{figure}
-
 It is important to note that we under-estimated running times as we missed test modules not enabled for
 execution in the root \emph{pom.xml}.\Comment{Some projects may omit long-running tests on their default
 execution.} For instance, the project \CodeIn{apache.maven-surefire}
@@ -327,17 +173,11 @@ custom parameters, which we do not handle in our experimental setup.
 We enabled such parameters for this specific project and observed that
 testing time goes to nearly 30 minutes.  For simplicity, we considered
 only the tests executed by default.
-\Comment{
-Although failing tests may introduce noise in our measurements, we
-carefully eliminated subjects with more than \SuiteFailingThreshold{} of
-test failures. 
-}
 From the \numSubjs{} testable projects, \numSubjsPass{} successfully
 executed all tests and \numSubjsFail{} reported some test failure.
 From these \numSubjsFail{} subjects, only 11 subjects
 have more than 5\% of failing tests (7.3\% on average).
 \begin{center}
-\vspace{1ex}
 \fbox{
 \begin{minipage}{8cm}
   \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
@@ -349,7 +189,6 @@ have more than 5\% of failing tests (7.3\% on average).
       (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}
 \end{minipage}
 }
-\vspace{1ex}
 \end{center}
 
 \begin{itemize}
@@ -360,7 +199,7 @@ have more than 5\% of failing tests (7.3\% on average).
   \centering
   \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
   \caption{\label{fig:time-distributions}Distribution of test case time per project.}%
-  \vspace{-3ex}
+  \vspace{-5mm}
 \end{figure}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
@@ -371,20 +210,6 @@ potential of obtaining speedups with parallelization.}  In
 the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
-%% However, avoiding
-%% frequent context switches is another factor to consider.  For example,
-%% assuming there are at least two CPUs available for execution, cost can
-%% be cut in half if two tests in a large test suite dominate execution
-%% time and these tests are assigned to different CPUs.
-%% It is therefore important to
-%% speedup regressing testing in open-source projects.\Comment{not only
-%%   to huge projects as those from Google~\cite{google-tap,google-ci}
-%%   and Microsoft~\cite{prasad-shulte-ieee-microsoft-ci}.}
-%% For the case
-%% where cost is distributed more evenly across test cases, one expects
-%% that speedups will be a function of the number of cores.
-%% These contradictory forces, pushing number of tests and cost
-%% of each test up and down, make prediction of effectiveness challenging.
 Figure~\ref{fig:time-distributions} shows the time distribution of
 individual test cases per project.
 We observed that the average median times (see dashed horizontal red
@@ -410,10 +235,23 @@ For this project, however, cost is distributed more smoothly across 98
 tests, of which 8 (8.1\%) take more than 1s to run with the rest of
 the tests running faster.
 
+\begin{figure}[t!]%
+  \centering
+  \subfigure[\label{fig:size-testsuites}]{
+  \includegraphics[height=4.25cm, width=2.1cm]{results/boxplots-testcases.pdf}
+  }
+  \qquad
+  \subfigure[\label{fig:scattercost}]{
+    \includegraphics[height=4.25cm]{results/scatter-testcost.pdf}
+  }%
+  \caption{\label{fig:time-versus-size}(a) Size of test suites; (b)
+    Size versus running time of test suites.}%
+  \vspace{-5mm}
+\end{figure}
+
 Figure~\ref{fig:size-testsuites} shows the difference in the
 distribution of test suite sizes across groups.  This figure indicates
-that long projects have a higher median and much higher average
-number of test cases.
+that long projects have a higher median and much higher average number of test cases.
 Furthermore, we noted a strong positive correlation between running
 time and number of test on projects in the \longg{} group.
 Considering the \medg{} group, the correlation between these two
@@ -424,9 +262,6 @@ To sum, we observed that for projects with long-running test suites
 running time is typically
 justified by the number of test cases as opposed to the cost of individual test cases.
 
-%% Figure~\ref{fig:time-distributions} shows that the average median
-%% times are similar for \medg{} and \longg{}-running test suites.
-
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -436,87 +271,12 @@ justified by the number of test cases as opposed to the cost of individual test 
   across test cases.}
 \end{minipage}
 }
-\begin{figure}[h!]
-  \centering
-  \begin{subfigure}{0.13\textwidth}
-    \centering
-    \includegraphics[width=.9\textwidth]{results/boxplots-testcases.pdf}
-    \caption{\label{fig:size-testsuites}}
-  \end{subfigure}
-  \hspace{3ex}
-  \begin{subfigure}{0.28\textwidth}
-    \centering
-    \includegraphics[width=.9\textwidth]{results/scatter-testcost.pdf}
-    \caption{\label{fig:scattercost}}
-  \end{subfigure}
-  \caption{\label{fig:time-versus-size}(a) Size of test suites; (b)
-    Size versus running time of test suites.}%
-\end{figure}
 \end{center}
-
-%% We are interested to know whether
-%% most of the execution cost of a subject is dominated by a small subset
-%% of test cases or if the cost is nearly equally distributed. 
-
-%% We also evaluated the dispersion of time distributions (one
-%% distribution per project) to answer research question \numRQFeasibilityTwo{}.  To
-%% measure dispersion \emph{across} projects we used Relative Standard
-%% Deviation (RSD)~\cite{everitt-book-stats-2010}.  Note that, if we were
-%% to analyze each project in isolation, the standard deviation of a
-%% distribution ($\sigma$) would suffice to quantify how dispersed the
-%% (time) distribution is.  However, in our case, we would like to be
-%% able to compare and summarize dispersion across projects.  The RSD,
-%% which is obtained dividing the standard deviation by the mean ($\mu$)
-%% of a distribution, provides such normalization effect.  This metric
-%% provides a lower bound (zero) but not an upper bound (somewhere close
-%% to 1).  The smaller (larger) the value of RSD the more (less) uniform
-%% the distribution is.  Consequently, the lower the value of RSD the
-%% more parallelizable a test suite should be.
-
-%% \begin{figure}[h!]
-%%   \centering
-%%   \includegraphics[width=0.5\textwidth]{R/testcost.pdf}  
-%%   \caption{\label{fig:relativesd}Distribution of RSD ($\sigma/\mu$)
-%%     across projects.}
-%% \end{figure}
-
-%% Figure~\ref{fig:relativesd} shows the distribution of RSD across
-%% medium and long-running projects.  Results show that the distribution
-%% is skewed to the right indicating that test costs are relatively well
-%% distributed in most costly projects we analyzed \Fix{$\leftarrow$
-%%   confirm}.
-
-%% analyzed the execution time
-%% for the \numMedLong{} projects from the \longg{} and \medg{} groups
-%% (see Section~\ref{sec:rqA}).
-%% For each subject we calculated the
-%% relative standard deviation of the test cases: we collected the
-%% elapsed time of each individual test, calculated the standard
-%% deviation, and divided by the mean. \Jbc{I need to clarify the
-%%   relationship "well/bad-balanced" regression test and relative
-%%   standard deviation}
-
-%% Results indicated that \Fix{...elaborate...}. \Jbc{We may identify
-%% different groups of subjects}\Fix{TODO: collect data + compute the
-%% statistic, create a scatter plot to identify groups of subjects}
-
-%% Regression tests that are well distributed may benefit from
-%% parallelism since more tests executes at the same time while the
-%% opposite scenario may require a different approach. In the later
-%% scenario, executing tests in parallel may have insignificant impact
-%% since a small subset of test cases dominates the execution.}
-
 
 \subsection{Adoption}
 \label{sec:rqC}
 \label{sec:rqE}
 
-%% Commented as we don't follow this pattern on the other RQs
-\Comment{
-Adoption concerns with the popularity of  parallelization schemes and
-(\numRQAdoptionTwo) how developers involved in costly projects, not
-using parallelization, perceive this technology.
-}
 \begin{itemize}
     \item \numRQAdoptionOne. \textbf{\RQAdoptionOne{}}
 \end{itemize}
@@ -527,7 +287,6 @@ dynamic and a static approach to find manifestations of
 parallelism. We discuss results obtained with these complementary
 approaches in the following.
 
-\vspace{1ex}
 \subsubsection{Dynamic checking}
 \label{sec:rqC-1}
 
@@ -575,6 +334,7 @@ Maven process.  That decision could prevent execution of particular
 test modules. Table~\ref{tab:freqmodes-dynamic} shows the
 \numProjectsPar{} projects we identified where parallelism is enabled by default in Maven.
 
+Column ``\emph{Subject}'' indicates the name of the project, column
 \begin{wraptable}{r}{5cm}
 \caption{Subjects with parallel test execution enabled by default.}
 \label{tab:freqmodes-dynamic}
@@ -601,9 +361,7 @@ Medium & \Comment{yegor256} Takes & 1/1 & C3\\%
 Long & \Comment{vavr-io} Vavr & 3/3 & C3\\%
 \bottomrule%
 \end{tabular}
-%  \vspace{-1ex}
- \end{wraptable}
-Column ``\emph{Subject}'' indicates the name of the project, column
+\end{wraptable}
 ``\emph{\# of modules}'' indicates the fraction of modules containing
 tests that use the configuration of parallelism mentioned in column
 ``\emph{Mode}''.
@@ -649,7 +407,6 @@ Considering the static and dynamic methods together, we found a total
 of \numProjectsParTotal{} distinct projects using parallelism,
 corresponding to the union of the two subject sets.
 
-\vspace{1ex}
 \begin{center}
 \fbox{
 \begin{minipage}{8cm}
@@ -660,7 +417,6 @@ corresponding to the union of the two subject sets.
 \end{minipage}
 }
 \end{center}
-\vspace{1ex}
 
 \begin{itemize}
   \item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
@@ -701,23 +457,6 @@ developers:
   \item Some other reason. Please elaborate.
   \end{enumerate}
 \end{enumerate}
-%% \begin{enumerate}
-%% 	\item How long does it take for test to run in your
-%%		environment?
-%%	\item Can you briefly define your setup?
-%%	\item Do you confirm that your project does not run in
-%%		parallel?
-%%	\item Select a reason for not using paralellization:
-%%		\begin{enumarate}
-%%			\item I did not know it was possible;
-%%			\item I was concerned with concurrency issues;
-%%			\item I use a continuous integration server;
-%%			\item Some other reason.
-%%		\end{enumerate}
-%% \end{enumerate}
-%% One of the goals of the first questions is to identify potential
-%% discrepancies between our experimental environment and the environment
-%% of developers.  Overall, we found that \Fix{...}
 
 Considering question 1, we confirmed that execution time was
 compatible with the results we reported in Section~\ref{sec:rqA}.
@@ -733,7 +472,6 @@ CI does not preclude low-level parallelization.  For example,
 installations of open-source CI tools (\eg{}, Jenkins~\cite{jenkins})
 in dedicated servers would benefit from running tests faster through
 low-level test suite parallelization.
-% \emailsNotDescribed{} developers did not described their environment.
 
 Considering question 2, the answers we collected indicated, to our
 surprise, that six of the \emailsProjectsAnswered{} projects execute
@@ -753,13 +491,6 @@ distributed CI cases), the usage of parallelization increases from
 \percentParallel{} to \percentParallelUpdated{}.  We do not consider
 this change significant enough to modify our conclusion about
 practical adoption of parallelization (\numRQAdoptionOne{}).
-%% , one runs a manually created Thread to run some
-%% tests, and the other runs in parallel by using Java 8 collection
-%% streams, that allows the developers to iterate over a list in
-%% parallel.
-%% did not confirmed, however,
-%% the developers confirmed the need of an extra parameter at the command
-%% line to execute in parallel.
 
 Considering question 3, the distribution of answers was as follows.  A
 total of \emailsA{} of the \emailsProjectsAnswered{} developers who
@@ -785,7 +516,6 @@ survey.  The pie chart in Figure~\ref{fig:rq5-answers}
 summarizes the distribution of answers.
 
 \begin{center}
-\vspace{1ex}
 \fbox{
 \begin{minipage}{8cm}
   \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
@@ -796,7 +526,6 @@ summarizes the distribution of answers.
     unfamiliarity with the technology.}
 \end{minipage}
 }
-\vspace{1ex}
 \end{center}
 
 \subsection{Speedups}
@@ -805,18 +534,6 @@ summarizes the distribution of answers.
 \begin{itemize}
     \item \numRQSpeedupOne{}. \textbf{\RQSpeedupOne}
 \end{itemize}
-
-%% In those projects, parallelization is active without
-%% passing any extra parameters.  Section~\ref{sec:rqC-1} describes in
-%% detail the methodology we used to find these subjects.
-%and
-%Section~\ref{seq:rq6-tradeoffs}, we verified that both
-%% executions produce the same outcome to eliminate noise from failing
-%% tests.  To compute the speedup, we divide the time obtained in the
-%% sequential execution by the time obtained from the default execution.
-%% For instance, if a project runs the tests sequentially in $10m$ and
-%% the same execution runs in $5m$ with parallelization enabled (default
-%% execution), the speedup is two.
 
 To answer \numRQSpeedupOne{}, we considered the \numProjectsPar{}
 subjects from our benchmark that use parallelization \emph{by default}
@@ -836,14 +553,13 @@ indicates slowdown.
 
 \begin{table}[t!]
 \centering
-\vspace{2mm}
 \caption{
 \label{tab:speedup}
 Speedup (or slowdown) of parallel execution ($T_p$)
 over sequential execution ($T_s$).  Default parallel configuration of
 Maven is used.  Highest slowdown/speedup appears in gray color.}
-\resizebox{.41\textwidth}{!}{%
-  \scriptsize
+%\resizebox{.41\textwidth}{!}{%
+%  \scriptsize
 \begin{tabular}{llrrr}
 \toprule
 \emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
@@ -862,10 +578,9 @@ Medium & \Comment{yegor256} Rultor & 2.30m & 0.27m & 8.52x\\%
 Medium & \Comment{yegor256} Takes & 2.00m & 0.19m & \cellcolor{lightgray}10.53x\\%
 Long & \Comment{vavr-io} Vavr & 3.26m & 2.25m & 1.45x\\%
 \midrule
-\textbf{average} &  &  &  & \avgSpeedup{}x\\
+Average &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
-\end{tabular}}
-\vspace{-4ex}
+\end{tabular}
 \end{table}
 
 Results show that, on average, parallel execution was
@@ -894,14 +609,7 @@ Furthermore, several methods in those classes are time-consuming.
 As result, the CPUs available for testing are kept occupied for the
 most part during test execution.
 
-%% The third, runs parallel configuration in
-%% \Fix{80\%} of the project modules, however, the test time is dominated
-%% by one of the sequentially running modules.  \Luis{$\leftarrow$ rework
-%%   this} \Fix{falar sobre o resultado geral dos speedups - elaborar
-%%   menor e maior speedup... acho que so vale a pena discutir quando
-%%   tiver conviccao dos 2 casos}
 \begin{center}
-\vspace{1ex}
 \fbox{
   \begin{minipage}{8cm}
     \textit{Answering \numRQSpeedupOne{}:}~\emph{Considering the
@@ -910,7 +618,6 @@ most part during test execution.
       }
   \end{minipage}
 }
-\vspace{1ex}
 \end{center}
 
 \begin{itemize}
@@ -941,10 +648,8 @@ The plot omits results beyond 17 cores as the tendency for higher
 values is clear.
 We noticed that improvements are marginal after three cores, which is
 \begin{wrapfigure}{r}{0.23\textwidth}
-  \vspace{-1ex}
   \includegraphics[width=0.23\textwidth]{R/scalability/scalability.pdf}
   \caption{\label{fig:scalability}Scalability.}
-  \vspace{-2ex}
 \end{wrapfigure}
 the basic setup we used in other experiments.
 This saturation is justified by the presence of a single test class,
@@ -960,16 +665,10 @@ two minutes to run.
       balanced across test classes.}
   \end{minipage}
 }
-\vspace{1ex}
 \end{center}
 
 \subsection{Tradeoffs}
 \label{sec:rq6-tradeoffs}
-
-%%  We are
-%% interested in understanding how efficiency (\ie, testing cost) and
-%% flakiness (\ie, failing tests) are affected when we run a test suite
-%% with different parallel configurations.  
 
 This dimension assesses the impact of using distinct parallel
 configurations on test flakiness and speedup.  Increased parallelism
@@ -984,11 +683,6 @@ isolation.
 \begin{itemize}
   \item \numRQIssuesOne{}. \textbf{\RQIssuesOne{}}
 \end{itemize}
-
-%% The intuition is that efficiency and flakiness are inversely
-%% proportional in some cases: if too many tests depends on the state of
-%% a single external resource, several tests are likely to fail as the
-%% degree of concurrency increases by exploiting maximum CPU usage.
 
 \input{flakiness-speedup-table}
 
@@ -1008,24 +702,6 @@ configurations) on each project.  Given the low standard deviations
 observed in our measurements\Comment{ and the aggregated time cost of 270 test
 executions}, we considered \SubjectsReruns{} reruns reasonable for this
 experiment.
-%% \Jbc{Is this
-%%   legit/acceptable/convincing?  $\rightarrow$}The rationale for this
-%% criteria was to maximize the diversity of domains from the subjects,
-%% assuming these subjects have test suites with different
-%% characteristics (\eg, architectural design and rate of cpu/io-bound
-%% operations).
-%% Notice that with parallelism enabled, the
-%% number of failing tests may vary on different runs due to the
-%% non-deterministic scheduling of threads and processes.  For that
-%% reason, we re-executed the experiment and computed the average speedup
-%% and flakiness on each scenario.
-%%    The rationale for this selection criteria was to maximize the chances
-%%    of observing speedup and flakiness, assuming that long-running tests
-%%    also have many tests. Indeed, we confirmed that test suites in these
-%%    projects contain at least 236 tests ($1,662.7$ in average).
-%% 
-%% In a first attempt of this experiment, we considered using Maven to
-%% run the subjects on the different parallel configurations. However,
 
 It is worth mentioning that we used custom JUnit runners as opposed to
 Maven to run the test suites with different parallel configurations
@@ -1046,13 +722,6 @@ code~\cite{maven-surefire-source} of the Maven Surefire plugin. We
 implemented test runners using the \CodeIn{ParallelComputer} class from
 JUnit~\cite{junit-parallel}.  
 
-%% For the sequential execution, we invoke the
-%% default JUnit test runner.
-%% For parallel execution with forked JVMs\Comment{ (\ie, \emph{\ForkSeq{}} and
-%% \emph{\ForkParMeth{}})}, we wrote bash scripts to spawn a JVM with our
-%% custom runner, mentioned above, to
-%% execute a test class in an individual process. 
-
 We used Maven log files to identify test classes to run and used the
 Maven dependency plugin~\cite{maven-dep} to build the project's
 classpath (with the command \CodeIn{mvn dependency:build-classpath}).
@@ -1068,38 +737,6 @@ if test execution exceeds a given time limit. Finally, we save each
 execution log and stack traces generated from JUnit to collect the
 execution time, the number of failing tests, and to diagnose outliers
 in our results.
-
-
-
-%% \Jbc{Issues do Maven: (1) Report de contagem de testes, (2) crash de
-%% jvm - maven surefire nao tratava algumas exceptions que aconteciam na
-%% execucao do teste, (3) timeout}
-%% The script we implemented to measure time and flakiness takes a list
-%% of tests classes to run as input and outputs the results (\ie, number
-%% of test methods, failures, skips, and elapsed time) for each parallel
-%% configuration.
-%%\Comment{ To obtain parallel configurations, we implemented a script
-%%  that takes a subject and a configuration label as inputs (\eg
-%%  \CodeIn{mapdb "c0"}), and the script outputs the modified version of
-%%  the subject with the desired configuration. The workflow consists in
-%%  copying the project directory to a new directory, finding all
-%%  existing build files (\ie, \pomf{} files), and modifying all
-%%  existing Maven Surefire configurations with new values for the
-%%  parameters \CodeIn{parallel}, \CodeIn{forkCount}, and
-%%  \CodeIn{threadCount} using an XPath~\cite{xpath} library to
-%%  manipulate XML documents. For configurations with forked JVMs
-%%  enabled (\ie, \ForkSeq{} and \ForkParMeth{}), we changed the
-%%  \CodeIn{forkCount} with the value \CodeIn{1C} (\ie, one JVM per
-%%  core).  To adjust the pool of threads for parallelism within a JVM,
-%%  we changed the parameter \CodeIn{threadCount} with \Jbc{should we
-%%    consider 2 as it is the number of native threads per core OR 6 as
-%%    it represents 3 Cores * 2 native threads?}.To run the subjects and
-%%  their respective variations (\ie, the modified versions according to
-%%  the parallelism configuration), we used a similar approach as
-%%  described in Figure~\ref{fig:mvn-execution} except that...  }
-%% For efficiency, we reported the speedup (\ie, $T_{\text{s}} /
-%% T_{\text{p}}$), and for flakiness, we reported the rate of failing
-%% tests (\ie, $\mathit{\%_\text{fail} = failures / tests}$).
 
 \sloppy Table~\ref{tab:rq6-table} summarizes results ordered by
 subject's name.  Values are averaged across multiple executions.  We
@@ -1153,11 +790,6 @@ new JVMs can be significant in \emph{\ForkParMeth}.
 \end{minipage}
 }
 \end{center}
-
-%% \Jbc{Lembrar que investigar o slowdown de Dataflow... os logs indicam que varios
-%% dos testes que quebraram tentavam fazer uma autenticacao em algum servico.
-%% Possivelmente o slowdown se deve ao tempo de resposta do servico quando
-%% a autentiticao falha}
 
 %%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
 %%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS

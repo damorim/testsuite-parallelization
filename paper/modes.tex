@@ -11,7 +11,6 @@ network.  For instance, using virtual machines from a cloud service to
   %  \includegraphics[width=0.35\textwidth]{figs/parallel-levels.pdf}    
   \includegraphics[width=0.08\textwidth]{figs/parallel-levels-short.pdf}  
   \caption{\label{fig:levels}Levels of parallelism.}
-  \vspace{-2ex}
 \end{wrapfigure}
 distribute test execution.  The lowest levels denote parallelism
 obtained within a single machine.  These levels are complementary:
@@ -56,31 +55,22 @@ framework (\eg{}, JUnit).
     combination of \SeqClassParMeth{} and \ParClassSeqMeth{}.  }
 \end{itemize}
 
-%% The configuration \Seq{} is a proper fit for short-running test suites
-%% since this is the default configuration and the execution provides
-%% feedback in an acceptable time. However, for costly suites, it is
-%% impractical for developers to wait long-running executions to take
-%% action.  In this scenario, the remaining configuration may help to
-%% amortize the execution cost depending on how the test suite was
-%% designed. For instance,
-
-Notice that an important aspect in deciding which configuration to use
-(or in designing new test suites) is the possibility of race
-conditions on shared data during execution.  Data sharing can occur,
-for example, through state that is reachable from statically-declared variables in
-the program or through variables declared within the scope of the test
-class or even through resources available on the file system and the network~\cite{luo-etal-fse2014}.  Considering data race avoidance,
-configuration \SeqClassParMeth{} is preferable over \ParClassSeqMeth{}
-when it is clear that test methods in a class do not manipulate shared
-state, which can be challenging to
-determine~\cite{bell-etal-esecfse2015}.  Similarly, \ParClassSeqMeth{}
-is preferable over \SeqClassParMeth{} when it is clear that several
-test methods in a class perform operations involving shared data.
-Configuration \ParClassParMeth{} does not restrict scheduling
-orderings.  Consequently, it is more likely to manifest data races
-during execution. Note that speedups depend on several factors,
-including the test suite size and distribution of test methods per
-class.
+Notice that an important aspect in deciding which configuration to use (or in
+designing new test suites) is the possibility of race conditions on shared data
+during execution.  Data sharing can occur, for example, through state that is
+reachable from statically-declared variables in the program or through variables
+declared within the scope of the test class or even through resources available
+on the file system and the network~\cite{luo-etal-fse2014}.  Considering data
+race avoidance, configuration \SeqClassParMeth{} is preferable over
+\ParClassSeqMeth{} when it is clear that test methods in a class do not
+manipulate shared state, which can be challenging to
+determine~\cite{bell-etal-esecfse2015}.  Similarly, \ParClassSeqMeth{} is
+preferable over \SeqClassParMeth{} when it is clear that several test methods in
+a class perform operations involving shared data.  Configuration
+\ParClassParMeth{} does not restrict scheduling orderings.  Consequently, it is
+more likely to manifest data races during execution. Note that speedups depend
+on several factors, including the test suite size and distribution of test
+methods per class.
 
 \subsection{Build Systems}
 \label{sec:builder}
@@ -150,6 +140,7 @@ achieve test isolation (if reuse is disabled).
   forkCount, reuseForks},
   deletekeywords={true}
 }
+\vspace{-4ex}
 \begin{lstlisting}
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
@@ -162,9 +153,9 @@ achieve test isolation (if reuse is disabled).
     </configuration>
 </plugin>
 \end{lstlisting}
+  \vspace{-4ex}
   \caption{\label{fig:surefire} Configuration \ForkParMeth{} on
     Maven.}
-\vspace{-1ex}  
 \end{figure}
 
 

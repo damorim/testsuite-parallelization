@@ -1,15 +1,6 @@
 \section{Related Work}
 \label{sec:related}
-We discuss most related work in the following.
-%% Researchers and practitioners have been shedding light to the demand
-%% of techniques for optimizing test execution.
 
-%% For instance, a recent paper from the automotive industry reported
-%% that test suites can take days to run~\cite{artl-etal-icst2015}.
-%% There are different aspects to consider when dealing with the
-%% challenge of reducing test cost.
-
-%ekstazi-web,
 Regression testing research has focused mostly on test suite
 minimization, prioritization, reduction, and
 selection~\cite{yoo-harman-stvr2012,soetens-etal-2016}.  Most of these
@@ -27,8 +18,6 @@ dynamically reachable from execution.\Comment{ Curiously Ekstazi's
 to note that regression testing techniques, including test selection,
 is complementary to test suite parallelization.
 
-%\Luis{maybe we should create another division for test acceleration}
-
 ElectricTest~\cite{bell-etal-esecfse2015} is a tool for efficiently
 detecting data dependencies across test cases.  Dependency tracking is
 important as to avoid test flakiness when parallelizing test
@@ -36,9 +25,6 @@ suites. ElectricTest observes reads and writes on global resources
 made by tests to identify these dependencies at low cost. We remain to
 investigate the impact of ElectricTest to reduce flakiness in
 unrestricted test suite parallelization.
-
-%% \textit{Usage of massively parallel hardware:}
-%\textit{Hardware level massive parallelization:}
 
 The use of the Single Instruction Multiple Data (SIMD) design has been
 previously explored in research to accelerate test
@@ -60,16 +46,6 @@ SIMD~\cite{damorim-etal-issta2007,damorim-etal-tse2008}.  The approach
 is promising when multiple input vectors exist for each test and the
 testing code heavily manipulates scalar data types.  The datasets used
 in those papers satisfied those constraints.
-
-%% existing GPU programming-models (\eg{}, CUDA~\cite{cuda}, and
-%% OpenCL~\cite{opencl}) are compatible only with a subset of the C/C++
-%% language.
-%% Recent work proposed a compiler-assisted approach to make programs
-%% compatible with the relying programming-model used by
-%% GPUs to parallelize tests~\cite{}.
-%% \Jbc{...Justify they are out of scope for our subjects...}.
-
-%% \Mar{Luis, por favor, revise$\rightarrow$}
 
 Google~\cite{google-tap,google-ci} and
 Microsoft~\cite{prasad-shulte-ieee-microsoft-ci} have been creating
@@ -101,25 +77,6 @@ tolerance towards failures, we are curious to know if developers would
 be willing to receive more frequent test reports at the expense of
 potentially increasing failure rates due to flakiness caused by
 parallelism.
-
-
-\Comment{
-\Fix{Please:
-  (i) consider categorizing related work in sections  
-  (ii) list papers that need to be discussed
-  (iii) discuss papers that use multi-execution (SIMD cpus like GPUs)
-  to speedup testing
-  }
-}
-\Comment{
-Similar approach to regression test selection has been recently
-applied in the context of the GCC~\cite{gcc} configurable
-system~\cite{souto-damorim-jss}.
-O Trabalho de Hilton ext al~\cite{hilton-etal-ase2016}, embora tenha
-como objetivo entender o uso de CI, mostra que existe uma demanda em
-acelerar o build e execucao de testes em servidores de integracao
-    continua
-}
 
 %%  LocalWords:  Ekstazi Ekstazi's elik JVM parallelization SIMD GPUs
 %%  LocalWords:  ElectricTest parallelizing multicore CPUs SIMD's GCC

@@ -1,14 +1,6 @@
 \section{Introduction}
 \label{sec:intro}
 
-%% . which can disrupt the development
-%% process~\cite{hilton-etal-ase2016}.\Comment{  This is often referred to as the
-%% ``regression testing problem''.}
-
-%% As software evolves it is expected that the number of tests and the
-%% length of test runs increase.  Both components can add up to the
-%% aggregate cost of running a test suite.
-
 Dealing with high testing costs has been an important problem in
 software engineering research and industrial practice.  Several
 approaches have been proposed in the research literature to address
@@ -42,20 +34,6 @@ for cost-effective test execution and supply of relatively inexpensive
 testing infrastructures~---~inspired us to investigate 
 test suite parallelization in practice.
 
-%% \Mar{Fan Long
-%%   (http://people.csail.mit.edu/fanl/) often uses a plot to show the
-%%   exponential rise of projects in github.  Please check if you can
-%%   find a reference to that or ask Fan Long what source he used (maybe
-%%   browsed with public API).}
-
-%% \begin{enumerate}
-%% \item \textbf{Prevalence of long-running test suites.}
-%% \item \textbf{Prevalence of test suite parallelization.}
-%% \item \textbf{Developer's opinion (when parallelization not used).}    
-%% \item \textbf{Speedups of parallelization (when used).}
-%% \item \textbf{Issues versus benefits on using parallelization modes.}
-%% \end{enumerate}
-
 This paper reports on an empirical study we conducted to analyze the
 usage and impact of low-level parallelization to speed up testing in
 open-source projects.  This is a relevant problem given the tremendous
@@ -86,126 +64,60 @@ when running tests in parallel, including test
 flakiness~\cite{luo-etal-fse2014,bell-etal-esecfse2015}.  We briefly summarize our findings
 in the following.
 
-%% Discovering Pareto-efficient~\cite{hwang-masud-1979}
-%% configurations is important to guide practitioners and future
-%% developments in this area.
 
-%% papers also indicate the important of speeding up the testing process
-%% in other industrial domain, e.g., in 
-%% \Mar{Ask Milos if he can share stories on how prevalent regression
-%%   testing is at Microsoft and Google, if he can explain how they run
-%%   tests, and how prevalent is parallelization (in contrast to
-%%   regression testing).}
-
-%Motivated by this potential gap in regression testing,
-%% More specifically, we studied how often long-running test suites occur
-%% in this setting, how frequently parallelization features are used, if
-%% not used why, and what are the associated drawbacks.
-
-%% To run each test suite, we used a
-%% 16GB memory Intel i7 machine\Comment{ i7-4790 Intel processor} with
-%% eight virtual CPUs (four cores with two native threads each) and the
-%% default Maven configuration of each project.
+\noindent\emph{Feasibility.}~To assess how prevalent long-running test suites
+are we selected \numSubjs{} popular Java projects from \github{} containing
+Maven build files~\cite{maven}.  Section~\ref{sec:eval} details our methodology
+to select subjects and to isolate our experiments from environmental noise.
+Results indicate that nearly \percentMedLongRunning{} of the projects take at
+least 1m to run and \percentLongRunning{} of the projects take at least 5m to
+run.  Considering the \numMedLong{} projects with test suites taking longer than
+a minute to run, the average execution time of a test suite was
+\averageMedLongRunning{}.  Results also show that test cases are typically
+short-running, typically taking less than half a second to run.  Furthermore, we
+found that only in rare cases few test cases monopolize the overall time to run
+a test suite.
 
 
-\noindent\emph{Feasibility.}~To assess how prevalent
-long-running test suites are we selected \numSubjs{} popular Java
-projects from \github{} containing Maven build files~\cite{maven}.
-Section~\ref{sec:eval} details our methodology to select subjects and
-to isolate our experiments from environmental noise.  Results indicate
-that nearly \percentMedLongRunning{} of the projects take at least 1m
-to run and \percentLongRunning{} of the projects
-take at least 5m to run.  Considering the \numMedLong{}
-projects with test suites taking longer than a minute to run, the average execution time of a test
-suite was \averageMedLongRunning{}.  Results also show that test cases
-are typically short-running, typically taking less than half a second
-to run.  Furthermore, we found that only in rare cases few test cases
-monopolize the overall time to run a test suite.
+\noindent\emph{Adoption.}~ We considered two aspects in measuring technology
+adoption.  First, we measured usage of parallelism in open-source projects.
+Then, we ran a survey with developers to understand the reasons that could
+explain resistance to using the technology.\Comment{ For the quantitative
+analysis we checked both statically (parsing build files) and dynamically
+(monitoring execution of build files) for the presence of parallelization.}
+Considering only the projects whose test suites take longer than a minute to
+run, we found that only \percentParallelUpdated{} of them use parallelism.  We
+also contacted developers from a selection of costly projects that did not use
+parallelization to understand the reasons for not using parallelization.
+Dealing with concurrency-related issues (\eg{}, the extra work to organize test
+suite to avoid concurrency errors) and the availability of continuous
+integration services were the most frequently answered reasons for not
+considering parallelization.
 
+\noindent\emph{Speedups.}~We used two setups to measure speedups.  In one setup
+we measured speedups obtained on projects that run test suites in parallel by
+default.  In the other setup, we evaluated how execution scales with the number
+of available cores in the machine.\Comment{We did not change parallel
+configurations on that setup.  For comparison, we disabled parallel execution to
+obtain the running time of a sequential execution.}  Considering the first
+setup, results indicate that the average speedup of parallelization was
+\avgSpeedup{}x.  Although we found cases with very high speedups (\eg{}, 28.8x
+for project Jcabi), we also found cases where the speedups were not very
+significant.  Considering the scalability experiment, we noticed, perhaps as
+expected, that parallelization obtained with forking JVMs scales with the number
+of cores but the speedups are bounded by long-running test classes.
 
-\noindent\emph{Adoption.}~ We considered two aspects in
-measuring technology adoption.  First, we measured usage of
-parallelism in open-source projects.  Then, we ran a survey with
-developers to understand the reasons that could explain resistance to
-using the technology.\Comment{ For the quantitative analysis we
-  checked both statically (parsing build files) and dynamically
-  (monitoring execution of build files) for the presence of
-  parallelization.}  Considering only the projects whose test suites
-take longer than a minute to run, we found that
-only \percentParallelUpdated{} of them use parallelism.
-%% To sum, results indicate that test suite parallelization is
-%% underutilized.
-%% only
-%% \percentParallel{} of them use parallelism.  When correcting this
-%% value with the feedback obtained a posteriori from developers, we
-%% realized that the proportion should be higher, of
-%% \percentParallelUpdated{}.
-%%For the qualitative analysis
-We also contacted 
-developers from a selection of costly projects that did not use
-parallelization to understand the reasons for not using parallelization.  Dealing with concurrency-related issues (\eg{}, the
-extra work to organize test suite to avoid concurrency errors) and the
-availability of continuous integration services were the most
-frequently answered reasons for not considering parallelization.
-
-%% \Mar{move to here} Intuitively, benefits are
-%% proportional to the cost reduction that parallelization brings.  In
-%% the limit, however, the overhead of spawning virtual machines or
-%% threads can even result in added cost.
-
-\noindent\emph{Speedups.}~We used two setups to measure
-speedups.  In one setup we measured speedups obtained on
-projects that run test suites in parallel by
-default.  In the other setup, we evaluated how execution scales with
-the number of available cores in the machine.\Comment{We did not
-  change parallel configurations on that setup.  For comparison, we
-  disabled parallel execution to obtain the running time of a
-  sequential execution.}  Considering the first setup, results
-indicate that the average speedup of parallelization was
-\avgSpeedup{}x.  Although we found cases with very high speedups
-(\eg{}, 28.8x for project Jcabi), we also found cases where the speedups were
-not very significant.  Considering the scalability experiment, we
-noticed, perhaps as expected, that parallelization obtained with forking JVMs scales with the number
-of cores but the speedups are bounded by
-long-running test classes.
-
-%% %%RQ3
-%% Given the high execution cost associated with a significant number of
-%% \github{} projects, we decided to investigate usage of test
-%% suite parallelization in practice.  It is important to note that modern build
-%% systems (\eg{}, Maven~\cite{maven}) offer parallelization options to
-%% accelerate test execution (see Section~\ref{sec:modes}).  To find how
-%% popular these features are in practice, we first analyzed build files
-%% \emph{statically}.  Considering the $>$1m group of projects
-%% (\numMedLong{} in total), we found that 49\% (41/\numMedLong{}) of
-%% them use some parallelization option.  Considering those projects that
-%% take more than 5m to run (\numLong{} in total), usage of parallelism
-%% increases to 59\% (19/\numLong{}).  Furthermore, we found that
-%% ``forking'' virtual machines was the most prevalent parallel mode used
-%% in practice.  This mode is used twice as much as any other mode used.
-%% Important to note that ``forking VMs'' is perhaps the simplest of the
-%% parallelization modes~--~it is provided by the build system as opposed
-%% to the testing framework.  This result suggests that datarace
-%% flakiness~\cite{luo-etal-fse2014} may be a concern to users as
-%% ``forking'' does not exploit thread-level concurrency within each VM,
-%% which can create contention on data reachable from the static
-%% area~\cite{bell-kaiser-icse2014,bell-etal-esecfse2015}.  Instead, it
-%% creates independent processes (\ie{}, Java VM instances) and executes
-%% tests sequentially within each process. \Mar{why 32-19 did not use
-%%   parallelization?}
-
-\noindent\emph{Tradeoffs.}~Test flakiness is a central
-concern when running tests in parallel.  Dependent tests
-can be affected by different schedulings of test methods and classes.
-This dimension of the study measures the impact of different parallel
-configurations on test flakiness and speedup.  Overall, results
-indicate that configurations that fork JVMs do not achieve
-speedups as high as other more-aggressive configurations, but they
-manifest much lower flakiness ratios.
+\noindent\emph{Tradeoffs.}~Test flakiness is a central concern when running
+tests in parallel.  Dependent tests can be affected by different schedulings of
+test methods and classes.  This dimension of the study measures the impact of
+different parallel configurations on test flakiness and speedup.  Overall,
+results indicate that configurations that fork JVMs do not achieve speedups as
+high as other more-aggressive configurations, but they manifest much lower
+flakiness ratios.
 
 Our observations may trigger different actions:
 
-\setlist[itemize]{leftmargin=1.1em}
+%\setlist[itemize]{leftmargin=1.1em}
 \begin{itemize}
 \item \emph{Incentivize forking.}~Forked JVMs manifest very low rates
   of test flakiness.  Developers of projects with long-running test
@@ -225,8 +137,8 @@ Our observations may trigger different actions:
 \item \emph{Improve debugging for build systems.}~While preparing our
   experiments, we found scenarios\Comment{, related to test
     parallelization,} where Maven's executions did not reflect
-  corresponding JUnit's executions. (Docker reproduction scripts
-  available.) Those issues can hinder developers from using parallel
+  corresponding JUnit's executions.\Comment{(Docker reproduction scripts
+  available.)} Those issues can hinder developers from using parallel
   testing. Better debugging support for build systems could help
   on that. 
 \end{itemize}

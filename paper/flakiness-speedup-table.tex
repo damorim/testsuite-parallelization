@@ -9,15 +9,12 @@
 
 \begin{table*}[t]
 \centering
-\small
-\setlength{\tabcolsep}{2pt}
-\vspace{2mm}
+\setlength{\tabcolsep}{4.5pt}
 \caption{Speedup versus Flakiness (\subcolB). Configuration
-  \emph{\Seq{}} denotes the comparison baseline, which runs tests
-  sequentially.  Columns $T$ and $N$ indicate time and number of
-  tests, respectively.  Other columns show speedup and percentage of
-  failing tests in different configurations, compared to
-  \emph{\Seq{}}.}
+  \emph{\Seq{}} denotes the comparison baseline.  Columns $T$
+and $N$ indicate time and number of tests, respectively.  Other columns show
+speedup and percentage of failing tests in different configurations, compared to
+\emph{\Seq{}}.}
 \begin{tabular}{l|rr|rr|rr|rr|rr|rr}
 \toprule
 \multirow{2}{*}{\emph{Subject}} & \multicolumn{2}{c|}{\emph{\Seq}} &
@@ -42,37 +39,10 @@ Stream Lib & 2.1m & 149 & 0.9x & 0\% & 2.2x & 0\% & 2.4x & 0.7\% & 2.7x & 0\% & 
 Stripe Java & \entry{4.3m}{302}  & \entry{4.8x}{6.3\%} & \entry{3.3x}{7.3\%} & \entry{21.5x}{15.0\%} & \entry{2.7x}{0\%} & \entry{8.6x}{11.6\%}\\%
 TabulaPDF Java & 2.4m & 186 & 7.2x & 0.5\% & 1.1x & 0\% & 7.2x & 2.7\% & 1.0x & 0\% & 7.2x & 1.6\%\\%
 Urban Airship Datacube & 8.3m & 36 & 1.9x & 25.0\% & 4.7x & 44.4\% & 1.9x & 25.0\% & 1.0x & 0\% & 1.9x & 25.0\%\\%
-
-%%Vavr & 3.3m & 22,182 & 1.1x & 32.1\% & 1.4x & 32.1\% & 1.5x & 32.1\% & 1.8x & 0\% & 1.7x & 32.1\%\\%
-%%Javaslang & 3.3m & 17,814 & 1.0x & 18.5\% & 1.4x & 18.5\% & 1.4x & 18.5\% & 1.7x & 0\% & 1.7x & 18.5\%\\%
-%%Spring Cloud AWS & 2.8m & 538 & 10.5x & 82.3\% & 11.9x & 82.3\% & 10.6x & 82.3\% & 1.0x & 0\% & 10.6x & 82.3\%\\%
-%%Graphaware Neo4J Timetree & 2.1m & 163 & 1.9x & 62.0\% & 3.4x & 73.6\% & 1.9x & 62.6\% & 1.0x & 0\% & 2.1x & 61.3\%\\%
-%%Walkmod & 1.1m & 141 & 6.3x & 69.5\% & 1.6x & 39.7\% & 2.0x & 66.7\% & 1.1x & 0.0\% & 6.4x & 64.5\%\\%
 \midrule
-average & 4.0m & 1,006.6 & 7.6x & 20.3\% &  3.5x & 11.7\%  & 12.7x  & 24.3\% & 1.9x & 2.1\% & 4.2x & 12.2\%\\%
-
-
-
-%%  & \entry{x.xm}{0}  & \entry{}{\%} & \entry{}{\%} & \entry{}{\%} & \entry{}{} & \entry{}{}\\%
-%%OpenMRS Core (\CodeIn{api})  & \entry{15.4m}{3436} & \blankentry{}        & \blankentry{}        & \blankentry{} & \entry{1.5x}{0\%} & \entry{1.7x}{0}\\%
-%%Apache Flume (\CodeIn{core}) &  \entry{7.7m}{392}  & \blankentry{}        & \blankentry{}        & \blankentry{}       & \entry{0.9x}{0\%} & \blankentry{} \\%
-%%Facebook Archive Linkbench   &  \entry{4.5m}{98}   & \entry{1.0x}{0.2\%}  & \entry{1.6x}{1.2\%}       & \entry{1.0x}{0\%}  & \entry{1.7x}{0.5\%}  & \entry{1.7x}{0.2\%}\\%
-%%AWS SDK Java (\CodeIn{core}) &  \entry{3.8m}{847}  & \multicolumn{6}{c}{\Fix{requires investigation}} & \entry{2.2x}{0.1\%} & \entry{3.2x}{2.0\%}\\%
-
-%% OpenMRS Core (\CodeIn{api})  & \entry{15.4m}{3436} & \blankentry{}        & \blankentry{}        & \blankentry{} & \entry{1.5x}{0\%} & \entry{1.7x}{0}\\%
-%% Jankotek MapDB               &  \entry{9.9m}{5218} & \multicolumn{6}{c}{\cellcolor{lightgray}\emph{JVM Crash}} & \entry{1.5x}{0\%} & \entry{1.7x}{0\%}\\%
-%% Apache Flume (\CodeIn{core}) &  \entry{7.7m}{392}  & \blankentry{}        & \blankentry{}        & \blankentry{}       & \entry{0.9x}{0\%} & \blankentry{} \\%
-%% Apache Giraph (\CodeIn{core})&  \entry{7.2m}{236}  & \entry{2.1x}{5.1\%}  & \colheader{\cellcolor{lightgray}timeout}   & \entry{1.0x}{0\%} & \entry{1.0x}{0}\% & \colheader{\cellcolor{lightgray}JVM Crash}\\%
-%% Facebook Archive Linkbench   &  \entry{4.5m}{98}   & \entry{1.0x}{0.2\%}  & \entry{1.6x}{1.2\%}       & \entry{1.0x}{0\%}  & \entry{1.7x}{0.5\%}  & \entry{1.7x}{0.2\%}\\%
-%% Stripe Java                  &  \entry{4.2m}{302}  & \entry{4.2x}{5.2\%}  & \entry{3.5x}{5.7\%}       & \entry{4.2x}{6.3\%} & \entry{1.0x}{0.3\%} & \entry{4.2x}{5.7\%}\\%
-%% AWS SDK Java (\CodeIn{core}) &  \entry{3.8m}{847}  & \multicolumn{6}{c}{\Fix{requires investigation}} & \entry{2.2x}{0.1\%} & \entry{3.2x}{2.0\%}\\%
-
-%% Jenkins CI Github            & \entry{Xm}{Z}       & \entry{x}{\%}          & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%}\\%
-%% Jenkins CI Docker Workflow   & \entry{Xm}{Z}       & \entry{x}{\%}          & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%}\\%
-%% Hazelcast                    & \entry{Xm}{Z}       & \entry{x}{\%}          & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%} & \entry{x}{\%}\\%
+Average & 4.0m & 1,006.6 & 7.6x & 20.3\% &  3.5x & 11.7\%  & 12.7x  & 24.3\% & 1.9x & 2.1\% & 4.2x & 12.2\%\\%
 
 \bottomrule%
 \end{tabular}
 \label{tab:rq6-table}
-\vspace{-2ex}
 \end{table*}
