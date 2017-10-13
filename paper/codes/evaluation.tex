@@ -1,6 +1,6 @@
 \begin{figure}[h!]
 \centering
-\scriptsize
+\tiny
 \lstset{
     escapeinside={@}{@},
     numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
@@ -24,6 +24,7 @@ for subj in $SUBJECTS; do
         | tail -n 1
 done
 \end{lstlisting}
+\vspace{-3mm}
 \caption{\label{fig:mvn-execution} Bash script to measure time cost of
   test suites. For each subject, we fetch all dependencies,
   compile the source and test files, and execute the tests in

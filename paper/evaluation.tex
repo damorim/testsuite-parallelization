@@ -105,6 +105,7 @@ the output log to find elapsed times (line 12-14).
 \input{codes/evaluation}
 
 \begin{figure}[ht]%
+  \vspace{-3mm}
   \centering
   \subfigure[\label{fig:rq1-barplot}]{
   \includegraphics[height=4cm,width=3cm]{results/barplot-timecost.pdf}
@@ -113,6 +114,7 @@ the output log to find elapsed times (line 12-14).
   \subfigure[\label{fig:rq1-boxplot}]{
     \includegraphics[height=4cm,width=4.2cm]{results/boxplot-timecost.pdf}
   }%
+  \vspace{-2mm}
   \caption{(a)\Comment{ Testing time grouped by time cost ($t$): short run
     ($t<1m$), medium run ($1m \le t < 5m$), and long run ($5m \le{}
     t$);}~Number of projects in each cost group and
@@ -163,19 +165,15 @@ From the \numSubjs{} testable projects, \numSubjsPass{} successfully
 executed all tests and \numSubjsFail{} reported some test failure.
 From these \numSubjsFail{} subjects, only 11 subjects
 have more than 5\% of failing tests (7.3\% on average).
-\begin{center}
-\fbox{
-\begin{minipage}{8cm}
-  \textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
+\begin{mdframed}
+\noindent\textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
     time-consuming test suites are relatively frequent in
     open-source projects.  We found that \percentMedLongRunning{} of
     the \numSubjs{} projects we analyzed (\ie{}, nearly 1 in every 4
     projects) take at least 1 minute to run and
     \percentLongRunning{} of them take at least 5 minutes to run.\Comment{
       (\ie, \numMedLong{} projects from \medg{} and \longg{}).}}
-\end{minipage}
-}
-\end{center}
+\end{mdframed}
 
 \begin{itemize}
   \item \numRQFeasibilityTwo. \textbf{\RQFeasibilityTwo}
@@ -184,6 +182,7 @@ have more than 5\% of failing tests (7.3\% on average).
 \begin{figure}[t!]
   \centering
   \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
+  \vspace{-2mm}
   \caption{\label{fig:time-distributions}Distribution of test case time per project.}%
   \vspace{-5mm}
 \end{figure}
@@ -230,6 +229,7 @@ the tests running faster.
   \subfigure[\label{fig:scattercost}]{
     \includegraphics[height=4.25cm]{results/scatter-testcost.pdf}
   }%
+  \vspace{-2mm}
   \caption{\label{fig:time-versus-size}(a) Size of test suites; (b)
     Size versus running time of test suites.}%
   \vspace{-5mm}
@@ -248,16 +248,12 @@ To sum, we observed that for projects with long-running test suites
 running time is typically
 justified by the number of test cases as opposed to the cost of individual test cases.
 
-\begin{center}
-\fbox{
-\begin{minipage}{8cm}
-  \textit{Answering \numRQFeasibilityTwo{}:}~\emph{Overall, results indicate that
+\begin{mdframed}
+  \noindent\textit{Answering \numRQFeasibilityTwo{}:}~\emph{Overall, results indicate that
   projects with a very small number of tests monopolizing end-to-end
   execution time were rare. Time most often is distributed evenly
   across test cases.}
-\end{minipage}
-}
-\end{center}
+\end{mdframed}
 
 \subsection{Adoption}
 \label{sec:rqC}
@@ -322,6 +318,7 @@ test modules. Table~\ref{tab:freqmodes-dynamic} shows the
 
 Column ``\emph{Subject}'' indicates the name of the project, column
 \begin{wraptable}{r}{5cm}
+\vspace{-4mm}
 \caption{Subjects with parallel test execution enabled by default.}
 \label{tab:freqmodes-dynamic}
 \footnotesize
@@ -393,16 +390,12 @@ Considering the static and dynamic methods together, we found a total
 of \numProjectsParTotal{} distinct projects using parallelism,
 corresponding to the union of the two subject sets.
 
-\begin{center}
-\fbox{
-\begin{minipage}{8cm}
-  \textit{Answering \numRQAdoptionOne{}:}~\emph{Results indicate that test
+\begin{mdframed}
+  \noindent\textit{Answering \numRQAdoptionOne{}:}~\emph{Results indicate that test
   suite parallelization is underused.  Overall, only
   \percentParallel{} of costly projects (\numProjectsParTotal{} out of \numMedLong)
   use parallelism.}
-\end{minipage}
-}
-\end{center}
+\end{mdframed}
 
 \begin{itemize}
   \item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
@@ -481,16 +474,17 @@ practical adoption of parallelization (\numRQAdoptionOne{}).
 Considering question 3, the distribution of answers was as follows.  A
 total of \emailsA{} of the \emailsProjectsAnswered{} developers who
 answered the survey did not know that parallelism was available in
+\begin{wrapfigure}{r}{0.13\textwidth}
+%\begin{figure}[b]
+  \centering
+  \includegraphics[width=2cm]{results/survey.pdf}
+  \caption{\label{fig:rq5-answers}Summary of developer's answers to
+    survey question~\ref{questionThree}.}
+\end{wrapfigure}
 Maven (option ``a''), \emailsB{} of developers mentioned that they did
 not use parallelism concerned with possible concurrency issues (option
 ``b''), \emailsD{} of developers mentioned that continuous integration
 suffices to provide timely feedback while running only smoke
-\begin{wrapfigure}{r}{0.15\textwidth}
-    \centering
-    \includegraphics[width=.15\textwidth]{results/survey.pdf}
-    \caption{\label{fig:rq5-answers}Summary of developer's answers to
-      survey question~\ref{questionThree}.}
-\end{wrapfigure}
 tests (\ie{}, short-running tests) locally (option ``c'')\Comment{here
   I want to say that they use it for something like "non-blocking
   testing" while developing in a local machine}, and \emailsD{} of
@@ -501,18 +495,14 @@ suites to take advantage of available processing power.  A total of
 survey.  The pie chart in Figure~\ref{fig:rq5-answers} 
 summarizes the distribution of answers.
 
-\begin{center}
-\fbox{
-\begin{minipage}{8cm}
-  \textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
-    with concurrency issues (\ie{}, the extra work to organize test
-    suite to safely explore concurrency) was the principal reason
-    for developers not investing in parallelism.  Other reasons
-    included availability of continuous integration services and
-    unfamiliarity with the technology.}
-\end{minipage}
-}
-\end{center}
+\begin{mdframed}
+\noindent\textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
+  with concurrency issues (\ie{}, the extra work to organize test
+  suite to safely explore concurrency) was the principal reason
+  for developers not investing in parallelism.  Other reasons
+  included availability of continuous integration services and
+  unfamiliarity with the technology.}
+\end{mdframed}
 
 \subsection{Speedups}
 \label{sec:rqD}
@@ -537,37 +527,6 @@ Column ``$T_s/T_p$'' shows speedup or slowdown.
 As usual, a ratio above 1x indicates speedup and a ratio below 1x
 indicates slowdown.
 
-\begin{table}[t!]
-\centering
-\caption{
-\label{tab:speedup}
-Speedup (or slowdown) of parallel execution ($T_p$)
-over sequential execution ($T_s$).  Default parallel configuration of
-Maven is used.  Highest slowdown/speedup appears in gray color.}
-%\resizebox{.41\textwidth}{!}{%
-%  \scriptsize
-\begin{tabular}{llrrr}
-\toprule
-\emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
-\midrule%
-Medium & Californium & 1.45m & 1.40m & \cellcolor{lightgray}1.04x\\%
-Medium & \Comment{BounceStorage} Chaos\Comment{ HTTP Proxy} & 1.51m & 1.47m & \cellcolor{lightgray}1.03x\\%
-Medium &\Comment{ Apache }Flink& 11.79m & 2.57m & 4.59x\\%
-Long &\Comment{ Apache }Log4J2& 8.24m & 8.21m & \cellcolor{lightgray}1.00x\\%
-Medium &Javaslang& 2.18m & 1.82m & 1.20x\\%
-Medium &Jcabi\Comment{ GitHub} & 2.76m & 0.30m & 9.20x\\%
-Long &\Comment{ Hazelcast }Jet& 8.26m & 3.67m & 2.25x\\%
-Long & \Comment{apache} Mahout & 27.38m & 18.15m & 1.51x\\%
-Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
-Medium & \Comment{apache} OpenNLP & 1.30m & 0.55m & 2.36x\\%
-Medium & \Comment{yegor256} Rultor & 2.30m & 0.27m & 8.52x\\%
-Medium & \Comment{yegor256} Takes & 2.00m & 0.19m & \cellcolor{lightgray}10.53x\\%
-Long & \Comment{vavr-io} Vavr & 3.26m & 2.25m & 1.45x\\%
-\midrule
-Average &  &  &  & \avgSpeedup{}x\\
-\bottomrule%
-\end{tabular}
-\end{table}
 
 Results show that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.
@@ -595,16 +554,44 @@ Furthermore, several methods in those classes are time-consuming.
 As result, the CPUs available for testing are kept occupied for the
 most part during test execution.
 
-\begin{center}
-\fbox{
-  \begin{minipage}{8cm}
-    \textit{Answering \numRQSpeedupOne{}:}~\emph{Considering the
-      machine setup we used, the average speedup observed with default
-      configurations of parallelization was \avgSpeedup{}x.
-      }
-  \end{minipage}
+\begin{table}[t!]
+\centering
+\caption{
+\label{tab:speedup}
+Speedup (or slowdown) of parallel execution ($T_p$)
+over sequential execution ($T_s$).  Default parallel configuration of
+Maven is used.  Highest slowdown/speedup appears in gray color.}
+\resizebox{.41\textwidth}{!}{%
+%  \scriptsize
+\begin{tabular}{llrrr}
+\toprule
+\emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
+\midrule%
+Medium & Californium & 1.45m & 1.40m & \cellcolor{lightgray}1.04x\\%
+Medium & \Comment{BounceStorage} Chaos\Comment{ HTTP Proxy} & 1.51m & 1.47m & \cellcolor{lightgray}1.03x\\%
+Medium &\Comment{ Apache }Flink& 11.79m & 2.57m & 4.59x\\%
+Long &\Comment{ Apache }Log4J2& 8.24m & 8.21m & \cellcolor{lightgray}1.00x\\%
+Medium &Javaslang& 2.18m & 1.82m & 1.20x\\%
+Medium &Jcabi\Comment{ GitHub} & 2.76m & 0.30m & 9.20x\\%
+Long &\Comment{ Hazelcast }Jet& 8.26m & 3.67m & 2.25x\\%
+Long & \Comment{apache} Mahout & 27.38m & 18.15m & 1.51x\\%
+Long &\Comment{ Jankotek }MapDB& 10.06m & 8.58m & 1.17x\\%
+Medium & \Comment{apache} OpenNLP & 1.30m & 0.55m & 2.36x\\%
+Medium & \Comment{yegor256} Rultor & 2.30m & 0.27m & 8.52x\\%
+Medium & \Comment{yegor256} Takes & 2.00m & 0.19m & \cellcolor{lightgray}10.53x\\%
+Long & \Comment{vavr-io} Vavr & 3.26m & 2.25m & 1.45x\\%
+\midrule
+Average &  &  &  & \avgSpeedup{}x\\
+\bottomrule%
+\end{tabular}
 }
-\end{center}
+\end{table}
+
+\begin{mdframed}
+ \noindent\textit{Answering \numRQSpeedupOne{}:}~\emph{Considering the
+  machine setup we used, the average speedup observed with default
+  configurations of parallelization was \avgSpeedup{}x.}
+\end{mdframed}
 
 \begin{itemize}
     \item \numRQSpeedupTwo{}. \textbf{\RQSpeedupTwo}
@@ -622,6 +609,11 @@ Tahr (64-bit version). This experiment
 spawns a growing number of JVMs in different CPUs, using parallel
 configuration \emph{\ForkSeq{}}. We selected
 subject \subjectScalability{} in this experiment as it represents the
+\begin{wrapfigure}{r}{0.23\textwidth}
+  \includegraphics[width=0.23\textwidth]{R/scalability/scalability.pdf}
+  \caption{\label{fig:scalability}Scalability.}
+  \vspace{-4mm}
+\end{wrapfigure}
 case of a long-running test suite (see Table~\ref{tab:speedup}) with
 test cases distributed across many test classes~--~194.  
 Recall that a test class is the smallest unit that can be used to spawn a test job
@@ -633,25 +625,17 @@ We ran this experiment for a growing number of cores 1, 3, ..., 39.
 The plot omits results beyond 17 cores as the tendency for higher
 values is clear.
 We noticed that improvements are marginal after three cores, which is
-\begin{wrapfigure}{r}{0.23\textwidth}
-  \includegraphics[width=0.23\textwidth]{R/scalability/scalability.pdf}
-  \caption{\label{fig:scalability}Scalability.}
-\end{wrapfigure}
 the basic setup we used in other experiments.
 This saturation is justified by the presence of a single test class,
 \CodeIn{org.mapdb.WALTruncat}, containing 15 test cases that take over
 two minutes to run.
 
-\begin{center}
-\fbox{
-  \begin{minipage}{8cm}
-    \textit{Answering \numRQSpeedupTwo{}:}~\emph{Results suggest that
-      execution FC0 scales with additional cores but there is a bound
-      on the speedup that one can get related to how well the test suite is
-      balanced across test classes.}
-  \end{minipage}
-}
-\end{center}
+\begin{mdframed}
+\noindent\textit{Answering \numRQSpeedupTwo{}:}~\emph{Results suggest that
+  execution FC0 scales with additional cores but there is a bound
+  on the speedup that one can get related to how well the test suite is
+  balanced across test classes.}
+\end{mdframed}
 
 \subsection{Tradeoffs}
 \label{sec:rq6-tradeoffs}
@@ -764,18 +748,12 @@ configuration \emph{\SeqClassParMeth} was higher compared to
 using more CPUs pays off. Important to note that the cost of spawning
 new JVMs can be significant in \emph{\ForkParMeth}.
 
-
-
-\begin{center}
-\fbox{
-\begin{minipage}{8cm}
-\textit{Answering \numRQIssuesOne{}:~Overall results indicate that the
+\begin{mdframed}
+\noindent\textit{Answering \numRQIssuesOne{}:~Overall results indicate that the
   test suites of 73.33\% of the projects we analyzed could be run in
   parallel without manifesting any flaky tests.  In some of these
   cases, speedups were significant, ranging from 1x to 28.8x.}
-\end{minipage}
-}
-\end{center}
+\end{mdframed}
 
 %%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
 %%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS
