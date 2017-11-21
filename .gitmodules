@@ -1,0 +1,3 @@
+[submodule "ase17-artifacts"]
+	path = ase17-artifacts
+	url = git@github.com:jeandersonbc/testsuite-parallelization.git
