@@ -121,3 +121,5 @@ ENV/
 # Rope project settings
 .ropeproject
 .Rproj.user
+
+.DS_Store
