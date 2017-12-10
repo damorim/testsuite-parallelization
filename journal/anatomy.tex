@@ -1,0 +1,42 @@
+\section{Anatomy of a \pef{} failure}
+
+It is important to note that previous work investigated test flakiness
+manifested in sequential executions\Fix{cite cite}.  For example, a
+test case can fail because a timing assumption of an asynchronous test
+was broken.  Treating this source of flakiness is important but
+orthogonal to this work: parallel execution flakiness can arise even
+without sequential execution flakiness.  In the following we explain
+how \pef{}s come to be.
+
+\Fix{...}
+
+\subsection{Detecting flakiness.}
+\label{sec:detect-flakiness-build}
+
+A popular approach to detect test flakiness is to iteratively
+re-execute (parts of) the test suite multiple times marking as flaky
+those tests that produce both pass and failing outputs.  We refer to
+this process as IRE (for Iterative RE-execution).
+
+Considering the Maven\Fix{is this maven or maven's surefire
+  plugin~\cite{maven-surefire-plugin}?} build system, the process
+starts with the developer determining a bound N for the number of
+re-executions of the test suite.  Only tests that fail in one given
+iteration are scheduled for re-execution in the next iteration.  At
+the end of the process, a test is considered passing if it passes in
+the first iteration, a test is considered failing if it fails in all
+iterations, and it is considered flaky if it fails in all iterations
+but the last it executed.  The process terminates when all tests
+eventually pass or when the bound N is reached.  Note that every
+iteration runs a subset of the tests from the previous iteration so,
+assuming most tests will pass in the first iterations, execution cost
+is much lower compared to executing the entire test suite N times.
+However, note also that this method can particularly miss flaky tests
+for the following reasons: \Fix{elaborate: (1) passing tests can fail
+  in subsequent iterations and (2) ignoring tests may prevent
+  manifestations of read-write conflicts.}
+
+\Fix{explain other method...}
+
+
+%%  LocalWords:  iteratively

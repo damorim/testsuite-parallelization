@@ -1,0 +1,109 @@
+\section{Empirical Study}
+
+Table~\ref{table:cost}...\Fix{Why Forked JVM-L1 is (in some cases) so much better
+compared to Forked JVM-L0? (io?)}\Fix{Why Forked JVM seems to be
+  superior to all other Single JVM methods?  Are all CPUs in use?  If
+  not, why one would use Single JVM (given that Forked JVM is faster
+  and reduces flakiness)?}
+
+Table~\ref{table:failures}...\Fix{I expected ``Single JVM + L3'' to
+  find most flaky tests.}\Fix{Need to compute these results with
+  another IRE method.}
+
+\begin{table*}[t]
+  \centering
+  \begin{tabular}{|c|r|r|r|r|r|r|r|}
+    \hline
+    \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}} &  \multicolumn{6}{c|}{\emph{Time}}\\
+    \cline{3-8}
+    & & \multicolumn{4}{c|}{\emph{Single JVM}} & \multicolumn{2}{c|}{\emph{Forked JVMs}} \\
+%    & & \multicolumn{1}{c|}{\forkSeq{}} &
+%    \multicolumn{1}{c|}{\forkDia{}} &
+%    \multicolumn{1}{c|}{\singleJVMSeq{}} &
+%    \multicolumn{1}{c|}{\singleJVMDia{}} &
+%    \multicolumn{1}{c|}{\singleJVMClass{}} &
+    %    \multicolumn{1}{c|}{\singleJVMMethod{}}\\
+    \cline{3-8}
+    & &  \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}} &
+    \multicolumn{1}{c|}{\SeqClassParMeth{}} &
+    \multicolumn{1}{c|}{\ParClassParMeth{}} &
+    \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}}\\
+    \hline
+    \hline
+    \multicolumn{8}{|c|}{\emph{Longer executions}} \\
+    \hline
+    camel-core & 5,683 & 24m:52s & 1.00x & 1.00x & 1.00x & 5.88x & 5.82x \\
+    \hline
+    jetty.project & 543 & 4m:14s & 2.41x & 2.97x & 5.61x & 2.44x & 13.70x \\
+    \hline
+    jgit & 3,422 & 3m:59s & 2.68x & 2.37x & 1.95x & 2.31x & 4.50x \\
+    \hline
+    okhttp & 1545 & 1m:16s & crash I & crash II & crash II & 3.40x & TIMEOUT \\
+    \hline    
+    \hline
+    \multicolumn{8}{|c|}{\emph{Shorter executions}} \\
+    \hline
+    graphhopper & 1,259 & 12s & 0.92x & 1.01x & 0.53x & 1.72x & 1.17x \\
+    \hline
+    junit4 & 791 & 10s & 0m10.08s & 0m10.32s & 0m10.49s & 0m10.13s & 0m9.96s \\
+    junit4** & <TESTCASES> & 10s & TIMEOUT & crash II & crash II & 0.99x & FIX \\
+    \hline
+    retrofit & 263 & 6s & 1.25x & 1.08x & 1.22x & 1.11x & 1.14x \\
+    \hline
+  \end{tabular}
+  \caption{\label{table:cost}Test execution time.}
+\end{table*}
+
+\Fix{junit4 - need to look more carefully the log file}
+\Fix{FIX - I used a wrong configuration in the pom.xml file}
+\Fix{Camel - still couldn't find an explanation to unexpected behavior with parallel settings}
+\Fix{Crash I - Surefire internal error (NullPointerException)}
+\Fix{Crash II - JVM Crash (e.g. System.exit)}
+\Fix{TIMEOUT - Possibly a deadlock: Execution could not finish within 30min}
+
+\begin{table*}[t]
+  \centering
+  \begin{tabular}{|c|r|r|r|r|r|r|r|}
+    \hline
+    \multirow{2}{*}{\emph{Subject}} & \multirow{2}{*}{\emph{\# Tests}} &  \multicolumn{6}{c|}{\emph{Time}}\\
+    \cline{3-8}
+    & & \multicolumn{4}{c|}{\emph{Single JVM}} & \multicolumn{2}{c|}{\emph{Forked JVM}s} \\
+    \cline{3-8}
+    & & \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}} &
+    \multicolumn{1}{c|}{\SeqClassParMeth{}} &
+    \multicolumn{1}{c|}{\ParClassParMeth{}} &
+    \multicolumn{1}{c|}{\Seq{}} &
+    \multicolumn{1}{c|}{\ParClassSeqMeth{}} \\
+    \hline
+    \hline
+    \multicolumn{8}{|c|}{\emph{Longer executions}} \\
+    \hline
+    camel (core) & 5,979 & 0 & ! & ! & ! & 75 & 70 \\
+    \hline
+    jetty (client) & 535 & 0 & 106** & 0 & 76** & 0 & 111 \\
+    \hline
+    jgit & 3,364 & 0 & 75 & 57* & 99* & 1 & 79 \\
+    \hline
+    okhttp & 1,525 & 0 & - & - & ! & 0 & ! \\    
+    \hline
+    \hline
+    \multicolumn{8}{|c|}{\emph{Shorter executions}} \\
+    \hline
+    graphhopper & 1,259 & 0 & 152 & 55 & 347 & 14 & 67 \\
+    \hline    
+    junit4 & 791 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    \hline
+    \hline
+    retrofit & 261 & 0 & 1 & 0 & 1 & 0 & 1 \\
+    \hline
+  \end{tabular}
+  \caption{\label{table:failures}Number of flaky tests obtained with
+    Maven's IRE (see Section~\ref{sec:detect-flakiness-build}) using
+    bound of \Fix{?}.\Fix{* = Contains a skipped test. I don't know
+      yet why a failing test may be skipped when it is executed
+      individually}\Fix{Reminder: To not be confused with Sequential
+      Flakiness. Sequential Flakiness must not be considered}}
+\end{table*}

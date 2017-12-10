@@ -1,4 +1,6 @@
-Venue: [Information and Software Technology](https://www.journals.elsevier.com/information-and-software-technology)
+Options of Venues:
+ * [Transactions of Software Engineering](https://www.computer.org/web/tse)
+ * [Information and Software Technology](https://www.journals.elsevier.com/information-and-software-technology)
 Tasks:
  * Increase number of subjects
    * Review selection criteria
