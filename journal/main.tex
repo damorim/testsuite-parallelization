@@ -394,7 +394,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Test Suite Parallelization in Open-Source Projects:\\ A Study on Its Usage and Impact}
+\title{Test Suite Parallelization in Open-Source Projects: A Study on Its Usage and Impact}
 %
 %
 % author names and IEEE memberships
@@ -418,17 +418,16 @@
 % journal papers have the author affiliations above the "Manuscript
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
 
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem M. Shell was with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332.\protect\\
+\author{Jeanderson~Candido,
+        Luis~Melo,
+        and~Marcelo~d'Amorim% <-this % stops a space
+\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem J. Candido, L. Melo, and M. d'Amorim
+are affiliated to the Department of Computer Science, Federal University of
+Pernambuco, Recife, PE, 50740-560 Brazil.\protect\\
 % note need leading \protect in front of \\ to get a newline within \thanks as
 % \\ is fragile and will error, could use \hfil\break instead.
-E-mail: see http://www.michaelshell.org/contact.html
-\IEEEcompsocthanksitem J. Doe and J. Doe are with Anonymous University.}% <-this % stops an unwanted space
-\thanks{Manuscript received April 19, 2005; revised August 26, 2015.}}
+E-mail: \{jbc5, lhsm, damorim\}@cin.ufpe.br}
+\Comment{\thanks{Manuscript received \Fix{April 19, 2005}; revised \Fix{August 26, 2015}.}}}
 
 % note the % following the last \IEEEmembership and also \thanks - 
 % these prevent an unwanted space from occurring between the last author name
@@ -638,7 +637,6 @@ Computer Society, IEEE, IEEEtran, journal, \LaTeX, paper, template.
 % footnotes above bottom floats. This can be corrected via the
 % \fnbelowfloat command of the stfloats package.
 
-\Jbc{Review float and text formatting on the whole document.}
 
 \input{intro}
 \input{modes}
