@@ -105,6 +105,7 @@ the output log to find elapsed times (line 12-14).
 \input{codes/evaluation}
 
 \begin{figure}[ht]%
+  \vspace{-3mm}
   \centering
   \subfigure[\label{fig:rq1-barplot}]{
   \includegraphics[height=4cm,width=3cm]{results/barplot-timecost.pdf}
@@ -113,10 +114,12 @@ the output log to find elapsed times (line 12-14).
   \subfigure[\label{fig:rq1-boxplot}]{
     \includegraphics[height=4cm,width=4.2cm]{results/boxplot-timecost.pdf}
   }%
+  \vspace{-2mm}
   \caption{(a)\Comment{ Testing time grouped by time cost ($t$): short run
     ($t<1m$), medium run ($1m \le t < 5m$), and long run ($5m \le{}
     t$);}~Number of projects in each cost group and
     (b)~Distribution of running times per cost group.}
+\vspace{-5mm}
 \end{figure}
 
 \Comment{We followed a similar methodology to group projects by time as
@@ -179,7 +182,9 @@ have more than 5\% of failing tests (7.3\% on average).
 \begin{figure}[t!]
   \centering
   \includegraphics[width=.48\textwidth]{results/testcost-distribution.pdf}
+  \vspace{-2mm}
   \caption{\label{fig:time-distributions}Distribution of test case time per project.}%
+  \vspace{-5mm}
 \end{figure}
 
 Section~\ref{sec:rqA} showed that medium and long-running projects are
@@ -224,8 +229,10 @@ the tests running faster.
   \subfigure[\label{fig:scattercost}]{
     \includegraphics[height=4.25cm]{results/scatter-testcost.pdf}
   }%
+  \vspace{-2mm}
   \caption{\label{fig:time-versus-size}(a) Size of test suites; (b)
     Size versus running time of test suites.}%
+  \vspace{-5mm}
 \end{figure}
 
 Figure~\ref{fig:size-testsuites} shows the difference in the
@@ -311,6 +318,7 @@ test modules. Table~\ref{tab:freqmodes-dynamic} shows the
 
 Column ``\emph{Subject}'' indicates the name of the project, column
 \begin{wraptable}{r}{5cm}
+\vspace{-4mm}
 \caption{Subjects with parallel test execution enabled by default.}
 \label{tab:freqmodes-dynamic}
 \footnotesize
@@ -602,8 +610,9 @@ spawns a growing number of JVMs in different CPUs, using parallel
 configuration \emph{\ForkSeq{}}. We selected
 subject \subjectScalability{} in this experiment as it represents the
 \begin{wrapfigure}{r}{0.23\textwidth}
-  \includegraphics[width=0.23\textwidth]{scalability/scalability.pdf}
+  \includegraphics[width=0.23\textwidth]{R/scalability/scalability.pdf}
   \caption{\label{fig:scalability}Scalability.}
+  \vspace{-4mm}
 \end{wrapfigure}
 case of a long-running test suite (see Table~\ref{tab:speedup}) with
 test cases distributed across many test classes~--~194.  
