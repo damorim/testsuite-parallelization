@@ -1,6 +1,0 @@
-type,value
-Untestable,237
-Testable,468
-Not Maven,48
->10.0% Failures,65
-Flaky,13
