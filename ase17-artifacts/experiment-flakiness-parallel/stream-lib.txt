@@ -1,0 +1,61 @@
+Total: 137 Failures: 2 Skip: 10
+Elapsed time: 90.86 s
+testScaling(com.clearspring.analytics.stream.quantile.TDigestTest)
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 1 Skip: 10
+Elapsed time: 76.52 s
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 2 Skip: 10
+Elapsed time: 72.19 s
+testUniform(com.clearspring.analytics.stream.quantile.TDigestTest)
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 0 Skip: 10
+Elapsed time: 71.91 s
+
+Total: 137 Failures: 2 Skip: 10
+Elapsed time: 66.96 s
+compareToQDigest(com.clearspring.analytics.stream.quantile.TDigestTest)
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 1 Skip: 10
+Elapsed time: 135.98 s
+testRepeatedValues(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 2 Skip: 10
+Elapsed time: 96.33 s
+testSerialization(com.clearspring.analytics.stream.quantile.TDigestTest)
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 2 Skip: 10
+Elapsed time: 82.98 s
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+testUniform(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 1 Skip: 10
+Elapsed time: 88.30 s
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 0 Skip: 10
+Elapsed time: 73.86 s
+
+Total: 137 Failures: 1 Skip: 10
+Elapsed time: 71.91 s
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 1 Skip: 10
+Elapsed time: 71.52 s
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 1 Skip: 10
+Elapsed time: 74.03 s
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
+
+Total: 137 Failures: 0 Skip: 10
+Elapsed time: 73.18 s
+
+Total: 137 Failures: 1 Skip: 10
+Elapsed time: 72.96 s
+testMerge(com.clearspring.analytics.stream.quantile.TDigestTest)
