@@ -1,0 +1,83 @@
+\chapter{Related Work}
+\label{sec:related}
+
+Regression testing research has focused mostly on test suite
+minimization, prioritization, reduction, and
+selection~\cite{yoo-harman-stvr2012,soetens-etal-2016}.  Most of these
+techniques are unsound (\ie{}, they do not guarantee that
+fault-revealing tests will be considered for testing).  The test
+selection technique
+Ekstazi~\cite{gligoric-etal-issta2015,celik-etal-fse2017} is an
+example of a sound regression testing technique. It conservatively
+computes which tests have been impacted by file changes.  A test is
+discarded for execution if it does not depend on any changed file
+dynamically reachable from execution.\Comment{ Curiously Ekstazi's
+  evaluation discovered subjects with parallelism enabled by
+  default.}\Comment{ \c{C}elik~\etal{}~\cite{} recently extended
+  Ekstazi to track files accessed outside JVM boundaries.} Important
+to note that regression testing techniques, including test selection,
+is complementary to test suite parallelization.
+
+ElectricTest~\cite{bell-etal-esecfse2015} is a tool for efficiently
+detecting data dependencies across test cases.  Dependency tracking is
+important as to avoid test flakiness when parallelizing test
+suites. ElectricTest observes reads and writes on global resources
+made by tests to identify these dependencies at low cost. We remain to
+investigate the impact of ElectricTest to reduce flakiness in
+unrestricted test suite parallelization.
+
+The use of the Single Instruction Multiple Data (SIMD) design has been
+previously explored in research to accelerate test
+execution~\cite{damorim-etal-issta2007,damorim-etal-tse2008,kim-etal-issre2012,nguyen-etal-icse2014,rajan-etal-ase2014,sen-etal-fse2015,yaneva-etal-issta2017}. The
+SIMD architecture, as implemented in modern GPUs, for instance, allows
+the execution of a given instruction simultaneously against multiple
+data.  For that reason, in principle, one test could be ran
+simultaneously against multiple inputs provided that multiple test
+inputs exist associated to that one test.  Recent
+work~\cite{rajan-etal-ase2014,yaneva-etal-issta2017} explored that
+idea to speedup test execution of embedded software using graphic
+cards. Although benchmarks indicate superior performance compared to
+traditional multicore CPUs, the use of the technology in broader
+settings is limited. For example, execution of more general programs
+can violate the SIMD's lock-step assumption on the control-flow of
+threads.  This violation would affect negatively performance.
+Furthermore, handling complex data is challenging in
+SIMD~\cite{damorim-etal-issta2007,damorim-etal-tse2008}.  The approach
+is promising when multiple input vectors exist for each test and the
+testing code heavily manipulates scalar data types.  The datasets used
+in those papers satisfied those constraints.
+
+Google~\cite{google-tap,google-ci} and
+Microsoft~\cite{prasad-shulte-ieee-microsoft-ci} have been creating
+distributed infrastructures to efficiently build massive amounts of
+code and run massive amounts of tests.  Those scenarios bring
+different and challenging problems such as deciding when to trigger
+the build under multiple file
+updates~\cite{memon-etal-icse17}. Although such distributed systems
+are targeted to extremely large scale code and test bases, the same
+ideas can be applied to handle the build process of large, albeit not
+as large, projects.  For example,
+Gambi~\etal{}~\cite{gambi-etal-issta2017} recently proposed CUT, a
+tool to automatically parallelize JUnit tests on the cloud. The tool allows
+the developer to control resource allocation and deal with the project
+specific test dependencies.  Note that test suite parallelization is
+complementary to these high-level parallelism schemes.
+
+Continuous Integration (CI) services, such as Travis CI~\cite{travis},
+are becoming widely used in the open-source
+community~\cite{hilton-etal-ase2016,vasilescu-etal-fse2015}. Accelerating
+time to run tests in CI is important as to reduce the period between
+test report updates.  Module-level regression
+testing~\cite{vasic-etal-fse2017}, for example, can be helpful in that
+setting. It is important to note that test failures are more common in
+CI compared to an overnight run or a local run, for instance.  This
+can happen because of semantic merge conflicts~\cite{brun-etal-fse11},
+for instance.  As such effect can impact developer's perception and
+tolerance towards failures, we are curious to know if developers would
+be willing to receive more frequent test reports at the expense of
+potentially increasing failure rates due to flakiness caused by
+parallelism.
+
+%%  LocalWords:  Ekstazi Ekstazi's elik JVM parallelization SIMD GPUs
+%%  LocalWords:  ElectricTest parallelizing multicore CPUs SIMD's GCC
+%%  LocalWords:  datasets Gambi parallelize JUnit

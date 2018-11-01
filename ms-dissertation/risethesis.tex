@@ -69,7 +69,7 @@
 %%          \citep (from natbib) -- To cite a reference between parenthesis
 %%          citationblock environment -- To produce direct citation blocks according to the ABNT
 
-\documentclass[pt,twoside,onehalfspacing,phd]{risethesis}
+\documentclass[en,twoside,onehalfspacing,msc]{risethesis}
 
 \usepackage{colortbl}
 \usepackage{color}
@@ -84,6 +84,8 @@
 \usepackage{caption}
 \usepackage{lipsum}
 \usepackage{sectsty}
+\usepackage{listings}
+\usepackage{mdframed}
 
 \captionsetup[table]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=footnotesize}
 \captionsetup[lstlisting]{position=top,justification=centering,width=.85\textwidth,labelfont=bf,font=footnotesize}
@@ -118,16 +120,16 @@
 \majorfieldpt{Ciência da Computação}
 \majorfielden{Computer Science}
 
-\title{An Automated Approach to Assign Software Change Requests}
+\title{Test Suite Parallelization in Open Source Projects: A Study on Its Usage and Impact}
 
-\date{2014}
+\date{2018}
 
-\author{Yguaratã Cerqueira Cavalcanti}
-\adviser{Silvio Romero de Lemos Meira}
-\coadviser{Eduardo Santana de Almeida}
+\author{Jeanderson Barros C{â}ndido}
+\adviser{Marcelo Bezerra d'Amorim}
 
 % Macros (defines your own macros here, if needed)
 \def\x{\checkmark}
+\input{macros}
 
 \begin{document}
 
@@ -186,19 +188,21 @@ right way, did not become still more complicated.
 \mainmatter
 
 \include{chapters/introduction}
-\include{chapters/background}
-\include{chapters/desenv}
-\include{chapters/conclusion}
+%\include{chapters/background}
+%\include{chapters/evaluation}
+%\include{chapters/lessons}
+%\include{chapters/related}
+%\include{chapters/conclusion}
 
 % References
 
 \begin{references}
-  \bibliography{references}
+\bibliography{tmp}
 \end{references}
 
 % Appendix
 
-\theappendix
-\include{appendix/mapping-study}
+%%\theappendix
+%%\include{appendix/mapping-study}
 
 \end{document}

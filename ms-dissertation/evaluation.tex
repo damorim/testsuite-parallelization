@@ -1,0 +1,33 @@
+\begin{figure}[h!]
+\centering
+\tiny
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    showstringspaces=false
+}
+\begin{lstlisting}[language=Bash]
+MAVEN_SKIPS="-Drat.skip=true -Dmaven.javadoc.skip=true \
+    -Djacoco.skip=true -Dcheckstyle.skip=true \
+    -Dfindbugs.skip=true -Dcobertura.skip=true \
+    -Dpmd.skip=true -Dcpd.skip=true"
+
+for subj in $SUBJECTS; do
+    cd $SUBJECTS_HOME/$subj
+    mvn clean dependency:go-offline
+    mvn test-compile install -DskipTests $MAVEN_SKIPS \
+        &> compile.log
+    mvn test -o -fae $MAVEN_SKIP &> testing.log
+    cat testing.log \
+        | grep --text "\[INFO\] Total time:" \
+        | tail -n 1
+done
+\end{lstlisting}
+\vspace{-3mm}
+\caption{\label{fig:mvn-execution} Bash script to measure time cost of
+  test suites. For each subject, we fetch all dependencies,
+  compile the source and test files, and execute the tests in
+  offline mode ignoring non-related tasks. Test-unrelated tasks
+  are omitted.}
+\end{figure}

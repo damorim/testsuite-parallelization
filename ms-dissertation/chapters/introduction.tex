@@ -1,20 +1,13 @@
-\chapter{Introduction}
-\label{chp:introduction}
-
-% \begin{quotation}[]{Poul Anderson}
-% I have yet to see any problem, however complicated, which, when looked at in the
-% right way, did not become still more complicated.
-% \end{quotation}
-
+\Comment{
 Software maintenance starts as early as the first software artifacts are
 delivered, and is characterized by its high cost and slow speed of
-implementation~\citep{swebok2004}. It has been stated that it is the most
+implementation~\citetp{swebok2004}. It has been stated that it is the most
 expensive activity of software development, taking up to 90\% of the total
-costs~\citep{Eastwood1993,Erlikh2000}. However, despite of the high cost, it is
-mandatory to ensure the success of the software project. \citet{Lehman1980}
+costs~\citetp{Eastwood1993,Erlikh2000}. However, despite of the high cost, it is
+mandatory to ensure the success of the software project. \citett{Lehman1980}
 argues, in his \emph{Continuing Change} law of software evolution, that the
 modification of software is a fact of life for software systems if they are
-intended to remain useful. \citet{Bennett2000} reinforced such an argument for
+intended to remain useful. \citett{Bennett2000} reinforced such an argument for
 the specific case of useful and successful software, where almost all of them
 have a common practice of stimulating user-generated \ac{cr}. Actually, software
 maintenance is driven by \acp{cr} reported by many stakeholders, such as
@@ -22,18 +15,18 @@ developers, testers, team leaders, managers, and clients.
 
 In this context, the \ac{cr} repositories play an important role in the
 maintenance and evolution process, being actually a focal point of communication
-and coordination for software projects~\citep{Bertram2010}. Through a \ac{cr}
+and coordination for software projects~\citetp{Bertram2010}. Through a \ac{cr}
 repository, the developers manage and coordinate the corrections and new
 features to be implemented in the software under development or maintenance.
 Moreover, the data stored in such repositories are a valuable source of
 information about the project, which can be used to assist in cost estimation,
 impact analysis, traceability, planning, expertise discovery, and software
-understanding \citep{CavalcantiSQJ2011}. Examples of these repositories are
-Mantis~\citep{Mantis}, Bugzilla~\citep{Bugzilla}, and Trac~\citep{Trac}.
+understanding \citetp{CavalcantiSQJ2011}. Examples of these repositories are
+Mantis~\citetp{Mantis}, Bugzilla~\citetp{Bugzilla}, and Trac~\citetp{Trac}.
 
 Briefly, a \ac{cr} describes a defect to be fixed, an adaptive or perfective
 change, or a new functionality to be implemented in a software
-system~\citep{CavalcantiSQJ2011}. Each \ac{cr} stores a variety of fields of
+system~\citetp{CavalcantiSQJ2011}. Each \ac{cr} stores a variety of fields of
 free text and custom fields defined according to the necessity of each project.
 In Trac, for example, it has fields for summary and detailed description of a
 \ac{cr}. In the same \ac{cr}, it can be also recorded information about software
@@ -42,7 +35,7 @@ similar, or duplicate), the person who will be assigned to the \ac{cr}, among
 other relevant information. Moreover, during the life cycle of a \ac{cr},
 different kinds of discussion take place through the comments that are inserted
 in it, such as fixing alternatives, workarounds, and architectural
-decisions~\citep{Bertram2010}.
+decisions~\citetp{Bertram2010}.
 
 \section[Motivation  (Why to Automate CR Assignment?)]{Motivation (Why to
 Automate \ac{cr} Assignment?)}
@@ -50,13 +43,13 @@ Automate \ac{cr} Assignment?)}
 Despite \ac{cr} repositories claimed benefits to software maintenance and
 evolution, handling \acp{cr} is not cost-free. For example, when new \acp{cr}
 are reported they must be assigned to developers which have adequate expertise
-to address the request~\citep{Aljarah2011,Hosseini2012,Kagdi2012}. Finding the
+to address the request~\citetp{Aljarah2011,Hosseini2012,Kagdi2012}. Finding the
 appropriate developer is crucial for obtaining the lowest, economically
-feasible, fixing time~\citep{Lucca2002}. Nevertheless, assigning \acp{cr} to
+feasible, fixing time~\citetp{Lucca2002}. Nevertheless, assigning \acp{cr} to
 developers is a labor-intensive and time consuming
-task~\citep{Anvik2006,Jeong2009}. Indeed, depending on the project being
+task~\citetp{Anvik2006,Jeong2009}. Indeed, depending on the project being
 developed, the amount of \acp{cr} that are reported and need to be assigned can
-vary from dozens to hundreds per day~\citep{CavalcantiSQJ2011}.
+vary from dozens to hundreds per day~\citetp{CavalcantiSQJ2011}.
 
 \figref{fig:assignment-schema} shows the activity of assigning \acp{cr}.
 At the top-left corner of the figure, there are the \acp{cr} which have been
@@ -82,7 +75,7 @@ the \ac{cr} fixing activities.
 Nevertheless, by increasing the amount of reported \acp{cr} or the size of the
 development team, it is visible that the router becomes overloaded and the
 \ac{cr} assignment becomes an intensive, error prone activity. It was confirmed
-by \citet{Jeong2009}, which identified that 37\%-44\% of the \acp{cr} in Mozilla
+by \citett{Jeong2009}, which identified that 37\%-44\% of the \acp{cr} in Mozilla
 and Eclipse projects did not reach the right developer in the first assignment.
 These \acp{cr}, in turn, had their fixing time delayed because they needed to be
 reassigned one or more times. Furthermore, if the \acp{cr} are not fixed by the
@@ -100,11 +93,11 @@ appropriate developers are actually being selected, the quality and time for the
 \label{sec:intro-problem-statement}
 
 As previously mentioned, software maintenance has been considered as the most
-costly aspect of software development~\citep{swebok2004}. There is a myriad of
+costly aspect of software development~\citetp{swebok2004}. There is a myriad of
 reasons for this situation. One of them is the many changes that are required
 after software delivery due to poor documented and misunderstood requirements,
 or simply because \emph{``the clients do not know what they
-want''}~\citep{Brooks1995}.
+want''}~\citetp{Brooks1995}.
 
 Another reason is the fact that a set of development activities must be
 inevitably performed in order to implement a change. For instance, for each
@@ -169,9 +162,9 @@ Thus, the goal of the work described in this thesis can be stated as:
 \section{Research Methodology}
 
 This research design of this thesis is based on a multimethod
-approach~\citep{Hesse-Biber2010}. Such approach combines two or more
+approach~\citetp{Hesse-Biber2010}. Such approach combines two or more
 quantitative (or qualitative) methods in a single study, such as a survey and an
-experiment~\citep{Hesse-Biber2010}. Multimethod must not be confused with mixed
+experiment~\citetp{Hesse-Biber2010}. Multimethod must not be confused with mixed
 method. In this last, methods for both qualitative and quantitative types of
 research are applied in a single study. On the other hand, multimethod studies
 combine different methods for a single research type.
@@ -181,7 +174,7 @@ the results from the different methods, considering, however, that the same
 research question(s) was/were investigated in these methods. As a consequence,
 the triangulation of methods enhances the conclusions and completeness of the
 study, bringing more credibility to the research
-findings~\citep{Hesse-Biber2010}. \figref{fig:research-methodology-thesis} shows
+findings~\citetp{Hesse-Biber2010}. \figref{fig:research-methodology-thesis} shows
 the multimethod research design applied in this thesis.
 
 \begin{figure}[h]
@@ -254,7 +247,7 @@ addressed in this thesis:
   is also out of scope. The main reason for this is the human factors and
   context variables that are involved in the assignment of \acp{cr}, which
   make this problem hard to be computable. A mathematical formulation of the
-  \ac{cr} assignment problem is provided by~\citet{Rahman2009}.
+  \ac{cr} assignment problem is provided by~\citett{Rahman2009}.
 \end{enumerate}
 
 \section{Statement of the Contributions}
@@ -266,12 +259,12 @@ addressed in this thesis:
   \item A survey performed with practitioners from a large organization, in
   order to understand the aspects of the \ac{cr} assignment
   activity. Published in the \emph{17$^{th}$ International Conference on Evaluation
-  and Assessment in Software Engineering (EASE'2013)}~\citep{CavalcantiEASE2013};
+  and Assessment in Software Engineering (EASE'2013)}~\citetp{CavalcantiEASE2013};
   \item A replication of the previous survey in two more organizations;
   \item A systematic mapping study performed to understand the challenges and
   opportunities of \ac{cr} management, as well as to identify research gaps and
   the road ahead. Accepted for publication in the
-  \emph{Journal of Software: Evolution and Process}~\citep{CavalcantiJSEP2013};
+  \emph{Journal of Software: Evolution and Process}~\citetp{CavalcantiJSEP2013};
   \item The definition of the functional and non-functional requirements that
   are required to effectively automate \ac{cr} assignment, which takes as input
   the systematic mapping study and the survey;
@@ -289,3 +282,158 @@ addressed in this thesis:
 \section{Organization of the Thesis}
 
 \lipsum[5-10]
+}
+
+\chapter{Introduction}
+\label{chp:intro}
+
+% \begin{quotation}[]{Poul Anderson}
+% I have yet to see any problem, however complicated, which, when looked at in the
+% right way, did not become still more complicated.
+% \end{quotation}
+
+Dealing with high testing costs has been an important problem in
+software engineering research and industrial practice.  Several
+approaches have been proposed in the research literature to address
+this problem, with the focus mainly on test suite minimization,
+prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
+In industry, the focus has been mainly on distributing the testing
+workload.  Evidence of this are the Google TAP
+system~\citet{google-tap,google-ci} and the Microsoft CloudBuild
+system~\citet{prasad-shulte-ieee-microsoft-ci}, which provide
+distributed infrastructures to efficiently build massive amounts of
+code and run tests.  Building in-house server clusters is also a
+popular mechanism to distribute testing workloads.  For example, as of
+August 2013, the test suite of the Groupon PWA system, which powers
+the \url{groupon.com} website, included over 19K tests.  To run all
+those tests under 10m, Groupon used a cluster of 4 computers with 24
+cores each~\citet{kim-etal-fse2013}.
+
+At large organizations, the alternative of renting cloud
+services~\citet{cloud-services} or even building proprietary
+infrastructures for running tests is a legitimate approach to mitigate
+the regression testing problem.  However, for projects with modest
+ or nonexistent budgets and yet relatively heavy testing workloads, this solution may
+not be economically viable.  For these cases, the use of commodity
+hardware\Comment{ (\eg{}, existing workstations)} is an attractive
+solution for running tests.  The proliferation of
+multi-core CPUs and the increasing popularization of testing
+frameworks and build systems, which today provide mature support for
+parallelization, enable\Comment{ test execution} speedups through increased CPU
+usage~(see Section~\ref{sec:modes}).  These two elements~---~demand
+for cost-effective test execution and supply of relatively inexpensive
+testing infrastructures~---~inspired us to investigate 
+test suite parallelization in practice.
+
+This paper reports on an empirical study we conducted to analyze the
+usage and impact of low-level parallelization to speed up testing in
+open-source projects.  This is a relevant problem given the tremendous
+popularity of open-source development and regression testing
+research~\citet{yoo-harman-stvr2012}.  Note that parallelization is
+complementary to other approaches to mitigate testing costs such as
+(safe) test
+selection~\citet{Rothermel:1997:SER:248233.248262,gligoric-etal-issta2015}
+and continuous integration~\citet{Saff:2003:RWD:951952.952340}.
+
+The dimensions of analysis we considered in this study are (i)
+feasibility, (ii) adoption, (iii) speedup, and (iv) tradeoffs.  The
+dimension \emph{feasibility} measures the potential of parallelization
+to reduce testing costs.  In the limit, parallelization would be
+fruitless if all projects had short-running test suites or if the
+execution cost was dominated by a single test case in the suite.  The
+dimension \emph{adoption} evaluates how often existing open-source
+projects use parallelization schemes and how developers involved in
+costly projects (not using test suite parallelization) perceive this
+technology.  It is important to measure resistance of practitioners to
+the technology and to understand their reasons.  The dimension
+\emph{speedup} evaluates the observed impact of
+parallelization\Comment{~---~when used in selected open-source
+  projects~---~} in running times.  Finally, the dimension
+\emph{tradeoffs} evaluates the relationship between speedups obtained
+with parallelization and issues that arise 
+when running tests in parallel, including test
+flakiness~\citet{luo-etal-fse2014,bell-etal-esecfse2015}.  We briefly summarize our findings
+in the following.
+
+
+\noindent\emph{Feasibility.}~To assess how prevalent long-running test suites
+are we selected \numSubjs{} popular Java projects from \github{} containing
+Maven build files~\citet{maven}.  Section~\ref{sec:eval} details our methodology
+to select subjects and to isolate our experiments from environmental noise.
+Results indicate that nearly \percentMedLongRunning{} of the projects take at
+least 1m to run and \percentLongRunning{} of the projects take at least 5m to
+run.  Considering the \numMedLong{} projects with test suites taking longer than
+a minute to run, the average execution time of a test suite was
+\averageMedLongRunning{}.  Results also show that test cases are typically
+short-running, typically taking less than half a second to run.  Furthermore, we
+found that only in rare cases few test cases monopolize the overall time to run
+a test suite.
+
+
+\noindent\emph{Adoption.}~ We considered two aspects in measuring technology
+adoption.  First, we measured usage of parallelism in open-source projects.
+Then, we ran a survey with developers to understand the reasons that could
+explain resistance to using the technology.\Comment{ For the quantitative
+analysis we checked both statically (parsing build files) and dynamically
+(monitoring execution of build files) for the presence of parallelization.}
+Considering only the projects whose test suites take longer than a minute to
+run, we found that only \percentParallelUpdated{} of them use parallelism.  We
+also contacted developers from a selection of costly projects that did not use
+parallelization to understand the reasons for not using parallelization.
+Dealing with concurrency-related issues (\eg{}, the extra work to organize test
+suite to avoid concurrency errors) and the availability of continuous
+integration services were the most frequently answered reasons for not
+considering parallelization.
+
+\noindent\emph{Speedups.}~We used two setups to measure speedups.  In one setup
+we measured speedups obtained on projects that run test suites in parallel by
+default.  In the other setup, we evaluated how execution scales with the number
+of available cores in the machine.\Comment{We did not change parallel
+configurations on that setup.  For comparison, we disabled parallel execution to
+obtain the running time of a sequential execution.}  Considering the first
+setup, results indicate that the average speedup of parallelization was
+\avgSpeedup{}x.  Although we found cases with very high speedups (\eg{}, 28.8x
+for project Jcabi), we also found cases where the speedups were not very
+significant.  Considering the scalability experiment, we noticed, perhaps as
+expected, that parallelization obtained with forking JVMs scales with the number
+of cores but the speedups are bounded by long-running test classes.
+
+\noindent\emph{Tradeoffs.}~Test flakiness is a central concern when running
+tests in parallel.  Dependent tests can be affected by different schedulings of
+test methods and classes.  This dimension of the study measures the impact of
+different parallel configurations on test flakiness and speedup.  Overall,
+results indicate that configurations that fork JVMs do not achieve speedups as
+high as other more-aggressive configurations, but they manifest much lower
+flakiness ratios.
+
+Our observations may trigger different actions:
+
+%\setlist[itemize]{leftmargin=1.1em}
+\begin{itemize}
+\item \emph{Incentivize forking.}~Forked JVMs manifest very low rates
+  of test flakiness.  Developers of projects with long-running test
+  suites should consider using that feature, which is available in
+  modern build systems today (\eg{}, Maven).
+\item \emph{Break test dependencies.}~Non-forked JVMs can achieve
+  impressive speedups at the expense of sometimes impressive rates of
+  flakiness.  Breaking test dependencies (with
+  ElectricTest~\citet{bell-etal-esecfse2015}, for example) to avoid flakiness is advised for developers with
+  greater interest in efficiency.
+\item \emph{Refactor tests for load balancing.}~The configuration with
+  forked JVMs scales
+  better\Comment{ with the number of cores} when the test workload is balanced
+  across testing classes.  Automated refactoring could help balance
+  the workload in scenarios where developers are not willing to change
+  test code but have access to machines with a high number of cores.
+\item \emph{Improve debugging for build systems.}~While preparing our
+  experiments, we found scenarios\Comment{, related to test
+    parallelization,} where Maven's executions did not reflect
+  corresponding JUnit's executions.\Comment{(Docker reproduction scripts
+  available.)} Those issues can hinder developers from using parallel
+  testing. Better debugging support for build systems could help
+  on that. 
+\end{itemize}
+
+The artifacts we produced as result of this study are available from
+the following web page \webpage{}.
+

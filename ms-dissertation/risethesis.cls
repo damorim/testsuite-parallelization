@@ -633,7 +633,7 @@ requirements for the degree of \@degree\ in \@majorfielden.
   \if@openright\cleardoublepage\else\clearpage\fi
   \thispagestyle{empty}
   \noindent
-  Tese de doutorado apresentada por \textbf{\@author} ao programa de Pós-Graduação em
+  Dissertação de Mestrado apresentada por \textbf{\@author} ao programa de Pós-Graduação em
   Ciência da Computação do Centro de Informática da Universidade Federal de
   Pernambuco, sob o título \textbf{\@title}, orientada pelo \textbf{Prof.
   \@adviser} e aprovada pela banca examinadora formada pelos professores:
@@ -641,7 +641,7 @@ requirements for the degree of \@degree\ in \@majorfielden.
   \vspace{5\baselineskip}
   
   \begin{center}
-  
+  \Fix{ 
   -----------------------------------------------------------------------\\
   Prof. André Luis de Medeiros Santos\\
   Centro de Informática/UFPE
@@ -665,7 +665,7 @@ requirements for the degree of \@degree\ in \@majorfielden.
   -----------------------------------------------------------------------\\
   Prof. Jones Oliveira de Albuquerque\\
   Departamento de Estatística e Informática/UFRPE
-  
+  } 
   \vfill
   \@address
   \\

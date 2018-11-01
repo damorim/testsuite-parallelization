@@ -1,45 +1,33 @@
-O gerenciamento eficiente de solicitações de mudança (SM) é fundamental para o
-sucesso das atividades de manutenção e evolução de software. Entretanto, a
-atribuição de SMs a desenvolvedores de software é um aspecto custoso desse
-gerenciamento, pois demanda tempo e requer conhecimento apropriado do projeto de
-software. Com o propósito de diminuir esse custo, várias pesquisas já propuseram
-métodos de atribuição automática de SMs. Embora representem avanços na área,
-existem vários fatores inerentes a atribuição de SMs que não são considerados
-nessas pesquisas e são essenciais para a automação.
+Teste de software é um processo custoso mas mandatório no processo de
+desenvolvimento. Sistemas complexos podem demandar horas para executar várias
+suítes de testes. Para mitigar os custos, uma estratégia popular em grandes
+corporações é o uso de um ambiente de execução distribuído em escala global.
+Desta forma, a carga de testes é dividida entre diversos servidores e os testes
+são executados simultaneamente em diferentes máquinas. Outra estratégia
+explorada por pesquisadores e desenvolvedores é a aplicação de técnicas de teste
+de regressão, como seleção e minimização de testes. Uma outra forma igualmente
+relevante e complementar a estratégias existentes é a execução paralela de
+suítes de testes em uma mesma máquina. Nos últimos anos, com a popularização de
+processadores com múltiplos núcleos, ferramentas de build e bibliotecas de
+teste adicionaram suporte a execução paralela de testes em diferentes
+granularidades com o objetivo de prover a máxima utilização dos recursos
+computacionais de uma máquina e diminuir o tempo execução. Desta forma, testes
+podem ser executados em diferentes processos e até mesmo em múltiplas threads
+em um mesmo processo.
 
-Como demonstrado nesse trabalho, a atribuição automática deve, por exemplo,
-considerar a carga de trabalho, a experiência e o conhecimento dos
-desenvolvedores, a prioridade e a severidade das SMs, a afinidade dos
-desenvolvedores com os problemas descritos nas SMs, e até mesmo os
-relacionamentos interpessoais. Para tornar esse cenário ainda mais complexo,
-esses fatos podem variar de acordo com o projeto de software que está sendo
-desenvolvido. Assim, uma solução para o problema de atribuição de SMs depende de
-informações contextuais.
-
-Assim, esse trabalho propõe, implementa e valida uma solução arquitetural
-sensível ao contexto para atribuição automática de SMs. Dado o aspecto
-contextual da solução, a arquitetura enfatiza a necessidade de considerar as
-diversas fontes de informações presentes na organização, assim como a
-necessidade de se desenvolver algorítimos que implementem diferentes estratégias
-de atribuição. A proposta e implementação dessa solução é embasada em resultados
-de duas pesquisas quantitativas: um estudo de mapeamento sistemático da
-literatura, e uma pesquisa de questionário com desenvolvedores de software. Esse
-último forneceu um conjunto de requisitos que a solução automatizada deve
-satisfazer para que as estratégias de atribuição sejam atendidas, enquanto o
-mapeamento da literatura identificou técnicas, algoritmos, e outros requisitos
-necessários a automação.
-
-A implementação da arquitetura segue uma estratégia de automação, também
-elabo\-rada nesse trabalho, que possui dois componentes principais: um sistema
-especialista baseado em regras (SEBR); e um modelo de recuperação de informação
-(MRI) com técnicas de aprendizagem. Em nossa estratégia, esses dois componentes
-são executados alternadamente em momentos diferentes a fim de atribuir uma SM
-automaticamente. O SEBR processa regras simples e complexas, considerando
-informações contextuais do projeto de software e da organização que o
-desenvolve. O MRI é utilizado para fazer o casamento entre SMs e desenvolvedores
-de acordo com o histórico de atribuições.
+Este trabalho reporta nossas descobertas sobre a utilização e o impacto de
+execução paralela de testes em projetos de código aberto e provê recomendações
+a programadores e desenvolvedores de ferramentas que pretendem utilizar ou
+prover esta funcionalidade. Considerando um conjunto de \numSubjs{} projetos
+populares escritos em Java, observamos que \percentMedLongRunning{} destes
+projetos possuem suítes de teste custosas. Apesar disto, apenas
+\percentParallelUpdated{} utilizam alguma forma de paralelismo para acelerar a
+execução dos testes.
+O principal motivo de resistência para adoção de execução paralela é o receio
+de introduzir problemas de concorrência. Os resultados sugerem que, em média,
+desenvolvedores preferem manter a previsibilidade de uma execução
+determinística ao invés de alta performance. 
 
 \begin{keywords}
-Engenharia de Software, Manutenção e Evolução de Software, Gerenciamento de
-Solicitações de Mudança, Atribuição Automática de Solicitações de Mudança
+Engenharia de Software, Teste de Software, Paralelismo
 \end{keywords}

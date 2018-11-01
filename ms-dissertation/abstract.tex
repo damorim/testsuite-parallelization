@@ -1,41 +1,32 @@
-The efficient management of \acp{cr} is fundamental for successful software
-maintenance; however the assignment of \acp{cr} to developers is an expensive
-aspects in this regard, due to the time and expertise demanded. To overcome
-this, researchers have proposed automated approaches for \ac{cr} assignment.
-Although these proposals present advances to this topic, they do not consider
-many factors inherent to the assignments. Indeed, different complex factors may
-have influence on \ac{cr} assignment, and most of them vary from one
-organization to another. For instance, developers' workload, \acp{cr} severity,
-interpersonal relationships, or developers know-how must be considered in the
-assignments. Actually, as we demonstrate in this work, \ac{cr} assignment is a
-complex activity and automated approaches cannot rely on simplistic solutions.
-Ideally, it is necessary to consider and reason over contextual information in
-order to provide an effective automation.
+Testing is a costly process but mandatory in the development process.
+Complex systems may require hours to run several test suites.
+To mitigate this cost, a popular strategy in large companies is the usage of a
+distributed execution environment at global scale.
+In this approach, the workload is divided among several servers, and tests
+run simultaneously on different machines.
+Another approach explored by researchers and practitioners is the usage of
+regression testing techniques such as test selection and minimization.
+Test suite parallelization is an important approach to address costly
+executions and a complementary approach to existing techniques.
+With the popularization of multi-core processors in the last years, build tools
+and testing frameworks added support to parallel execution in different
+granularities to speedup test execution by leveraging the underlying hardware.
+In this approach, tests can run on different processes and even in multiple
+threads within a process.
 
-In this regarding, this work proposes, implements, and validates a context-aware
-architecture to automate \ac{cr} assignment. The architecture emphasizes the
-need for considering the different information available at the organization to
-provide a more context-aware solution to automated \ac{cr} assignment. The
-development of such architecture is supported by evidence synthesized from two
-empirical studies: a survey with practitioners and a systematic mapping study.
-The survey provided us with a set of requirements that automated approaches
-should satisfy. In the mapping study, in turn, we figured out how
-state-of-the-art approaches are implemented in regarding to these requirements,
-concluding that many of them are not satisfied. In addition, new requirements
-were identified in this mapping study.
-
-For the implementation of the proposed architecture, we developed a strategy to
-automate \ac{cr} assignments which is based on two main components: a \acf{rbes}
-and an \acf{ir} model. The strategy coordinately applies these two components in
-different steps to find the potential developer to a \ac{cr}. The \ac{rbes}
-takes care of the simple and complex rules necessary to consider contextual
-information in the assignments, e.g., to prevent assigning a \ac{cr} to a busy
-or unavailable developer. Since these rules vary from one organization/project
-to another, the \ac{rbes} facilitates their modification for different contexts.
-On the other hand, the \ac{ir} model is useful to make use of the historical
-information of \ac{cr} assignments to match \acp{cr} and developers.
+This work reports our findings on the usage and impact of test suite
+parallelization in open-source projects, and it provides recommendations to
+practitioners and tool developers.
+Considering a set of \numSubjs{} popular Java projects, we observed that
+\percentMedLongRunning{} of these projects contain costly test suites.
+However, only \percentParallelUpdated{} of costly projects use some form of
+parallelization to speedup test execution.
+The main reported reason for adoption resistance was dealing with concurrency
+issues.
+Results suggest that, on average, developers prefer high predictability than
+high performance in running tests.
 
 \begin{keywords}
-Software Engineering, Software Maintenance and Evolution, Change Request
-Management, Automatic Change Request Assignment
+Software Engineering, Software Testing, Parallelism
 \end{keywords}
+
