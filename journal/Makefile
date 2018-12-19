@@ -1,36 +1,37 @@
-NAME:=main
+NAME:=paper
 
-# To update, run: latex-process-inputs -makefilelist main.tex
+# To update, run: latex-process-inputs -makefilelist paper.tex
 TEX_FILES = \
-main.tex
+$(NAME).tex
 
-PDFS := $(NAME).pdf
+PDFS := paper.pdf
 TEMP_TXTS := $(patsubst %.pdf,%.txt,$(PDFS))
 OUTPUTS_SPELL := $(TEMP_TXTS)
 
 .DEFAULT_GOAL := pdf
 
+acmart:
+	latex acmart.ins
+
 pdf:
-#	-rm -f $(NAME).aux
-	latexmk -bibtex -pdf $(NAME)
+#	latexmk -bibtex -pdf $(NAME)
+	latexmk -pdf $(NAME)
 
 final: pdf
 	@echo '******** Did you spell-check the paper? ********'
 	pdffonts $(NAME).pdf; fi
 
-read: pdf
-	evince main.pdf &
 clean:
-	-rm -f *aux *bbl *blg *log *.dvi main.pdf *.fls *.fdb_latexmk *~ *.out
+	-rm -f *aux *bbl *blg *log *.dvi $(NAME).pdf *.fdb_latexmk *.fls *.out *.spl
 
 check: $(TEMP_TXTS)
-	cat $^ | aspell list --extra-dicts=./okwords.en.pws --lang en | sort | uniq
+	cat $^ | aspell list --extra-dicts=./okwords.en.pws | sort | uniq
 
-%.txt: main.pdf
+%.txt: paper.pdf
 	pdftotext $<
 
 %.err: %.txt
-	cat $^ | aspell list --extra-dicts=./okwords.en.pws --lang en | sort | uniq
+	cat $^ | aspell list --extra-dicts=./okwords.en.pws | sort | uniq
 
 .PHONY: all
 

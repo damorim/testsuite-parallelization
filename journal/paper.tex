@@ -1,3 +1,522 @@
+\documentclass[10pt,journal,compsoc]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{balance}
+\usepackage{float}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{subfigure} 
+\usepackage{multirow}
+\usepackage{mdframed}
+
+
+\ifCLASSOPTIONcompsoc
+  % IEEE Computer Society needs nocompress option
+  % requires cite.sty v4.0 or later (November 2003)
+  \usepackage[nocompress]{cite}
+\else
+  % normal IEEE
+  \usepackage{cite}
+\fi
+\usepackage{amsmath}
+\interdisplaylinepenalty=2500
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\input{macros}
+
+
+\begin{document}
+
+\title{Test Suite Parallelization in Open-Source Projects: A Study on Its Usage and Impact}
+
+\author{Jeanderson~Candido,
+        Luis~Melo,
+        and~Marcelo~d'Amorim% <-this % stops a space
+\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem J. Candido, L. Melo, and M. d'Amorim
+are affiliated to the Department of Computer Science, Federal University of
+Pernambuco, Recife, PE, 50740-560 Brazil.\protect\\
+% note need leading \protect in front of \\ to get a newline within \thanks as
+% \\ is fragile and will error, could use \hfil\break instead.
+E-mail: \{jbc5, lhsm, damorim\}@cin.ufpe.br}
+\Comment{\thanks{Manuscript received \Fix{April 19, 2005}; revised \Fix{August 26, 2015}.}}}
+
+
+\IEEEtitleabstractindextext{%
+\begin{abstract}
+Dealing with high testing costs remains an important problem in
+Software Engineering.  Test suite parallelization is an important
+approach to address this problem.  This paper reports our findings on
+the usage and impact of test suite parallelization in open-source
+projects.\Comment{ This study brings to light the benefits and burdens
+  of that approach.} It provides recommendations to practitioners and
+tool developers to speed up test execution.
+
+Considering a set of \numSubjs{} popular Java projects we analyzed, we
+found that \percentMedLongRunning{} of the projects contain costly
+test suites but parallelization features still seem underutilized in
+practice~---~only \percentParallelUpdated{} of costly projects use
+parallelization.  The main reported reason for adoption resistance was
+the concern to deal with concurrency issues.  Results suggest that, on
+average, developers prefer high predictability than high performance
+in running tests.
+\end{abstract}}
+
+% make the title area
+\maketitle
+
+% To allow for easy dual compilation without having to reenter the
+% abstract/keywords data, the \IEEEtitleabstractindextext text will
+% not be used in maketitle, but will appear (i.e., to be "transported")
+% here as \IEEEdisplaynontitleabstractindextext when the compsoc 
+% or transmag modes are not selected <OR> if conference mode is selected 
+% - because all conference papers position the abstract like regular
+% papers do.
+\IEEEdisplaynontitleabstractindextext
+% \IEEEdisplaynontitleabstractindextext has no effect when using
+% compsoc or transmag under a non-conference mode.
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+\IEEEraisesectionheading{\section{Introduction}\label{sec:intro}}
+
+Dealing with high testing costs has been an important problem in
+software engineering research and industrial practice.  Several
+approaches have been proposed in the research literature to address
+this problem, with the focus mainly on test suite minimization,
+prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
+In industry, the focus has been mainly on distributing the testing
+workload.  Evidence of this are the Google TAP
+system~\cite{google-tap,google-ci} and the Microsoft CloudBuild
+system~\cite{prasad-shulte-ieee-microsoft-ci}, which provide
+distributed infrastructures to efficiently build massive amounts of
+code and run tests.  Building in-house server clusters is also a
+popular mechanism to distribute testing workloads.  For example, as of
+August 2013, the test suite of the Groupon PWA system, which powers
+the \url{groupon.com} website, included over 19K tests.  To run all
+those tests under 10m, Groupon used a cluster of 4 computers with 24
+cores each~\cite{kim-etal-fse2013}.
+
+At large organizations, the alternative of renting cloud
+services~\cite{cloud-services} or even building proprietary
+infrastructures for running tests is a legitimate approach to mitigate
+the regression testing problem.  However, for projects with modest
+ or nonexistent budgets and yet relatively heavy testing workloads, this solution may
+not be economically viable.  For these cases, the use of commodity
+hardware\Comment{ (\eg{}, existing workstations)} is an attractive
+solution for running tests.  The proliferation of
+multi-core CPUs and the increasing popularization of testing
+frameworks and build systems, which today provide mature support for
+parallelization, enable\Comment{ test execution} speedups through increased CPU
+usage~(see Section~\ref{sec:modes}).  These two elements~---~demand
+for cost-effective test execution and supply of relatively inexpensive
+testing infrastructures~---~inspired us to investigate 
+test suite parallelization in practice.
+
+This paper reports on an empirical study we conducted to analyze the
+usage and impact of low-level parallelization to speed up testing in
+open-source projects.  This is a relevant problem given the tremendous
+popularity of open-source development and regression testing
+research~\cite{yoo-harman-stvr2012}.  Note that parallelization is
+complementary to other approaches to mitigate testing costs such as
+(safe) test
+selection~\cite{Rothermel:1997:SER:248233.248262,gligoric-etal-issta2015}
+and continuous integration~\cite{Saff:2003:RWD:951952.952340}.
+
+The dimensions of analysis we considered in this study are (i)
+relevance, (ii) adoption, (iii) speedup, and (iv) tradeoffs.  The
+dimension \emph{relevance} focuses on the potential of parallelization
+to reduce testing costs. In the limit, parallelization would be
+fruitless if all projects had short-running test suites, for example.  The
+dimension \emph{adoption} evaluates how often existing open-source
+projects use parallelization schemes and how developers involved in
+costly projects (not using test suite parallelization) perceive this
+technology.  It is important to measure resistance of practitioners to
+the technology and to understand their reasons.  The dimension
+\emph{speedup} evaluates the observed impact of
+parallelization\Comment{~---~when used in selected open-source
+  projects~---~} in running times.  Finally, the dimension
+\emph{tradeoffs} evaluates the relationship between speedups obtained
+with parallelization and issues that arise 
+when running tests in parallel, including test
+flakiness~\cite{luo-etal-fse2014,bell-etal-esecfse2015}.  We briefly summarize our findings
+in the following.
+
+
+\noindent\emph{Relevance.}~To assess how prevalent long-running test suites
+are we selected \numSubjs{} popular Java projects from \github{} containing
+Maven build files~\cite{maven}.  Section~\ref{sec:eval} details our methodology
+to select subjects and to isolate our experiments from environmental noise.
+Results indicate that nearly \percentMedLongRunning{} of the projects take at
+least 1m to run and \percentLongRunning{} of the projects take at least 5m to
+run.  Considering the \numMedLong{} projects with test suites taking longer than
+a minute to run, the average execution time of a test suite was
+\averageMedLongRunning{}.  Results also show that test cases are typically
+short-running, typically taking less than half a second to run.  Furthermore, we
+found that only in rare cases few test cases monopolize the overall time to run
+a test suite.
+
+
+\noindent\emph{Adoption.}~ We considered two aspects in measuring technology
+adoption.  First, we measured usage of parallelism in open-source projects.
+Then, we ran a survey with developers to understand the reasons that could
+explain resistance to using the technology.\Comment{ For the quantitative
+analysis we checked both statically (parsing build files) and dynamically
+(monitoring execution of build files) for the presence of parallelization.}
+Considering only the projects whose test suites take longer than a minute to
+run, we found that only \percentParallelUpdated{} of them use parallelism.  We
+also contacted developers from a selection of costly projects that did not use
+parallelization to understand the reasons for not using parallelization.
+Dealing with concurrency-related issues (\eg{}, the extra work to organize test
+suite to avoid concurrency errors) and the availability of continuous
+integration services were the most frequently answered reasons for not
+considering parallelization.
+
+\noindent\emph{Speedups.}~We used two setups to measure speedup.  In
+one setup we selected projects that run test suites in parallel by
+default, used a machine with eight virtual CPUs, and compared
+execution times of test suites with and withouth (default) parallelism
+enabled. In the other setup, we evaluated how execution scales with
+the number of available cores in the machine. For that, we used a more
+powerful machine with 80 virtual CPUs (40 cores with two native
+threads on each core). Considering the first setup, results indicate
+that the average speedup of parallelization was \avgSpeedup{}x.
+Although we found cases with very high speedups (\eg{}, 28.8x for
+project Jcabi), we also found cases where the speedups were not very
+significant.  Considering the scalability experiment, we noticed,
+perhaps as expected, that parallelization obtained with forking JVMs
+scales with the number of cores but the speedup is bounded by
+long-running test classes.
+
+\noindent\emph{Tradeoffs.}~Test flakiness is a central concern when running
+tests in parallel.  Dependent tests can be affected by different schedulings of
+test methods and classes.  This dimension of the study measures the impact of
+different parallel configurations on test flakiness and speedup.  Overall,
+results indicate that configurations that fork JVMs do not achieve speedups as
+high as other more-aggressive configurations, but they manifest much lower
+flakiness ratios.
+
+Our observations may trigger different actions:
+
+%\setlist[itemize]{leftmargin=1.1em}
+\begin{itemize}
+\item \emph{Incentivize forking.}~Forked JVMs manifest very low rates
+  of test flakiness.  Developers of projects with long-running test
+  suites should consider using that feature, which is available in
+  modern build systems today (\eg{}, Maven).
+\item \emph{Break test dependencies.}~Non-forked JVMs can achieve
+  impressive speedups at the expense of sometimes impressive rates of
+  flakiness.  Breaking test dependencies (with
+  ElectricTest~\cite{bell-etal-esecfse2015}, for example) to avoid flakiness is advised for developers with
+  greater interest in efficiency.
+\item \emph{Refactor tests for load balancing.}~The configuration with
+  forked JVMs scales
+  better\Comment{ with the number of cores} when the test workload is balanced
+  across testing classes.  Automated refactoring could help balance
+  the workload in scenarios where developers are not willing to change
+  test code but have access to machines with a high number of cores.
+\item \emph{Improve debugging for build systems.}~While preparing our
+  experiments, we found scenarios\Comment{, related to test
+    parallelization,} where Maven's executions did not reflect
+  corresponding JUnit's executions.\Comment{(Docker reproduction scripts
+  available.)} Those issues can hinder developers from using parallel
+  testing. Better debugging support for build systems could help
+  on that. 
+\end{itemize}
+
+The artifacts we produced as result of this study are available from
+the following web page \webpage{}.
+
+\section{Parallel Execution of Test Suites}
+\label{sec:modes}
+
+Figure~\ref{fig:levels} illustrates different levels where
+parallelism in test execution can be obtained.
+The highest level indicates
+parallelism obtained through different machines on the
+network.  For instance, using virtual machines from a cloud service to
+\begin{wrapfigure}{r}{0.13\textwidth}  
+  \vspace{-2mm}
+  \centering
+  %  \includegraphics[width=0.35\textwidth]{figs/parallel-levels.pdf}    
+  \includegraphics[width=2cm]{figs/parallel-levels-short.pdf}  
+  \caption{\label{fig:levels}Levels of parallelism.}
+  \vspace{-2mm}
+\end{wrapfigure}
+distribute test execution.  The lowest levels denote parallelism
+obtained within a single machine.  These levels are complementary:
+the lowest levels leverage the computing power of server
+nodes whereas the highest level leverages the aggregate processing
+power of a network of machines.
+This paper focuses on low-level parallelism, where computation can be
+offloaded at different CPUs within a machine and at different threads
+within each CPU.  This form of parallelism is enabled through build
+systems (spawning processes in different CPUs) and testing frameworks
+(spawning threads in one given CPU).  It is important to note that a variety
+of testing frameworks provide today support for parallel test
+execution (e.g., JUnit~\cite{junit-org}, TestNG~\cite{testng}, and
+NUnit~\cite{nunit}) as to benefit from the available power of popular multi-core processors.
+In the following, we elaborate relevant features of testing frameworks
+and build systems for parallelization.  We focused on Java, Maven, and JUnit but the
+discussion can be generalized to other language and tools.
+
+\subsection{Testing Frameworks}
+\label{sec:frameworks}
+
+The list below shows the choices to control parallelism within one
+Java Virtual Machine (JVM).  These options are offered by the testing
+framework (\eg{}, JUnit).
+
+\begin{itemize}
+\item
+    \textbf{Sequential (\Seq).}~No parallelism is involved.
+\item
+    \textbf{Sequential classes; parallel methods
+      (\SeqClassParMeth).}~This configuration corresponds to running
+    test classes sequentially, but running test methods from those
+    classes concurrently.
+\item
+    \textbf{Parallel classes; sequential methods
+      (\ParClassSeqMeth{}).}~This configuration corresponds to running
+    test classes concurrently, but running test methods sequentially.
+\item
+    \textbf{Parallel classes; Parallel methods
+      (\ParClassParMeth).}~This configuration runs test classes and
+    methods concurrently.\Comment{corresponds to the
+    combination of \SeqClassParMeth{} and \ParClassSeqMeth{}.  }
+\end{itemize}
+
+Notice that an important aspect in deciding which configuration to use (or in
+designing new test suites) is the possibility of race conditions on shared data
+during execution.  Data sharing can occur, for example, through state that is
+reachable from statically-declared variables in the program or through variables
+declared within the scope of the test class or even through resources available
+on the file system and the network~\cite{luo-etal-fse2014}.  Considering data
+race avoidance, configuration \SeqClassParMeth{} is preferable over
+\ParClassSeqMeth{} when it is clear that test methods in a class do not
+manipulate shared state, which can be challenging to
+determine~\cite{bell-etal-esecfse2015}.  Similarly, \ParClassSeqMeth{} is
+preferable over \SeqClassParMeth{} when it is clear that several test methods in
+a class perform operations involving shared data.  Configuration
+\ParClassParMeth{} does not restrict scheduling orderings.  Consequently, it is
+more likely to manifest data races during execution. Note that speedups depend
+on several factors, including the test suite size and distribution of test
+methods per class.
+
+\subsection{Build Systems}
+\label{sec:builder}
+
+%% The build system can spawn multiple JVMs, each running on its own OS
+%% process on a given CPU and handling a partition of the test set.
+Forking OS processes to run test jobs is the basic mechanism of build
+systems to obtain parallelism at the machine space (see
+Figure~\ref{fig:levels}).  For Java-based build systems, such as Maven
+and Ant, this amounts to spawning one JVM, on a given CPU, to handle a
+test job and aggregating results when jobs finish.  The list below
+shows the choices to control parallelism through the build system
+(\eg{}, Maven).
+
+\begin{itemize}
+\item
+  \textbf{Forked JVMs with sequential methods (\ForkSeq).}~The build
+  system spawns multiple JVMs with this configuration, assigning a
+  partition of the set of test classes to each JVM.  Test classes and methods
+  run sequentially within each JVM.
+\item
+  \textbf{Forked JVMs with parallel methods (\ForkParMeth).}~With
+  this configuration, the build system forks multiple JVMs, as
+  \ForkSeq{} does, but it runs test methods concurrently, as
+  \SeqClassParMeth{} does.
+\end{itemize}
+
+%% In the configuration \ForkSeq{}, each spawned
+%% process runs a different test class at time and the builder merges the
+%% results from each execution. In the configuration \ForkParMeth{}, the
+%% build system forwards settings to the underlying testing framework to
+%% enable parallel execution within each process in addition to running
+%% test classes on different processes.
+
+Note from the listing that forking can only be combined with
+configuration \SeqClassParMeth{} (see Section~\ref{sec:frameworks}) as
+Maven made the design choice to only accept one test class at a time
+per forked process.  Maven offers an option to reuse JVMs that can be
+used to attenuate the potentially high cost of spawning new JVM
+processes on every test class (if reuse is enabled) and also to
+achieve test isolation (if reuse is disabled).
+
+%% \Mar{$\leftarrow$Are you sure about this?
+%%   It seems silly.  Maybe, the rationale is to ``keep design
+%%   simple''.}\Jbc{I'm sure. in addition to keep design simple, I feel
+%%   like this was initially conceived to run tests in isolation}
+%% \Mar{$\leftarrow$confirma?  se sim, pode mostrar isto na
+%%   configuracao abaixo?}\Jbc{added...}
+%%We are unaware of other build system capable of running multiple
+%%classes at time within a forked process.
+%%  to
+%% define tasks related to the project building and these tasks are
+%% performed several plugins.This file
+%% contains defintions of tasks, which are implemented by a collection of
+%% plugins.
+%% \Jbc{falar do surefire e explicar a
+%% configuracao ilustrada - Surefire levanta uma JVM por core e cria uma
+%% pool de 5 threads em cada JVM para executar testes em paralelo.}
+\begin{figure}[h!]
+\centering
+\scriptsize
+\lstset{
+  escapeinside={@}{@},
+  numbers=none,xleftmargin=1em,frame=none,framexleftmargin=0.5em,
+  basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+  morekeywords={parallel, threadCount, perCoreThreadCount,
+  forkCount, reuseForks},
+  deletekeywords={true}
+}
+\vspace{-4ex}
+\begin{lstlisting}
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+        <forkCount>1C</forkCount>
+        <reuseForks>true</reuseForks>
+        <parallel>methods</parallel>
+        <threadCount>5</threadCount>
+    </configuration>
+</plugin>
+\end{lstlisting}
+  \vspace{-4ex}
+  \caption{\label{fig:surefire} Configuration \ForkParMeth{} on
+    Maven.}
+\end{figure}
+
+
+\subsubsection*{Example}~Figure~\ref{fig:surefire} shows a
+fragment of a Maven configuration file, known as \pomf{}, highlighting
+options to run tests using the parallel execution mode \ForkParMeth{}.
+Maven implements this feature through its Surefire JUnit test
+plugin~\cite{maven-surefire-plugin}.  With this configuration, Maven
+forks one JVM per core (\CodeIn{forkCount} parameter) and uses five
+threads (\CodeIn{threadCount} parameter) to run test methods
+(\CodeIn{parallel} parameter) within each forked JVM.  Maven reuses
+created JVMs on subsequent forks when execution of a test class
+terminates (\CodeIn{reuseFork} parameter).
+
+\section{Objects of Analysis}
+\label{sec:subjects}
+
+We used \github{}'s search API~\cite{githubsearch} to identify
+projects that satisfy the following criteria: (1) the primary language
+is Java\footnote{In case of projects in multiple languages, the
+  \github{} API considers the predominant language as the primary
+  language.}, (2) the project has at least 100 stars, and (3) the latest
+update was on or after \Jbc{January 1st, 2017}.
+Although there is no clearcut limit on the number of \github{}
+stars~\cite{github-stars} to define relevant projects, we observed that one
+hundred stars was enough to eliminate trivial subjects.
+The third criteria serves to skip projects without recent activity.
+\Jbc{We focused on Java for its popularity.
+It is important to highlight that the \github{}'s search API imposes a limit of
+returning only the top 1000 results for a single query.
+To overcome this limitation and have a larger sample set, we divided our
+original query into multiple queries over subsequent periods of time and
+considered the union the results.}
+% Important to highlight that, as of now, the \github{}'s search API can only
+% reflect contents from repository statistics (\eg, number of forks, main
+% programming language); it does not provide a feature to search for projects
+% containing certain files (\eg{}, \emph{pom.xml}) in the directory structure.
+Figure~\ref{fig:subject-query} illustrates a query to the \github{} API as
+an HTTP request.
+
+\begin{figure}[t!]
+\centering
+\tiny
+\lstset{
+    escapeinside={@}{@},
+    numbers=left,xleftmargin=1em,frame=single,framexleftmargin=0.5em,
+    basicstyle=\ttfamily\scriptsize, boxpos=c, numberstyle=\tiny,
+    showstringspaces=false
+}
+\begin{lstlisting}
+https://api.github.com/search/repositories?q=language:java
+ +stars:>=100+pushed:2017-01-01..2017-02-01&page=1
+\end{lstlisting}
+  \vspace{-3mm}
+  \caption{\label{fig:subject-query} Query to the \github{} API for projects
+  that (1) use Java, (2) contains at least 100 stars, (3) has been updated
+  between January 1st and February 1st of 2017.}
+  \vspace{-5mm}
+\end{figure}
+
+We used the following methodology to select projects for analysis.
+After obtaining the list of potential projects from GitHub, we filtered those
+with Maven support (\ie, contains a \pomf{} file in the root directory).
+We focused on Maven for its popularity in Java projects.
+Then, considering this set of Maven projects, we executed the tests for
+\SubjectsReruns{} times to discard those projects with issues in the build file
+and non-deterministic results observed from sequential executions.
+
+As of December 12th 2017, our search criteria returned a total of
+\SubjectsGithub{} projects, and we identified \SubjectsMaven{} Maven projects.
+\Fix{From this set of projects, \SubjectsGithubNotTestable{} projects were not
+considered because of environment incompatibility (\eg, missing DBMS) and
+\SubjectsGithubFlaky{} projects were discarded because of ``flaky
+tests''~\cite{luo-etal-fse2014}.
+A ``flaky'' test is a test that passes or fails under the same circumstances
+leading to non-deterministic results.  As some of our experiments consist of
+running tests on different threads, we ignored these projects as it would be
+impractical to identify whether a test failed due to a race condition or some
+other source of flakiness.
+From the remaining \SubjectsGithubConsistant{} projects with deterministic
+results, we eliminated \SubjectsGithubTooManyFailures{} projects with
+\SuiteFailingThreshold{} or more failing tests as to reduce bias.
+For the remaining projects with failing tests, we used the JUnit's
+\CodeIn{@Ignore} annotation to ignore failing tests.
+Our final set of subjects
+contains \numSubjs{} projects.
+Figure~\ref{fig:subjects} summarizes our sample set.}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.27\textwidth]{results/piechart-subjs.pdf}
+  \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular projects
+  hosted on \github{}. From this initial sample, we ignored
+  \SubjectsGithubNotMaven{} projects without Maven support,
+  \SubjectsGithubNotTestable{} with missing dependencies,
+  \SubjectsGithubFlaky{} projects with flaky tests, and
+  \SubjectsGithubTooManyFailures{} projects had at least
+  \SuiteFailingThreshold{} of failing tests. We considered
+  \numSubjs{} projects to conduct our study.}
+\end{figure}
+
+\label{sec:setup}
+To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel processor
+machine with eight virtual CPUs (four cores with two native threads each) and
+16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr (64-bit version).
+We used Java 8 and Maven 3.5.2 to build projects and run test suites.  To
+process test results and generate plots we used Python, Bash, R and Ruby.
+All source artifacts are publicly available for replication on our
+website~\cite{ourwebpage}.
+This includes supporting scripts and the full list of projects.
+
+
 \section{Evaluation}
 \label{sec:eval}
 
@@ -37,7 +556,7 @@ of analysis we presented in Section~\ref{sec:intro}.
 
 \setlist[itemize]{leftmargin=1em}
 \begin{itemize}
-\item Feasibility
+\item Relevance
   \begin{itemize}
   \item \textbf{\numRQFeasibilityOne.} \RQFeasibilityOne
   \item \textbf{\numRQFeasibilityTwo.} \RQFeasibilityTwo    
@@ -58,7 +577,7 @@ of analysis we presented in Section~\ref{sec:intro}.
   \end{itemize}
 \end{itemize}
 
-\subsection{Feasibility}
+\subsection{Relevance}
 \label{sec:rqA}
 \label{sec:rqB}
 
@@ -755,25 +1274,201 @@ new JVMs can be significant in \emph{\ForkParMeth}.
   cases, speedups were significant, ranging from 1x to 28.8x.}
 \end{mdframed}
 
-%%  LocalWords:  RQ occurence parallelization Tradeoffs API readme th
-%%  LocalWords:  mvn clearcut escapeinside xleftmargin untestable LTS
-%%  LocalWords:  framexleftmargin CPUs Tahr sysstat gh Vagrantfile FC
-%%  LocalWords:  javadoc isolcpus JUnit's JUnitCore Gligoric boxplots
-%%  LocalWords:  outliers apache uber chaperone facebookarchive AWS
-%%  LocalWords:  linkbench priori SDK GoogleCloud Moquette JVMs dir
-%%  LocalWords:  xml basicstyle boxpos numberstyle deletekeywords JVM
-%%  LocalWords:  uncompilable leftmargin quartile DskipTests forkMode
-%%  LocalWords:  threadCount forkCount lrr BounceStorage Flink Gerrit
-%%  LocalWords:  JenkinsCI Spotify Javaslang Jcabi Github Hazelcast
-%%  LocalWords:  Jankotek MapDB Dparallel classesAndMethods Mapstruct
-%%  LocalWords:  DataflowJavaSDK modularized JUnit llrrr lightgray rr
-%%  LocalWords:  GitHub amongst Xeon runtime Scalability Dataflow sdk
-%%  LocalWords:  JCTools RipMe classpath ParallelComputer livelock io
-%%  LocalWords:  mapdb workflow XPath boxplot llcr javaslang jcabi
-%%  LocalWords:  github hazelcast jankotek OpenNLP yegor Rultor vavr
-%%  LocalWords:  Vavr SNE Urbanairship Datacube dereference
-%%  LocalWords:  unsynchronized ConcurrentModificationException
-%%  LocalWords:  NoSuchElementException EOFException ElectricTest
-%%  LocalWords:  ArrayIndexOutOfBoundsException
-%%  LocalWords:  FileSystemAlreadyExistsException
-%%  LocalWords:  BufferOverflowException
+
+\section{Discussion}
+
+This paper reports our finding on a study to evaluate impact and usage
+of test suite parallelization, enabled by modern build systems and
+testing frameworks.  This study is important given the importance to
+speedup testing.  Note that test suite parallelization is
+complementary to alternative approach to speedup testing
+(see~Section~\ref{sec:related}).  The observations we made in this
+study trigger multiple actions:
+
+\begin{itemize}
+\item \emph{Incentivize forking.}~Forked JVMs manifest low rates of
+  test flakiness.  For instance, in \emph{\ForkSeq{}}, only 4 of 10
+  projects manifest flakiness and, excluding the extreme case of
+  \CodeIn{Moquette}, projects manifest flaky tests in low rates 0.23\%
+  to 1.70\%.  Developers of projects with long-running test suites
+  should consider using that feature, which is available in modern
+  build systems today (\eg{}, Maven).
+\item \emph{Break test dependencies.}~Non-forked JVMs can achieve
+  impressive speedups at the expense of sometimes impressive rates of
+  flakiness.  Breaking test dependencies to avoid flakiness and take
+  full advantage of those options is advised for developers with
+  greater interest in efficiency.
+\item \emph{Refactor tests for load balancing.}~Forked JVMs scales
+  better with the number of cores when the test workload is balanced
+  across testing classes.  To balance the workload, automated
+  user-oblivious refactoring can help in scenarios where developers
+  are not willing to change test code but have access to machines with
+  a high number of cores.
+\item \emph{Improve debugging for build systems.}~While preparing our
+  experiments, we found scenarios\Comment{, related to test
+    parallelization,} where Maven's executions did not reflect
+  corresponding JUnit's executions. \Comment{(Docker reproduction scripts
+  available.)} Those issues can hinder developers from using parallel
+  testing. Better debugging infrastructure is important.
+\end{itemize}
+
+This study brings to light the benefits and burdens of test suite
+parallelization to improve test efficiency. It provides
+recommendations to practitioners and developers of new techniques and
+tools aiming to speed up test execution with parallelization.
+
+\section{Threats to Validity}
+
+The main threats to validity of this study are the following.
+
+\textit{External Validity:} Generalization of our findings is limited
+to our selection of subjects, testing framework, and build system.  To
+mitigate that issue, we selected subjects according to an objective
+criteria, described in Section~\ref{sec:subjects}.  It remains to
+evaluate the extent to which our observations would change when using
+different testing frameworks and build systems.
+Also, some of the selected subjects contain failing tests. Test
+failures may reduce the testing time due to early termination
+or even inflate the time (\eg, test waiting indefinitely for
+an unavailable resources).
+To mitigate this threat, we eliminated subjects with flaky tests and
+filtered projects with at least 90\% of the tests passing.
+Only 17\% of our subjects have failing tests.
+We carefully inspected our rawdata to identify and ignore these
+failures with JUnit's \CodeIn{@Ignore} annotation.
+
+\textit{Internal Validity:} Our results could be influenced by
+unintentional mistakes made by humans who interpreted survey data and
+implemented scripts and code to collect and analyze the data.
+For example, we developed JUnit runners to reproduce Maven's parallel
+configurations and implemented several scripts to automate our
+experiments (\eg, run tests and detect parallelism enabled by default
+in the subjects).
+All those tasks could bias our results.
+To mitigate those threats, the first two authors of this paper
+validated/inspected each other to increase chances of capturing
+unintentional mistakes.
+
+\textit{Construct Validity:} We considered a number of metrics in this
+study that could influence some of our interpretations.  For example,
+we measured number of test cases per suite, distribution of test costs
+in a suite, time to run a suite, etc.  In principle, these metrics may
+not reflect the main problems associated with test
+efficiency.
+
+\section{Related Work}
+\label{sec:related}
+
+Regression testing research has focused mostly on test suite
+minimization, prioritization, reduction, and
+selection~\cite{yoo-harman-stvr2012,soetens-etal-2016}.  Most of these
+techniques are unsound (\ie{}, they do not guarantee that
+fault-revealing tests will be considered for testing).  The test
+selection technique
+Ekstazi~\cite{gligoric-etal-issta2015,celik-etal-fse2017} is an
+example of a sound regression testing technique. It conservatively
+computes which tests have been impacted by file changes.  A test is
+discarded for execution if it does not depend on any changed file
+dynamically reachable from execution.\Comment{ Curiously Ekstazi's
+  evaluation discovered subjects with parallelism enabled by
+  default.}\Comment{ \c{C}elik~\etal{}~\cite{} recently extended
+  Ekstazi to track files accessed outside JVM boundaries.} Important
+to note that regression testing techniques, including test selection,
+is complementary to test suite parallelization.
+
+ElectricTest~\cite{bell-etal-esecfse2015} is a tool for efficiently
+detecting data dependencies across test cases.  Dependency tracking is
+important as to avoid test flakiness when parallelizing test
+suites. ElectricTest observes reads and writes on global resources
+made by tests to identify these dependencies at low cost. We remain to
+investigate the impact of ElectricTest to reduce flakiness in
+unrestricted test suite parallelization.
+
+The use of the Single Instruction Multiple Data (SIMD) design has been
+previously explored in research to accelerate test
+execution~\cite{damorim-etal-issta2007,damorim-etal-tse2008,kim-etal-issre2012,nguyen-etal-icse2014,rajan-etal-ase2014,sen-etal-fse2015,yaneva-etal-issta2017}. The
+SIMD architecture, as implemented in modern GPUs, for instance, allows
+the execution of a given instruction simultaneously against multiple
+data.  For that reason, in principle, one test could be ran
+simultaneously against multiple inputs provided that multiple test
+inputs exist associated to that one test.  Recent
+work~\cite{rajan-etal-ase2014,yaneva-etal-issta2017} explored that
+idea to speedup test execution of embedded software using graphic
+cards. Although benchmarks indicate superior performance compared to
+traditional multicore CPUs, the use of the technology in broader
+settings is limited. For example, execution of more general programs
+can violate the SIMD's lock-step assumption on the control-flow of
+threads.  This violation would affect negatively performance.
+Furthermore, handling complex data is challenging in
+SIMD~\cite{damorim-etal-issta2007,damorim-etal-tse2008}.  The approach
+is promising when multiple input vectors exist for each test and the
+testing code heavily manipulates scalar data types.  The datasets used
+in those papers satisfied those constraints.
+
+Google~\cite{google-tap,google-ci} and
+Microsoft~\cite{prasad-shulte-ieee-microsoft-ci} have been creating
+distributed infrastructures to efficiently build massive amounts of
+code and run massive amounts of tests.  Those scenarios bring
+different and challenging problems such as deciding when to trigger
+the build under multiple file
+updates~\cite{memon-etal-icse17}. Although such distributed systems
+are targeted to extremely large scale code and test bases, the same
+ideas can be applied to handle the build process of large, albeit not
+as large, projects.  For example,
+Gambi~\etal{}~\cite{gambi-etal-issta2017} recently proposed CUT, a
+tool to automatically parallelize JUnit tests on the cloud. The tool allows
+the developer to control resource allocation and deal with the project
+specific test dependencies.  Note that test suite parallelization is
+complementary to these high-level parallelism schemes.
+
+Continuous Integration (CI) services, such as Travis CI~\cite{travis},
+are becoming widely used in the open-source
+community~\cite{hilton-etal-ase2016,vasilescu-etal-fse2015}. Accelerating
+time to run tests in CI is important as to reduce the period between
+test report updates.  Module-level regression
+testing~\cite{vasic-etal-fse2017}, for example, can be helpful in that
+setting. It is important to note that test failures are more common in
+CI compared to an overnight run or a local run, for instance.  This
+can happen because of semantic merge conflicts~\cite{brun-etal-fse11},
+for instance.  As such effect can impact developer's perception and
+tolerance towards failures, we are curious to know if developers would
+be willing to receive more frequent test reports at the expense of
+potentially increasing failure rates due to flakiness caused by
+parallelism.
+
+\section{Conclusions}
+
+Testing is expensive.  Despite all advances in regression testing
+research, dealing with high testing costs remains an important problem
+in Software Engineering.  This paper reports our findings on the usage
+and impact of test execution parallelization in open-source projects.
+Multicore CPUs are widely available today.  Testing frameworks and
+build systems that capitalize on these machines also became popular.
+Despite some resistance observed from practitioners, our results
+suggest that parallelization can be used in many cases without
+sacrificing reliability. More research needs to be done to improve
+automation (\eg{}, breaking test dependencies, refactoring test
+suites, enforcing safe test schedules) as to safely optimize parallel
+execution.  The artifacts we produced as result of this study are
+available from the following web page:
+
+\begin{center}
+  \webpage{}
+\end{center}  
+
+%% \section*{Acknowledgements}
+%% Jean(derson) and Luis are supported by FACEPE scholarphips
+%% IBPG-0632-1.03/15 and IBPG-1175-1.03/16, respectively.  This work was
+%% partially supported by CNPq grants 457756/2014-4 and 203981/2014-6.
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+\balance
+\bibliographystyle{IEEEtran}
+\bibliography{tmp.bib} 
+
+\end{document}
