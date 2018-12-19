@@ -90,12 +90,13 @@ def fetcher(query_fields, output_dir):
                     output.write(entry)
                     print("Writing in CSV !!")
 
-
                     if os.path.exists(project_path) and not has_maven_support:
                         print("Pom.xml not found - removing path", project_path)
                         rmtree(project_path)
 
-        
+                  compile_cmd = "./compile-test-new.sh 90m ./downloads ./raw_data"
+                  call(compile_cmd, shell=True)
+
             entries_counter += len(entries)
             print("Progress: {}/{} items".format(entries_counter, data["total_count"]))
 
@@ -104,8 +105,7 @@ def fetcher(query_fields, output_dir):
 
     print("Results persisted in {}".format(output.name()))
 
-    compile_cmd = "./compile-test-new.sh 90m ./downloads ./raw_data"
-    call(compile_cmd, shell=True)
+    
    
 
 if __name__ == "__main__":

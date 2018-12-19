@@ -1,0 +1,5 @@
+created_at,default_branch,fork,full_name,ismaven,pushed_at,rev,size,stargazers_count
+2014-09-26T12:43:10Z,master,False,greenmail-mail-test/greenmail,True,2018-12-03T14:39:06Z,a651377e7c9c75b3cd9f777ca2867c3fbb8e7df6,3093,290
+2013-04-19T10:46:35Z,master,False,Diabol/delivery-pipeline-plugin,True,2018-12-03T11:46:40Z,72255b38aeb05d48347979b54d7c653443e995d7,2204,100
+2015-10-26T20:17:17Z,develop,False,salesforce/Argus,True,2018-12-13T08:43:51Z,121b59a268da264316cded6a3e9271366a23cd86,8649,376
+2011-11-09T08:00:09Z,master,False,apache/opennlp,True,2018-12-17T12:40:55Z,842fa3c88b1a1b9118be7e151bffadef2073651e,14506,702

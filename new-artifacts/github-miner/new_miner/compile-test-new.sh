@@ -45,5 +45,5 @@ for PROJECT in `ls "$INPUT_DIR"`; do
         mv $REPORT $PROJECT_OUTPUT
     done
     popd
-    rm -rf "$PROJECT_PATH"
+    #rm -rf "$PROJECT_PATH"
 done
