@@ -8,8 +8,8 @@ import logging
 from datetime import date, timedelta
 from urllib.request import urlopen, HTTPError
 
-logging.basicConfig(format='[%(asctime)-15s] %(message)s', filename="githubminer.log", level=logging.DEBUG)
-msgLogger = logging.getLogger('msg')
+logging.basicConfig(format='[%(asctime)-15s] %(message)s', filename="find-interesting.log", level=logging.DEBUG)
+find_interesting_logger = logging.getLogger('find-interesting')
 
 ## this is a hack to fool github servers in believing that this is not a robot
 SLEEP_TIME=60
@@ -102,7 +102,7 @@ class Query:
             return callee()
         except HTTPError as e:
             if e.code == 403:
-                msgLogger.warning("sleeping")
+                find_interesting_logger.warning("sleeping")
                 time.sleep(SLEEP_TIME)
                 return callee()
 
@@ -148,7 +148,7 @@ class Filter:
             return self.__fetch_data()
         except HTTPError as e:
             if e.code == 403:
-                msgLogger.warning("sleeping")
+                find_interesting_logger.warning("sleeping")
                 time.sleep(SLEEP_TIME)
                 return self.__fetch_data()
 
