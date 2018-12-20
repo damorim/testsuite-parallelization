@@ -5,10 +5,10 @@ import logging
 from shutil import rmtree
 from subprocess import call, check_output
 
-from utils import TimeInterval, CSVOutput, Query, verify_maven_support, Filter
+from utils import TimeInterval, CSVOutput, Query, verify_maven_support, Filter, setup_logger
 
-logging.basicConfig(format='[%(asctime)-15s] %(message)s', filename="find-compiled.log", level=logging.DEBUG)
-find_compiled_logger = logging.getLogger('find-compiled')
+
+find_compiled_logger = setup_logger("find-compiled","find-compiled.log")
 
 def git_revision(project_path):
     """
@@ -60,10 +60,17 @@ def main():
             if call(compile_command, shell=True) == 0:
                 find_compiled_logger.warning("build successful!")
 
+            # testing project
+            testing_command = "timeout -s SIGKILL 90m mvn verify -fae -Drat.skip=true -Dmaven.javadoc.skip=true -Djacoco.skip=true -Dcheckstyle.skip=true -Dfindbugs.skip=true -Dcobertura.skip=true -Dpmd.skip=true -Dcpd.skip=true -Denforcer.skip=true"
+            #TODO: abort if compile is not successful
+            find_compiled_logger.warning("starting testing!")
+            if call(testing_command, shell=True) == 0:
+                find_compiled_logger.warning("test successful!")
+
+
             ## clean the house for next project to come
             os.chdir(currentdir)
             rmtree(dest)
-            # compile project ...
 
 
 if __name__ == "__main__":

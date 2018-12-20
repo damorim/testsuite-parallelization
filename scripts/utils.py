@@ -8,9 +8,6 @@ import logging
 from datetime import date, timedelta
 from urllib.request import urlopen, HTTPError
 
-logging.basicConfig(format='[%(asctime)-15s] %(message)s', filename="find-interesting.log", level=logging.DEBUG)
-find_interesting_logger = logging.getLogger('find-interesting')
-
 ## this is a hack to fool github servers in believing that this is not a robot
 SLEEP_TIME=60
 
@@ -18,7 +15,6 @@ MAVEN_SKIPS="-Drat.skip=true -Dmaven.javadoc.skip=true " \
             "-Djacoco.skip=true -Dcheckstyle.skip=true " \
             "-Dfindbugs.skip=true -Dcobertura.skip=true " \
             "-Dpmd.skip=true -Dcpd.skip=true"
-
 
 class TimeInterval:
     def __init__(self, since, until=None, delta=30):
@@ -165,3 +161,24 @@ class Filter:
 
 def verify_maven_support(project_path):
     return os.path.exists(os.path.join(project_path, "pom.xml"))
+
+
+def setup_logger(name, log_file):
+    # Function setup as many loggers as you want
+    formatter = logging.Formatter('[%(asctime)-15s] %(message)s')
+    logger    = logging.getLogger(name)
+
+    handler = logging.FileHandler(log_file,mode='a')
+    handler.setFormatter(formatter)
+
+    streamHandler = logging.StreamHandler()
+    streamHandler.setFormatter(formatter)
+
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+    logger.addHandler(streamHandler)
+
+    
+    logger.setLevel(logging.DEBUG)
+
+    return logger

@@ -14,9 +14,10 @@ import logging
 from shutil import rmtree
 from subprocess import call, check_output
 
-from utils import TimeInterval, CSVOutput, Query, verify_maven_support, Filter
+from utils import TimeInterval, CSVOutput, Query, verify_maven_support, Filter, setup_logger
 
-from utils import find_interesting_logger
+
+find_interesting_logger = setup_logger("find-interesting","find-interesting.log")
 
 
 def checkIfInteresting(full_name, branch="master"):
