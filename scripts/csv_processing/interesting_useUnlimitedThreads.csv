@@ -1,0 +1,12 @@
+created_at,default_branch,fork,full_name,pushed_at,size,stargazers_count
+2015-09-23T15:36:06Z,merge-fork-beanshell2,False,beanshell/beanshell,2018-10-07T18:19:45Z,3678,174
+2014-06-02T18:47:31Z,master,False,docker-java/docker-java,2018-11-27T21:46:54Z,6167,1195
+2009-08-20T18:48:24Z,master,False,qos-ch/logback,2018-12-09T01:48:53Z,26303,1460
+2012-03-07T02:29:34Z,master,False,apereo/java-cas-client,2018-12-14T21:36:18Z,1586,493
+2013-12-16T21:07:20Z,develop,False,eclipse/kura,2018-12-28T15:50:19Z,171460,246
+2010-08-12T03:32:41Z,master,False,apache/maven-surefire,2018-12-27T19:17:28Z,13476,199
+2015-09-22T17:21:37Z,master,False,FINRAOS/herd,2018-12-27T20:16:44Z,140633,102
+2017-05-08T21:52:58Z,master,False,kubernetes-client/java,2018-12-28T15:52:02Z,5094,413
+2016-08-22T15:49:01Z,master,False,vmware/admiral,2018-12-28T13:48:55Z,32104,186
+2018-06-15T06:49:27Z,master,False,alibaba/nacos,2018-12-29T09:40:22Z,12725,2819
+2011-07-22T13:26:37Z,develop,False,FluentLenium/FluentLenium,2018-12-29T23:44:07Z,6505,671
