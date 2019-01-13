@@ -1,2 +1,33 @@
 date,full_name,sha
-,apache/opennlp,842fa3c88b1a1b9118be7e151bffadef2073651e
+"January 09, 2019",apache/opennlp,4449e5bc1d62056e62a629c84877b767029ee935
+"January 09, 2019",perwendel/spark,a16445f02240cb9c5a09c204664682e54e394437
+"January 09, 2019",neo4j/neo4j-java-driver,5fbe0e087d971247254d07679a783696b71ffb6c
+"January 09, 2019",Sable/soot,42dd2f54b371634998b314d9ff0644c04471ce2f
+"January 09, 2019",spring-projects/spring-data-cassandra,e6b5c5e7a2af5c020526e6d998d5950b74163937
+"January 10, 2019",owlcs/owlapi,ce95140fb0d2fc8f1c9c537253b57e98f8f97616
+"January 10, 2019",finmath/finmath-lib,fb1e66be7f524af07c4b638316e6e2798dbd31d6
+"January 10, 2019",twilio/twilio-java,b715d6b5f03b4056d9e4c781523418cff1f42189
+"January 10, 2019",biojava/biojava,0191ee59003065be04f499c35ebff914fdfe262a
+"January 10, 2019",OpenSmpp/opensmpp,247eb56cd38ba0055e72af87c3dcf371298e9306
+"January 10, 2019",NanoHttpd/nanohttpd,b04a342a4bcd0ff44be65138acffc73a29381c72
+"January 10, 2019",oshi/oshi,aa5ae87f53cf082056d1f4f0984fd653fef882c8
+"January 10, 2019",confluentinc/kafka-streams-examples,18774b97a0cd54c360b0ff4bd8052e1acdf234b9
+"January 10, 2019",zxing/zxing,d897ad7f72764c766e28d119c1ea8e6440709604
+"January 10, 2019",OpenHFT/Chronicle-Queue,5160966835186972fbc53533b78eb2bda5935f87
+"January 10, 2019",apache/flume,5d29402f8def1fd3bb3f24c9d30bebb1e3806619
+"January 10, 2019",fabric8io/spring-cloud-kubernetes,6f3ae54598698e8595fa5d0ad8349ad4bea8cdfb
+"January 10, 2019",BaseXdb/basex,f4baed8d68c4b1fa2fc794f4eface2b0cb6a379d
+"January 10, 2019",HotelsDotCom/styx,53866e92c2c8aabc84b4ce69541722595808d37e
+"January 10, 2019",eclipse/hawkbit,da098b334b9e12cf1e0960f83783447b7016829d
+"January 10, 2019",eclipse/rdf4j,dea1cd7fb02ee0fda6a005b5438e72fac2516133
+"January 10, 2019",radargun/radargun,9da6f514f27d5339fd678f552932c8e7fe4e8bb6
+"January 10, 2019",apache/servicecomb-java-chassis,c3f21d676f0b816fbe0e9e673f717474bfb6ae0f
+"January 10, 2019",takari/polyglot-maven,2cfcce7493d90a75556bf1e50198810d55533a03
+"January 10, 2019",ff4j/ff4j,9f3cec1b969f1c3cd8a8e9aea197b053e75bad32
+"January 10, 2019",kubernetes-client/java,52b65f80327e7bde9250f3c1fb0eced78ff0a42d
+"January 10, 2019",aws/aws-sdk-java-v2,020788f7c85a9bb5d0fd9a838d71ee60b466f055
+"January 10, 2019",nuls-io/nuls,4c60055c9fae38c66c62b432e0b634117e2876fe
+"January 10, 2019",Erudika/para,1ab0011e18c3ef2d09c8d0e7f56f10624b59abd2
+"January 10, 2019",camunda/camunda-bpm-spring-boot-starter,f1227f9daf4837150e1b53806c6eb127ecb01641
+"January 10, 2019",spotify/styx,35814f09215913798228255855f74af00cfdcfe6
+"January 10, 2019",eugenp/tutorials,3bad1ab7d38d5da4ef1964fad6be4e0998396e73
