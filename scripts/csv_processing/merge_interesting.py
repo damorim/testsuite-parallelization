@@ -45,9 +45,13 @@ writer=csv.writer(open('output_without_duplicates.csv', 'w'), delimiter=',')
 entries = set()
 
 for row in reader:
-   key = (row[0], row[1]) # instead of just the last name
-   if key not in entries:
+   # column with subject name
+   key = row[3] 
+   # if there is not subject in entries, add in new csv, removing duplicates
+   if key not in entries: 
+      # Writing in new csv the subject
       writer.writerow(row)
+      # Add subject name in entries to comparation
       entries.add(key)
 
 
