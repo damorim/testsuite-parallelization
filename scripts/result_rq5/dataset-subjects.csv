@@ -1,0 +1,6 @@
+type,value
+Missing Dependencies,1
+>10.0% Failures,1
+Testable,18
+Flaky,3
+Not Maven,48

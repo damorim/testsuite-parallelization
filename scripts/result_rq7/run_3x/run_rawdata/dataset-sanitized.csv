@@ -1,0 +1,13 @@
+name,compiled,tested,tests,suites,failures,runs,mvn_time_avg,mvn_time_sd,xml_time_avg,xml_time_sd,perc_failures,timecost_group,below_threshold
+activiti_activiti,SUCCESS,SUCCESS,2093,400,0,3,494,NA,452.502,NA,0,long,T
+apache_avro,SUCCESS,SUCCESS,3765,181,0,3,812,NA,249.483,NA,0,long,T
+apache_gora,SUCCESS,SUCCESS,103,18,0,3,1705.8,NA,82.735,NA,0,long,T
+apache_incubator-dubbo,SUCCESS,SUCCESS,2663,346,0,3,818,NA,685.296,NA,0,long,T
+floragunncom_search-guard,SUCCESS,SUCCESS,111,21,0,3,396,NA,1057.357,NA,0,long,T
+google_guava,SUCCESS,SUCCESS,1701837,497,1,3,1018,NA,939.060999999998,NA,0,long,T
+java-design-patterns,SUCCESS,SUCCESS,4412,343,2,3,677,NA,227.063,NA,0.05,long,T
+javaparser_javaparser,SUCCESS,SUCCESS,2363,218,0,3,359,NA,311.616,NA,0,long,T
+kiegroup_optaplanner,SUCCESS,SUCCESS,1225,202,0,3,430.8,NA,410,NA,0,long,T
+netty,SUCCESS,SUCCESS,13957,460,0,3,1386,NA,839.804,NA,0,long,T
+spring-projects_spring-boot,SUCCESS,SUCCESS,5865,711,27,3,1270,NA,476.865,NA,0.46,long,T
+zavtech_morpheus-core,SUCCESS,SUCCESS,2962,1,0,3,535,NA,523.73,NA,0,long,T
