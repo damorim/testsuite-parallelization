@@ -326,6 +326,7 @@ Java projects.  Important to highlight that, as of now, the
 statistics (\eg, number of forks, main programming language); it does
 not provide a feature to search for projects containing certain files
 (\eg{}, \emph{pom.xml}) in the directory structure. 
+\textcolor{red}{[S.J: Hoje em dia ja e possivel buscar projeto que contenha determinado arquivo pelo Github API (ex.: pom.xml), SearchCode, foi utilizado PyGithub para filtrar os projetos ]}
 
 Figure~\ref{fig:subject-query} illustrates the query to the \github{}
 API as an HTTP request.   The result set is sorted
@@ -385,7 +386,8 @@ projects with \SuiteFailingThreshold{} or more failing tests as to
 reduce bias. For the
 remaining projects with failing tests, we used the JUnit's
 \CodeIn{@Ignore} annotation to ignore failing tests.
-Our final set of subjects contains \numSubjs{} projects.
+Our final set of subjects contains \numSubjs{} projects. 
+ \textcolor{red}{[S.J: Utilizando o script desse experimento, Foram encontrado um total de 4111, onde 3154 nao eram Maven e 957 eram Maven. Dos 3154 que nao eram Maven, 2302 eram Gradle (73\%) ]}
  
  Figure~\ref{fig:subjects} summarizes our sample set.
 
