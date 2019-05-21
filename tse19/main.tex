@@ -89,7 +89,7 @@ E-mail: marcio@ic.ufal.br
 
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-Dealing with high testing costs remains an important problem in
+Dealing with high costs of testing remains an important problem in
 Software Engineering.  Test suite parallelization is an important
 approach to address this problem. \Mar{Sotero, vc. atualizou estas
   macros?}  Considering a set of \numSubjs{} Java projects we analyzed
@@ -127,10 +127,9 @@ test suite, parallelization, Maven, Java, Software Engineering.
 \section{Introduction}
 \label{sec:introduction}}
 
-\IEEEPARstart{D}{ealing}
-with high testing costs has been an important problem in
-software engineering research and industrial practice.  Several
-approaches have been proposed in the research literature to address
+\IEEEPARstart{D}{ealing} with high testing costs has been an important
+problem in software engineering research and industrial practice.
+Several approaches have been proposed in the literature to address
 this problem, with the focus mainly on test suite minimization,
 prioritization, reduction, and selection~\cite{yoo-harman-stvr2012}.
 In industry, the focus has been mainly on distributing the testing
@@ -138,28 +137,30 @@ workload.  Evidence of this are the Google TAP
 system~\cite{google-tap,google-ci} and the Microsoft CloudBuild
 system~\cite{prasad-shulte-ieee-microsoft-ci}, which provide
 distributed infrastructures to efficiently build massive amounts of
-code and run tests.  Building in-house server clusters is also a
-popular mechanism to distribute testing workloads.  For example, as of
-August 2013, the test suite of the Groupon PWA system, which powers
-the \url{groupon.com} website, included over 19K tests.  To run all
-those tests under 10m, Groupon used a cluster of 4 computers with 24
-cores each~\cite{kim-etal-fse2013}.
+code and run tests.
+
+%Distributing testing workloads in-house is also a
+%viable solution at smaller-size organizations. 
 
 At large organizations, the alternative of renting cloud
 services~\cite{cloud-services} or even building proprietary
-infrastructures for running tests is a legitimate approach to mitigate
-the regression testing problem.  However, for projects with modest
- or nonexistent budgets and yet relatively heavy testing workloads, this solution may
-not be economically viable.  For these cases, the use of commodity
-hardware\Comment{ (\eg{}, existing workstations)} is an attractive
-solution for running tests.  The proliferation of
+infrastructures for building and running tests is a legitimate
+approach to mitigate the regression testing problem.  For example, as
+of August 2013, the test suite of the Groupon PWA system, which powers
+the \url{groupon.com} website, included over 19K tests.  To run all
+those tests under 10m, Groupon used a cluster of 4 computers with 24
+cores each~\cite{kim-etal-fse2013}. However, for projects with modest
+or nonexistent budgets and yet relatively heavy testing workloads,
+this solution may not be economically viable.  For these cases, the
+use of commodity hardware\Comment{ (\eg{}, existing workstations)} is
+an attractive solution for running tests.  The proliferation of
 multi-core CPUs and the increasing popularization of testing
 frameworks and build systems, which today provide mature support for
-parallelization, enable\Comment{ test execution} speedups through increased CPU
-usage~(see Section~\ref{sec:modes}).  These two elements~---~demand
-for cost-effective test execution and supply of relatively inexpensive
-testing infrastructures~---~inspired us to investigate 
-test suite parallelization in practice.
+parallelization, enable speedups through
+increased CPU usage~(see Section~\ref{sec:background}).  These two
+elements~---~demand for cost-effective test execution and supply of
+relatively inexpensive testing infrastructures~---~inspired us to
+investigate test suite parallelization in practice.
 
 This paper reports on an empirical study we conducted to analyze the
 usage and impact of low-level parallelization to speed up testing in
@@ -169,28 +170,33 @@ research~\cite{yoo-harman-stvr2012}.  Note that parallelization is
 complementary to other approaches to mitigate testing costs such as
 (safe) test
 selection~\cite{Rothermel:1997:SER:248233.248262,gligoric-etal-issta2015}
-and continuous integration~\cite{Saff:2003:RWD:951952.952340}.
+and continuous
+integration~\cite{Saff:2003:RWD:951952.952340}.\Mar{revisit this later
+  on...} In addition, we propose a solution to unleash the power of
+test parallelization reducing (\Fix{eliminating?}) test flakiness due
+to race conditions.
 
-The dimensions of analysis we considered in this study are (i)
-feasibility, (ii) adoption, (iii) speedup, and (iv) tradeoffs.  The
-dimension \emph{feasibility} measures the potential of parallelization
-to reduce testing costs.  In the limit, parallelization would be
-fruitless if all projects had short-running test suites or if the
-execution cost was dominated by a single test case in the suite.  The
-dimension \emph{adoption} evaluates how often existing open-source
-projects use parallelization schemes and how developers involved in
-costly projects (not using test suite parallelization) perceive this
-technology.  It is important to measure resistance of practitioners to
-the technology and to understand their reasons.  The dimension
-\emph{speedup} evaluates the observed impact of
-parallelization\Comment{~---~when used in selected open-source
-  projects~---~} in running times.  Finally, the dimension
+This study covers the following dimensions of interest
+(i)~feasibility, (ii) adoption, (iii) speedup, and (iv) tradeoffs.
+The dimension \emph{feasibility} measures the potential of
+parallelization to reduce testing costs.  In the limit,
+parallelization would be fruitless if all projects had short-running
+test suites or if the execution cost was dominated by a single test
+case in the suite.  The dimension \emph{adoption} evaluates how often
+existing open-source projects use parallelization schemes and how
+developers involved in costly projects---\ie{}, project not using test suite
+parallelization---perceive this technology.  It is important to evaluate
+resistance of practitioners to the technology and to understand their
+reasons.  The \emph{speedup} dimension evaluates the observed impact
+of parallelization in running times on projects that already use it.  Finally, the dimension
 \emph{tradeoffs} evaluates the relationship between speedups obtained
-with parallelization and issues that arise 
-when running tests in parallel, including test
-flakiness~\cite{luo-etal-fse2014,bell-etal-esecfse2015}.  We briefly summarize our findings
-in the following.
+with parallelization and issues that arise when running tests in
+parallel, including test
+flakiness~\cite{luo-etal-fse2014,bell-etal-esecfse2015}.  We briefly
+summarize our findings in the following.
 
+\Mar{We need to reorganize this a bit as to accomodate the new
+  addition to the paper...}
 
 \noindent\emph{Feasibility.}~To assess how prevalent long-running test suites
 are we selected \numSubjs{} popular Java projects from \github{} containing
@@ -278,7 +284,7 @@ the following web page \webpage{}.
 %\hfill August 26, 2015
 
 % SECTION 2
-\section{Parallel Execution of Test Suites}
+\section{\label{sec:background}Parallel Execution of Test Suites}
 Figure~\ref{fig:levels} illustrates different levels where
 parallelism in test execution can be obtained.
 The highest level indicates
