@@ -7,10 +7,8 @@
 \fi
 
 %% Review macros
-\newcommand{\Fix}[1]{\LineComment{}{red}{#1}}
-\newcommand{\Jbc}[1]{\LineComment{Jean: }{orange}{#1}}
-\newcommand{\Luis}[1]{\LineComment{Luis: }{darkblue}{#1}}
-\newcommand{\Mar}[1]{\LineComment{Marcelo: }{darkgreen}{#1}}
+\newcommand{\Fix}[1]{\textbf{[[}{\color{red}#1}\textbf{]]}}
+\newcommand{\Mar}[1]{\textbf{[[Marcelo:~}{\color{magenta}#1}\textbf{]]}}
 
 %% Terms
 \newcommand{\pef}{PEF}
@@ -20,7 +18,7 @@
 \newcommand{\Comment}[1]{}
 \newcommand{\CodeIn}[1]{{\small\texttt{#1}}}
 \newcommand{\CodeInF}[1]{{\footnotesize\texttt{#1}}}
-\newcommand{\github}{Github}
+\newcommand{\github}{GitHub}
 \newcommand{\pomf}{\emph{pom.xml}}
 
 %% Configuration modes
