@@ -196,7 +196,7 @@ flakiness~\cite{luo-etal-fse2014,bell-etal-esecfse2015}.  We briefly
 summarize our findings in the following.
 
 \Mar{We need to reorganize this a bit as to accomodate the new
-  addition to the paper...}
+  addition to the paper...Revisit this later...}
 
 \noindent\emph{Feasibility.}~To assess how prevalent long-running test suites
 are we selected \numSubjs{} popular Java projects from \github{} containing
@@ -285,11 +285,7 @@ the following web page \webpage{}.
 
 % SECTION 2
 \section{\label{sec:background}Parallel Execution of Test Suites}
-Figure~\ref{fig:levels} illustrates different levels where
-parallelism in test execution can be obtained.
-The highest level indicates
-parallelism obtained through different machines on the
-network.  For instance, using virtual machines from a cloud service to
+
 \begin{wrapfigure}{r}{0.13\textwidth}  
   \vspace{-2mm}
   \centering
@@ -298,23 +294,31 @@ network.  For instance, using virtual machines from a cloud service to
   \caption{\label{fig:levels}Levels of parallelism.}
   \vspace{-2mm}
 \end{wrapfigure}
-
-distribute test execution.  The lowest levels denote parallelism
-obtained within a single machine.  These levels are complementary:
-the lowest levels leverage the computing power of server
-nodes whereas the highest level leverages the aggregate processing
-power of a network of machines.
-This paper focuses on low-level parallelism, where computation can be
-offloaded at different CPUs within a machine and at different threads
-within each CPU.  This form of parallelism is enabled through build
-systems (spawning processes in different CPUs) and testing frameworks
-(spawning threads in one given CPU).  It is important to note that a variety
-of testing frameworks provide today support for parallel test
-execution (e.g., JUnit~\cite{junit-org}, TestNG~\cite{testng}, and
-NUnit~\cite{nunit}) as to benefit from the available power of popular multi-core processors.
-In the following, we elaborate relevant features of testing frameworks
-and build systems for parallelization.  We focused on Java, Maven, and JUnit but the
-discussion can be generalized to other language and tools.
+This section explains basic concepts related to test parallelization
+in Java projects. Figure~\ref{fig:levels} illustrates different levels
+of parallelism in test execution.  The highest level indicates
+parallelism obtained through different machines on the network. For
+instance, using virtual machines from a cloud service to distribute
+test workload. The Google TAP~\cite{google-tap,google-ci} and the
+Microsoft CloudBuild~\cite{prasad-shulte-ieee-microsoft-ci} systems
+are examples of this kind of parallelization. The lowest levels
+illustrate parallelism obtained within a single machine. These levels
+are complementary to each other: the lowest levels leverage the
+computing power of individual nodes whereas the highest level
+leverages the aggregate processing power of a network of
+machines. This paper focuses on low-level parallelism, where
+computation can be offloaded at different CPUs within a machine and at
+different threads within each CPU.  This form of parallelism is
+enabled through build systems---by spawning processes in different
+CPUs---and testing frameworks---by spawning threads in one given CPU.
+It is important to note that a variety of testing frameworks provide
+today support for parallel test execution (e.g.,
+JUnit~\cite{junit-org}, TestNG~\cite{testng}, and NUnit~\cite{nunit})
+as to benefit from the available power of popular multi-core
+processors.  In the following, we elaborate relevant features of
+testing frameworks and build systems for parallelization.  We focused
+on Java, Maven, and JUnit but the discussion can be generalized to
+other language and tools.
 
 \subsection{Testing Frameworks}
 \label{sec:frameworks}
@@ -329,7 +333,7 @@ framework (\eg{}, JUnit).
 \item
     \textbf{Sequential classes; parallel methods
       (\SeqClassParMeth).}~This configuration corresponds to running
-    test classes sequentially, but running test methods from those
+    test classes sequentially, but running the test methods from those
     classes concurrently.
 \item
     \textbf{Parallel classes; sequential methods
@@ -342,22 +346,27 @@ framework (\eg{}, JUnit).
     combination of \SeqClassParMeth{} and \ParClassSeqMeth{}.  }
 \end{itemize}
 
-Notice that an important aspect in deciding which configuration to use (or in
-designing new test suites) is the possibility of race conditions on shared data
-during execution.  Data sharing can occur, for example, through state that is
-reachable from statically-declared variables in the program or through variables
-declared within the scope of the test class or even through resources available
-on the file system and the network~\cite{luo-etal-fse2014}.  Considering data
-race avoidance, configuration \SeqClassParMeth{} is preferable over
-\ParClassSeqMeth{} when it is clear that test methods in a class do not
-manipulate shared state, which can be challenging to
-determine~\cite{bell-etal-esecfse2015}.  Similarly, \ParClassSeqMeth{} is
-preferable over \SeqClassParMeth{} when it is clear that several test methods in
-a class perform operations involving shared data.  Configuration
-\ParClassParMeth{} does not restrict scheduling orderings.  Consequently, it is
-more likely to manifest data races during execution. Note that speedups depend
-on several factors, including the test suite size and distribution of test
-methods per class.
+An important aspect to consider when designing new test suites or when
+deciding which configuration to use for existing test suites is the
+possibility of race conditions on shared data during test
+execution. Although conceptually test cases are independent, they
+often share data\Fix{cite Mike's paper, bell-etal-esecfse2015}. Data
+sharing can occur, for example, through state that is reachable from
+statically-declared variables in the program or through variables
+declared within the scope of the test class or even through resources
+available on the file system and the network~\cite{luo-etal-fse2014}.
+
+Test flakiness and execution speedups depend on a number of
+factors. Considering flakiness, a configuration may be preferrable to
+another depending on the characteristics of the project and its test
+suite. For example, configuration \ParClassSeqMeth{} may be preferable
+over \SeqClassParMeth{} when it is clear that several test methods in
+a given class perform operations involving shared data. As
+configuration \ParClassParMeth{} does not restrict scheduling
+orderings, it is more likely to manifest data races during execution
+if there are sources of data sharing across test classes and their
+methods. Note also that speedups depend on several factors, including
+the test suite size and the distribution of test methods per class.
 
 \subsection{Build Systems}
 \label{sec:builder}
@@ -377,12 +386,12 @@ shows the choices to control parallelism through the build system
   \textbf{Forked JVMs with sequential methods (\ForkSeq).}~The build
   system spawns multiple JVMs with this configuration, assigning a
   partition of the set of test classes to each JVM.  Test classes and methods
-  run sequentially within each JVM.
+  run sequentially within each JVM as \Seq\ does.
 \item
-  \textbf{Forked JVMs with parallel methods (\ForkParMeth).}~With
-  this configuration, the build system forks multiple JVMs, as
-  \ForkSeq{} does, but it runs test methods concurrently, as
-  \SeqClassParMeth{} does.
+  \textbf{Forked JVMs with parallel methods (\ForkParMeth).}~As
+  \ForkSeq{}, the build system forks multiple JVMs with this
+  configuration, but it runs test methods concurrently, as
+  \SeqClassParMeth{}.
 \end{itemize}
 
 %% In the configuration \ForkSeq{}, each spawned
@@ -395,10 +404,12 @@ shows the choices to control parallelism through the build system
 Note from the listing that forking can only be combined with
 configuration \SeqClassParMeth{} (see Section~\ref{sec:frameworks}) as
 Maven made the design choice to only accept one test class at a time
-per forked process.  Maven offers an option to reuse JVMs that can be
-used to attenuate the potentially high cost of spawning new JVM
-processes on every test class (if reuse is enabled) and also to
-achieve test isolation (if reuse is disabled).
+per forked process. Intuitively, this option enables safe execution of
+tests when dependent methods exist across different classes\Fix{cite
+  Mike's work}. For the cases the developer prepared code against that
+threat, Maven offers an option to ``reuse'' JVMs as to avoid the
+non-negligible cost of creating JVM instances.
+
 
 %% \Mar{$\leftarrow$Are you sure about this?
 %%   It seems silly.  Maybe, the rationale is to ``keep design
@@ -434,15 +445,15 @@ achieve test isolation (if reuse is disabled).
     <artifactId>maven-surefire-plugin</artifactId>
     <configuration>
         <forkCount>1C</forkCount>
-        <reuseForks>true</reuseForks>
+        <threadCount>5</threadCount>    
         <parallel>methods</parallel>
-        <threadCount>5</threadCount>
+        <reuseForks>true</reuseForks>        
     </configuration>
 </plugin>
 \end{lstlisting}
   \vspace{-4ex}
-  \caption{\label{fig:surefire} Configuration \ForkParMeth{} on
-    Maven.}
+  \caption{\label{fig:surefire} Fragment of a Maven pom.xml file with
+    an \ForkParMeth{} configuration.}
 \end{figure}
 
 
@@ -453,9 +464,12 @@ Maven implements this feature through its Surefire JUnit test
 plugin~\cite{maven-surefire-plugin}.  With this configuration, Maven
 forks one JVM per core (\CodeIn{forkCount} parameter) and uses five
 threads (\CodeIn{threadCount} parameter) to run test methods
-(\CodeIn{parallel} parameter) within each forked JVM.  Maven reuses
+(\CodeIn{parallel} parameter) within each forked JVM. In addition, Maven reuses
 created JVMs on subsequent forks when execution of a test class
-terminates (\CodeIn{reuseFork} parameter).
+terminates (\CodeIn{reuseFork} parameter). This is an example of a
+very aggressive setup, \ie{}, a setup that could substantially speedup
+execution but could introduce test flakiness if test code is not
+prepared for parallel execution.
 
 % SECTION 3
 
