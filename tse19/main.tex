@@ -92,7 +92,7 @@ E-mail: marcio@ic.ufal.br
 Dealing with high costs of testing remains an important problem in
 Software Engineering.  Test suite parallelization is an important
 approach to address this problem. \Mar{Sotero, vc. atualizou estas
-  macros?}  Considering a set of \numSubjs{} Java projects we analyzed
+  macros?} \textcolor{red}{[S.J: atualizado.]} Considering a set of \numSubjs{} Java projects we analyzed
 from \github\, we found that \percentMedLongRunning{} of the them
 contain long-running test suites, but parallelization features still
 seem underutilized in practice~---~only \percentParallelUpdated{} of
@@ -221,7 +221,7 @@ analysis we checked both statically (parsing build files) and dynamically
 Considering only the projects whose test suites take longer than a minute to
 run, we found that only \percentParallelUpdated{} of them use parallelism.  We
 also contacted developers from a selection of costly projects that did not use
-parallelization to understand the reasons for not using parallelization.
+parallelization to understand the reasons for not using parallelization.\textcolor{red}{[S.J: nao fizemos isso.]}
 Dealing with concurrency-related issues (\eg{}, the extra work to organize test
 suite to avoid concurrency errors) and the availability of continuous
 integration services were the most frequently answered reasons for not
@@ -234,8 +234,8 @@ of available cores in the machine.\Comment{We did not change parallel
 configurations on that setup.  For comparison, we disabled parallel execution to
 obtain the running time of a sequential execution.}  Considering the first
 setup, results indicate that the average speedup of parallelization was
-\avgSpeedup{}x.  Although we found cases with very high speedups (\eg{}, 28.8x
-for project Jcabi), we also found cases where the speedups were not very
+\avgSpeedup{}x.  Although we found cases with very high speedups (\eg{}, 5.77x
+for project Twilio Java), we also found cases where the speedups were not very
 significant.  Considering the scalability experiment, we noticed, perhaps as
 expected, that parallelization obtained with forking JVMs scales with the number
 of cores but the speedups are bounded by long-running test classes.
@@ -457,7 +457,7 @@ non-negligible cost of creating JVM instances.
 \end{figure}
 
 
-\subsubsection*{Example}~Figure~\ref{fig:surefire} shows a
+\noindent\emph{Example:} Figure~\ref{fig:surefire} shows a
 fragment of a Maven configuration file, known as \pomf{}, highlighting
 options to run tests using the parallel execution mode \ForkParMeth{}.
 Maven implements this feature through its Surefire JUnit test
@@ -481,10 +481,10 @@ prepared for parallel execution.
   atualizar o ingles, mas se os dados nao estiverem corretos e vc. nao
   explicar as mudanca (em portugues mesmo) nao vamos ter condicoes de
   revisar.}
-
+\textcolor{red}{[S.J: Ok.]}
 We used \github{}'s search API~\cite{githubsearch} to identify
 projects that satisfy the following criteria:\Mar{alguma restricao
-  sobre o numero minimo de testes por projeto?$\rightarrow$} (1) the primary language
+  sobre o numero minimo de testes por projeto?$\rightarrow$}  \textcolor{red}{[S.J: Nao, mantemos as mesmas restricoes por ordem descendentes das stars]} (1) the primary language
 is Java\footnote{In case of projects in multiple languages, the
   \github{} API considers the predominant language as the primary
   language.}, (2) the project has at least 100 stars, (3) the latest
@@ -504,15 +504,15 @@ Java projects.  Important to highlight that, as of now, the
 statistics (\eg, number of forks, main programming language); it does
 not provide a feature to search for projects containing certain files
 (\eg{}, \emph{pom.xml}) in the directory structure. 
-\textcolor{red}{[S.J: Hoje em dia ja e possivel buscar projeto que
-    contenha determinado arquivo pelo Github API (ex.: pom.xml),
-    SearchCode, foi utilizado PyGithub para filtrar os projetos
-]}\Mar{Sotero, vc. usou ou nao usou este recurso da API do GitHub? Estou muito cofuso
+\Mar{Sotero, vc. usou ou nao usou este recurso da API do GitHub? Estou muito cofuso
   aqui (por isto tive que interromper revisao). Se vc usou, este
   quarto criterio precisa sair e entrar outro dizendo
   explicitamente que usamos isto. Fora isto, logo abaixo vc. diz que
   de um total de 4111, 3154 *nao* eram Maven. Mas, como eh possivel,
   se vc. garante (atraves deste recurso) a presenca de um arquivo pom.xml?}
+
+\textcolor{red}{[S.J: Tivemos dois momentos, o primeiro momento, usamos os mesmos criterios e script do paper ase17 para minerar os subjects. No segundo momento, usamos uma library python chamado PyGithub, ``https://github.com/PyGithub/PyGithub``, para gerenciar recursos do Github API. Utilizamos a funcao search\_code, que busca por especifico arquivo em repositorios ``pygithub.search\_code(pom in:pom.xml filename:pom.xml,order=desc)``, curl Github API ``https://api.github.com/search/code?q=pom in:pom.xml+filename:pom.xml``, e em seguida filtramos esses subjects com os crietrios (2) e (3) do paper.    
+]}
 
 Figure~\ref{fig:subject-query} illustrates the query to the \github{}
 API as an HTTP request.   The result set is sorted
@@ -548,7 +548,7 @@ executed the tests for \SubjectsReruns{} times to discard those projects with
 issues
 in the build file and non-deterministic results observed from sequential
 executions.
-As of August 25th 2017, our search criteria returned a total of
+As of March 5th 2019, our search criteria returned a total of
 \SubjectsGithub{}
 subjects.
 From this set of projects,
@@ -573,14 +573,14 @@ reduce bias. For the
 remaining projects with failing tests, we used the JUnit's
 \CodeIn{@Ignore} annotation to ignore failing tests.
 Our final set of subjects contains \numSubjs{} projects. 
- \textcolor{red}{[S.J: Utilizando o script desse experimento, Foram encontrado um total de 4111, onde 3154 nao eram Maven e 957 eram Maven. Dos 3154 que nao eram Maven, 2302 eram Gradle (73\%) ]}
+ \textcolor{red}{[S.J: Foi possivel observar que houve uma consideravel conversao de ferramenta de automacao, do Maven para Gradle,  dos 3154 subject que nao eram Maven, 2302 eram Gralde (73\%). Projeto como o MapDB, que e bastante citado no paper de ase17, atualmente converteu-se a Gradle. ]}
  
  Figure~\ref{fig:subjects} summarizes our sample set.
 
 \begin{figure}[ht]
   \vspace{-5mm}
   \centering
-  \includegraphics[width=0.27\textwidth]{results/piechart-subjs.pdf}
+  \includegraphics[width=0.37\textwidth]{results/piechart-subjs.pdf}
   \caption{\label{fig:subjects}We fetched \SubjectsGithub{} popular projects
   hosted on \github{}. From this initial sample, we ignored
   \SubjectsGithubNotMaven{} projects without Maven support,
@@ -589,16 +589,16 @@ Our final set of subjects contains \numSubjs{} projects.
   \SubjectsGithubTooManyFailures{} projects had at least
   \SuiteFailingThreshold{} of failing tests. We considered
   \numSubjs{} projects to conduct our study.\Mar{Sotero, este plot e
-    macros estao atualizados?}}
+    macros estao atualizados?}} \textcolor{red}{[S.J:Atualizado.]}
 \end{figure}
 
 \label{sec:setup}
 
 \Mar{Por que isto esta em uma secao ``Objects of Analysis''? Eh esta
-  mesmo a configuracao de maquina que vc. usou.}
-To run our experiments, we used a Core i7-4790 (3.60 GHz) Intel processor
-machine with eight virtual CPUs (four cores with two native threads each) and
-16GB of memory, running Ubuntu 14.04 LTS Trusty Tahr (64-bit version).  We
+  mesmo a configuracao de maquina que vc. usou.} \textcolor{red}{[S.J:Atualizado.]}
+To run our experiments, we used a Intel Xeon ES-2650 v4 (2.20 GHz)
+with eight virtual CPUs (four cores with two native threads each) and
+16GB of memory, running Ubuntu 18.10 Cosmic Cuttlefish (64-bit version).  We
 used\Comment{ Git,} Java 8 and Maven 3.3.9 to build projects and run test
 suites. To process test results and generate plots we used Python\Comment{ 3.4},
 Bash, R and Ruby\Comment{ 2.3}.  All source artifacts are publicly available for
