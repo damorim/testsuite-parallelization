@@ -220,7 +220,7 @@ analysis we checked both statically (parsing build files) and dynamically
 Considering only the projects whose test suites take longer than a minute to
 run, we found that only \percentParallelUpdated{} of them use parallelism.  We
 also contacted developers from a selection of costly projects that did not use
-parallelization to understand the reasons for not using parallelization.\textcolor{red}{[S.J: nao fizemos isso.]}
+parallelization to understand the reasons for not using parallelization.\textcolor{red}{[S.J: nao teremos essa dimensao.]}
 Dealing with concurrency-related issues (\eg{}, the extra work to organize test
 suite to avoid concurrency errors) and the availability of continuous
 integration services were the most frequently answered reasons for not
@@ -694,10 +694,10 @@ The distribution associated with the \shortg{} group is the most
 unbalanced (right skewed)\Comment{ with outliers closed to the \medg{}
 group}.
 The test suites in this group ran in 15 or less seconds for
-over 75\% of the cases.\Comment{  Such scenarios constitute the majority of the
+over 84.73\% of the cases.\Comment{  Such scenarios constitute the majority of the
 cases we analyzed.} Considering the groups \medg{} and \longg{},
-however, we found many costly executions.  Nearly 75\% of the projects
-from the \medg{} group take 3.5 or more minutes to run and nearly 75\% of
+however, we found many costly executions.  Nearly 21.84\% of the projects
+from the \medg{} group take 3.5 or more minutes to run and nearly 81.40\% of
 the projects from the \longg{} group take $\sim$20 minutes to run.  We
 found cases in the \longg{} group were execution takes more than 50 minutes
 to complete, as can be observed from the outliers in the boxplot.
@@ -881,19 +881,28 @@ Column ``\emph{Subject}'' indicates the name of the project, column
 \multirow{2}{*}{\emph{Group}} & \multirow{2}{*}{\emph{Subject}} & \emph{\# of} & \multirow{2}{*}{\emph{Mode}}\\%
    & & \emph{modules} &\\%
 \midrule%
-Medium & Californium & 2/20 & C2\\%
-Medium & Chaos & 1/1 & C2\\%
-Long & \Comment{apache} Flink & 66/74 & FC0\\%
-Long & \Comment{apache logging-}Log4J2 & 25/28 & FC0\\%
-Long & \Comment{javaslang }Javaslang & 3/3 & C3\\%
-Medium & Jcabi \Comment{jcabi-github} & 1/1 & C3\\%
-Long & \Comment{hazelcast hazelcast-}Jet & 6/7 & FC0\\%
-Long & \Comment{apache} Mahout & 8/9 & FC0\\%
-Long & \Comment{jankotek} MapDB & 1/1 & C3\\%
+Medium & \Comment{alibaba} Nacos & 1/10 & C1\\%
+Long & \Comment{apache} Avro & 7/18 & C3\\%
+Medium & \Comment{apache} Flink & 108/123 & FC0\\%
 Medium & \Comment{apache} OpenNLP & 4/4 & FC0\\%
-Medium & \Comment{yegor256} Rultor & 1/1 & C3\\%
-Medium & \Comment{yegor256} Takes & 1/1 & C3\\%
-Long & \Comment{vavr-io} Vavr & 3/3 & C3\\%
+Medium & \Comment{atmosphere} Nettosphere & 2/2 & FC0\\%
+Medium & Chaos & 1/1 & C2\\%
+Medium & Cache2k & 10/10 & C2\\%
+Medium & \Comment{dropwizard} Metrics & 1/23 & C2\\%
+Medium & \Comment{eclipse} Leshan & 11/11 & C2\\%
+Medium & \Comment{facebook} Jcommon & 16/16 & FC0\\%
+Long & Search Guard & 1/1 & FC0\\%
+Long & \Comment{Hazelcast} Jet & 8/8 & FC0\\%
+Long & Javaparser & 1/9 & C1\\%
+Medium & Jcabi \Comment{jcabi-github} & 1/1 & C3\\%
+Long & Optaplanner & 1/13 & FC0\\%
+Medium & \Comment{spring-data-cassandra}  Cassandra & 1/1 & C1\\%
+Medium & Togglz & 1/34 & C1\\%
+Long & Twilio Java & 1/1 & FC0\\%
+Long & Vavr & 4/4 & C3\\%
+Medium & Rultor & 1/1 & C3\\%
+Medium & \Comment{problem-spring-web}  Spring Web & 4/4 & C3\\%
+Medium & Zxing & 4/4 & FC0\\%
 \bottomrule%
 \end{tabular}
 \end{wraptable}
@@ -902,7 +911,7 @@ tests that use the configuration of parallelism mentioned in column
 ``\emph{Mode}''.
 We note that, considering these projects, the modules that do not use
 the configuration cited use the sequential configuration \Seq{}.
-For example, three modules (=28-25) from Log4J2 use sequential
+For example, eleven modules (=18-7) from Avro use sequential
 configuration. It came as a surprise the observation that
 no project used distinct configurations in their modules. 
 
