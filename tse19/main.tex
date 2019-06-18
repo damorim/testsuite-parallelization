@@ -704,7 +704,7 @@ to complete, as can be observed from the outliers in the boxplot.
 
 It is important to note that we under-estimated running times as we missed test modules not enabled for
 execution in the root \emph{pom.xml}.\Comment{Some projects may omit long-running tests on their default
-execution.} For instance, the project \CodeIn{apache.maven-surefire}
+execution.} For instance, the project \CodeIn{springboot-security-jwt}
 runs all unit tests in a few seconds.  According to our criteria, this
 project is classified as \shortg{} but a closer look reveals
 that only smoke tests are executed in this project by default.
@@ -715,7 +715,7 @@ testing time goes to nearly 30 minutes.  For simplicity, we considered
 only the tests executed by default.
 From the \numSubjs{} testable projects, \numSubjsPass{} successfully
 executed all tests and \numSubjsFail{} reported some test failure.
-From these \numSubjsFail{} subjects, only 11 subjects
+From these \numSubjsFail{} subjects, only 9 subjects
 have more than 5\% of failing tests (7.3\% on average).
 \begin{mdframed}
 \noindent\textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
