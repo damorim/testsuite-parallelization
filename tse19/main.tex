@@ -511,8 +511,8 @@ projects in this set were not Maven. Compared with our previous
 experiment~\cite{Candido:2017:TSP:3155562.3155667}, executed nearly 2
 years ago, we observed  that many more
 projects now use Gradle---73\% of the \SubjectsGithubNotMaven{} non-Maven
-projects use Gradle. Although parallelization can
-be used in Gradle, we decided to keep using using Maven for
+projects use Gradle. Although parallelization could
+be used in Gradle, we decided to keep using Maven for
 consistency with the previous experiment. From the remaining set of
 projects, \SubjectsGithubNotTestable{} were discarded
 because of environment incompatibility (\eg, missing\Comment{ required
@@ -529,9 +529,9 @@ problem out of scope. From the remaining
 manifesting deterministic results, we
 eliminated \SubjectsGithubTooManyFailures{} projects that contain
 \SuiteFailingThreshold{} or more failing tests as to reduce
-bias. For projects with less failing tests, we used the JUnit's
+bias. For projects with fewer failing tests, we used the JUnit's
 \CodeIn{@Ignore} annotation to discard the failing tests as we did not
-want a premature termination of test run to influence in timings.  Our final set of
+want a premature termination of a test run to influence in time measurements.  Our final set of
 subjects include  \numSubjs{} projects. 
 
  %% \textcolor{red}{[S.J: Foi possivel observar que houve uma consideravel conversao de ferramenta de automacao, do Maven para Gradle,  dos 3154 subject que nao eram Maven, 2302 eram Gralde (73\%). Projeto como o MapDB, que e bastante citado no paper de ase17, atualmente converteu-se a Gradle. ]}
