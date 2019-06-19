@@ -211,7 +211,7 @@ found that only in rare cases few test cases monopolize the overall time to run
 a test suite.
 
 
-\noindent\emph{Adoption.}~ We considered two aspects in measuring technology
+\noindent\emph{Adoption.}~ \textcolor{red}{[S.J: nao teremos essa dimensao.]}We considered two aspects in measuring technology
 adoption.  First, we measured usage of parallelism in open-source projects.
 Then, we ran a survey with developers to understand the reasons that could
 explain resistance to using the technology.\Comment{ For the quantitative
@@ -220,7 +220,7 @@ analysis we checked both statically (parsing build files) and dynamically
 Considering only the projects whose test suites take longer than a minute to
 run, we found that only \percentParallelUpdated{} of them use parallelism.  We
 also contacted developers from a selection of costly projects that did not use
-parallelization to understand the reasons for not using parallelization.\textcolor{red}{[S.J: nao teremos essa dimensao.]}
+parallelization to understand the reasons for not using parallelization.
 Dealing with concurrency-related issues (\eg{}, the extra work to organize test
 suite to avoid concurrency errors) and the availability of continuous
 integration services were the most frequently answered reasons for not
@@ -511,8 +511,8 @@ projects in this set were not Maven. Compared with our previous
 experiment~\cite{Candido:2017:TSP:3155562.3155667}, executed nearly 2
 years ago, we observed  that many more
 projects now use Gradle---73\% of the \SubjectsGithubNotMaven{} non-Maven
-projects use Gradle. Although parallelization could
-be used in Gradle, we decided to keep using Maven for
+projects use Gradle. Although parallelization can
+be used in Gradle, we decided to keep using using Maven for
 consistency with the previous experiment. From the remaining set of
 projects, \SubjectsGithubNotTestable{} were discarded
 because of environment incompatibility (\eg, missing\Comment{ required
@@ -529,9 +529,9 @@ problem out of scope. From the remaining
 manifesting deterministic results, we
 eliminated \SubjectsGithubTooManyFailures{} projects that contain
 \SuiteFailingThreshold{} or more failing tests as to reduce
-bias. For projects with fewer failing tests, we used the JUnit's
+bias. For projects with less failing tests, we used the JUnit's
 \CodeIn{@Ignore} annotation to discard the failing tests as we did not
-want a premature termination of a test run to influence in time measurements.  Our final set of
+want a premature termination of test run to influence in timings.  Our final set of
 subjects include  \numSubjs{} projects. 
 
  %% \textcolor{red}{[S.J: Foi possivel observar que houve uma consideravel conversao de ferramenta de automacao, do Maven para Gradle,  dos 3154 subject que nao eram Maven, 2302 eram Gralde (73\%). Projeto como o MapDB, que e bastante citado no paper de ase17, atualmente converteu-se a Gradle. ]}
@@ -694,17 +694,17 @@ The distribution associated with the \shortg{} group is the most
 unbalanced (right skewed)\Comment{ with outliers closed to the \medg{}
 group}.
 The test suites in this group ran in 15 or less seconds for
-over 84.73\% of the cases.\Comment{  Such scenarios constitute the majority of the
+over 77.53\% of the cases.\Comment{  Such scenarios constitute the majority of the
 cases we analyzed.} Considering the groups \medg{} and \longg{},
-however, we found many costly executions.  Nearly 21.84\% of the projects
-from the \medg{} group take 3.5 or more minutes to run and nearly 81.40\% of
+however, we found many costly executions.  Nearly 26.44\% of the projects
+from the \medg{} group take 3.5 or more minutes to run and nearly 75\% of
 the projects from the \longg{} group take $\sim$20 minutes to run.  We
 found cases in the \longg{} group were execution takes more than 50 minutes
 to complete, as can be observed from the outliers in the boxplot.
 
 It is important to note that we under-estimated running times as we missed test modules not enabled for
 execution in the root \emph{pom.xml}.\Comment{Some projects may omit long-running tests on their default
-execution.} For instance, the project \CodeIn{springboot-security-jwt}
+execution.}  \textcolor{red}{[S.J: @Marcio existe alguma caracteristica comum, para que eu possa identificar atraves de script no pom.xml raiz, quais projetos tem testes habilitados por custom params? @Marcelo @Marcio voces acham interessante colocar esse dado aqui ? quantos projetos possuem essa caracteristica?   ]}For instance, the project \CodeIn{springboot-security-jwt}
 runs all unit tests in a few seconds.  According to our criteria, this
 project is classified as \shortg{} but a closer look reveals
 that only smoke tests are executed in this project by default.
@@ -716,7 +716,7 @@ only the tests executed by default.
 From the \numSubjs{} testable projects, \numSubjsPass{} successfully
 executed all tests and \numSubjsFail{} reported some test failure.
 From these \numSubjsFail{} subjects, only 9 subjects
-have more than 5\% of failing tests (7.3\% on average).
+have more than 5\% of failing tests (5.1\% on average).
 \begin{mdframed}
 \noindent\textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
     time-consuming test suites are relatively frequent in
@@ -748,7 +748,7 @@ the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
 Figure~\ref{fig:time-distributions} shows the time distribution of
-individual test cases per project.
+individual test cases per project.\textcolor{red}{[S.J nao teremos mais esse plot.]}
 We observed that the average median times (see dashed horizontal red
 lines) were small, namely 0.08s
 for \medg{} projects and 0.16s for \longg{} projects, and the standard deviations associated with each distribution were
