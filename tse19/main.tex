@@ -704,7 +704,7 @@ to complete, as can be observed from the outliers in the boxplot.
 
 It is important to note that we under-estimated running times as we missed test modules not enabled for
 execution in the root \emph{pom.xml}.\Comment{Some projects may omit long-running tests on their default
-execution.}  \textcolor{red}{[S.J: @Marcio existe alguma caracteristica comum, para que eu possa identificar atraves de script no pom.xml raiz, quais projetos tem testes habilitados por custom params? @Marcelo @Marcio voces acham interessante colocar esse dado aqui ? quantos projetos possuem essa caracteristica?   ]}For instance, the project \CodeIn{springboot-security-jwt}
+execution.}  \textcolor{red}{[S.J: existe a possibilidade de criar uma script que identifica no pom.xml raiz, quais projetos tem testes habilitados por custom params? @Marcelo @Marcio voces acham interessante colocar esses dados aqui ? quantos projetos possuem essa caracteristica.  ]}For instance, the project \CodeIn{springboot-security-jwt}
 runs all unit tests in a few seconds.  According to our criteria, this
 project is classified as \shortg{} but a closer look reveals
 that only smoke tests are executed in this project by default.
@@ -720,7 +720,7 @@ have more than 5\% of failing tests (5.1\% on average).
 \begin{mdframed}
 \noindent\textit{Answering \numRQFeasibilityOne{}:}~\emph{We conclude that
     time-consuming test suites are relatively frequent in
-    open-source projects.  We found that \percentMedLongRunning{} of
+    open-source projects.  We found that \percentMedRunning{} of
     the \numSubjs{} projects we analyzed (\ie{}, nearly 1 in every 4
     projects) take at least 1 minute to run and
     \percentLongRunning{} of them take at least 5 minutes to run.\Comment{
@@ -748,7 +748,7 @@ the limit, if cost is dominated by a single test from a large test
 suite, it is unlikely that parallelization will be beneficial as a
 test method is the smallest working unit in test frameworks.
 Figure~\ref{fig:time-distributions} shows the time distribution of
-individual test cases per project.\textcolor{red}{[S.J nao teremos mais esse plot.]}
+individual test cases per project.
 We observed that the average median times (see dashed horizontal red
 lines) were small, namely 0.08s
 for \medg{} projects and 0.16s for \longg{} projects, and the standard deviations associated with each distribution were
@@ -794,7 +794,7 @@ Furthermore, we noted a strong positive correlation between running
 time and number of test on projects in the \longg{} group.
 Considering the \medg{} group, the correlation between these two
 variables was weak.
-Figure~\ref{fig:scattercost} illustrates the regression lines between
+Figure~\ref{fig:scattercost} \textcolor{red}{[S.J nao teremos mais esse plot. falta confirmar com @marcelo ]} illustrates the regression lines between
 these the variables test suite cost and number of test cases.
 To sum, we observed that for projects with long-running test suites
 running time is typically
