@@ -30,6 +30,9 @@ import java.io.IOException;
  * 
  * @phase process-sources
  */
+
+@Mojo(name = "testing")
+
 public class MyMojo
     extends AbstractMojo
 {
