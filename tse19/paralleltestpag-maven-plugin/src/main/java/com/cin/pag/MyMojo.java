@@ -1,4 +1,4 @@
-package paralleltest-pag-maven-plugin;
+package com.cin.pag;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
@@ -18,30 +18,39 @@ package paralleltest-pag-maven-plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Goal which touches a timestamp file.
- * https://dzone.com/articles/a-simple-maven-3-plugin
- * @goal touch
- * 
- * @phase process-sources
+ *
  */
 
 @Mojo(name = "testing")
-
-public class MyMojo
-    extends AbstractMojo
-{
+public class MyMojo extends AbstractMojo {
     /**
-     * Location of the file.
-     * @parameter expression="${project.build.directory}"
-     * @required
+     *
      */
-    private File outputDirectory;
+    @Parameter(property = "msg",defaultValue = "from maven")
+    private String msg;
+
+    public void execute()
+            throws MojoExecutionException {
+        getLog().info("Testing... " + msg);
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /*private File outputDirectory;
 
     public void execute()
         throws MojoExecutionException
@@ -53,14 +62,14 @@ public class MyMojo
             f.mkdirs();
         }
 
-        File touch = new File( f, "touch.txt" );
+        File touch = new File( f, "testing.txt" );
 
         FileWriter w = null;
         try
         {
             w = new FileWriter( touch );
 
-            w.write( "touch.txt" );
+            w.write( "testing.txt" );
         }
         catch ( IOException e )
         {
@@ -80,5 +89,5 @@ public class MyMojo
                 }
             }
         }
-    }
+    }*/
 }
