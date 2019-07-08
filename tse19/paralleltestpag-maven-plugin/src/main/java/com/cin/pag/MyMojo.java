@@ -34,20 +34,20 @@ public class MyMojo extends AbstractMojo {
     /**
      *
      */
-    @Parameter(property = "msg",defaultValue = "from maven")
-    private String msg;
+    @Parameter(property = "parallel",defaultValue = "from maven")
+    private String parallel;
 
     public void execute()
             throws MojoExecutionException {
-        getLog().info("Testing... " + msg);
+        getLog().info("Testing... " + parallel);
     }
 
-    public String getMsg() {
-        return msg;
+    public String getParallelType() {
+        return parallel;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setParallelType(String parallel) {
+        this.parallel = parallel;
     }
 
     /*private File outputDirectory;
