@@ -92,7 +92,7 @@ E-mail: marcio@ic.ufal.br
 Dealing with high costs of testing remains an important problem in
 Software Engineering.  Test suite parallelization is an important
 approach to address this problem. \Mar{Sotero, vc. atualizou estas
-  macros?} \textcolor{red}{[S.J: atualizado.]} Considering a set of \numSubjs{} Java projects we analyzed
+  macros?} \textcolor{red}{[Sotero: atualizado.]} Considering a set of \numSubjs{} Java projects we analyzed
 from \github\, we found that \percentMedLongRunning{} of the them
 contain long-running test suites, but parallelization features still
 seem underutilized in practice~---~only \percentParallelUpdated{} of
@@ -211,14 +211,14 @@ found that only in rare cases few test cases monopolize the overall time to run
 a test suite.
 
 
-\noindent\emph{Adoption.}~ \textcolor{red}{[S.J: nao teremos essa dimensao.]}We considered two aspects in measuring technology
+\noindent\emph{Adoption.}~ We considered two aspects in measuring technology
 adoption.  First, we measured usage of parallelism in open-source projects.
 Then, we ran a survey with developers to understand the reasons that could
 explain resistance to using the technology.\Comment{ For the quantitative
 analysis we checked both statically (parsing build files) and dynamically
 (monitoring execution of build files) for the presence of parallelization.}
 Considering only the projects whose test suites take longer than a minute to
-run, we found that only \percentParallelUpdated{} of them use parallelism.  We
+run, we found that only \percentParallelUpdated{} of them use parallelism.  \textcolor{red}{[Sotero: nao fizemos isso.]}We
 also contacted developers from a selection of costly projects that did not use
 parallelization to understand the reasons for not using parallelization.
 Dealing with concurrency-related issues (\eg{}, the extra work to organize test
@@ -794,7 +794,7 @@ Furthermore, we noted a strong positive correlation between running
 time and number of test on projects in the \longg{} group.
 Considering the \medg{} group, the correlation between these two
 variables was weak.
-Figure~\ref{fig:scattercost} \textcolor{red}{[S.J nao teremos mais esse plot. falta confirmar com @marcelo ]} illustrates the regression lines between
+Figure~\ref{fig:scattercost} \textcolor{red}{[Sotero:  nao teremos mais esse plot. falta confirmar com @marcelo ]} illustrates the regression lines between
 these the variables test suite cost and number of test cases.
 To sum, we observed that for projects with long-running test suites
 running time is typically
@@ -938,13 +938,13 @@ the network.  Consequently, this approach complements the
 the dynamic approach. Overall, we found \numProjectsParStatic{}
 projects manifesting parallelism with this approach.
 Compared to the set of projects listed in
-Table~\ref{tab:freqmodes-dynamic}, we found four new projects, namely:
-\CodeIn{Google Cloud\Comment{ Platform} DataflowJavaSDK} (using
-configuration \ParClassParMeth), \CodeIn{Mapstruct} (using configuration
-\ForkSeq{}), \CodeIn{T-SNE-Java} (using configuration \ForkSeq), and
-\CodeIn{Urbanairship Datacube} (using configuration \ParClassParMeth).
-Curiously, we also found that project \CodeIn{Jcabi}, \CodeIn{Rultor},
-and \CodeIn{Takes} were not detected using this methodology.
+Table~\ref{tab:freqmodes-dynamic}, we found 8 new projects, namely:
+\CodeIn{\Comment{ Apache} Hadoop} (using
+configuration \ForkSeq), \CodeIn{\Comment{ Apache} Hadoop-common} (using configuration
+\ForkSeq{}), \CodeIn{\Comment{ Apache} Tajo} (using configuration \ForkSeq), \CodeIn{\Comment{ Apache} Hawkbit} (using configuration \ForkSeq), \CodeIn{\Comment{ kiegroup} Optaplanner} (using configuration \ForkSeq), \CodeIn{\Comment{ lejon} T-SNE-Java} (using configuration \ForkSeq), \CodeIn{Kubernetes Java Client} (using configuration \SeqClassParMeth)   and
+\CodeIn{Netflix Curator} (using configuration \ForkSeq).
+Curiously, we also found that project \CodeIn{Alibaba Nacos}, \CodeIn{Rultor},
+and \CodeIn{Jcabi} were not detected using this methodology.
 That happened because these projects loaded a \emph{pom.xml} file from
 a jar file that we missed.
 Considering the static and dynamic methods together, we found a total
@@ -962,7 +962,7 @@ corresponding to the union of the two subject sets.
   \item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
 \end{itemize}
 
-To answer this research question we surveyed developers involved in a
+\textcolor{red}{[Sotero: nao teremos mais essa RQ4. confirmar com @marcelo ]} To answer this research question we surveyed developers involved in a
 selection of projects from our benchmark with time-consuming test
 suites.  The goal of the survey is to better comprehend developer's
 attitude towards the use of parallelism as a mechanism to speedup
