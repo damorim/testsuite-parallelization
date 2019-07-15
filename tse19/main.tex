@@ -1218,21 +1218,21 @@ isolation.
 
 \input{flakiness-speedup-table}
 
-To answer this research question, we selected 15 different subjects,
+To answer this research question, we selected 21 different subjects,
 ran their test suites against all configurations described in
 Section~\ref{sec:modes}, and compared their running times and rate of
 test flakiness.  We used the sequential execution configuration,
 \emph{\Seq{}}, as the comparison baseline in this experiment.  To
-select subjects, we sorted projects whose test suites run in 1m or
+select subjects, we sorted projects whose test suites run in 5m or
 more by decreasing order of execution time and selected the first
-fifteen projects that use JUnit 4.7 or later.  The rationale for this
+twenty one projects that use JUnit 4.7 or later.  The rationale for this
 criteria is to ensure compatibility with parallel configuration since
 older versions of JUnit does not support parallel testing.  We ran
-each project on each configuration for \SubjectsReruns{} times.
-Overall, we needed to reran test suites 270 times, 18 times (3x6
+each project on each configuration for twelve times.
+Overall, we needed to reran test suites 1,512 times, 72 times (12x6
 configurations) on each project.  Given the low standard deviations
 observed in our measurements\Comment{ and the aggregated time cost of 270 test
-executions}, we considered \SubjectsReruns{} reruns reasonable for this
+executions}, we considered twelve reruns reasonable for this
 experiment.
 
 It is worth mentioning that we used custom JUnit runners as opposed to
@@ -1259,7 +1259,7 @@ Maven dependency plugin~\cite{maven-dep} to build the project's
 classpath (with the command \CodeIn{mvn dependency:build-classpath}).
 Once we find the tests suite to run and the corresponding classpath,
 we invoke the test runners mentioned above on them.  We configured
-this experiment to run at most three JVMs in parallel.  Recall that in
+this experiment to run at most twelve JVMs in parallel.  Recall that in
 our setup (see Section~\ref{sec:setup}), we limited our kernel to use
 only three cores and reserved one core for OS-related processes.  To
 ensure that our experiments terminate (recall that deadlock or
@@ -1276,24 +1276,20 @@ did not report standard deviations as they are very small in all
 cases.  As to identify the potential causes of flakiness, we inspected
 the exceptions reported in execution logs. We found that, in most
 of the cases, flakiness was caused by race conditions: approximately
-97.5\% of the failures were caused by a \CodeInF{null} dereference and 1.6\% were
-caused by concurrent access on unsynchronized data structures.\Comment{
-  More precisely, the manifested exceptions were
-  \CodeInF{ConcurrentModificationException} (0.8\%),
-  \CodeInF{NoSuchElementException} (0.7\%), and
-  \CodeInF{ArrayIndexOutOfBoundsException} (0.7\%).}  Cases of likely
+95.8\% of the failures were caused by a \CodeInF{null} dereference and 2.7\% were
+caused by concurrent access on unsynchronized data structures. Cases of likely
 broken test dependencies were not as prevalent as race conditions
-(0.8\% of the total): \CodeInF{EOFException} (0.2\%),
-\CodeInF{FileSystemAlreadyExistsException} (0.2\%), and
-\CodeInF{BufferOverflowException} (0.4\%). Results suggest that
+(1.5\% of the total): \CodeInF{EOFException} (0.2\%),
+\CodeInF{FileSystemAlreadyExistsException} (0.5\%), and
+\CodeInF{BufferOverflowException} (0.8\%). Results suggest that
 anticipating race conditions to schedule test executions would have
 higher impact compared to breaking test dependencies using a tool such
 as ElectricTest~\cite{bell-etal-esecfse2015}.
 
 The projects with flakiness
-in all configurations were \CodeIn{AWS SDK}, \CodeIn{GoogleCloud}, and
-\CodeIn{Moquette}.  It is worth highlighting the unfortunate case of
-\CodeIn{Moquette}, which manifested more than 20\% flaky tests in
+in all configurations were \CodeIn{Activity}, \CodeIn{Incubator Dubbo}, \CodeIn{DROID}, and
+\CodeIn{Hawkbit}.  It is worth highlighting the unfortunate case of
+\CodeIn{Hawkbit}, which manifested more than 9\% flaky tests in
 every configuration.  Considering time, it is noticeable from the
 averages, perhaps as expected, an increasing speedup from
 configuration \emph{\SeqClassParMeth} to \emph{\ParClassParMeth} and
@@ -1301,18 +1297,18 @@ from configuration \emph{\ForkSeq} to \emph{\ForkParMeth}.  It is also
 worth mentioning that some combinations manifested slowdown instead of
 speedup.  Recall that parallel execution introduces the overhead of
 spawning and managing JVMs and threads.  Overall, results show that
-0\% of flakiness have been reported in 30 of the 75 (=5x15)
-pairs of project and configuration we analyzed (40\% of the total).
-In for 4 of the 15 projects flakiness was not manifested in 
+0\% of flakiness have been reported in 47 of the 105 (=5x15)
+pairs of project and configuration we analyzed (44.76\% of the total).
+In for 6 of the 21 projects flakiness was not manifested in 
 any combination pairs.  We noticed with some surprise that the average speedup of
-configuration \emph{\SeqClassParMeth} was higher compared to
-\emph{\ForkParMeth} indicating that it is not always the case that
+configuration \emph{\SeqClassParMeth} was higher compared to \emph{\ParClassSeqMeth}{C2} and \emph{\ParClassParMeth}{C3},
+indicating that it is not always the case that
 using more CPUs pays off. Important to note that the cost of spawning
 new JVMs can be significant in \emph{\ForkParMeth}.
 
 \begin{mdframed}
 \noindent\textit{Answering \numRQIssuesOne{}:~Overall results indicate that the
-  test suites of 73.33\% of the projects we analyzed could be run in
+  test suites of 44.76\% of the projects we analyzed could be run in
   parallel without manifesting any flaky tests.  In some of these
   cases, speedups were significant, ranging from 1x to 28.8x.}
 \end{mdframed}
