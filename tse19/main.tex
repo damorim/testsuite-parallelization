@@ -751,15 +751,15 @@ Figure~\ref{fig:time-distributions} shows the time distribution of
 individual test cases per project.
 We observed that the average median times (see dashed horizontal red
 lines) were small, namely 0.08s
-for \medg{} projects and 0.16s for \longg{} projects, and the standard deviations associated with each distribution were
+for \medg{} projects and 0.31s for \longg{} projects, and the standard deviations associated with each distribution were
 relatively low.\Comment{ Figure~\ref{fig:sd} shows the number of
   projects within specific ranges of $\sigma$ values.} High values of
 $\sigma$ are indicative of CPU monopolization. We found only a small number
 of those. The highest value of $\sigma$ occurred in
-\CodeIn{uber\_chaperone}, a project from the \longg{} group.
-This project contains only 26 tests, 17 of which take less than 0.5s
-to run, one of which takes nearly 3s to run, two of which take nearly
-11s to run, four of which takes on average 3m to run, and two of which
+\CodeIn{T-SNE-Java}, a project from the \longg{} group.
+This project contains only 20 tests, 16 of which take less than 0.6s
+to run, one of which takes nearly 4s to run, two of which take nearly
+14s to run, four of which takes on average 3m to run, and two of which
 take $\sim$8m to run.
 For this project, 98.4\% of the execution cost is dominated by 20\% of
 the tests; without these two costly tests this project would have been
@@ -787,7 +787,7 @@ the tests running faster.
   \vspace{-5mm}
 \end{figure}
 
-Figure~\ref{fig:size-testsuites} shows the difference in the
+Figure~\ref{fig:size-testsuites}  \textcolor{red}{[Sotero:  nao teremos mais esse plot. falta confirmar com @marcelo ]}  shows the difference in the
 distribution of test suite sizes across groups.  This figure indicates
 that long projects have a higher median and much higher average number of test cases.
 Furthermore, we noted a strong positive correlation between running
@@ -859,7 +859,7 @@ same configuration, we counted only one occurrence.
 Considering
 our set of \numMedLong{} projects, we found that only
 \numProjectsPar{} of those projects had parallelism enabled
-by default, with only configurations \ParClassSeqMeth{},
+by default, with only configurations \SeqClassParMeth{}, \ParClassSeqMeth{},
 \ParClassParMeth{}, and \ForkSeq{} being used. Configurations
 \ParClassParMeth{} and \ForkSeq{} were the most popular among these
 cases. Note that these results under-approximate real usage of
@@ -1074,7 +1074,7 @@ summarizes the distribution of answers.
 
 To answer \numRQSpeedupOne{}, we considered the \numProjectsPar{}
 subjects from our benchmark that use parallelization \emph{by default}
-(see Table~\ref{tab:freqmodes-dynamic}).  We compared running times
+(see Table~\ref{tab:freqmodes-dynamic}). From this set, we discarded 6 subjects because of failures in sequential execution and selected only 16 subjects remaining. We compared running times
 of test suites with enabled parallelization, as configured by project
 developers, and without parallelization. It is important to note that
 there are no observed failures in either execution.
@@ -1091,15 +1091,13 @@ indicates slowdown.
 
 Results show that, on average, parallel execution was
 \avgSpeedup{} times faster compared to sequential execution.
-Three cases worth special attention: \CodeIn{Log4J2}, \CodeIn{Chaos},
-and \CodeIn{Takes}.
-We note that parallel execution in \CodeIn{Log4J2} was
+Three cases worth special attention: \CodeIn{Togglz}, \CodeIn{Chaos} and \CodeIn{Cache2k}.
+We note that parallel execution in \CodeIn{Togglz} was
 ineffective.  We found that Maven invokes several test modules in this
 project but the test modules that dominate execution time run
-sequentially by default. This was also the case for the highlighted
-project \CodeIn{Californium}.
+sequentially by default. This was also observed in the projects \CodeIn{Zxing}, \CodeIn{Optaplanner}, \CodeIn{OpenNLP} and \CodeIn{Leshan}.
 No significant speedup was observed in \CodeIn{Chaos}, a project with
-only three test classes, of which one monopolizes the bulk of test
+only two test classes, of which one monopolizes the bulk of test
 execution time.
 This project uses configuration \ParClassSeqMeth{}, which runs test
 classes in parallel but runs test methods, declared in each class,
@@ -1107,10 +1105,10 @@ sequentially.
 Consequently, speedup cannot be obtained as the cost of the single
 expensive test class cannot be broken down with the selected
 configuration.
-Finally, the speedup observed in project \CodeIn{Takes} was
+Finally, the speedup observed in projects \CodeIn{Cache2k}  was
 the highest amongst all projects. This subject uses configuration
-\ParClassParMeth{} and contains 419 test methods distributed nearly
-equally among 148 test classes with a small number of test methods.
+\ParClassSeqMeth{} and contains 5120 test methods distributed nearly
+equally among 101 test classes with a small number of test methods.
 Furthermore, several methods in those classes are time-consuming.
 As result, the CPUs available for testing are kept occupied for the
 most part during test execution.
@@ -1128,20 +1126,23 @@ Maven is used.  Highest slowdown/speedup appears in gray color.}
 \toprule
 \emph{Group} & \emph{Subject} & \multicolumn{1}{c}{$T_s$} & \multicolumn{1}{c}{$T_p$} & $T_s/T_p$ \\%
 \midrule%
-Medium & \Comment{ Apache } Avro & 13.65m & 11.39m & \cellcolor{lightgray}1.20x\\%
-Long & \Comment{ Apache } Oozie & 4.59m & 4.03m & \cellcolor{lightgray} 1.14x\\%
-Medium & \Comment{ BounceStorage } Chaos & 1.54m & 1.44m & \cellcolor{lightgray} 1.07x\\%
-Medium & \Comment{ Apache } OpenNLP & 3.59m & 2.36m & \cellcolor{lightgray} 1.52x\\%
-%Long &\Comment{ Apache }Log4J2& 8.24m & 8.21m & \cellcolor{lightgray}1.00x\\%%
-Medium & Cache2k & 1.56m & 1.47m & 1.06x\\%
-Medium & Eclipse Leshan & 1.32m & 0.58m & 2.27x\\%
-Long & Search Guard & 13.54m & 6.53m & 2.07x\\%
-Long & Javaparser & 5.98m & 4.45m & 1.34x\\%
-Long & Opta Planner & 12.55m & 10.07m & 1.25x\\%
-Medium & Togglz & 4.01m & 3.65m & 1.10x\\%
-Long & Twilio Java & 13.04m & 2.26m & 5.77x\\%
-Medium & Vavr & 5.21m & 4.37m & \cellcolor{lightgray}1.26x\\%
-Medium & Zxing & 1.33m & 2.61m & 1.26x\\%
+Long & \Comment{ Apache } Avro & 14.91m & 13.50m & 1.10x\\%
+Medium & \Comment{ Cache2k } Cache2k & 4.58m & 2.24m & \cellcolor{lightgray}2.04x\\%
+Medium & \Comment{ spring-data-cassandra } Cassandra & 4.43m & 4.02m & 1.10x\\%
+Medium & \Comment{ Bounces } Chaos & 1.64m & 1.54m & \cellcolor{lightgray}1.06x\\%
+Long & \Comment{ Javaparse } Javaparser & 7.04m & 6.16m & 1.14x\\%
+Medium & \Comment{ Jcabi Github } Jcabi & 2.33m & 1.31m & 1.77x\\%
+Medium & \Comment{ Facebook } Jcommon & 1.59m & 1.44m & 1.10x\\%
+Medium & \Comment{ Eclipse } Leshan & 1.66m & 1.53m & 1.08x\\%
+Medium & \Comment{ Atmosphere } Nettosphere & 2.40m & 2.07m & 1.16x\\%
+Medium & \Comment{ Apache } OpenNLP & 3.52m & 3.24m & 1.08x\\%
+Long & \Comment{ Kiegroup } Optaplanner & 10.79m & 10.06m & 1.07x\\%
+Long & \Comment{ Floraguncom } Search Guard & 13.24m & 6.53m & \cellcolor{lightgray} 2.02x\\%
+Medium & \Comment{ Togglz } Togglz & 4.11m & 4.04m & \cellcolor{lightgray}1.01x\\%
+Long & \Comment{ Twilio } Twilio Java & 12.57m & 11.38m & 1.10x\\%
+Long & \Comment{ Vavr io } Vavr & 5.73m & 5.09m & 1.12x\\%
+Medium & \Comment{ Zxing } Zxing & 4.61m & 4.28m & 1.07x\\%
+
 \midrule
 Average &  &  &  & \avgSpeedup{}x\\
 \bottomrule%
@@ -1301,7 +1302,7 @@ spawning and managing JVMs and threads.  Overall, results show that
 pairs of project and configuration we analyzed (44.76\% of the total).
 In for 6 of the 21 projects flakiness was not manifested in 
 any combination pairs.  We noticed with some surprise that the average speedup of
-configuration \emph{\SeqClassParMeth} was higher compared to \emph{\ParClassSeqMeth}{C2} and \emph{\ParClassParMeth}{C3},
+configuration \emph{\SeqClassParMeth} was higher compared to \emph{\ParClassSeqMeth} and \emph{\ParClassParMeth},
 indicating that it is not always the case that
 using more CPUs pays off. Important to note that the cost of spawning
 new JVMs can be significant in \emph{\ForkParMeth}.
@@ -1327,9 +1328,9 @@ study trigger multiple actions:
 
 \begin{itemize}
 \item \emph{Incentivize forking.}~Forked JVMs manifest low rates of
-  test flakiness.  For instance, in \emph{\ForkSeq{}}, only 4 of 10
+  test flakiness.  For instance, in \emph{\ForkSeq{}}, only 4 of 21
   projects manifest flakiness and, excluding the extreme case of
-  \CodeIn{Moquette}, projects manifest flaky tests in low rates 0.23\%
+  \CodeIn{Hawkbit}, projects manifest flaky tests in low rates 0.23\%
   to 1.70\%.  Developers of projects with long-running test suites
   should consider using that feature, which is available in modern
   build systems today (\eg{}, Maven).
