@@ -558,23 +558,22 @@ of analysis we presented in Section~\ref{sec:introduction}.
 \newcommand{\RQAdoptionOne}{How popular is test suite
   parallelization\Comment{ in open-source projects}?}
 
-\newcommand{\numRQAdoptionTwo}{RQ4}
-\newcommand{\RQAdoptionTwo}{What are the main reasons that prevent developers
-  from using test suite parallelization?}
-
 %% Speedups
-\newcommand{\numRQSpeedupOne}{RQ5}
+\newcommand{\numRQSpeedupOne}{RQ4}
 \newcommand{\RQSpeedupOne}{What are the speedups obtained with parallelization
   (in projects that actually use it)?}
 
-\newcommand{\numRQSpeedupTwo}{RQ6}
+\newcommand{\numRQSpeedupTwo}{RQ5}
 \newcommand{\RQSpeedupTwo}{How test execution scales with the number of
   available CPUs?}
 
 %% Tradeoffs
-\newcommand{\numRQIssuesOne}{RQ7}
+\newcommand{\numRQIssuesOne}{RQ6}
 \newcommand{\RQIssuesOne}{How parallel execution configurations affect testing
   costs and flakiness?}
+
+\newcommand{\numRQIssuesTwo}{RQ7}
+\newcommand{\RQIssuesTwo}{How effective is selective re-execution in mitigating flakiness??}
 
 \setlist[itemize]{leftmargin=1em}
 \begin{itemize}
@@ -586,7 +585,6 @@ of analysis we presented in Section~\ref{sec:introduction}.
 \item Adoption
   \begin{itemize}
   \item \textbf{\numRQAdoptionOne.} \RQAdoptionOne    
-  \item \textbf{\numRQAdoptionTwo.} \RQAdoptionTwo
   \end{itemize}
 \item Speedups
   \begin{itemize}
@@ -595,7 +593,8 @@ of analysis we presented in Section~\ref{sec:introduction}.
   \end{itemize}      
 \item Tradeoffs
   \begin{itemize}
-  \item \textbf{\numRQIssuesOne.} \RQIssuesOne    
+  \item \textbf{\numRQIssuesOne.} \RQIssuesOne 
+  \item \textbf{\numRQIssuesTwo.} \RQIssuesTwo    
   \end{itemize}
 \end{itemize}
 
@@ -958,112 +957,6 @@ corresponding to the union of the two subject sets.
   use parallelism.}
 \end{mdframed}
 
-\begin{itemize}
-  \item \numRQAdoptionTwo{}. \textbf{\RQAdoptionTwo{}}
-\end{itemize}
-
-\textcolor{red}{[Sotero: nao teremos mais essa RQ4. confirmar com @marcelo ]} To answer this research question we surveyed developers involved in a
-selection of projects from our benchmark with time-consuming test
-suites.  The goal of the survey is to better comprehend developer's
-attitude towards the use of parallelism as a mechanism to speedup
-regression testing.  We surveyed developers from a total of
-\emailsProjects{} projects.  From the initial list of \numMedLong{}
-project, we discarded 11 projects that we knew a priori used
-parallelization, and \discartedProjects{} projects that we could not find
-developer's emails from commit logs.  From this list of projects, we
-mined potential participants for our study.  More precisely, we
-searched for developer's name and email from the last 20 commits to
-the corresponding project repository.  Using this approach, we
-identified a total of \emailsSent{} eligible participants.  Finally,
-we sent plain-text e-mails, containing the survey, to those developers.  In
-total, \emailsAnswered{} developers replied but we discarded
-\emailsFalseAnswers{} replies with subjective answers.  Considering
-projects covered by the answers, a total of \emailsProjectsAnswered{}
-projects (\percEmailsProjectsAnswered{} of the total) were represented
-in those replies. Note that multiple developers on each project
-received emails. In one specific case, one developer worked in
-  multiple projects, and we consider it as a different answer. We sent the following set of questions to
-developers:
-
-\begin{enumerate}
-\item How long does it take for tests to run in your environment? Can
-  you briefly define your setup?
-\item Do you confirm that your regression test suite does *not* run in parallel?
-\item\label{questionThree} Select a reason for not using parallelization:
-  \begin{enumerate}[label=\alph*)]
-  \item I did not know it was possible
-  \item I was concerned with concurrency issues
-  \item I use a continuous integration server
-  \item Some other reason. Please elaborate.
-  \end{enumerate}
-\end{enumerate}
-
-Considering question 1, we confirmed that execution time was
-compatible with the results we reported in Section~\ref{sec:rqA}.
-Furthermore, \emailsCI{} of the participants indicated the use of
-Continuous Integration (CI) to run tests, with \emailsDistributed{} of
-these participants reporting that test suites are modularized and
-those modules are tested independently in CI servers through different
-parameters.  Those participants explained that such practice helps to
-reduce time to observe test failures, which is the goal of speeding up
-regression testing.  A total of \emailsLocal{} participants answered
-that they do run tests in their local machines.  Note, however, that
-CI does not preclude low-level parallelization.  For example,
-installations of open-source CI tools (\eg{}, Jenkins~\cite{jenkins})
-in dedicated servers would benefit from running tests faster through
-low-level test suite parallelization.
-
-Considering question 2, the answers we collected indicated, to our
-surprise, that six of the \emailsProjectsAnswered{} projects execute
-tests in parallel.  This mismatch is justified by cases where neither
-of our checks (static or dynamic) could detect presence of
-parallelism.  A closer look at these projects revealed that one of
-them contained a \emph{pom.xml} file encapsulated in a jar file
-(similar case as reported in Section~\ref{sec:rqC-2}), in one of the
-projects the participant considered that distributed CI was a form of
-parallelism, and in four projects the team preferred to implement
-parallelization instead of using existing features from the testing
-framework and the build system~---~in two projects the team
-implemented concurrency control with custom JUnit test runners and in
-two other projects the team implemented concurrency within test
-methods.  Note that, considering these four extra cases (ignored two
-distributed CI cases), the usage of parallelization increases from
-\percentParallel{} to \percentParallelUpdated{}.  We do not consider
-this change significant enough to modify our conclusion about
-practical adoption of parallelization (\numRQAdoptionOne{}).
-
-Considering question 3, the distribution of answers was as follows.  A
-total of \emailsA{} of the \emailsProjectsAnswered{} developers who
-answered the survey did not know that parallelism was available in
-\begin{wrapfigure}{r}{0.13\textwidth}
-%\begin{figure}[b]
-  \centering
-  \includegraphics[width=2cm]{results/survey.pdf}
-  \caption{\label{fig:rq5-answers}Summary of developer's answers to
-    survey question~\ref{questionThree}.}
-\end{wrapfigure}
-Maven (option ``a''), \emailsB{} of developers mentioned that they did
-not use parallelism concerned with possible concurrency issues (option
-``b''), \emailsD{} of developers mentioned that continuous integration
-suffices to provide timely feedback while running only smoke
-tests (\ie{}, short-running tests) locally (option ``c'')\Comment{here
-  I want to say that they use it for something like "non-blocking
-  testing" while developing in a local machine}, and \emailsD{} of
-developers who provided an alternative answer (option ``d'') mentioned
-that using parallelism was not worth the effort of preparing the test
-suites to take advantage of available processing power.  A total of
-\emailsNA{} of participants did not answer the last question of the
-survey.  The pie chart in Figure~\ref{fig:rq5-answers} 
-summarizes the distribution of answers.
-
-\begin{mdframed}
-\noindent\textit{Answering \numRQAdoptionTwo{}:}~\emph{Results suggest that dealing
-  with concurrency issues (\ie{}, the extra work to organize test
-  suite to safely explore concurrency) was the principal reason
-  for developers not investing in parallelism.  Other reasons
-  included availability of continuous integration services and
-  unfamiliarity with the technology.}
-\end{mdframed}
 
 \subsection{Speedups}
 \label{sec:rqD}
@@ -1221,7 +1114,7 @@ isolation.
 
 To answer this research question, we selected 21 different subjects,
 ran their test suites against all configurations described in
-Section~\ref{sec:modes}, and compared their running times and rate of
+Section II, and compared their running times and rate of
 test flakiness.  We used the sequential execution configuration,
 \emph{\Seq{}}, as the comparison baseline in this experiment.  To
 select subjects, we sorted projects whose test suites run in 5m or
@@ -1313,6 +1206,19 @@ new JVMs can be significant in \emph{\ForkParMeth}.
   parallel without manifesting any flaky tests.  In some of these
   cases, speedups were significant, ranging from 1x to 28.8x.}
 \end{mdframed}
+
+\begin{itemize}
+  \item \numRQIssuesTwo{}. \textbf{\RQIssuesTwo{}}
+\end{itemize}
+
+\input{mitigating-flakiness-speedup-table}
+
+To answer the RQ7, we selects to this experiment 15 subjects of the Table III from RQ6, that manifested flakiness in any combination pairs. 
+
+\begin{mdframed}
+\noindent\textit{Answering \numRQIssuesTwo{}:~Overall results indicate ...}
+\end{mdframed}
+
 
 % SECTION 5
 
